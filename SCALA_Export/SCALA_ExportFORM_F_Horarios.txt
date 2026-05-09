@@ -1,0 +1,311 @@
+Version =19
+VersionRequired =19
+Checksum =999064531
+Begin Form
+    AutoResize = NotDefault
+    DefaultView =0
+    GridX =5
+    GridY =5
+    Width =9070
+    ItemSuffix =23
+    Left =825
+    Top =570
+    Right =9525
+    Bottom =6090
+    RecSrcDt = Begin
+        0x412e859f37c5e140
+    End
+    GUID = Begin
+        0xfb4877033a50964292e9d105339d2886
+    End
+    NameMap = Begin
+        0x0acc0e5500000000c35e10d7351aee409d6aa227ee615e8f00000000bad4b9d0 ,
+        0xb849e340000000000000000043007500720073006f0073000000000000006d19 ,
+        0x11aa985d6243b0574f9836bc7fb601000000e08851d1b849e340fc7413006c65 ,
+        0x1d0346005f0048006f0072006100720069006f00730020004700720075007000 ,
+        0x6f0073000000000000007bc3fd3f15d769408260d7b23b0d755c0000000077f6 ,
+        0xd0d0b849e340fc7413006c651d0351005f0068006f0072006100720069006f00 ,
+        0x7300000000000000bfa14471afe63d448e1484a070b1727b070000007bc3fd3f ,
+        0x15d769408260d7b23b0d755c43007500720073006f00000000000000f34379ce ,
+        0x1c9cdd438d984398d1c3c68207000000c35e10d7351aee409d6aa227ee615e8f ,
+        0x43007500720073006f0000000000000000000000000000000000000000000000 ,
+        0x0c000000020000000000000000000000000000000000
+    End
+    RecordSource ="Cursos"
+    Caption ="HORARIOS"
+    OnOpen ="[Event Procedure]"
+    MenuBar ="Barra Main"
+    Begin
+        Begin Label
+            TextAlign =3
+            FontWeight =700
+            BackColor =12632256
+        End
+        Begin Rectangle
+            SpecialEffect =2
+            Width =850
+            Height =850
+        End
+        Begin CommandButton
+            TextFontFamily =2
+            Width =1701
+            Height =283
+        End
+        Begin OptionButton
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin CheckBox
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin TextBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin ListBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =1417
+            LabelX =-236
+        End
+        Begin ComboBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin Subform
+            Width =1701
+            Height =1701
+        End
+        Begin FormHeader
+            Height =558
+            BackColor =12632256
+            Name ="EncabezadoDelFormulario1"
+            EventProcPrefix ="EncabezadoDelFormula"
+            GUID = Begin
+                0xce4b979b8f2015469598591a0c49531e
+            End
+            Begin
+                Begin Label
+                    BackStyle =0
+                    OverlapFlags =93
+                    TextAlign =1
+                    Left =488
+                    Top =153
+                    Width =1695
+                    Height =405
+                    FontSize =14
+                    ForeColor =8355711
+                    Name ="Texto12"
+                    Caption ="HORARIOS"
+                    GUID = Begin
+                        0x135c0d579e1b3e429cab634b5f2647eb
+                    End
+                End
+                Begin Label
+                    BackStyle =0
+                    OverlapFlags =215
+                    TextAlign =1
+                    Left =452
+                    Top =113
+                    Width =1695
+                    Height =405
+                    FontSize =14
+                    ForeColor =16777215
+                    Name ="Texto13"
+                    Caption ="HORARIOS"
+                    GUID = Begin
+                        0xf9dbbdbcde1365478332bed85f81b0c8
+                    End
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    TabStop = NotDefault
+                    OverlapFlags =85
+                    Left =6815
+                    Top =113
+                    Width =2142
+                    Height =235
+                    Name ="Campo21"
+                    ControlSource ="=Now()"
+                    GUID = Begin
+                        0xc999c0be51861943be8395a8539266d2
+                    End
+                End
+            End
+        End
+        Begin Section
+            Height =5564
+            BackColor =12632256
+            Name ="Detalle0"
+            GUID = Begin
+                0xd3ab43d0abe15a408af87dd79b7faf12
+            End
+            Begin
+                Begin TextBox
+                    SpecialEffect =1
+                    BorderWidth =2
+                    OverlapFlags =85
+                    TextAlign =2
+                    Left =1130
+                    Top =113
+                    Width =6240
+                    Height =465
+                    ColumnWidth =2670
+                    FontSize =12
+                    ForeColor =16711680
+                    Name ="Curso"
+                    ControlSource ="Curso"
+                    StatusBarText ="Nombre del curso"
+                    GUID = Begin
+                        0xab52dcd3d519694faf52464e9bf65e58
+                    End
+                End
+                Begin Subform
+                    OverlapFlags =85
+                    Left =113
+                    Top =680
+                    Width =8844
+                    Height =3846
+                    TabIndex =1
+                    Name ="F_Horarios Grupos"
+                    SourceObject ="Form.F_Horarios Grupos"
+                    LinkChildFields ="Curso"
+                    LinkMasterFields ="Curso"
+                    EventProcPrefix ="F_Horarios_Grupos"
+                    GUID = Begin
+                        0xebe8ae27b0eefd41b787f4bdaf3f3895
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =566
+                    Top =4988
+                    Height =576
+                    TabIndex =2
+                    Name ="Buscar Curso"
+                    Caption ="Buscar"
+                    OnClick ="M_cursos.Buscar Curso"
+                    EventProcPrefix ="Buscar_Curso"
+                    GUID = Begin
+                        0x664254b1be90b64f9dffeead5a73019b
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =7370
+                    Top =4988
+                    Width =1470
+                    Height =465
+                    TabIndex =3
+                    ForeColor =255
+                    Name ="B_term_horarios"
+                    Caption ="Terminar"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0x65347b310d37d445aa7aa1fd4a68b4d2
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            Height =0
+            BackColor =12632256
+            Name ="PieDelFormulario2"
+            GUID = Begin
+                0x99d6db6b77174140807177e9c3cd6a8e
+            End
+        End
+    End
+End
+CodeBehindForm
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database   'Usar orden de base de datos en comparaciones de cadenas
+
+Private Sub B_term_horarios_Click()
+On Error GoTo Err_B_term_horarios_Click
+
+
+    DoCmd.Close
+
+Exit_B_term_horarios_Click:
+    Exit Sub
+
+Err_B_term_horarios_Click:
+    MsgBox Error$
+    Resume Exit_B_term_horarios_Click
+    
+End Sub
+
+Private Sub Botón17_Click()
+On Error GoTo Err_Botón17_Click
+
+
+    DoCmd.DoMenuItem A_FORMBAR, A_EDITMENU, 10, , A_MENU_VER20
+
+Exit_Botón17_Click:
+    Exit Sub
+
+Err_Botón17_Click:
+    MsgBox Error$
+    Resume Exit_Botón17_Click
+    
+End Sub
+
+Private Sub Botón18_Click()
+On Error GoTo Err_Botón18_Click
+
+
+    DoCmd.DoMenuItem A_FORMBAR, A_EDITMENU, 10, , A_MENU_VER20
+
+Exit_Botón18_Click:
+    Exit Sub
+
+Err_Botón18_Click:
+    MsgBox Error$
+    Resume Exit_Botón18_Click
+    
+End Sub
+
+Private Sub Form_Open(Cancel As Integer)
+Dim db As Database, FLogin As Form, TUser As Recordset, Forma As Form
+   Set db = CurrentDb()
+   Set Forma = Forms![F_Horarios]
+   Set FLogin = Forms!login
+   Set TUser = db.OpenRecordset("Usuarios")
+   TUser.Index = "PrimaryKey"
+   TUser.Seek "=", FLogin!UserID
+   If Not TUser.NoMatch Then
+      If IsNull(TUser!A_H) Or TUser!A_H = "N" Then
+         MsgBox "El usuario no tiene privilegios de acceso"
+         DoCmd.CancelEvent
+      Else
+         If TUser!A_H = "C" Then
+            Forma.AllowEditing = False
+            Forma.DefaultEditing = 3
+         End If
+      End If
+   Else
+      MsgBox "El usuario no tiene clave de acceso registrada"
+      DoCmd.CancelEvent
+   End If
+
+End Sub

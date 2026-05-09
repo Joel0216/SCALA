@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú de Procesos de Exámenes</title>
+    <link rel="stylesheet" href="examenes-menu.css">
+</head>
+<body data-section="Exámenes">
+    <div class="main-container">
+        <header class="app-header">
+            <h1>Scala - Academias de Música</h1>
+            <div class="datetime" id="datetime"></div>
+        </header>
+
+        <main class="app-main">
+            <div class="menu-card">
+                <div class="logo-container">
+                    <img src="Scala logo.png" alt="Scala Logo" class="logo-display" id="mainLogo">
+                </div>
+
+                <h2 style="font-size: 1.25rem; color: var(--text-main); margin-bottom: 30px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;">
+                    Control y Programación de Exámenes
+                </h2>
+
+                <div class="examenes-grid">
+                    <button class="premium-menu-btn" onclick="window.location.href='programacion-examenes.html'">
+                        Programación de Exámenes
+                    </button>
+                    
+                    <button class="premium-menu-btn" onclick="window.location.href='relacion-examenes.html'">
+                        Relación por Exámenes
+                    </button>
+                    
+                    <button class="premium-menu-btn" onclick="window.location.href='reasignacion-examenes.html'">
+                        Reasignación de Exámenes
+                    </button>
+                </div>
+
+                <div style="margin-top: 40px; border-top: 1px solid var(--border-color); padding-top: 30px;">
+                    <button class="premium-btn btn-danger" style="padding: 12px 40px; font-size: 1rem;" onclick="window.location.href='archivos.html'">TERMINAR MENÚ</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="supabase-config.js"></script>
+    <script src="session-manager.js"></script>
+    <script src="utils-inputs.js"></script>
+    <script src="examenes-menu.js"></script>
+</body>
+</html>

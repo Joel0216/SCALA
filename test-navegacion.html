@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test de Navegación y Campos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        h2 {
+            color: #666;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 14px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        input, select {
+            padding: 8px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 300px;
+        }
+        .result {
+            background-color: #e8f5e9;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            display: none;
+        }
+        .error {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+        .success {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 Test de Navegación y Campos de Entrada</h1>
+    <p style="text-align: center; color: #666;">
+        Use esta página para verificar que la navegación y los campos funcionan correctamente
+    </p>
+
+    <!-- Test 1: Navegación Simple -->
+    <div class="test-section">
+        <h2>Test 1: Navegación Simple con onclick</h2>
+        <p>Estos botones deben llevarte a las páginas correspondientes:</p>
+        <button onclick="window.location.href='archivos.html'">Ir a Archivos</button>
+        <button onclick="window.location.href='maestros.html'">Ir a Maestros</button>
+        <button onclick="window.location.href='cursos.html'">Ir a Cursos</button>
+        <button onclick="window.location.href='examenes-menu.html'">Ir a Exámenes</button>
+        <div id="result1" class="result"></div>
+    </div>
+
+    <!-- Test 2: Navegación con Función -->
+    <div class="test-section">
+        <h2>Test 2: Navegación con Función JavaScript</h2>
+        <p>Estos botones usan funciones JavaScript para navegar:</p>
+        <button onclick="irAArticulos()">Ir a Artículos</button>
+        <button onclick="irAMovimientos()">Ir a Movimientos Inventario</button>
+        <div id="result2" class="result"></div>
+    </div>
+
+    <!-- Test 3: Campos de Entrada -->
+    <div class="test-section">
+        <h2>Test 3: Campos de Entrada de Texto</h2>
+        <p>Intenta escribir en estos campos:</p>
+        <div>
+            <label>Nombre:</label><br>
+            <input type="text" id="testNombre" placeholder="Escribe tu nombre aquí">
+        </div>
+        <div>
+            <label>Descripción:</label><br>
+            <input type="text" id="testDescripcion" placeholder="Escribe una descripción">
+        </div>
+        <div>
+            <label>Número:</label><br>
+            <input type="number" id="testNumero" placeholder="Escribe un número">
+        </div>
+        <button onclick="verificarCampos()">Verificar Campos</button>
+        <div id="result3" class="result"></div>
+    </div>
+
+    <!-- Test 4: Campos Select -->
+    <div class="test-section">
+        <h2>Test 4: Campos de Selección (Select)</h2>
+        <p>Intenta seleccionar una opción:</p>
+        <div>
+            <label>Tipo de Movimiento:</label><br>
+            <select id="testSelect">
+                <option value="">Seleccione...</option>
+                <option value="AD">AD - Adquisición</option>
+                <option value="S">S - Salida</option>
+                <option value="E">E - Entrada</option>
+            </select>
+        </div>
+        <button onclick="verificarSelect()">Verificar Selección</button>
+        <div id="result4" class="result"></div>
+    </div>
+
+    <!-- Test 5: Campo Readonly -->
+    <div class="test-section">
+        <h2>Test 5: Campo de Solo Lectura (Readonly)</h2>
+        <p>Este campo NO debe permitir escritura (es correcto):</p>
+        <div>
+            <label>Clave (Solo Lectura):</label><br>
+            <input type="text" id="testReadonly" value="001" readonly>
+        </div>
+        <button onclick="verificarReadonly()">Verificar Readonly</button>
+        <div id="result5" class="result"></div>
+    </div>
+
+    <!-- Test 6: Botones de Acción -->
+    <div class="test-section">
+        <h2>Test 6: Botones de Acción</h2>
+        <p>Estos botones deben mostrar alertas:</p>
+        <button onclick="testNuevo()">Nuevo</button>
+        <button onclick="testBuscar()">Buscar</button>
+        <button onclick="testGuardar()">Guardar</button>
+        <button onclick="testBorrar()">Borrar</button>
+        <div id="result6" class="result"></div>
+    </div>
+
+    <!-- Test 7: Console Log -->
+    <div class="test-section">
+        <h2>Test 7: Verificar Console (F12)</h2>
+        <p>Presiona F12 y ve a la pestaña "Console". Luego haz clic en este botón:</p>
+        <button onclick="testConsole()">Escribir en Console</button>
+        <div id="result7" class="result"></div>
+        <p style="color: #666; font-size: 12px;">
+            Si ves el mensaje en la consola, JavaScript está funcionando correctamente.
+        </p>
+    </div>
+
+    <!-- Diagnóstico Automático -->
+    <div class="test-section">
+        <h2>🔍 Diagnóstico Automático</h2>
+        <button onclick="ejecutarDiagnostico()">Ejecutar Diagnóstico Completo</button>
+        <div id="diagnostico" style="margin-top: 20px;"></div>
+    </div>
+
+    <script>
+        // Test 2: Funciones de navegación
+        function irAArticulos() {
+            console.log('Navegando a articulos.html');
+            window.location.href = 'articulos.html';
+        }
+
+        function irAMovimientos() {
+            console.log('Navegando a movimientos-inventario.html');
+            window.location.href = 'movimientos-inventario.html';
+        }
+
+        // Test 3: Verificar campos de entrada
+        function verificarCampos() {
+            const nombre = document.getElementById('testNombre').value;
+            const descripcion = document.getElementById('testDescripcion').value;
+            const numero = document.getElementById('testNumero').value;
+            
+            const result = document.getElementById('result3');
+            result.style.display = 'block';
+            
+            if (nombre || descripcion || numero) {
+                result.className = 'result success';
+                result.innerHTML = `
+                    ✅ <strong>Campos funcionan correctamente!</strong><br>
+                    Nombre: ${nombre || '(vacío)'}<br>
+                    Descripción: ${descripcion || '(vacío)'}<br>
+                    Número: ${numero || '(vacío)'}
+                `;
+            } else {
+                result.className = 'result error';
+                result.innerHTML = '❌ No se detectó ningún valor. Intenta escribir en los campos.';
+            }
+        }
+
+        // Test 4: Verificar select
+        function verificarSelect() {
+            const select = document.getElementById('testSelect').value;
+            const result = document.getElementById('result4');
+            result.style.display = 'block';
+            
+            if (select) {
+                result.className = 'result success';
+                result.innerHTML = `✅ <strong>Select funciona!</strong> Seleccionaste: ${select}`;
+            } else {
+                result.className = 'result error';
+                result.innerHTML = '❌ No se seleccionó ninguna opción.';
+            }
+        }
+
+        // Test 5: Verificar readonly
+        function verificarReadonly() {
+            const campo = document.getElementById('testReadonly');
+            const result = document.getElementById('result5');
+            result.style.display = 'block';
+            result.className = 'result success';
+            result.innerHTML = `✅ <strong>Campo readonly correcto!</strong> Valor: ${campo.value}<br>
+                <small>Este campo no debe permitir edición (es el comportamiento esperado).</small>`;
+        }
+
+        // Test 6: Botones de acción
+        function testNuevo() {
+            alert('Botón NUEVO funciona correctamente ✅');
+            console.log('Botón Nuevo clickeado');
+        }
+
+        function testBuscar() {
+            alert('Botón BUSCAR funciona correctamente ✅');
+            console.log('Botón Buscar clickeado');
+        }
+
+        function testGuardar() {
+            alert('Botón GUARDAR funciona correctamente ✅');
+            console.log('Botón Guardar clickeado');
+        }
+
+        function testBorrar() {
+            if (confirm('¿Confirmas que el botón BORRAR funciona?')) {
+                alert('Botón BORRAR funciona correctamente ✅');
+                console.log('Botón Borrar clickeado');
+            }
+        }
+
+        // Test 7: Console
+        function testConsole() {
+            console.log('=================================');
+            console.log('✅ JavaScript está funcionando!');
+            console.log('Fecha/Hora:', new Date().toLocaleString());
+            console.log('Navegador:', navigator.userAgent);
+            console.log('=================================');
+            
+            const result = document.getElementById('result7');
+            result.style.display = 'block';
+            result.className = 'result success';
+            result.innerHTML = '✅ Mensaje enviado a la consola. Presiona F12 para verlo.';
+        }
+
+        // Diagnóstico automático
+        function ejecutarDiagnostico() {
+            const diagnostico = document.getElementById('diagnostico');
+            let html = '<h3>Resultados del Diagnóstico:</h3>';
+            
+            // Test 1: JavaScript habilitado
+            html += '<p>✅ JavaScript está habilitado y funcionando</p>';
+            
+            // Test 2: Navegador
+            html += `<p>✅ Navegador: ${navigator.userAgent.includes('Chrome') ? 'Chrome/Edge' : 
+                     navigator.userAgent.includes('Firefox') ? 'Firefox' : 
+                     navigator.userAgent.includes('Electron') ? 'Electron' : 'Otro'}</p>`;
+            
+            // Test 3: Archivos HTML
+            const archivos = [
+                'archivos.html',
+                'maestros.html',
+                'cursos.html',
+                'articulos.html',
+                'movimientos-inventario.html',
+                'examenes-menu.html',
+                'programacion-examenes.html',
+                'relacion-examenes.html',
+                'reasignacion-examenes.html'
+            ];
+            
+            html += '<p><strong>Archivos a verificar:</strong></p><ul>';
+            archivos.forEach(archivo => {
+                html += `<li>${archivo}</li>`;
+            });
+            html += '</ul>';
+            
+            // Test 4: Recomendaciones
+            html += '<p><strong>Recomendaciones:</strong></p>';
+            html += '<ol>';
+            html += '<li>Limpia el caché del navegador (Ctrl + Shift + Delete)</li>';
+            html += '<li>Recarga la página con Ctrl + F5</li>';
+            html += '<li>Verifica que todos los archivos .js estén en la misma carpeta</li>';
+            html += '<li>Abre la consola (F12) y busca errores en rojo</li>';
+            html += '</ol>';
+            
+            diagnostico.innerHTML = html;
+        }
+
+        // Ejecutar al cargar
+        console.log('Test de navegación cargado correctamente');
+        console.log('Si ves este mensaje, JavaScript funciona ✅');
+    </script>
+</body>
+</html>

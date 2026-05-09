@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de Alumnos (BAJAS)</title>
+    <link rel="stylesheet" href="theme.css">
+    <style>
+        .premium-modal-body * { box-sizing: border-box; }
+    </style>
+</head>
+
+<body data-section="Archivos">
+    <div class="container">
+        <header class="app-header">
+            <h1>Consulta de Alumnos (BAJAS)</h1>
+            <div class="datetime" id="datetime"></div>
+        </header>
+
+        <main class="app-main">
+            <div class="premium-card">
+                <h3>Información del Alumno</h3>
+                <div class="premium-grid grid-cols-2">
+                     <div class="premium-input-group">
+                         <label class="premium-label">Credencial:</label>
+                         <div style="display:flex; gap:10px;">
+                             <input type="text" id="credencial" class="premium-input" style="flex:2;" readonly>
+                             <input type="text" id="digito" class="premium-input" style="flex:1;" readonly>
+                         </div>
+                     </div>
+                     <div class="premium-input-group">
+                         <label class="premium-label">Celular y Teléfono:</label>
+                         <div style="display:flex; gap:10px;">
+                             <input type="text" id="celular" class="premium-input" placeholder="Celular" readonly>
+                             <input type="text" id="telefono" class="premium-input" placeholder="Teléfono" readonly>
+                         </div>
+                     </div>
+
+                     <div class="premium-input-group">
+                         <label class="premium-label">Nombre:</label>
+                         <input type="text" id="nombre" class="premium-input" readonly>
+                     </div>
+                     <div class="premium-input-group">
+                         <label class="premium-label">Fecha Ingreso:</label>
+                         <input type="text" id="fechaIngreso" class="premium-input" readonly>
+                     </div>
+
+                     <div class="premium-input-group">
+                         <label class="premium-label">Dirección:</label>
+                         <input type="text" id="direccion1" class="premium-input" readonly>
+                         <input type="text" id="direccion2" class="premium-input" readonly style="margin-top:10px;">
+                     </div>
+                     <div class="premium-input-group">
+                         <label class="premium-label">F. Nac & Edad:</label>
+                         <div style="display:flex; gap:10px;">
+                             <input type="text" id="fechaNacimiento" class="premium-input" readonly>
+                             <input type="text" id="edad" class="premium-input" placeholder="Edad" style="width: 80px;" readonly>
+                         </div>
+                         <div style="margin-top: 15px;">
+                            <label style="display:inline-flex; align-items:center; gap: 8px;">
+                                <input type="checkbox" id="reingreso" disabled> Reingreso
+                            </label>
+                         </div>
+                     </div>
+
+                     <div class="premium-input-group">
+                         <label class="premium-label">Email:</label>
+                         <input type="text" id="email" class="premium-input" readonly>
+                     </div>
+                     
+                     <div class="premium-input-group">
+                        <label class="premium-label">Instrumento y Medio:</label>
+                        <div style="display:flex; gap:10px;">
+                             <input type="text" id="instrumento" class="premium-input" placeholder="Instr." readonly>
+                             <input type="text" id="medio" class="premium-input" placeholder="Medio" readonly>
+                         </div>
+                     </div>
+
+                     <div class="premium-input-group">
+                         <label class="premium-label">Padre (Celular):</label>
+                         <div style="display:flex; gap:10px;">
+                             <input type="text" id="nombrePadre" class="premium-input" readonly>
+                             <input type="text" id="celularPadre" class="premium-input" style="width: 150px;" readonly>
+                         </div>
+                     </div>
+                     <div class="premium-input-group">
+                         <label class="premium-label">Madre (Celular):</label>
+                         <div style="display:flex; gap:10px;">
+                             <input type="text" id="nombreMadre" class="premium-input" readonly>
+                             <input type="text" id="celularMadre" class="premium-input" style="width: 150px;" readonly>
+                         </div>
+                     </div>
+
+                     <div class="premium-input-group">
+                         <label class="premium-label">Grupo:</label>
+                         <div style="display:flex; gap:10px;">
+                             <input type="text" id="grupoClave" class="premium-input" style="width: 80px;" readonly>
+                             <input type="text" id="grupoNombre" class="premium-input" readonly>
+                         </div>
+                     </div>
+                     <div class="premium-input-group">
+                         <label class="premium-label">Salón y Grado:</label>
+                         <div style="display:flex; gap:10px;">
+                             <input type="text" id="salon" class="premium-input" style="width: 80px;" readonly>
+                             <input type="text" id="gradoActual" class="premium-input" style="width: 80px;" readonly title="Grado actual" placeholder="Grado">
+                             <input type="text" id="salonUbicacion" class="premium-input" readonly>
+                         </div>
+                     </div>
+                     
+                     <div class="premium-input-group" style="grid-column: span 2;">
+                         <label class="premium-label">Comentario:</label>
+                         <input type="text" id="comentario" class="premium-input" readonly>
+                     </div>
+                 </div>
+            </div>
+
+            <div class="premium-card" style="border-left: 4px solid var(--status-danger, #e74c3c);">
+                <div class="premium-grid grid-cols-2">
+                    <div class="premium-input-group" style="margin-bottom:0;">
+                         <label class="premium-label">Motivo de Baja:</label>
+                         <div style="display:flex; gap:10px;">
+                             <input type="text" id="motivoClave" class="premium-input" style="width: 80px;" readonly>
+                             <input type="text" id="motivoDescripcion" class="premium-input" readonly>
+                         </div>
+                     </div>
+                     <div class="premium-input-group" style="margin-bottom:0;">
+                         <label class="premium-label">Fecha Baja:</label>
+                         <input type="text" id="fechaBaja" class="premium-input" readonly style="color: var(--status-danger, #e74c3c); font-weight: bold;">
+                     </div>
+                 </div>
+                 
+                 <div style="margin-top: 25px;">
+                     <h3 style="color: var(--status-danger, #e74c3c); border-bottom: none; margin-bottom: 15px; padding-left:0; border-left:none;">📋 Historial de Grupos</h3>
+                     <div class="premium-table-container">
+                         <table class="premium-table">
+                             <thead>
+                                 <tr>
+                                     <th>Grupo</th>
+                                     <th style="text-align: center;">Grado</th>
+                                     <th style="text-align: center;">F. Baja</th>
+                                     <th>Motivo</th>
+                                     <th>Descripción</th>
+                                 </tr>
+                             </thead>
+                             <tbody id="bodyHistorialGrupos">
+                                 <tr><td colspan="4" style="text-align: center; padding: 20px;">Seleccione un alumno para ver su historial</td></tr>
+                             </tbody>
+                         </table>
+                     </div>
+                 </div>
+            </div>
+
+            <!-- Historial de Pagos -->
+            <div class="premium-card" style="margin-top: 20px;">
+                <h3>Pagos del Alumno</h3>
+                <div class="premium-table-container">
+                    <table class="premium-table">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center;">Fecha de Pago</th>
+                                <th style="text-align: center;">Recibo</th>
+                                <th style="text-align: right;">Precio Bruto</th>
+                                <th style="text-align: right;">Descuento (%)</th>
+                                <th style="text-align: right;">Total</th>
+                                <th style="text-align: center;">Grupo</th>
+                                <th style="text-align: left;">Curso</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bodyHistorialPagos">
+                            <tr>
+                                <td colspan="8" style="text-align: center; padding: 20px; color: var(--text-muted);">Sin historial de pagos</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Historial de Exámenes -->
+            <div class="premium-card" style="margin-top: 20px;">
+                <h3>Exámenes</h3>
+                <div class="premium-table-container">
+                    <table class="premium-table">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center;">Cred.</th>
+                                <th style="text-align: center;">Clave Examen</th>
+                                <th style="text-align: center;">Fecha</th>
+                                <th style="text-align: center;">Hora</th>
+                                <th>Maestro Base</th>
+                                <th style="text-align: center;">Calificación</th>
+                                <th style="text-align: center;">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bodyHistorialExamenes">
+                            <tr>
+                                <td colspan="7" style="text-align: center; padding: 20px; color: var(--text-muted);">Sin registro de exámenes</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+        
+        <footer class="app-footer">
+            <button class="premium-btn btn-primary" onclick="buscarAlumnoBaja()">BUSCAR</button>
+            <button class="premium-btn btn-primary" onclick="listarBajas()">LISTADO</button>
+            <button class="premium-btn btn-primary" onclick="reingresarAlumno()">REINGRESO</button>
+            <div style="flex-grow: 1;"></div>
+            <button class="premium-btn btn-danger" onclick="volverArchivos()">TERMINAR</button>
+        </footer>
+    </div>
+
+    <!-- Modal de Reingreso Avanzado -->
+    <div id="modalReingreso" class="premium-modal" style="display: none;">
+        <div class="premium-modal-content" style="max-width: 650px; width:95%;">
+            <div class="premium-modal-header" style="background: var(--primary-gradient);">
+                <h2>Reingreso de Alumno</h2>
+            </div>
+            <div class="premium-modal-body">
+                <div class="premium-input-group" style="padding-bottom: 10px; border-bottom: 1px solid var(--color-lavender);">
+                    <p style="font-size: 1.05rem;"><strong>Alumno:</strong> <span id="reingresoNombre"></span> (<span id="reingresoCredencial"></span>)</p>
+                </div>
+
+                <h4 style="margin: 15px 0 10px 0;">1. Seleccione un grupo anterior:</h4>
+                <div class="premium-table-container" style="height: 160px; overflow-y: auto;">
+                    <table class="premium-table">
+                        <thead style="position: sticky; top: 0;">
+                            <tr>
+                                <th style="text-align: center;">Grupo</th>
+                                <th style="text-align: center;">F. Baja</th>
+                                <th style="text-align: center;">Motivo</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reingresoHistorialBody">
+                            <!-- Se llena dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4 style="margin: 20px 0 10px 0;">2. O busque un NUEVO grupo:</h4>
+                <div style="display: flex; gap: 10px; margin-bottom: 5px; align-items: center;">
+                    <input type="text" id="reingresoNuevoGrupoClave" class="premium-input" placeholder="Escriba clave de grupo..." readonly>
+                    <input type="hidden" id="reingresoNuevoGrupoId">
+                    <button type="button" class="premium-btn btn-outline" style="padding: 10px;" onclick="abrirSelectorNuevoGrupo()">...</button>
+                    <button type="button" class="premium-btn btn-danger" style="padding: 10px;" onclick="limpiarSeleccionNuevoGrupo()">X</button>
+                </div>
+                <div id="reingresoNuevoGrupoDetalle" style="font-size: 0.85rem; color: #666; margin-bottom: 15px; font-style: italic; display: none;"></div>
+
+                <div class="premium-input-group" style="margin-top: 15px;">
+                    <label class="premium-label">Observaciones:</label>
+                    <textarea id="observacionesReingreso" class="premium-input" rows="2" placeholder="Notas del reingreso..."></textarea>
+                </div>
+
+                <div style="display:flex; justify-content: flex-end; gap: 10px; margin-top: 20px; border-top: 1px solid var(--color-lavender); padding-top: 20px;">
+                    <button class="premium-btn btn-outline" onclick="cerrarModalReingreso()">Cancelar</button>
+                    <button class="premium-btn btn-primary" onclick="confirmarReingresoAvanzado()">Confirmar Reingreso</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Selector de Grupo (Pequeño buscar para reingreso nuevo) -->
+    <div id="modalSelectorGrupo" class="premium-modal" style="display: none; z-index: 1200;">
+        <div class="premium-modal-content" style="max-width: 400px; width:90%;">
+            <div class="premium-modal-header" style="background: var(--secondary-gradient);">
+                <h2>Seleccionar Grupo</h2>
+            </div>
+            <div class="premium-modal-body">
+                <input type="text" id="inputBuscarGrupo" class="premium-input" placeholder="Filtrar por clave..." style="margin-bottom: 15px;" oninput="filtrarGruposReingreso()">
+                <div class="premium-table-container" style="height: 200px; overflow-y: auto;">
+                    <table class="premium-table" style="font-size: 0.85em;">
+                        <tbody id="tbodyGruposReingreso"></tbody>
+                    </table>
+                </div>
+                <div style="text-align: right; margin-top: 15px;">
+                    <button class="premium-btn btn-outline" onclick="cerrarSelectorNuevoGrupo()">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="supabase-config.js"></script>
+    <script src="session-manager.js"></script>
+    <script src="utils-inputs.js"></script>
+    <script src="alumnos-bajas.js"></script>
+    <!-- Modal Detalle de Examen (Premium) -->
+    <div id="modalDetalleExamen" class="premium-modal" style="display:none;">
+        <div class="premium-modal-content" style="max-width: 700px;">
+            <div class="premium-modal-header">
+                <h2>Detalle de Pago de Examen</h2>
+                <button class="modal-close" onclick="cerrarModalDetalleExamen()">✕</button>
+            </div>
+            <div class="premium-modal-body" style="padding: 20px;">
+                <div class="premium-card" style="margin-bottom: 15px; background: var(--bg-secondary);">
+                    <p><strong>Alumno:</strong> <span id="detalleExamenNombre"></span></p>
+                    <p><strong>Examen:</strong> <span id="detExClaveTop"></span></p>
+                </div>
+                <div class="premium-table-container">
+                    <table class="premium-table">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center;">Examen / Tipo</th>
+                                <th style="text-align: center;">Fecha y Hora</th>
+                                <th style="text-align: center;">Estatus</th>
+                                <th style="text-align: right;">Monto</th>
+                                <th style="text-align: center;">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bodyDetalleExamen"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="app-footer" style="padding: 15px 20px; justify-content: flex-end;">
+                <button class="premium-btn btn-outline" onclick="cerrarModalDetalleExamen()">CERRAR</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

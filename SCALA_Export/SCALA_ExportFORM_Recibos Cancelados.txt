@@ -1,0 +1,828 @@
+Version =19
+VersionRequired =19
+Checksum =1308940422
+Begin Form
+    AllowEditing = NotDefault
+    AllowDeletions = NotDefault
+    AllowAdditions = NotDefault
+    AllowEdits = NotDefault
+    DefaultView =0
+    GridX =5
+    GridY =5
+    Width =9070
+    ItemSuffix =73
+    Left =615
+    Top =450
+    Right =9510
+    Bottom =5670
+    RecSrcDt = Begin
+        0xcb4c2eacf1c8e140
+    End
+    GUID = Begin
+        0xcad6f5739d119b4a81ee49293dfd73ad
+    End
+    NameMap = Begin
+        0x0acc0e5500000000742338b5376a3b40b10ca6153ef58cf7000000004ff5dbd0 ,
+        0xb849e3400000000000000000520065006300690062006f007300200043006100 ,
+        0x6e00630065006c00610064006f0073000000000000002ec2b27ceb824d48901f ,
+        0x28e9353c8b6d01000000a0c37cd1b849e340000000005fbe58d14f0070006500 ,
+        0x72006100630069006f006e00650073002000430061006e00630065006c006100 ,
+        0x64006100730000000000000003c099cb5a155b40a7931af0fc99729600000000 ,
+        0x4ff5dbd0b849e340000000005fbe58d14f007000650072006100630069006f00 ,
+        0x6e00650073002000430061006e00630065006c00610064006100730000000000 ,
+        0x0000b3d050d378a8dd40817e1e5842db86bd0700000003c099cb5a155b40a793 ,
+        0x1af0fc997296520065006300690062006f00000000000000f7ef33db5f93e64b ,
+        0x9c3fab6323bb2f4307000000742338b5376a3b40b10ca6153ef58cf74e007500 ,
+        0x6d00650072006f000000000000005fa11c311554d141a55225a4014a9dca0700 ,
+        0x0000742338b5376a3b40b10ca6153ef58cf74d006f006e0074006f0000000000 ,
+        0x0000630a4c56450bc54ca825934bac5ab80607000000742338b5376a3b40b10c ,
+        0xa6153ef58cf7490056004100000000000000e3385842a94f4d429b6bfe6b57ee ,
+        0x5db607000000742338b5376a3b40b10ca6153ef58cf745006600650063007400 ,
+        0x690076006f00000000000000b128b857027bcb468c022fe9a5ffdc4c07000000 ,
+        0x742338b5376a3b40b10ca6153ef58cf743006800650071007500650000000000 ,
+        0x000020ec49e070881847a20bd8d2f7f5063207000000742338b5376a3b40b10c ,
+        0xa6153ef58cf74400610074006f00730043006800650071007500650000000000 ,
+        0x0000281742c8c66d9c41935640b9fc5e574c07000000742338b5376a3b40b10c ,
+        0xa6153ef58cf74400650073006300750065006e0074006f00470065006e006500 ,
+        0x720061006c00000000000000c4c521021af59b479491f7abb6b9c0bb06000000 ,
+        0xcad6f5739d119b4a81ee49293dfd73ad4f007000650072006100630069006f00 ,
+        0x6e00650073002000430061006e00630065006c00610064006100730000000000 ,
+        0x00006238adc081c66a44823756e2916e589e07000000742338b5376a3b40b10c ,
+        0xa6153ef58cf75000610067006f00000000000000f6788d20ecfff54492b2c136 ,
+        0x26d422bc07000000742338b5376a3b40b10ca6153ef58cf74600650063006800 ,
+        0x61000000000000008231eac33f968c4e97fc4b31ae90a65f07000000742338b5 ,
+        0x376a3b40b10ca6153ef58cf748006f007200610000000000000008dd0de6f2ae ,
+        0x7041ac674919e9ba123b07000000742338b5376a3b40b10ca6153ef58cf74600 ,
+        0x610063007400750072006100630069006f006e00520046004300000000000000 ,
+        0x23fb5f4f4fec3c4ab5decc3a7d2624bf07000000742338b5376a3b40b10ca615 ,
+        0x3ef58cf74600610063007400750072006100630069006f006e004e006f006d00 ,
+        0x620072006500000000000000871342eda2f2a047873bd347c94f83f307000000 ,
+        0x742338b5376a3b40b10ca6153ef58cf746006100630074007500720061006300 ,
+        0x69006f006e00640069007200650063003100000000000000952c4366cac74f40 ,
+        0xba63c1ce39c3860907000000742338b5376a3b40b10ca6153ef58cf746006100 ,
+        0x63007400750072006100630069006f006e006400690072006500630032000000 ,
+        0x000000003bfe63c82b358449b1f8051c2946232d01000000907e22d1b849e340 ,
+        0x4c9513005d50033046005f0041006c0075006d006e006f007300200053007500 ,
+        0x6200000000000000dcabd84ad157fd45892ebb5a988ff35600000000f212c4d0 ,
+        0xb849e3404c9513005d50033051005f0063006f006c0065006700690061007400 ,
+        0x7500720061007300000000000000c1e8dabc660b414aa316e7e076d243fe0700 ,
+        0x0000dcabd84ad157fd45892ebb5a988ff35643006f006c006500670069006100 ,
+        0x740075007200610073002e0041006c0075006d006e006f004900440000000000 ,
+        0x0000000000000000000000000000000000000c00000002000000000000000000 ,
+        0x0000000000000000
+    End
+    RecordSource ="Recibos Cancelados"
+    Caption ="P A G O S"
+    OnOpen ="[Event Procedure]"
+    MenuBar ="Barra Main"
+    Begin
+        Begin Label
+            TextAlign =3
+            FontWeight =700
+            BackColor =12632256
+        End
+        Begin Rectangle
+            SpecialEffect =2
+            Width =850
+            Height =850
+        End
+        Begin CommandButton
+            TextFontFamily =2
+            Width =1701
+            Height =283
+        End
+        Begin OptionButton
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin CheckBox
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin OptionGroup
+            Width =1701
+            Height =1701
+        End
+        Begin TextBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin ListBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =1417
+            LabelX =-236
+        End
+        Begin ComboBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin Subform
+            Width =1701
+            Height =1701
+        End
+        Begin ToggleButton
+            TextFontFamily =2
+            Width =283
+            Height =283
+        End
+        Begin FormHeader
+            Height =566
+            BackColor =12632256
+            Name ="EncabezadoDelFormulario1"
+            EventProcPrefix ="EncabezadoDelFormula"
+            GUID = Begin
+                0xb8371a90372fc445ba109266b5c6e787
+            End
+            Begin
+                Begin Label
+                    BackStyle =0
+                    OverlapFlags =93
+                    TextAlign =1
+                    Left =488
+                    Top =153
+                    Width =3969
+                    Height =405
+                    FontSize =14
+                    ForeColor =8355711
+                    Name ="Texto12"
+                    Caption ="RECIBOS CANCELADOS"
+                    GUID = Begin
+                        0xbe0073322c60f340931602ea65c414c6
+                    End
+                End
+                Begin Label
+                    BackStyle =0
+                    OverlapFlags =215
+                    TextAlign =1
+                    Left =452
+                    Top =113
+                    Width =3969
+                    Height =405
+                    FontSize =14
+                    ForeColor =16777215
+                    Name ="Texto13"
+                    Caption ="RECIBOS CANCELADOS"
+                    GUID = Begin
+                        0x148e87448ea97946856dd2fd3520c70c
+                    End
+                End
+            End
+        End
+        Begin Section
+            CanGrow = NotDefault
+            Height =7256
+            BackColor =12632256
+            Name ="Detalle0"
+            GUID = Begin
+                0xab6f3ede908cf74cb65e22e3581dd945
+            End
+            Begin
+                Begin TextBox
+                    Locked = NotDefault
+                    OverlapFlags =85
+                    Left =1130
+                    Top =113
+                    Width =1710
+                    Name ="Numero"
+                    ControlSource ="Numero"
+                    StatusBarText ="Numero de recibo"
+                    GUID = Begin
+                        0xac9d40c3404fd0499f066fa28183c141
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =226
+                            Top =113
+                            Width =791
+                            Height =240
+                            Name ="Texto15"
+                            Caption ="Recibo :"
+                            GUID = Begin
+                                0x6f55436e2a8aeb4092b6d107d50d3994
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    OverlapFlags =85
+                    Left =6461
+                    Top =3061
+                    Width =2268
+                    TabIndex =1
+                    Name ="Monto"
+                    ControlSource ="Monto"
+                    Format ="$#,##0.00;($#,##0.00)"
+                    StatusBarText ="Monto del total del recibo"
+                    GUID = Begin
+                        0x664488018201c04dbc3e2cf166179d81
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =5670
+                            Top =3061
+                            Width =678
+                            Height =240
+                            Name ="Texto21"
+                            Caption ="Total :"
+                            GUID = Begin
+                                0xcf6b625cbd16a84182a003b053a0a686
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    OverlapFlags =85
+                    Left =7026
+                    Top =2721
+                    Width =1695
+                    TabIndex =2
+                    Name ="IVA"
+                    ControlSource ="IVA"
+                    Format ="$#,##0.00;($#,##0.00)"
+                    GUID = Begin
+                        0x96c7dd89702c974dbc646680a868f32a
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =5896
+                            Top =2721
+                            Width =452
+                            Height =240
+                            Name ="Texto25"
+                            Caption ="IVA:"
+                            GUID = Begin
+                                0xbc6ef50aeab14e4c87818deb0564f609
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    OverlapFlags =85
+                    Left =3972
+                    Top =2721
+                    Width =1350
+                    TabIndex =3
+                    Name ="Efectivo"
+                    ControlSource ="Efectivo"
+                    GUID = Begin
+                        0x75789a1ddc1e1646ba0428413a3f0ecd
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =2955
+                            Top =2721
+                            Width =904
+                            Height =240
+                            Name ="Texto27"
+                            Caption ="Efectivo:"
+                            GUID = Begin
+                                0x3b338d6a967ed14ea212fb450ba81fec
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    OverlapFlags =85
+                    Left =3973
+                    Top =3061
+                    Width =1350
+                    TabIndex =4
+                    Name ="Cheque"
+                    ControlSource ="Cheque"
+                    GUID = Begin
+                        0x8f4cd8210f87544cba6862d2fc97a41b
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =2154
+                            Top =3061
+                            Width =1706
+                            Height =240
+                            Name ="Texto29"
+                            Caption ="Cheque / Tarjeta :"
+                            GUID = Begin
+                                0x6de1fb5c2ed71947866112c54c83ddbc
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    OverlapFlags =85
+                    Left =3630
+                    Top =3401
+                    Width =1710
+                    TabIndex =5
+                    Name ="DatosCheque"
+                    ControlSource ="DatosCheque"
+                    GUID = Begin
+                        0x5a6c406f573aa840bd2937ca93ec98f2
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =2161
+                            Top =3401
+                            Width =1356
+                            Height =240
+                            Name ="Texto31"
+                            Caption ="Referencia :"
+                            GUID = Begin
+                                0xdbb83ddc1820e44492fc22e0a6ef8522
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    OverlapFlags =85
+                    Left =3961
+                    Top =2381
+                    Width =1368
+                    TabIndex =6
+                    Name ="DescuentoGeneral"
+                    ControlSource ="DescuentoGeneral"
+                    Format ="Percent"
+                    GUID = Begin
+                        0x43894fdf2ce1ee47af08790dbc761c11
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =2040
+                            Top =2381
+                            Width =1808
+                            Height =240
+                            Name ="Texto33"
+                            Caption ="Descuento Global :"
+                            GUID = Begin
+                                0x7b35b9958bf06b498f52565299d88f54
+                            End
+                        End
+                    End
+                End
+                Begin Subform
+                    OverlapFlags =85
+                    Left =113
+                    Top =568
+                    Width =8611
+                    Height =1671
+                    TabIndex =7
+                    Name ="Operaciones Canceladas"
+                    SourceObject ="Form.Operaciones Canceladas"
+                    LinkChildFields ="Recibo"
+                    LinkMasterFields ="Numero"
+                    EventProcPrefix ="Operaciones_Cancelad"
+                    GUID = Begin
+                        0xc4c521021af59b479491f7abb6b9c0bb
+                    End
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    OverlapFlags =85
+                    Left =7030
+                    Top =2381
+                    TabIndex =8
+                    Name ="Campo39"
+                    ControlSource ="=([Operaciones Canceladas].Form!TotalNeto)"
+                    Format ="$#,##0.00;($#,##0.00)"
+                    GUID = Begin
+                        0xa526f50f1032e944b7fe97e007c61bfd
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =5442
+                            Top =2381
+                            Width =930
+                            Height =240
+                            Name ="Texto40"
+                            Caption ="Subtotal :"
+                            GUID = Begin
+                                0x9ff3f17741aefa4fbc05ec40d5539e7d
+                            End
+                        End
+                    End
+                End
+                Begin OptionGroup
+                    Locked = NotDefault
+                    SpecialEffect =2
+                    OverlapFlags =85
+                    Left =226
+                    Top =2501
+                    Width =1688
+                    Height =1928
+                    TabIndex =9
+                    Name ="Pago"
+                    ControlSource ="Pago"
+                    GUID = Begin
+                        0x824ae1a63459894b8baccfb9d27e5e5b
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =215
+                            TextAlign =0
+                            Left =397
+                            Top =2381
+                            Width =1444
+                            Height =255
+                            Name ="Texto54"
+                            Caption ="Forma de Pago"
+                            GUID = Begin
+                                0x6885750a88feba43b3d254c2b48a8fe0
+                            End
+                        End
+                        Begin ToggleButton
+                            OverlapFlags =87
+                            Left =454
+                            Top =2666
+                            Width =1304
+                            Height =284
+                            OptionValue =1
+                            Name ="Campo56"
+                            StatusBarText ="Pagos en efectivo unicamente"
+                            Caption ="Efectivo"
+                            GUID = Begin
+                                0x8878bc2d356b73438664df837aab04b6
+                            End
+                        End
+                        Begin ToggleButton
+                            OverlapFlags =87
+                            Left =454
+                            Top =3006
+                            Width =1304
+                            Height =284
+                            OptionValue =2
+                            Name ="Campo57"
+                            Caption ="Cheque"
+                            GUID = Begin
+                                0x29bec7ed0ce6c244b12a34fd831a57f4
+                            End
+                        End
+                        Begin ToggleButton
+                            OverlapFlags =87
+                            Left =454
+                            Top =3346
+                            Width =1304
+                            Height =284
+                            OptionValue =3
+                            Name ="Campo58"
+                            Caption ="Ambos"
+                            GUID = Begin
+                                0x8b49d01f6b8973449d47156090457072
+                            End
+                        End
+                        Begin ToggleButton
+                            OverlapFlags =87
+                            Left =454
+                            Top =3686
+                            Width =1304
+                            Height =284
+                            OptionValue =4
+                            Name ="Campo59"
+                            Caption ="Linea B."
+                            GUID = Begin
+                                0xdbdde95dba9af04780bea8efa3b5d65d
+                            End
+                        End
+                        Begin ToggleButton
+                            OverlapFlags =87
+                            Left =454
+                            Top =4026
+                            Width =1304
+                            Height =284
+                            OptionValue =5
+                            Name ="Campo60"
+                            Caption ="T. de C."
+                            GUID = Begin
+                                0xd244f6cf9a0f614cbbb9b4f86d0160ef
+                            End
+                        End
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =7370
+                    Top =6349
+                    Width =1140
+                    Height =465
+                    TabIndex =10
+                    ForeColor =255
+                    Name ="B_term_pago"
+                    Caption ="Terminar"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0x7f8324cdb4253c4f81337e62de0ddc4c
+                    End
+                End
+                Begin TextBox
+                    Visible = NotDefault
+                    OverlapFlags =85
+                    Left =3174
+                    Top =113
+                    Width =231
+                    TabIndex =11
+                    Name ="Cred_Sub"
+                    ControlSource ="=[Recibos Operaciones].Form!Credencial"
+                    GUID = Begin
+                        0x8c8f65a9c460e34f8a9d732786dad245
+                    End
+                End
+                Begin Subform
+                    OverlapFlags =85
+                    Left =1133
+                    Top =5102
+                    Width =6345
+                    Height =1005
+                    TabIndex =12
+                    Name ="F_Alumnos Sub"
+                    SourceObject ="Form.F_Alumnos Sub"
+                    LinkChildFields ="Colegiaturas.AlumnoID"
+                    LinkMasterFields ="Cred_sub"
+                    EventProcPrefix ="F_Alumnos_Sub"
+                    GUID = Begin
+                        0xca27a8d33eaf2644acfe1279453ffc9e
+                    End
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    OverlapFlags =85
+                    Left =5106
+                    Top =113
+                    Width =2385
+                    ColumnWidth =2130
+                    TabIndex =13
+                    Name ="Fecha"
+                    ControlSource ="Fecha"
+                    Format ="Long Date"
+                    StatusBarText ="Fecha en que se efectuo la operacion"
+                    OnEnter ="=Date()"
+                    GUID = Begin
+                        0x9e5bfa166c3a824b9da8aabb4a885550
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =3968
+                            Top =113
+                            Width =678
+                            Height =240
+                            Name ="Texto17"
+                            Caption ="Fecha:"
+                            GUID = Begin
+                                0x039edd472bef834db93821b909062e95
+                            End
+                        End
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =566
+                    Top =6349
+                    Width =1131
+                    Height =456
+                    TabIndex =14
+                    Name ="B_srch_recibo"
+                    Caption ="Buscar"
+                    OnClick ="M_Pagos.Busca Recibo"
+                    GUID = Begin
+                        0x0b9651b07391454ca6e63fea6d357b3d
+                    End
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    OverlapFlags =85
+                    Left =7710
+                    Top =113
+                    Width =1026
+                    TabIndex =15
+                    Name ="Campo67"
+                    ControlSource ="Hora"
+                    Format ="Short Time"
+                    GUID = Begin
+                        0x77a24fdad52b64419af138e8b345a6da
+                    End
+                End
+                Begin Label
+                    OverlapFlags =85
+                    Left =2154
+                    Top =3858
+                    Width =1812
+                    Height =204
+                    Name ="Etiqueta72"
+                    Caption ="FACTURADO A :"
+                    GUID = Begin
+                        0x201b1aabb721d041815b88f89b88518b
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =4302
+                    Top =3855
+                    Width =4201
+                    Height =227
+                    TabIndex =16
+                    Name ="FacturacionRFC"
+                    ControlSource ="FacturacionRFC"
+                    GUID = Begin
+                        0x3dcc48a397dac04cb1fb5c898efc7c9c
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =93
+                    Left =2261
+                    Top =4195
+                    Width =6236
+                    Height =227
+                    TabIndex =17
+                    Name ="FacturacionNombre"
+                    ControlSource ="FacturacionNombre"
+                    GUID = Begin
+                        0xbd7989370cf5cd408308761891a8cddf
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =95
+                    Left =2261
+                    Top =4422
+                    Width =6236
+                    Height =227
+                    TabIndex =18
+                    Name ="Facturaciondirec1"
+                    ControlSource ="Facturaciondirec1"
+                    GUID = Begin
+                        0x152f1759749bae43ae3d9421da37f38f
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =87
+                    Left =2261
+                    Top =4649
+                    Width =6236
+                    Height =227
+                    TabIndex =19
+                    Name ="Facturaciondirec2"
+                    ControlSource ="Facturaciondirec2"
+                    GUID = Begin
+                        0xd750772ea6101b4293ab2317a1038ed6
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =2948
+                    Top =6349
+                    Width =3468
+                    Height =408
+                    TabIndex =20
+                    Name ="Comando72"
+                    Caption ="IMPRESION RECIBO CANCELADO"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0xb63a987428a1174398183f66a2e0f466
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            Height =0
+            BackColor =12632256
+            Name ="PieDelFormulario2"
+            GUID = Begin
+                0xfc89bd6bcdc1774e816084cd7f22e98e
+            End
+        End
+    End
+End
+CodeBehindForm
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database   'Usar orden de base de datos en comparaciones de cadenas
+
+Private Sub B_term_pago_Click()
+On Error GoTo Err_B_term_pago_Click
+
+
+    DoCmd.Close
+
+Exit_B_term_pago_Click:
+    Exit Sub
+
+Err_B_term_pago_Click:
+    MsgBox Error$
+    Resume Exit_B_term_pago_Click
+    
+End Sub
+
+Private Sub Botón61_Click()
+On Error GoTo Err_Botón61_Click
+
+
+    DoCmd.DoMenuItem A_FORMBAR, A_EDITMENU, 10, , A_MENU_VER20
+
+Exit_Botón61_Click:
+    Exit Sub
+
+Err_Botón61_Click:
+    MsgBox Error$
+    Resume Exit_Botón61_Click
+    
+End Sub
+
+Private Sub Botón66_Click()
+On Error GoTo Err_Botón66_Click
+
+
+    DoCmd.DoMenuItem A_FORMBAR, A_EDITMENU, 10, , A_MENU_VER20
+
+Exit_Botón66_Click:
+    Exit Sub
+
+Err_Botón66_Click:
+    MsgBox Error$
+    Resume Exit_Botón66_Click
+    
+End Sub
+
+Private Sub Botón70_Click()
+On Error GoTo Err_Botón70_Click
+
+
+    DoCmd.GoToRecord , , A_NEWREC
+
+Exit_Botón70_Click:
+    Exit Sub
+
+Err_Botón70_Click:
+    MsgBox Error$
+    Resume Exit_Botón70_Click
+    
+End Sub
+
+Private Sub Form_Open(Cancel As Integer)
+Dim db As Database, FLogin As Form, TUser As Recordset, Forma As Form
+   Set db = CurrentDb()
+   Set Forma = Forms![Recibos Cancelados]
+   Set FLogin = Forms!login
+   Set TUser = db.OpenRecordset("Usuarios")
+   TUser.Index = "PrimaryKey"
+   TUser.Seek "=", FLogin!UserID
+   If Not TUser.NoMatch Then
+      If IsNull(TUser!C_CANC) Or TUser!C_CANC = "N" Then
+         MsgBox "El usuario no tiene privilegios de acceso"
+         DoCmd.CancelEvent
+      Else
+         If TUser!C_CANC = "C" Then
+            Forma.AllowEditing = False
+            Forma.DefaultEditing = 3
+         End If
+      End If
+   Else
+      MsgBox "El usuario no tiene clave de acceso registrada"
+      DoCmd.CancelEvent
+   End If
+
+End Sub
+
+Private Sub Comando72_Click()
+On Error GoTo Err_Comando72_Click
+
+    Dim stDocName As String
+
+    stDocName = "Recibos Cancelados"
+    DoCmd.OpenReport stDocName, acNormal
+
+Exit_Comando72_Click:
+    Exit Sub
+
+Err_Comando72_Click:
+    MsgBox Err.Description
+    Resume Exit_Comando72_Click
+    
+End Sub

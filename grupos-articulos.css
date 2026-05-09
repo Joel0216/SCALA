@@ -1,0 +1,25 @@
+/* Grupos de Artículos Premium Styles */
+@import url('theme.css');
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Modal and Sub-grid Adjustments */
+.nav-btn-teal {
+    background: var(--bg-light);
+    border: 1px solid var(--border-color);
+    color: var(--primary);
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.nav-btn-teal:hover:not(:disabled) {
+    background: var(--primary);
+    color: white;
+}

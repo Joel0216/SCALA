@@ -1,0 +1,1483 @@
+Version =19
+VersionRequired =19
+Checksum =738782402
+Begin Report
+    LayoutForPrint = NotDefault
+    TabularFamily =0
+    GridX =64
+    GridY =64
+    Width =11100
+    ItemSuffix =255
+    Left =135
+    Top =300
+    Right =9165
+    Bottom =4980
+    RecSrcDt = Begin
+        0x13db052a33e4e140
+    End
+    GUID = Begin
+        0x6aa652f9aa78df48ba30f0977f048215
+    End
+    NameMap = Begin
+        0x0acc0e550000000017868c9e7ca3114ea3e41a58eb0409930000000013301db4 ,
+        0xb64ce34000000000000000005400610062006c00610041006c0075006d006e00 ,
+        0x6f00730044006500750064006f007200650073000000000000004fdfb5bc9e2e ,
+        0x364eaa6ef18d61c3f5f00700000017868c9e7ca3114ea3e41a58eb0409934400 ,
+        0x6d0065007300410063007400750061006c000000000000007ad1b48241f8b341 ,
+        0xaadfdb5473741f1b0700000017868c9e7ca3114ea3e41a58eb04099344006d00 ,
+        0x6500730031000000000000006cf6e60ec7c3f94b8be5e6e16e17699807000000 ,
+        0x17868c9e7ca3114ea3e41a58eb04099344006d00650073003200000000000000 ,
+        0x2dac45e275678a45b793dde7fc8a90010700000017868c9e7ca3114ea3e41a58 ,
+        0xeb04099344006d00650073003300000000000000a1507437d3eb584b8889aec1 ,
+        0x3afd697a0700000017868c9e7ca3114ea3e41a58eb0409936d00610065007300 ,
+        0x740072006f000000000000002bc72f41f8f54f40ad619d4ff813d78807000000 ,
+        0x17868c9e7ca3114ea3e41a58eb0409934d0065007300500072006f0063006500 ,
+        0x73006f0000000000000014b5944da512e241b4540009f0cf791a070000001786 ,
+        0x8c9e7ca3114ea3e41a58eb04099347007200750070006f00000000000000dfe6 ,
+        0x9914e8fc33468268ba9201a3cf6f0700000017868c9e7ca3114ea3e41a58eb04 ,
+        0x099341006c0075006d006e006f0073000000000000006cfbf033a9520141a4aa ,
+        0x5d164863f9e00700000017868c9e7ca3114ea3e41a58eb04099349006e006900 ,
+        0x630069006f00000000000000ab622e7c0975f04984e89766851faf2d07000000 ,
+        0x17868c9e7ca3114ea3e41a58eb04099363007500720073006f00000000000000 ,
+        0xb29baea370fd074d8eb276c0cc5b54920700000017868c9e7ca3114ea3e41a58 ,
+        0xeb0409934d0065007300310000000000000086847b2dd070064f94bbaa36e999 ,
+        0xbfac0700000017868c9e7ca3114ea3e41a58eb0409934d006500730032000000 ,
+        0x000000002bf1a1c46e7fb9458a5706a7822ee4550700000017868c9e7ca3114e ,
+        0xa3e41a58eb0409934d00650073003300000000000000a319ec2828495747bfbd ,
+        0x0b4304dc78390700000017868c9e7ca3114ea3e41a58eb0409936d0065007300 ,
+        0x610063007400750061006c000000000000001344b29a2796274a80d7ab8c58a6 ,
+        0x94c20700000017868c9e7ca3114ea3e41a58eb04099346006d00650073003100 ,
+        0x0000000000000dc6bab36f430742af79096cc85d23bc0700000017868c9e7ca3 ,
+        0x114ea3e41a58eb04099346006d00650073003200000000000000025cea89e9b7 ,
+        0x6c4e8e8cb58b4be922730700000017868c9e7ca3114ea3e41a58eb0409934600 ,
+        0x6d00650073003300000000000000b5243f1c5f8979429079390ebc877d430700 ,
+        0x000017868c9e7ca3114ea3e41a58eb04099346006d0065007300410063007400 ,
+        0x750061006c0000000000000051d7aee20c4c1546879b14e614c7e4d807000000 ,
+        0x17868c9e7ca3114ea3e41a58eb0409934e006f006d0062007200650000000000 ,
+        0x000055cd6bd20353a74ab99e30a2c33ef3cc0700000017868c9e7ca3114ea3e4 ,
+        0x1a58eb040993430072006500640065006e006300690061006c00000000000000 ,
+        0x62dc41f7adc3424ab68f94cb3e068dda0700000017868c9e7ca3114ea3e41a58 ,
+        0xeb0409934400690067005f007600650072000000000000002d6a1723a990e949 ,
+        0x8a360a561d715b550700000017868c9e7ca3114ea3e41a58eb04099355006c00 ,
+        0x74005f007000610067006f00000000000000e7b31a4d0448bd479efc14d7b699 ,
+        0x69af0700000017868c9e7ca3114ea3e41a58eb04099346006500630068006100 ,
+        0x5f0075006c007400000000000000ce7d38ef8f9cb2479ac0bf8b1fe7f31e0700 ,
+        0x000017868c9e7ca3114ea3e41a58eb04099349006e0067007200650073006f00 ,
+        0x000000000000b820272636226d4183590314b34702850700000017868c9e7ca3 ,
+        0x114ea3e41a58eb040993440065007300630055006c0074004d00650073000000 ,
+        0x000000002e996da3719d594984a03858c81e84c10700000017868c9e7ca3114e ,
+        0xa3e41a58eb0409934e0075006d005f006d006500730065007300000000000000 ,
+        0xe305d90b2f32eb4fa83d180c1d79bd030700000017868c9e7ca3114ea3e41a58 ,
+        0xeb0409934e0075006d004d00650073003100000000000000e8633af257b91747 ,
+        0x84985d0febd72d700700000017868c9e7ca3114ea3e41a58eb0409934e007500 ,
+        0x6d004d00650073003200000000000000e76381e19d774e4cade9241733847a0d ,
+        0x0700000017868c9e7ca3114ea3e41a58eb0409934e0075006d004d0065007300 ,
+        0x330000000000000072a73743fb478b4a845a8f80c03953920700000017868c9e ,
+        0x7ca3114ea3e41a58eb0409934e0075006d004d00650073003400000000000000 ,
+        0xb9e96c227ec7b94b8dae0f196c288a810700000017868c9e7ca3114ea3e41a58 ,
+        0xeb04099362006500630061000000000000005670c738e3da2f4aa5c918c75ab7 ,
+        0xb5740700000017868c9e7ca3114ea3e41a58eb04099344006500750064006f00 ,
+        0x7200410063007400000000000000000000000000000000000000000000000c00 ,
+        0x0000030000000000000000000000000000000000
+    End
+    RecordSource ="TablaAlumnosDeudores"
+    OnOpen ="=Gen_Deudores()"
+    PrtMip = Begin
+        0x680100001c0300004002000084030000000000005c2b00008703000001000000 ,
+        0x010000006801000000000000a10700000100000000000000
+    End
+    PrtDevMode = Begin
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x010400069c002403036e800701000100ea0a6f08640001000700680102000100 ,
+        0x6801010001004c65747465720000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000010000000000000001000000 ,
+        0x0200000001000000ffffffff0000000000000000000000000000000044494e55 ,
+        0x2200e80024030000825a07f20000000000000000000000000000000000000000 ,
+        0x0000000000000000080000000100000000000100070000000100000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x000000000000000000000000010000000000000000000000e8000000534d544a ,
+        0x000000001000d8004500700073006f006e0020004c0058002d00330030003000 ,
+        0x2b000000496e70757442696e004d414e55414c00524553444c4c00556e697265 ,
+        0x73444c4c004f7269656e746174696f6e00504f525452414954005265736f6c75 ,
+        0x74696f6e004f7074696f6e3200506170657253697a65004134005072696e7451 ,
+        0x75616c697479004f7074696f6e3100436f6c6f724d6f646500436f6c6f720048 ,
+        0x616c66746f6e650048545f50415453495a455f4155544f000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000
+    End
+    PrtDevNames = Begin
+        0x0800160024000100000000000000000000000000000000000000000000000000 ,
+        0x0000000055534230303100
+    End
+    Begin
+        Begin Label
+            TextFontFamily =18
+            FontSize =10
+            FontWeight =700
+            FontName ="Times New Roman"
+        End
+        Begin Rectangle
+            Width =850
+            Height =850
+        End
+        Begin Line
+            Width =1701
+        End
+        Begin BoundObjectFrame
+            AutoLabel = NotDefault
+            OldBorderStyle =0
+            Width =4536
+            Height =2835
+            LabelX =-1701
+        End
+        Begin TextBox
+            AutoLabel = NotDefault
+            OldBorderStyle =0
+            TextFontFamily =18
+            Width =1701
+            Height =285
+            LabelX =-1701
+            FontSize =10
+            FontName ="Times New Roman"
+        End
+        Begin UnboundObjectFrame
+            Width =4536
+            Height =2835
+        End
+        Begin PageBreak
+            Width =283
+        End
+        Begin BreakLevel
+            GroupHeader = NotDefault
+            GroupFooter = NotDefault
+            ControlSource ="maestro"
+        End
+        Begin BreakLevel
+            ControlSource ="curso"
+        End
+        Begin BreakLevel
+            GroupHeader = NotDefault
+            GroupFooter = NotDefault
+            ControlSource ="Grupo"
+        End
+        Begin BreakLevel
+            ControlSource ="Nombre"
+        End
+        Begin FormHeader
+            KeepTogether = NotDefault
+            Height =0
+            Name ="EncabezadoDelInforme0"
+            EventProcPrefix ="EncabezadoDelInforme"
+            GUID = Begin
+                0xbdaa6a05634b3042a56c33ef139e633f
+            End
+        End
+        Begin PageHeader
+            Height =0
+            Name ="EncabezadoDePágina1"
+            GUID = Begin
+                0x62369aae47540e4e8a2ac8c3bd20f0e4
+            End
+        End
+        Begin BreakHeader
+            KeepTogether = NotDefault
+            Height =2462
+            Name ="EncabezadoDelGrupo2"
+            GUID = Begin
+                0xa31926562d752a4fb9bd2037ae5291e8
+            End
+            Begin
+                Begin Line
+                    LineSlant = NotDefault
+                    OverlapFlags =81
+                    Left =2435
+                    Top =1754
+                    Width =7371
+                    Name ="Line131"
+                    GUID = Begin
+                        0xfe593fcc55f9b54dbc199303cff1b18d
+                    End
+                End
+                Begin Line
+                    OverlapFlags =81
+                    Left =1868
+                    Top =1811
+                    Width =8505
+                    Name ="Line133"
+                    GUID = Begin
+                        0x4011ea2bc0d6a64d860b3e731d36b6d7
+                    End
+                End
+                Begin TextBox
+                    SpecialEffect =1
+                    OverlapFlags =81
+                    TextAlign =2
+                    Left =9978
+                    Top =1924
+                    Width =794
+                    Height =284
+                    FontWeight =700
+                    Name ="DmesActual"
+                    ControlSource ="DmesActual"
+                    GUID = Begin
+                        0x33c3b49c9ffac34e9a86ee789b1092de
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =81
+                    TextAlign =2
+                    Left =6576
+                    Top =1924
+                    Width =794
+                    TabIndex =1
+                    Name ="Dmes1"
+                    ControlSource ="Dmes1"
+                    GUID = Begin
+                        0xdcff52e58c40f04d8cbbac05a106d715
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =81
+                    TextAlign =2
+                    Left =7710
+                    Top =1924
+                    Width =794
+                    TabIndex =2
+                    Name ="Dmes2"
+                    ControlSource ="Dmes2"
+                    GUID = Begin
+                        0x48c27b324783834db03209da7150f0a4
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =81
+                    TextAlign =2
+                    Left =8844
+                    Top =1924
+                    Width =794
+                    Height =284
+                    TabIndex =3
+                    Name ="Dmes3"
+                    ControlSource ="Dmes3"
+                    GUID = Begin
+                        0x968c27c49979984e940dd304355cb18c
+                    End
+                End
+                Begin Line
+                    OverlapFlags =81
+                    Left =282
+                    Top =2265
+                    Width =10773
+                    Name ="Line120"
+                    GUID = Begin
+                        0x21a725feaeff464e98cb9ad886792d31
+                    End
+                End
+                Begin Line
+                    OverlapFlags =81
+                    Left =282
+                    Top =1868
+                    Width =10773
+                    Name ="Line121"
+                    GUID = Begin
+                        0x71a83806c8cec64ea344c8219391166b
+                    End
+                End
+                Begin Label
+                    OverlapFlags =81
+                    TextAlign =2
+                    Left =1473
+                    Top =1924
+                    Width =2268
+                    Height =285
+                    Name ="Text188"
+                    Caption ="NOMBRE DEL ALUMNO"
+                    GUID = Begin
+                        0x5a5ff4cc847a7646b6755cfc3b30283b
+                    End
+                End
+                Begin Label
+                    OverlapFlags =81
+                    TextAlign =2
+                    Left =4875
+                    Top =1924
+                    Width =1134
+                    Height =284
+                    Name ="Text190"
+                    Caption ="Ultimo Pago"
+                    GUID = Begin
+                        0x6aa778fb71f0294ea3e49adaed78dd36
+                    End
+                End
+                Begin Label
+                    OverlapFlags =81
+                    TextAlign =2
+                    Left =168
+                    Top =1924
+                    Width =964
+                    Height =285
+                    Name ="Text173"
+                    Caption ="Credencial"
+                    GUID = Begin
+                        0xf1f0d91e41a9e7438bc8e519d17294a5
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =81
+                    TextAlign =2
+                    TextFontFamily =34
+                    Left =2890
+                    Top =1301
+                    Width =6237
+                    Height =397
+                    FontSize =14
+                    FontWeight =700
+                    TabIndex =4
+                    Name ="maestro"
+                    ControlSource ="maestro"
+                    StatusBarText ="Nombre del Maestro"
+                    FontName ="Arial"
+                    GUID = Begin
+                        0xf46650bbd0041e4ebc5aa1e14078ecda
+                    End
+                End
+                Begin Label
+                    OverlapFlags =81
+                    Left =9404
+                    Top =584
+                    Width =789
+                    Height =301
+                    Name ="Text106"
+                    Caption ="HOJA : "
+                    GUID = Begin
+                        0xacb7e4f0c2898142a79e9a1f02d4cd3b
+                    End
+                End
+                Begin Label
+                    OverlapFlags =81
+                    Left =327
+                    Top =841
+                    Width =1871
+                    Height =284
+                    Name ="Text109"
+                    Caption ="MES DE PROCESO : "
+                    GUID = Begin
+                        0x209368daa9825647b5465eb496869d0a
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =81
+                    Left =2294
+                    Top =841
+                    Width =2268
+                    Height =284
+                    TabIndex =5
+                    Name ="Field110"
+                    ControlSource ="MesProceso"
+                    GUID = Begin
+                        0x0c0f64b4e0e17448b0a422cbe654bec8
+                    End
+                End
+                Begin TextBox
+                    FontItalic = NotDefault
+                    OverlapFlags =81
+                    TextAlign =2
+                    Left =9381
+                    Top =899
+                    Width =1533
+                    Height =274
+                    TabIndex =6
+                    Name ="Field103"
+                    ControlSource ="=Now()"
+                    Format ="Medium Date"
+                    GUID = Begin
+                        0x3f9868ec01d9c047ae0246402b80c02a
+                    End
+                End
+                Begin TextBox
+                    FontItalic = NotDefault
+                    OverlapFlags =81
+                    TextAlign =3
+                    Left =10281
+                    Top =584
+                    Width =567
+                    Height =257
+                    TabIndex =7
+                    Name ="Field104"
+                    ControlSource ="=Page"
+                    GUID = Begin
+                        0x2e9c648561076b4a80d8843970cef674
+                    End
+                End
+                Begin Label
+                    OverlapFlags =81
+                    TextAlign =2
+                    Left =2923
+                    Top =61
+                    Width =6237
+                    Height =397
+                    FontSize =14
+                    Name ="Text96"
+                    Caption ="ALUMNOS DEUDORES"
+                    GUID = Begin
+                        0x563e21b2600ade4b816e2e2de17c0218
+                    End
+                End
+                Begin Label
+                    OverlapFlags =83
+                    TextAlign =2
+                    Left =120
+                    Top =105
+                    Width =2805
+                    Height =285
+                    Name ="Texto251"
+                    Caption ="SCALA"
+                    GUID = Begin
+                        0x0b818f3bbfc14244a335281038434dd2
+                    End
+                End
+                Begin Label
+                    OverlapFlags =83
+                    TextAlign =2
+                    Left =90
+                    Top =435
+                    Width =2835
+                    Height =285
+                    Name ="Etiqueta254"
+                    Caption ="ACADEMIAS DE MUSICA"
+                    GUID = Begin
+                        0x827cf96ba2ff814a9cd9d2c28ab5b120
+                    End
+                End
+            End
+        End
+        Begin BreakHeader
+            KeepTogether = NotDefault
+            Height =513
+            BreakLevel =2
+            Name ="EncabezadoDelGrupo3"
+            GUID = Begin
+                0x938fec61c3988c40bf90dbe9ff066432
+            End
+            Begin
+                Begin TextBox
+                    OverlapFlags =81
+                    TextAlign =2
+                    Left =4820
+                    Top =57
+                    Width =1418
+                    Height =314
+                    Name ="Field174"
+                    ControlSource ="Grupo"
+                    GUID = Begin
+                        0x76c61a18bc87014fa72c8718ad9838a5
+                    End
+                End
+                Begin Label
+                    OverlapFlags =81
+                    Left =3686
+                    Top =57
+                    Width =964
+                    Height =285
+                    Name ="Text175"
+                    Caption ="GRUPO : "
+                    GUID = Begin
+                        0x8463ed3efec93640ae812dacead57570
+                    End
+                End
+                Begin Label
+                    OverlapFlags =81
+                    Left =6350
+                    Top =57
+                    Width =1418
+                    Height =283
+                    Name ="Text176"
+                    Caption ="No. Alumnos : "
+                    GUID = Begin
+                        0x62ab58fe5083104b8c93cee8fba05c35
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =81
+                    TextAlign =2
+                    Left =7825
+                    Top =57
+                    Width =567
+                    Height =284
+                    TabIndex =1
+                    Name ="Field177"
+                    ControlSource ="Alumnos"
+                    GUID = Begin
+                        0x038a595348724049af11b37c74033c23
+                    End
+                End
+                Begin Label
+                    OverlapFlags =81
+                    Left =8675
+                    Top =57
+                    Width =655
+                    Height =284
+                    Name ="Text178"
+                    Caption ="Inicio :"
+                    GUID = Begin
+                        0x92d0afb6154b0449ac028e4883757222
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =81
+                    TextAlign =2
+                    Left =9356
+                    Top =57
+                    Width =1459
+                    Height =284
+                    TabIndex =2
+                    Name ="Field179"
+                    ControlSource ="Inicio"
+                    GUID = Begin
+                        0x7ace96c775c08443ae14837755ed1366
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =81
+                    TextAlign =1
+                    Left =113
+                    Top =57
+                    Width =3402
+                    Height =284
+                    FontWeight =700
+                    TabIndex =3
+                    Name ="curso"
+                    ControlSource ="curso"
+                    StatusBarText ="Curso que imparte"
+                    GUID = Begin
+                        0x9456292f0b7aff46ac62bcb973ff87e2
+                    End
+                End
+                Begin Line
+                    OverlapFlags =81
+                    Left =227
+                    Top =454
+                    Width =10773
+                    Name ="Line197"
+                    GUID = Begin
+                        0xf7a5846fd537f847a05bb4c81866c33b
+                    End
+                End
+            End
+        End
+        Begin Section
+            KeepTogether = NotDefault
+            Height =903
+            Name ="Detalle4"
+            GUID = Begin
+                0x60d0532094c70b45a2d45261a0c26386
+            End
+            Begin
+                Begin TextBox
+                    OverlapFlags =81
+                    TextAlign =3
+                    Left =6521
+                    Top =57
+                    Width =794
+                    Height =227
+                    FontSize =8
+                    Name ="Mes1"
+                    ControlSource ="Mes1"
+                    StatusBarText ="Numero de alumnos que pagaron 3 meses anteriores"
+                    DefaultValue ="\"0\""
+                    GUID = Begin
+                        0x070bac21f27bbd4db643a640b9f15d67
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =81
+                    TextAlign =3
+                    Left =7655
+                    Top =57
+                    Width =794
+                    Height =227
+                    FontSize =8
+                    TabIndex =1
+                    Name ="Mes2"
+                    ControlSource ="Mes2"
+                    StatusBarText ="Numero de alumnos que pagaron 2 meses anteriores"
+                    DefaultValue ="\"0\""
+                    GUID = Begin
+                        0xa018c3f888d0ac489615ded6e82f0f3e
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =81
+                    TextAlign =3
+                    Left =8789
+                    Top =57
+                    Width =794
+                    Height =227
+                    FontSize =8
+                    TabIndex =2
+                    Name ="Mes3"
+                    ControlSource ="Mes3"
+                    StatusBarText ="Numero de alumnos que pagaron 1 mes anterior"
+                    DefaultValue ="\"0\""
+                    GUID = Begin
+                        0x6089efdf818b2d4ba2cc7a4226c2562e
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =81
+                    TextAlign =3
+                    Left =9923
+                    Top =57
+                    Width =794
+                    Height =227
+                    FontSize =8
+                    FontWeight =700
+                    TabIndex =3
+                    Name ="mesactual"
+                    ControlSource ="mesactual"
+                    StatusBarText ="Numero de alumnos que pagaron el mes actual"
+                    DefaultValue ="\"0\""
+                    GUID = Begin
+                        0x6104f7e0084eac4998a765178f51149b
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =83
+                    TextAlign =3
+                    Left =6521
+                    Top =284
+                    Width =794
+                    Height =227
+                    FontSize =8
+                    TabIndex =4
+                    Name ="Field162"
+                    ControlSource ="Fmes1"
+                    GUID = Begin
+                        0xf178ff9ab78fc442be207422d3b127a1
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =83
+                    TextAlign =3
+                    Left =7655
+                    Top =284
+                    Width =794
+                    Height =227
+                    FontSize =8
+                    TabIndex =5
+                    Name ="Field163"
+                    ControlSource ="Fmes2"
+                    GUID = Begin
+                        0x539dc5d2f852764b82f8c332639c14d4
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =83
+                    TextAlign =3
+                    Left =8789
+                    Top =284
+                    Width =794
+                    Height =227
+                    FontSize =8
+                    TabIndex =6
+                    Name ="Field164"
+                    ControlSource ="Fmes3"
+                    GUID = Begin
+                        0x74a3333268daf443a39d8f90a424ebd7
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =83
+                    TextAlign =3
+                    Left =9923
+                    Top =284
+                    Width =794
+                    Height =227
+                    FontSize =8
+                    FontWeight =700
+                    TabIndex =7
+                    Name ="Field165"
+                    ControlSource ="FmesActual"
+                    GUID = Begin
+                        0x00c3c2ba94d22341a02f09ae35600468
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =81
+                    Left =1008
+                    Top =57
+                    Width =3402
+                    Height =227
+                    FontSize =8
+                    TabIndex =8
+                    Name ="Field169"
+                    ControlSource ="Nombre"
+                    GUID = Begin
+                        0x5e96a1789ee34f489b1d7b0766eb01ec
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =81
+                    TextAlign =2
+                    Left =113
+                    Top =68
+                    Width =576
+                    Height =227
+                    FontSize =8
+                    TabIndex =9
+                    Name ="Field170"
+                    ControlSource ="Credencial"
+                    GUID = Begin
+                        0x4fb9f007a4e02343af0fee7679691d6b
+                    End
+                End
+                Begin Label
+                    OverlapFlags =243
+                    TextAlign =2
+                    Left =576
+                    Top =57
+                    Width =113
+                    Height =227
+                    Name ="Text171"
+                    Caption ="-"
+                    GUID = Begin
+                        0xad5b395db575ad4fa4202005b7f4c862
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =81
+                    TextAlign =1
+                    Left =720
+                    Top =57
+                    Width =170
+                    Height =227
+                    FontSize =8
+                    TabIndex =10
+                    Name ="Field172"
+                    ControlSource ="Dig_ver"
+                    GUID = Begin
+                        0x0f460eb0e9899445886780627cf271e1
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =81
+                    TextAlign =2
+                    Left =4536
+                    Top =57
+                    Width =794
+                    Height =227
+                    FontSize =8
+                    FontWeight =700
+                    TabIndex =11
+                    Name ="Field180"
+                    ControlSource ="Ult_pago"
+                    GUID = Begin
+                        0x6620d1600608764db2d3319708f3270c
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =81
+                    TextAlign =2
+                    Left =5387
+                    Top =57
+                    Width =851
+                    Height =227
+                    FontSize =8
+                    FontWeight =700
+                    TabIndex =12
+                    Name ="Field181"
+                    ControlSource ="Fecha_ult"
+                    GUID = Begin
+                        0x11201032259c3a4197338015c1bb2aef
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =83
+                    TextAlign =2
+                    Left =1134
+                    Top =284
+                    Width =851
+                    Height =227
+                    FontSize =8
+                    TabIndex =13
+                    Name ="Field182"
+                    ControlSource ="Ingreso"
+                    GUID = Begin
+                        0x42bc47e386bcac43bb82a25baa4411be
+                    End
+                End
+                Begin Label
+                    OverlapFlags =243
+                    Left =113
+                    Top =284
+                    Width =907
+                    Height =227
+                    Name ="Text183"
+                    Caption ="Ingreso : "
+                    GUID = Begin
+                        0x13dc48aa674ad549aaf1a0da2f6966d4
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =83
+                    TextAlign =2
+                    Left =4649
+                    Top =284
+                    Width =1418
+                    Height =227
+                    FontSize =8
+                    FontWeight =700
+                    TabIndex =14
+                    Name ="Field191"
+                    ControlSource ="DescUltMes"
+                    GUID = Begin
+                        0x68f269ede4ebf24fa79dcc1ab6a9c0e8
+                    End
+                End
+                Begin TextBox
+                    Visible = NotDefault
+                    ColumnHidden = NotDefault
+                    Left =6124
+                    Top =284
+                    Width =113
+                    Height =227
+                    TabIndex =15
+                    Name ="Field204"
+                    ControlSource ="Num_meses"
+                    GUID = Begin
+                        0xa473c4f1717bff458afa50e94ae90553
+                    End
+                End
+                Begin TextBox
+                    Visible = NotDefault
+                    ColumnHidden = NotDefault
+                    Left =7371
+                    Top =284
+                    Width =113
+                    Height =227
+                    TabIndex =16
+                    Name ="Field205"
+                    ControlSource ="NumMes1"
+                    GUID = Begin
+                        0x1f375cdbb64a56419428f6b765b4e915
+                    End
+                End
+                Begin TextBox
+                    Visible = NotDefault
+                    ColumnHidden = NotDefault
+                    Left =8505
+                    Top =284
+                    Width =113
+                    Height =227
+                    TabIndex =17
+                    Name ="Field206"
+                    ControlSource ="NumMes2"
+                    GUID = Begin
+                        0xd3b1d53d27e6f54689b8eeda9aa0ed72
+                    End
+                End
+                Begin TextBox
+                    Visible = NotDefault
+                    ColumnHidden = NotDefault
+                    Left =9639
+                    Top =284
+                    Width =113
+                    Height =227
+                    TabIndex =18
+                    Name ="Field207"
+                    ControlSource ="NumMes3"
+                    GUID = Begin
+                        0xbe3d1b5633cd60489adb7b08d6536a77
+                    End
+                End
+                Begin TextBox
+                    Visible = NotDefault
+                    ColumnHidden = NotDefault
+                    Left =10773
+                    Top =284
+                    Width =113
+                    Height =227
+                    TabIndex =19
+                    Name ="Field208"
+                    ControlSource ="NumMes4"
+                    GUID = Begin
+                        0x82d6d009bb7ee84fbe7eb2562baf4392
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =83
+                    Left =2268
+                    Top =284
+                    Width =680
+                    Height =227
+                    TabIndex =20
+                    Name ="Field222"
+                    ControlSource ="=IIf(IsNull([beca]),\" \",\"Beca : \")"
+                    GUID = Begin
+                        0x7e7b10220e05884f99f242a401e50fb7
+                    End
+                End
+                Begin TextBox
+                    Visible = NotDefault
+                    ColumnHidden = NotDefault
+                    Left =4320
+                    Top =288
+                    Width =144
+                    Height =230
+                    TabIndex =21
+                    Name ="Field223"
+                    ControlSource ="DeudorAct"
+                    GUID = Begin
+                        0xf94f086c5517674c97bb232ad4d1bf7b
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =83
+                    Left =3005
+                    Top =284
+                    Width =1134
+                    Height =227
+                    TabIndex =22
+                    Name ="Field224"
+                    ControlSource ="=IIf(IsNull([beca]),\"\",[beca])"
+                    Format ="Percent"
+                    GUID = Begin
+                        0xb6b6e5c6532beb40a24d9085295441b9
+                    End
+                End
+                Begin Label
+                    OverlapFlags =81
+                    Left =3162
+                    Top =602
+                    Width =2775
+                    Height =270
+                    Name ="Texto248"
+                    Caption ="última asistencia:____________"
+                    GUID = Begin
+                        0xb615aeb205035b4fb10a31a135d36878
+                    End
+                End
+                Begin Label
+                    OverlapFlags =81
+                    Left =6120
+                    Top =570
+                    Width =4710
+                    Height =285
+                    Name ="Texto249"
+                    Caption ="situación:______________________________________"
+                    GUID = Begin
+                        0x34205584e1b18c419a77114afaa5d031
+                    End
+                End
+                Begin Label
+                    OverlapFlags =81
+                    Left =496
+                    Top =566
+                    Width =2295
+                    Height =285
+                    Name ="Texto250"
+                    Caption ="Tel.:____________"
+                    GUID = Begin
+                        0x8dacdc7cec4ece4fbf80ca4169ec4631
+                    End
+                End
+            End
+        End
+        Begin BreakFooter
+            KeepTogether = NotDefault
+            Height =177
+            BreakLevel =2
+            Name ="PieDelGrupo5"
+            GUID = Begin
+                0xa94b1c2424953d489488ccc3cdc42728
+            End
+            Begin
+                Begin Line
+                    OverlapFlags =81
+                    Left =227
+                    Top =113
+                    Width =10773
+                    Name ="Line195"
+                    GUID = Begin
+                        0x2fde9e934fff3046a4304e21800b0fb4
+                    End
+                End
+                Begin Line
+                    OverlapFlags =81
+                    Left =227
+                    Top =57
+                    Width =10773
+                    Name ="Line196"
+                    GUID = Begin
+                        0x0d639ffbfc68e5498461294dd6582e5e
+                    End
+                End
+            End
+        End
+        Begin BreakFooter
+            KeepTogether = NotDefault
+            ForceNewPage =2
+            Height =850
+            Name ="PieDelGrupo6"
+            GUID = Begin
+                0x4d6f73b638c1974fbc08c1048e8c4b97
+            End
+            Begin
+                Begin PageBreak
+                    Top =850
+                    Name ="PageBreak192"
+                    GUID = Begin
+                        0x862e1ffbb7fb19459e89d78278c3e84b
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =81
+                    TextAlign =2
+                    Left =2835
+                    Top =135
+                    Width =1134
+                    Height =227
+                    Name ="Field198"
+                    ControlSource ="=Sum([deudorAct])"
+                    GUID = Begin
+                        0x2ebee2fed07bcc419acb6b88076fd325
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =81
+                    TextAlign =2
+                    Left =6521
+                    Top =113
+                    Width =794
+                    Height =227
+                    TabIndex =1
+                    Name ="Field199"
+                    ControlSource ="=Sum([NumMes1])"
+                    GUID = Begin
+                        0x30e9b9e07d78564e96d30e2a7683af9e
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =81
+                    TextAlign =2
+                    Left =7655
+                    Top =113
+                    Width =794
+                    Height =227
+                    TabIndex =2
+                    Name ="Field200"
+                    ControlSource ="=Sum([NumMes2])"
+                    GUID = Begin
+                        0xc8347db8c50da64f97cf3435a2090b07
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =81
+                    TextAlign =2
+                    Left =8789
+                    Top =113
+                    Width =794
+                    Height =227
+                    TabIndex =3
+                    Name ="Field201"
+                    ControlSource ="=Sum([NumMes3])"
+                    GUID = Begin
+                        0xd7096d74db56a140b076287a29e5b169
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =81
+                    TextAlign =2
+                    Left =9923
+                    Top =113
+                    Width =794
+                    Height =227
+                    TabIndex =4
+                    Name ="Field202"
+                    ControlSource ="=Sum([NumMes4])"
+                    GUID = Begin
+                        0x7671b13d05fb1048b22d4bac7d5667f3
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =81
+                    TextAlign =2
+                    Left =5103
+                    Top =113
+                    Width =794
+                    Height =227
+                    TabIndex =5
+                    Name ="Field203"
+                    ControlSource ="=Sum([Num_Meses])"
+                    GUID = Begin
+                        0xa40496804cc0184a8ce780c0000badcf
+                    End
+                End
+                Begin Label
+                    OverlapFlags =81
+                    Left =113
+                    Top =454
+                    Width =2268
+                    Height =227
+                    Name ="Text209"
+                    Caption ="TOTAL DEUDORES ="
+                    GUID = Begin
+                        0xe3b85249562fce4c8834b14b5f977f19
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =81
+                    TextAlign =2
+                    Left =2835
+                    Top =454
+                    Width =1134
+                    Height =227
+                    FontWeight =700
+                    TabIndex =6
+                    Name ="Field210"
+                    ControlSource ="=Sum([DeudorAct])+Sum([num_Meses])+Sum([NumMes1])+Sum([NumMes2])+Sum([NumMes3])+"
+                        "Sum([NumMes4])"
+                    GUID = Begin
+                        0xe58ca1d354c7e542a27efb2070108c11
+                    End
+                End
+                Begin Label
+                    OverlapFlags =81
+                    Left =113
+                    Top =113
+                    Width =2268
+                    Height =227
+                    Name ="Text220"
+                    Caption ="TOTAL DEL MES :"
+                    GUID = Begin
+                        0x468e29300c2007478857d79aa07b478e
+                    End
+                End
+            End
+        End
+        Begin PageFooter
+            Height =26
+            Name ="PieDePágina7"
+            GUID = Begin
+                0xc30335a2fb15724ea38f1c5a08b145d4
+            End
+        End
+        Begin FormFooter
+            KeepTogether = NotDefault
+            Height =4375
+            Name ="PieDelInforme8"
+            GUID = Begin
+                0x26e3d32713bbcc4ba66c473f068e9294
+            End
+            Begin
+                Begin TextBox
+                    Left =2934
+                    Top =2116
+                    Width =1134
+                    Height =227
+                    Name ="Field211"
+                    ControlSource ="=Sum([DeudorAct])"
+                    GUID = Begin
+                        0x6da92191b838864386808db2607f0f67
+                    End
+                End
+                Begin TextBox
+                    TextAlign =2
+                    Left =6620
+                    Top =2116
+                    Width =794
+                    Height =227
+                    TabIndex =1
+                    Name ="Field212"
+                    ControlSource ="=Sum([NumMes1])"
+                    GUID = Begin
+                        0x587c972943282148b242edd538192d7c
+                    End
+                End
+                Begin TextBox
+                    TextAlign =2
+                    Left =7754
+                    Top =2116
+                    Width =794
+                    Height =227
+                    TabIndex =2
+                    Name ="Field213"
+                    ControlSource ="=Sum([NumMes2])"
+                    GUID = Begin
+                        0x8865b6fb8d85fd48b2ca5179a4bd3f6e
+                    End
+                End
+                Begin TextBox
+                    TextAlign =2
+                    Left =8888
+                    Top =2116
+                    Width =794
+                    Height =227
+                    TabIndex =3
+                    Name ="Field214"
+                    ControlSource ="=Sum([NumMes3])"
+                    GUID = Begin
+                        0xad1d242440def24a9a43e46de9f384d8
+                    End
+                End
+                Begin TextBox
+                    TextAlign =2
+                    Left =10022
+                    Top =2116
+                    Width =794
+                    Height =227
+                    TabIndex =4
+                    Name ="Field215"
+                    ControlSource ="=Sum([NumMes4])"
+                    GUID = Begin
+                        0xdeecb98a2b4a7e4389a14f27795b1996
+                    End
+                End
+                Begin TextBox
+                    TextAlign =2
+                    Left =5202
+                    Top =2116
+                    Width =794
+                    Height =227
+                    TabIndex =5
+                    Name ="Field216"
+                    ControlSource ="=Sum([Num_Meses])"
+                    GUID = Begin
+                        0xb74d84cc6863ac4fbbafe6c2ba6919b8
+                    End
+                End
+                Begin Label
+                    Left =212
+                    Top =2569
+                    Width =2268
+                    Height =227
+                    Name ="Text217"
+                    Caption ="TOTAL DEUDORES ="
+                    GUID = Begin
+                        0x0f73269f7938134493d04ceb7d6b83ea
+                    End
+                End
+                Begin TextBox
+                    Left =2934
+                    Top =2569
+                    Width =1134
+                    Height =227
+                    FontWeight =700
+                    TabIndex =6
+                    Name ="Field218"
+                    ControlSource ="=Sum([DeudorAct])+Sum([num_Meses])+Sum([NumMes1])+Sum([NumMes2])+Sum([NumMes3])+"
+                        "Sum([NumMes4])"
+                    GUID = Begin
+                        0xee4b05d32f708646ad3358587be36661
+                    End
+                End
+                Begin Label
+                    TextAlign =2
+                    Left =3614
+                    Top =1036
+                    Width =4801
+                    Height =425
+                    FontSize =14
+                    Name ="Text219"
+                    Caption ="GRAN TOTAL"
+                    GUID = Begin
+                        0x13dd90e5030fca4c892250473c7b6079
+                    End
+                End
+                Begin Label
+                    Left =212
+                    Top =2116
+                    Width =2268
+                    Height =227
+                    Name ="Text221"
+                    Caption ="Total de Mes en Proceso :"
+                    GUID = Begin
+                        0x84325a6e8afc124da21f955b6f411f96
+                    End
+                End
+                Begin TextBox
+                    SpecialEffect =1
+                    TextAlign =2
+                    Left =10023
+                    Top =1597
+                    Width =794
+                    Height =284
+                    FontWeight =700
+                    TabIndex =7
+                    Name ="Field227"
+                    ControlSource ="DmesActual"
+                    GUID = Begin
+                        0x4bfdd153e73cfb4cb60f2203c739aa8c
+                    End
+                End
+                Begin TextBox
+                    TextAlign =2
+                    Left =6621
+                    Top =1597
+                    Width =794
+                    TabIndex =8
+                    Name ="Field228"
+                    ControlSource ="Dmes1"
+                    GUID = Begin
+                        0x7a865653c633bb42bb4a8e1a858a0ed0
+                    End
+                End
+                Begin TextBox
+                    TextAlign =2
+                    Left =7755
+                    Top =1597
+                    Width =794
+                    TabIndex =9
+                    Name ="Field229"
+                    ControlSource ="Dmes2"
+                    GUID = Begin
+                        0xf57bb97095616244aa15b12fa5bc90a2
+                    End
+                End
+                Begin TextBox
+                    TextAlign =2
+                    Left =8889
+                    Top =1597
+                    Width =794
+                    Height =284
+                    TabIndex =10
+                    Name ="Field230"
+                    ControlSource ="Dmes3"
+                    GUID = Begin
+                        0xafce0da709cace449e8a47351dece9dc
+                    End
+                End
+                Begin Line
+                    Left =327
+                    Top =1938
+                    Width =10773
+                    Name ="Line231"
+                    GUID = Begin
+                        0x878adef8edf98e45872f3f719d9ce895
+                    End
+                End
+                Begin Line
+                    Left =327
+                    Top =1541
+                    Width =10773
+                    Name ="Line232"
+                    GUID = Begin
+                        0x483b3dc6562cca49852ae9e3bc9d6861
+                    End
+                End
+                Begin Label
+                    TextAlign =2
+                    Left =4920
+                    Top =1597
+                    Width =1134
+                    Height =284
+                    Name ="Text234"
+                    Caption ="OMA"
+                    GUID = Begin
+                        0xb0f3e4acb5413d498c3c46ae4af7cc49
+                    End
+                End
+                Begin Label
+                    Left =9236
+                    Top =523
+                    Width =789
+                    Height =301
+                    Name ="Text237"
+                    Caption ="HOJA : "
+                    GUID = Begin
+                        0xe849cfe3325fe84aacfd15ec0ebe23c5
+                    End
+                End
+                Begin Label
+                    Left =238
+                    Top =690
+                    Width =1871
+                    Height =284
+                    Name ="Text238"
+                    Caption ="MES DE PROCESO : "
+                    GUID = Begin
+                        0x09cf43a371146149b4fdbdedc75101bc
+                    End
+                End
+                Begin TextBox
+                    Left =2205
+                    Top =690
+                    Width =2268
+                    Height =284
+                    TabIndex =11
+                    Name ="Field239"
+                    ControlSource ="MesProceso"
+                    GUID = Begin
+                        0x6e669ee6e51c8941abb0b43ad3c550fa
+                    End
+                End
+                Begin TextBox
+                    FontItalic = NotDefault
+                    TextAlign =2
+                    Left =9213
+                    Top =838
+                    Width =1533
+                    Height =274
+                    TabIndex =12
+                    Name ="Field240"
+                    ControlSource ="=Now()"
+                    Format ="Medium Date"
+                    GUID = Begin
+                        0xbcd6160f0e98194eba09a659ebdd5414
+                    End
+                End
+                Begin TextBox
+                    FontItalic = NotDefault
+                    TextAlign =3
+                    Left =10113
+                    Top =523
+                    Width =567
+                    Height =257
+                    TabIndex =13
+                    Name ="Field241"
+                    ControlSource ="=Page"
+                    GUID = Begin
+                        0x79300f3892b86b4d88359ae0d4190b98
+                    End
+                End
+                Begin Label
+                    TextAlign =2
+                    Left =2755
+                    Width =6237
+                    Height =397
+                    FontSize =14
+                    Name ="Text242"
+                    Caption ="ALUMNOS DEUDORES"
+                    GUID = Begin
+                        0xa9493abbfe0c064ba1c6e5135e186e54
+                    End
+                End
+                Begin Label
+                    TextAlign =2
+                    Left =88
+                    Top =44
+                    Width =2767
+                    Height =481
+                    Name ="Texto253"
+                    Caption ="YAMAHA DE MEXICO DIFUSION MUSICAL"
+                    GUID = Begin
+                        0x435e8a46ca0da448a6c28c312d64b908
+                    End
+                End
+            End
+        End
+    End
+End

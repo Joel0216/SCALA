@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scala - Menu de Mantenimiento</title>
+    <link rel="stylesheet" href="mantenimiento.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Scala - Academias de Música</h1>
+            <h2>MENU DE MANTENIMIENTO</h2>
+            <div class="datetime" id="datetime"></div>
+        </header>
+
+        <main>
+            <div class="menu-grid">
+                <div class="logo-container">
+                    <img src="Scala logo.png" alt="Scala Logo">
+                </div>
+
+                <button class="menu-btn left-top" onclick="corrigeAlumnosGrupo()">
+                    Corrige Alum.<br>X Grupo
+                </button>
+
+                <button class="menu-btn left-middle" onclick="depuracionPagos()">
+                    Depuración de<br>Pagos
+                </button>
+
+                <button class="menu-btn left-bottom" onclick="verificaCredencial()">
+                    Verifica<br>Credencial
+                </button>
+
+                <button class="menu-btn right-top" onclick="mantenimientoCambios()">
+                    Mantenimiento<br>a Cambios
+                </button>
+
+                <button class="menu-btn right-bottom" onclick="verificaIntegridad()">
+                    Verifica<br>Integridad
+                </button>
+            </div>
+        </main>
+
+        <footer>
+            <button class="exit-btn" onclick="window.location.href='index.html'">
+                TERMINAR
+            </button>
+        </footer>
+    </div>
+
+    <script src="supabase-config.js"></script>
+    <script src="utils-inputs.js"></script>
+    <script src="mantenimiento.js"></script>
+</body>
+</html>

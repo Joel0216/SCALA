@@ -1,0 +1,3 @@
+SELECT DISTINCTROW [Movimientos de Inventarios].*, [Movimientos de Inventarios Det].*, [Claves Movimientos de Inventarios].[Descripcion del Movimiento]
+FROM ([Movimientos de Inventarios] INNER JOIN [Movimientos de Inventarios Det] ON [Movimientos de Inventarios].[Numero de Movimiento]=[Movimientos de Inventarios Det].[Numero de Movimiento]) INNER JOIN [Claves Movimientos de Inventarios] ON [Movimientos de Inventarios].[Tipo de Movimiento]=[Claves Movimientos de Inventarios].[Clave de movimiento]
+WHERE ((([Movimientos de Inventarios].[Fecha de Movimiento]) Between [Fecha Inicial] And [Fecha Final]));

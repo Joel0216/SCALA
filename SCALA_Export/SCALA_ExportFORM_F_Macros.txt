@@ -1,0 +1,308 @@
+Version =19
+VersionRequired =19
+Checksum =58938467
+Begin Form
+    PopUp = NotDefault
+    Modal = NotDefault
+    AutoCenter = NotDefault
+    DefaultView =0
+    GridX =5
+    GridY =5
+    Width =6236
+    ItemSuffix =21
+    Left =2550
+    Top =1560
+    Right =9075
+    Bottom =5205
+    RecSrcDt = Begin
+        0x3e56a19f37c5e140
+    End
+    GUID = Begin
+        0xd6cee9fd2c8fae40aadf083fa45de978
+    End
+    NameMap = Begin
+        0x0acc0e55000000007257b1e0f37e6c46b45c93e2d33a7849000000005fbe58d1 ,
+        0xb849e34000000000000000004d006100630072006f007300000000000000ecfd ,
+        0xb13b6ae7b14dbaeb7e571d98b4cb010000005fbe58d1b849e340480e2802bb4f ,
+        0x1f0346005f004d006100630072006f0073002000530075006200000000000000 ,
+        0xced02538391e5249a614c9a548c1af5b070000007257b1e0f37e6c46b45c93e2 ,
+        0xd33a78494e006f006d0062007200650020004d006100630072006f0000000000 ,
+        0x0000000000000000000000000000000000000c00000002000000000000000000 ,
+        0x0000000000000000
+    End
+    RecordSource ="Macros"
+    Caption ="Macros"
+    OnOpen ="[Event Procedure]"
+    MenuBar ="Barra Main"
+    Begin
+        Begin Label
+            TextAlign =3
+            FontWeight =700
+            BackColor =12632256
+        End
+        Begin Rectangle
+            SpecialEffect =2
+            Width =850
+            Height =850
+        End
+        Begin Line
+            Width =1701
+        End
+        Begin CommandButton
+            TextFontFamily =2
+            Width =1701
+            Height =283
+        End
+        Begin OptionButton
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin CheckBox
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin TextBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin ListBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =1417
+            LabelX =-236
+        End
+        Begin ComboBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin Subform
+            Width =1701
+            Height =1701
+        End
+        Begin FormHeader
+            Height =558
+            BackColor =12632256
+            Name ="EncabezadoDelFormulario1"
+            EventProcPrefix ="EncabezadoDelFormula"
+            GUID = Begin
+                0x187224ec42fbf949911f4f5292c97c0f
+            End
+            Begin
+                Begin Label
+                    BackStyle =0
+                    OverlapFlags =93
+                    TextAlign =1
+                    Left =488
+                    Top =153
+                    Width =1110
+                    Height =405
+                    FontSize =14
+                    ForeColor =8355711
+                    Name ="Texto12"
+                    Caption ="Macros"
+                    GUID = Begin
+                        0xa0fa2733f0bec14497b9f043db941b7b
+                    End
+                End
+                Begin Label
+                    BackStyle =0
+                    OverlapFlags =215
+                    TextAlign =1
+                    Left =452
+                    Top =113
+                    Width =1110
+                    Height =405
+                    FontSize =14
+                    ForeColor =16777215
+                    Name ="Texto13"
+                    Caption ="Macros"
+                    GUID = Begin
+                        0x61c303d2e2efbb4398bc86fdb7e4ac02
+                    End
+                End
+            End
+        End
+        Begin Section
+            Height =3410
+            BackColor =12632256
+            Name ="Detalle0"
+            GUID = Begin
+                0x690997cd3162f640b9e83f0dadeb5283
+            End
+            Begin
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =1808
+                    Top =113
+                    Width =1590
+                    Name ="Nombre Macro"
+                    ControlSource ="Nombre Macro"
+                    StatusBarText ="Nombre del Macro"
+                    EventProcPrefix ="Nombre_Macro"
+                    GUID = Begin
+                        0x75c24666c466984a98540c23d37064e4
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =226
+                            Top =113
+                            Width =1469
+                            Height =240
+                            Name ="Texto15"
+                            Caption ="Nombre Macro:"
+                            GUID = Begin
+                                0x713e00c89d262b49acc231991a578974
+                            End
+                        End
+                    End
+                End
+                Begin Subform
+                    OverlapFlags =85
+                    Left =793
+                    Top =793
+                    Width =4311
+                    Height =1686
+                    TabIndex =1
+                    Name ="F_Macros Sub"
+                    SourceObject ="Form.F_Macros Sub"
+                    LinkChildFields ="Nombre Macro"
+                    LinkMasterFields ="Nombre Macro"
+                    EventProcPrefix ="F_Macros_Sub"
+                    GUID = Begin
+                        0x37e929f01710004cbd738ddf7e40282e
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =4535
+                    Top =2834
+                    Width =1125
+                    Height =465
+                    TabIndex =2
+                    ForeColor =255
+                    Name ="B_term_Macros"
+                    Caption ="Terminar"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0x00c7c41e1a5af94185f92d3da7b971bc
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =566
+                    Top =2834
+                    Width =1131
+                    Height =456
+                    TabIndex =3
+                    Name ="B_Srch_Macro"
+                    Caption ="Buscar"
+                    OnClick ="M_Varios Catalogos.Buscar Macro"
+                    GUID = Begin
+                        0xa59f1f6fad1fdb4fabdf9cead521c327
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =2267
+                    Top =2834
+                    Width =1005
+                    Height =465
+                    TabIndex =4
+                    Name ="B_add_Macro"
+                    Caption ="Agregar"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0x57ea5e08e440474bac53ebc9af9a9734
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            Height =0
+            BackColor =12632256
+            Name ="PieDelFormulario2"
+            GUID = Begin
+                0x47d2ccb22d016b469ad61cef31327144
+            End
+        End
+    End
+End
+CodeBehindForm
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database   'Usar orden de base de datos en comparaciones de cadenas
+
+Private Sub B_add_Macro_Click()
+On Error GoTo Err_B_add_Macro_Click
+
+
+    DoCmd.GoToRecord , , A_NEWREC
+    DoCmd.GoToControl "Nombre Macro"
+
+Exit_B_add_Macro_Click:
+    Exit Sub
+
+Err_B_add_Macro_Click:
+    MsgBox Error$
+    Resume Exit_B_add_Macro_Click
+    
+End Sub
+
+Private Sub B_term_Macros_Click()
+On Error GoTo Err_B_term_Macros_Click
+
+
+    DoCmd.Close
+
+Exit_B_term_Macros_Click:
+    Exit Sub
+
+Err_B_term_Macros_Click:
+    MsgBox Error$
+    Resume Exit_B_term_Macros_Click
+    
+End Sub
+
+Private Sub Form_Open(Cancel As Integer)
+Dim db As Database, FLogin As Form, TUser As Recordset, Forma As Form
+   Set db = CurrentDb()
+   Set Forma = Forms!F_Macros
+   Set FLogin = Forms!login
+   Set TUser = db.OpenRecordset("Usuarios")
+   TUser.Index = "PrimaryKey"
+   TUser.Seek "=", FLogin!UserID
+   If Not TUser.NoMatch Then
+      If IsNull(TUser!A_MACRO) Or TUser!A_MACRO = "N" Then
+         MsgBox "El usuario no tiene privilegios de acceso"
+         DoCmd.CancelEvent
+      Else
+         If TUser!A_MACRO = "C" Then
+            Forma.AllowEditing = False
+            Forma.DefaultEditing = 3
+            [B_add_Macro].Enabled = False
+         End If
+      End If
+   Else
+      MsgBox "El usuario no tiene clave de acceso registrada"
+      DoCmd.CancelEvent
+   End If
+
+End Sub

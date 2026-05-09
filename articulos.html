@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artículos - Scala</title>
+    <link rel="stylesheet" href="theme.css">
+    <style>
+        .required { color: #ff6b6b; margin-left: 2px; }
+        .info-text { font-size: 0.75rem; color: var(--text-muted); display: block; margin-top: 5px; }
+        .sugerencias-container {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+            box-shadow: var(--shadow-md);
+            z-index: 1000;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+        }
+        .sugerencia-item {
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .sugerencia-item:hover {
+            background: var(--bg-secondary);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header class="app-header">
+            <h1>Gestión de Artículos</h1>
+            <div class="datetime" id="datetime"></div>
+        </header>
+
+        <main class="app-main">
+            <div class="premium-grid grid-cols-2">
+                <!-- Identificación del Artículo -->
+                <div class="premium-card">
+                    <h3>Identificación y Precios</h3>
+                    <div class="premium-grid grid-cols-2">
+                        <div class="premium-input-group">
+                            <label class="premium-label">Clave <span class="required">*</span></label>
+                            <input type="text" id="clave" class="premium-input" placeholder="Clave única" readonly>
+                        </div>
+                        <div class="premium-input-group">
+                            <label class="premium-label">Precio <span class="required">*</span></label>
+                            <input type="number" id="precio" class="premium-input" step="0.01" placeholder="0.00" disabled>
+                        </div>
+                    </div>
+
+                    <div class="premium-grid grid-cols-2">
+                        <div class="premium-input-group">
+                            <label class="premium-label">Grupo <span class="required">*</span></label>
+                            <select id="grupo" class="premium-input" disabled>
+                                <option value="">-- Seleccionar --</option>
+                            </select>
+                        </div>
+                        <div class="premium-input-group">
+                            <label class="premium-label">IVA</label>
+                            <input type="number" id="iva" class="premium-input" step="0.01" value="0.16" disabled>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Descripción y Existencias -->
+                <div class="premium-card">
+                    <h3>Detalles del Artículo</h3>
+                    <div class="premium-input-group">
+                        <label class="premium-label">Descripción <span class="required">*</span></label>
+                        <input type="text" id="descripcion" class="premium-input" placeholder="Descripción completa del artículo" disabled>
+                    </div>
+
+                    <div class="premium-input-group">
+                        <label class="premium-label">Existente</label>
+                        <input type="number" id="stock" class="premium-input" step="1" placeholder="0" disabled>
+                        <span class="info-text">Se actualiza vía movimientos</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="app-footer" style="position: static; margin-top: 20px; border-radius: var(--radius-md); border-top: none; padding: 20px;">
+                <button class="premium-btn btn-primary" id="btnNuevo" onclick="nuevoArticulo()">NUEVO</button>
+                <button class="premium-btn btn-outline" id="btnCancelarNuevo" onclick="cancelarNuevo()" style="display: none;">CANCELAR</button>
+                <button class="premium-btn btn-primary" id="btnEditar" onclick="editarArticulo()" disabled>EDITAR</button>
+                <button class="premium-btn btn-primary" id="btnBuscar" onclick="abrirModalBusqueda()">BUSCAR</button>
+                <button class="premium-btn btn-danger" id="btnBorrar" onclick="borrarArticulo()" disabled>BORRAR</button>
+                <div style="flex-grow: 1;"></div>
+                <button class="premium-btn btn-danger" onclick="terminar()">TERMINAR</button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal de edición (Premium) -->
+    <div id="modalEdicion" class="premium-modal" style="display: none;">
+        <div class="premium-modal-content" style="max-width: 600px;">
+            <div class="premium-modal-header">
+                <h2>Editar Artículo</h2>
+            </div>
+            <div class="premium-modal-body">
+                <div class="premium-grid grid-cols-2">
+                    <div class="premium-input-group">
+                        <label class="premium-label">Clave:</label>
+                        <input type="text" id="editClave" class="premium-input" readonly>
+                    </div>
+                    <div class="premium-input-group">
+                        <label class="premium-label">Grupo:</label>
+                        <select id="editGrupo" class="premium-input">
+                            <option value="">-- Seleccionar --</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="premium-input-group">
+                    <label class="premium-label">Descripción:</label>
+                    <input type="text" id="editDescripcion" class="premium-input">
+                </div>
+
+                <div class="premium-grid grid-cols-2">
+                    <div class="premium-input-group">
+                        <label class="premium-label">Precio:</label>
+                        <input type="number" id="editPrecio" class="premium-input" step="0.01">
+                    </div>
+                    <div class="premium-input-group">
+                        <label class="premium-label">IVA:</label>
+                        <input type="number" id="editIva" class="premium-input" step="0.01">
+                    </div>
+                </div>
+
+                <div class="premium-input-group">
+                    <label class="premium-label">Existencia Actual:</label>
+                    <input type="number" id="editStock" class="premium-input">
+                </div>
+            </div>
+            <div class="app-footer" style="padding: 15px 20px; justify-content: flex-end; gap: 10px; border-top: 1px solid var(--border-color); background: var(--bg-secondary); border-radius: 0 0 var(--radius-lg) var(--radius-lg); position: static;">
+                <button class="premium-btn btn-outline" onclick="cancelarEdicion()">CANCELAR</button>
+                <button class="premium-btn btn-primary" onclick="guardarEdicion()">GUARDAR CAMBIOS</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de búsqueda (Premium) -->
+    <div id="modalBusqueda" class="premium-modal" style="display: none;">
+        <div class="premium-modal-content" style="max-width: 800px;">
+            <div class="premium-modal-header">
+                <h2>Buscador de Artículos</h2>
+            </div>
+            <div class="premium-modal-body" style="padding: 20px;">
+                <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                    <input type="text" id="inputBusquedaArticulo" class="premium-input" placeholder="Clave o descripción..." onkeyup="if(event.key==='Enter') buscarArticulosModal()">
+                    <button class="premium-btn btn-primary" onclick="buscarArticulosModal()">BUSCAR</button>
+                </div>
+                
+                <div class="premium-table-container" style="max-height: 400px; overflow-y: auto;">
+                    <table class="premium-table">
+                        <thead>
+                            <tr>
+                                <th>Clave</th>
+                                <th>Descripción</th>
+                                <th>Grupo</th>
+                                <th>Exist.</th>
+                                <th>Precio</th>
+                                <th>IVA</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bodyResultadosArticulos">
+                            <tr>
+                                <td colspan="6" style="text-align: center; padding: 20px; color: var(--text-muted);">Realice una búsqueda para ver resultados</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="app-footer" style="padding: 15px 20px; justify-content: flex-end; border-top: 1px solid var(--border-color); background: var(--bg-secondary); border-radius: 0 0 var(--radius-lg) var(--radius-lg); position: static;">
+                <button class="premium-btn btn-outline" onclick="cerrarModalBusqueda()">CERRAR</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de confirmación de borrado -->
+    <div id="modalBorrar" class="premium-modal" style="display: none;">
+        <div class="premium-modal-content" style="max-width: 500px;">
+            <div class="premium-modal-header" style="background: linear-gradient(135deg, #ff6b6b, #ee5253);">
+                <h2>¿Borrar Artículo?</h2>
+            </div>
+            <div class="premium-modal-body">
+                <p id="mensajeBorrar" style="margin-bottom: 20px;">¿Está seguro de que desea borrar este artículo?</p>
+            </div>
+            <div class="app-footer" style="padding: 15px 20px; justify-content: flex-end; gap: 10px; border-top: 1px solid var(--border-color); background: var(--bg-secondary); border-radius: 0 0 var(--radius-lg) var(--radius-lg); position: static;">
+                <button class="premium-btn btn-outline" onclick="cancelarBorrado()">CANCELAR</button>
+                <button class="premium-btn btn-danger" onclick="confirmarBorrado()">CONFIRMAR ELIMINACIÓN</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="utils-inputs.js"></script>
+    <script src="articulos.js"></script>
+</body>
+
+</html>

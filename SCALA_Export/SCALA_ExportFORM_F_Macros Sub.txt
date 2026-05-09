@@ -1,0 +1,132 @@
+Version =19
+VersionRequired =19
+Checksum =-331928203
+Begin Form
+    DefaultView =2
+    GridX =5
+    GridY =5
+    Width =3112
+    ItemSuffix =18
+    Right =1410
+    Bottom =630
+    RecSrcDt = Begin
+        0x83fdeb5422dee140
+    End
+    GUID = Begin
+        0xecfdb13b6ae7b14dbaeb7e571d98b4cb
+    End
+    NameMap = Begin
+        0x0acc0e5500000000000000000000000000000000000000000c00000002000000 ,
+        0x0000000000000000000000000000
+    End
+    RecordSource ="Macros"
+    Begin
+        Begin Label
+            TextAlign =3
+            FontWeight =700
+            BackColor =12632256
+        End
+        Begin Rectangle
+            SpecialEffect =2
+            Width =850
+            Height =850
+        End
+        Begin OptionButton
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin CheckBox
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin TextBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin ListBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =1417
+            LabelX =-236
+        End
+        Begin ComboBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin FormHeader
+            Visible = NotDefault
+            Height =453
+            BackColor =12632256
+            Name ="EncabezadoDelFormulario1"
+            EventProcPrefix ="EncabezadoDelFormula"
+            GUID = Begin
+                0xd6d62019a32786419b0dc2422436c115
+            End
+            Begin
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =226
+                    Top =113
+                    Width =2041
+                    Height =227
+                    Name ="Nombre Macro"
+                    ControlSource ="Nombre Macro"
+                    EventProcPrefix ="Nombre_Macro"
+                    GUID = Begin
+                        0x8ced50860a320a4e876753ff94669c3a
+                    End
+                End
+            End
+        End
+        Begin Section
+            Height =481
+            BackColor =12632256
+            Name ="Detalle0"
+            GUID = Begin
+                0x3fbba69e307d2447a4688f52262512c3
+            End
+            Begin
+                Begin ComboBox
+                    OverlapFlags =85
+                    ColumnCount =2
+                    ListWidth =4555
+                    Left =226
+                    Top =113
+                    Width =1585
+                    ColumnInfo ="\"\";\"\";\"\";\"\";\"10\";\"40\""
+                    GUID = Begin
+                        0x3ad534ce5f2ecb499165120413b24117
+                    End
+                    Name ="Operacion"
+                    ControlSource ="Operacion"
+                    RowSourceType ="Table/Query"
+                    RowSource ="Select [Clave],[Descripcion] From [Articulos];"
+                    ColumnWidths ="810;3495"
+                End
+            End
+        End
+        Begin FormFooter
+            Height =0
+            BackColor =12632256
+            Name ="PieDelFormulario2"
+            GUID = Begin
+                0x134cd0196eb3f345a979dce87f59fcf7
+            End
+        End
+    End
+End

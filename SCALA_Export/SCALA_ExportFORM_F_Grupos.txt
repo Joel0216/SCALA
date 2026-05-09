@@ -1,0 +1,854 @@
+Version =19
+VersionRequired =19
+Checksum =678396661
+Begin Form
+    AllowEditing = NotDefault
+    AllowDeletions = NotDefault
+    AllowAdditions = NotDefault
+    OrderByOn = NotDefault
+    AllowEdits = NotDefault
+    DefaultView =0
+    GridX =5
+    GridY =5
+    Width =9070
+    ItemSuffix =74
+    Left =510
+    Top =750
+    Right =9195
+    Bottom =6090
+    Filter ="2"
+    RecSrcDt = Begin
+        0x6744699f37c5e140
+    End
+    GUID = Begin
+        0x934622abe1f68347be70d85c55972de9
+    End
+    NameMap = Begin
+        0x0acc0e5500000000979f1153c9804048a2a9cfe6fc0b734700000000ca11cfd0 ,
+        0xb849e340000000000000000051005f0067007200750070006f00730000000000 ,
+        0x000076f8109feb99ac4bbcd63d23017a2ff801000000a29c41d1b849e3404022 ,
+        0x01020088130046005f0047007200750070006f007300200041006c0075006d00 ,
+        0x6e006f007300000000000000ca7c715feb45b84fa03ff7832efcbc3f00000000 ,
+        0xf20a7fd0b849e340402201020088130041006c0075006d006e006f0073000000 ,
+        0x00000000c08b025cf3a59f42b0b910e4ce2840d707000000ca7c715feb45b84f ,
+        0xa03ff7832efcbc3f47007200750070006f00000000000000ddb32a78eb42a847 ,
+        0x8c08b9b9ec3b2ad207000000979f1153c9804048a2a9cfe6fc0b734747007200 ,
+        0x750070006f0073002e0043006c0061007600650000000000000012a7549e359c ,
+        0x804ca82838aed9f53d7807000000979f1153c9804048a2a9cfe6fc0b73474800 ,
+        0x6f0072006100200065006e0074007200610064006100000000000000e456fade ,
+        0x56fb5949ba7dc8fdadd5099307000000979f1153c9804048a2a9cfe6fc0b7347 ,
+        0x48006f00720061002000730061006c006900640061000000000000008a4e8258 ,
+        0x7607d94aa083a6bafd70653107000000979f1153c9804048a2a9cfe6fc0b7347 ,
+        0x4300750070006f000000000000008219d4ae6a46414c9946c97f77e11b640700 ,
+        0x0000979f1153c9804048a2a9cfe6fc0b734741006c0075006d006e006f007300 ,
+        0x00000000000027efdf64ea4b6f4f8389f2d97376b7e407000000979f1153c980 ,
+        0x4048a2a9cfe6fc0b734749006e006900630069006f00000000000000a480ff67 ,
+        0x2397224b88bd6e80c556be5107000000979f1153c9804048a2a9cfe6fc0b7347 ,
+        0x4c0065006300630069006f006e000000000000001d8097ae4bb3374798a83856 ,
+        0x448cf8a007000000979f1153c9804048a2a9cfe6fc0b73474600650063006800 ,
+        0x61004c0065006300630069006f006e00000000000000bfa14471afe63d448e14 ,
+        0x84a070b1727b07000000979f1153c9804048a2a9cfe6fc0b7347430075007200 ,
+        0x73006f00000000000000c35e10d7351aee409d6aa227ee615e8f00000000bad4 ,
+        0xb9d0b849e340000000000000000043007500720073006f007300000000000000 ,
+        0xdbd326710364184da7d3c0f25936316507000000979f1153c9804048a2a9cfe6 ,
+        0xfc0b73474d00610065007300740072006f0000000000000071c8bf25e3769d45 ,
+        0xbbb8b9452634aa7e00000000a87e90d0b849e34000000000000000004d006100 ,
+        0x65007300740072006f007300000000000000376842492cb30346b6625c398ef7 ,
+        0xc99607000000ca7c715feb45b84fa03ff7832efcbc3f4e006f006d0062007200 ,
+        0x650000000000000097bcf0eb6b313f4a816403394b03cebd07000000ca7c715f ,
+        0xeb45b84fa03ff7832efcbc3f47007200610064006f00000000000000f73342dc ,
+        0x12b3a147a3dd593824486f0f07000000979f1153c9804048a2a9cfe6fc0b7347 ,
+        0x4400690061000000000000004e38d8836154d64e9ee66d6a087e639f00000000 ,
+        0x0b93d0d0b849e34000000000000000004f007200640065006e00200044006900 ,
+        0x6100730000000000000067936255d8439441abed30fbdb73f15307000000979f ,
+        0x1153c9804048a2a9cfe6fc0b7347530061006c006f006e0000000000000045c2 ,
+        0x90de76ae5b4290f91ea92332416100000000ba5097d0b849e340000000000000 ,
+        0x0000530061006c006f006e006500730000000000000019841412aeb2164dbad8 ,
+        0x3e942038761c06000000934622abe1f68347be70d85c55972de946005f004700 ,
+        0x7200750070006f007300200041006c0075006d006e006f007300000000000000 ,
+        0x3bfe63c82b358449b1f8051c2946232d01000000907e22d1b849e3404c951300 ,
+        0x5d50033046005f0041006c0075006d006e006f00730020005300750062000000 ,
+        0x00000000dcabd84ad157fd45892ebb5a988ff35600000000f212c4d0b849e340 ,
+        0x4c9513005d50033051005f0063006f006c006500670069006100740075007200 ,
+        0x61007300000000000000c1e8dabc660b414aa316e7e076d243fe07000000dcab ,
+        0xd84ad157fd45892ebb5a988ff35643006f006c00650067006900610074007500 ,
+        0x7200610073002e0041006c0075006d006e006f00490044000000000000000000 ,
+        0x00000000000000000000000000000c0000000200000000000000000000000000 ,
+        0x00000000
+    End
+    RecordSource ="Q_grupos"
+    Caption ="Grupos"
+    OnOpen ="[Event Procedure]"
+    MenuBar ="Barra Main"
+    Begin
+        Begin Label
+            TextAlign =3
+            FontWeight =700
+            BackColor =12632256
+        End
+        Begin Rectangle
+            SpecialEffect =2
+            Width =850
+            Height =850
+        End
+        Begin CommandButton
+            TextFontFamily =2
+            Width =1701
+            Height =283
+        End
+        Begin OptionButton
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin CheckBox
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin TextBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin ListBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =1417
+            LabelX =-236
+        End
+        Begin ComboBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin Subform
+            Width =1701
+            Height =1701
+        End
+        Begin FormHeader
+            Height =558
+            BackColor =12632256
+            Name ="EncabezadoDelFormulario1"
+            EventProcPrefix ="EncabezadoDelFormula"
+            GUID = Begin
+                0xa9ce00890a27264bb0ec008861906a4c
+            End
+            Begin
+                Begin Label
+                    BackStyle =0
+                    OverlapFlags =93
+                    TextAlign =1
+                    Left =488
+                    Top =153
+                    Width =1110
+                    Height =405
+                    FontSize =14
+                    ForeColor =8355711
+                    Name ="Texto12"
+                    Caption ="Grupos"
+                    GUID = Begin
+                        0x0f39584d8775034c8931c6c90f3a0695
+                    End
+                End
+                Begin Label
+                    BackStyle =0
+                    OverlapFlags =215
+                    TextAlign =1
+                    Left =452
+                    Top =113
+                    Width =1110
+                    Height =405
+                    FontSize =14
+                    ForeColor =16777215
+                    Name ="Texto13"
+                    Caption ="Grupos"
+                    GUID = Begin
+                        0x7824eff147ced84a9473c19d5f6638a5
+                    End
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    TabStop = NotDefault
+                    OverlapFlags =85
+                    Left =6815
+                    Top =113
+                    Width =2029
+                    Height =227
+                    Name ="Campo63"
+                    ControlSource ="=Now()"
+                    GUID = Begin
+                        0xe622baa6fe35fb41b71f79547500e4da
+                    End
+                End
+            End
+        End
+        Begin Section
+            CanGrow = NotDefault
+            Height =5555
+            BackColor =12632256
+            Name ="Detalle0"
+            GUID = Begin
+                0x7e26e09ef316bc43ad00caa719938dee
+            End
+            Begin
+                Begin TextBox
+                    Locked = NotDefault
+                    OverlapFlags =85
+                    Left =1581
+                    Top =113
+                    Width =1590
+                    Name ="Clave"
+                    ControlSource ="Grupos.Clave"
+                    StatusBarText ="Clave del grupo"
+                    GUID = Begin
+                        0x6c3c41107cf8024db01dd5f64cab9db8
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =790
+                            Top =113
+                            Width =678
+                            Height =240
+                            Name ="Texto15"
+                            Caption ="Clave:"
+                            GUID = Begin
+                                0xff03e8861f5fde4c9b3b4fc172889b7b
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    OverlapFlags =85
+                    Left =1582
+                    Top =793
+                    Width =645
+                    TabIndex =4
+                    Name ="Hora entrada"
+                    ControlSource ="Hora entrada"
+                    Format ="Short Time"
+                    StatusBarText ="Hora de entrada"
+                    EventProcPrefix ="Hora_entrada"
+                    GUID = Begin
+                        0xa9784312e14a8e48be6a99f9e541a951
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =226
+                            Top =793
+                            Width =1243
+                            Height =240
+                            Name ="Texto23"
+                            Caption ="Hora entrada:"
+                            GUID = Begin
+                                0x3bc7b2397eb9c24bb7e5f2298e6aea41
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    OverlapFlags =85
+                    Left =1582
+                    Top =1133
+                    Width =645
+                    TabIndex =5
+                    Name ="Hora salida"
+                    ControlSource ="Hora salida"
+                    Format ="Short Time"
+                    StatusBarText ="Hora de salida"
+                    EventProcPrefix ="Hora_salida"
+                    GUID = Begin
+                        0xeb1e2d96140ff54aacb93c8139052c03
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =339
+                            Top =1133
+                            Width =1130
+                            Height =240
+                            Name ="Texto25"
+                            Caption ="Hora salida:"
+                            GUID = Begin
+                                0x50ca7d4243395e4bb3a80ae343a8b535
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    OverlapFlags =85
+                    Left =6119
+                    Top =793
+                    Width =330
+                    TabIndex =7
+                    Name ="Cupo"
+                    ControlSource ="Cupo"
+                    StatusBarText ="Limite maximo de alumnos"
+                    GUID = Begin
+                        0x329549938ce27e4495c401c11f2b1ace
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =5328
+                            Top =793
+                            Width =678
+                            Height =240
+                            Name ="Texto29"
+                            Caption ="Cupo:"
+                            GUID = Begin
+                                0xa983cb159c4e4d489806f242c7d73514
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    OverlapFlags =85
+                    Left =7706
+                    Top =793
+                    Width =330
+                    TabIndex =8
+                    Name ="Alumnos"
+                    ControlSource ="Alumnos"
+                    StatusBarText ="Numero de alumnos en el grupo"
+                    GUID = Begin
+                        0x0ddb43ec051f8f45a0b24ec2223aff7d
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =6689
+                            Top =793
+                            Width =904
+                            Height =240
+                            Name ="Texto31"
+                            Caption ="Alumnos:"
+                            GUID = Begin
+                                0x6794c476e313c1499eb93f9ee739e501
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    OverlapFlags =85
+                    Left =3288
+                    Top =1133
+                    Width =1245
+                    TabIndex =9
+                    Name ="Inicio"
+                    ControlSource ="Inicio"
+                    Format ="General Date"
+                    StatusBarText ="Fecha de inicio del nivel actual"
+                    GUID = Begin
+                        0x12179cbab49d2140adcf2d642479a5a8
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =2380
+                            Top =1133
+                            Width =678
+                            Height =240
+                            Name ="Texto33"
+                            Caption ="Inicio:"
+                            GUID = Begin
+                                0x5605ce5cf754d0428b3e2d22748d5d24
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    OverlapFlags =85
+                    Left =5665
+                    Top =1133
+                    Width =1365
+                    TabIndex =10
+                    Name ="Leccion"
+                    ControlSource ="Leccion"
+                    GUID = Begin
+                        0x216575c95544cf4d98bcd25f071ce632
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =4648
+                            Top =1133
+                            Width =904
+                            Height =240
+                            Name ="Texto35"
+                            Caption ="Leccion:"
+                            GUID = Begin
+                                0xa9e32edfdc239242b1b578cc38a48c69
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    OverlapFlags =85
+                    Left =5664
+                    Top =1474
+                    Width =930
+                    TabIndex =11
+                    Name ="FechaLeccion"
+                    ControlSource ="FechaLeccion"
+                    Format ="Short Date"
+                    GUID = Begin
+                        0xa2da028a3114424b844719be07ecb582
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =4195
+                            Top =1474
+                            Width =1356
+                            Height =240
+                            Name ="Texto37"
+                            Caption ="Fecha Leccion:"
+                            GUID = Begin
+                                0x0427902be8ae5a47bf279335bcf488a4
+                            End
+                        End
+                    End
+                End
+                Begin Subform
+                    Locked = NotDefault
+                    OverlapFlags =85
+                    Left =113
+                    Top =1814
+                    Width =8604
+                    Height =1476
+                    TabIndex =12
+                    Name ="F_Grupos Alumnos"
+                    SourceObject ="Form.F_Grupos Alumnos"
+                    LinkChildFields ="Grupo"
+                    LinkMasterFields ="Clave"
+                    EventProcPrefix ="F_Grupos_Alumnos"
+                    GUID = Begin
+                        0x19841412aeb2164dbad83e942038761c
+                    End
+                End
+                Begin ComboBox
+                    Locked = NotDefault
+                    OverlapFlags =85
+                    ListWidth =3835
+                    Left =4761
+                    Top =113
+                    Width =3865
+                    TabIndex =1
+                    ColumnInfo ="\"\";\"\";\"10\";\"60\""
+                    GUID = Begin
+                        0x8eaf0b466cf3be4aa34076be0b78a0ea
+                    End
+                    Name ="Curso"
+                    ControlSource ="Curso"
+                    RowSourceType ="Table/Query"
+                    RowSource ="Select [Curso] From [Cursos];"
+                    ColumnWidths ="3585"
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =3741
+                            Top =113
+                            Width =930
+                            Height =240
+                            Name ="Texto40"
+                            Caption ="Curso :"
+                            GUID = Begin
+                                0xbf2892cb6228564e8df18ff0cfb9721d
+                            End
+                        End
+                    End
+                End
+                Begin ComboBox
+                    Locked = NotDefault
+                    OverlapFlags =85
+                    ColumnCount =2
+                    ListWidth =4615
+                    Left =4761
+                    Top =453
+                    Width =3865
+                    TabIndex =2
+                    ColumnInfo ="\"\";\"\";\"\";\"\";\"10\";\"110\""
+                    GUID = Begin
+                        0x70e407e600f9ff4284abcdea510b81dd
+                    End
+                    Name ="Maestro"
+                    ControlSource ="Maestro"
+                    RowSourceType ="Table/Query"
+                    RowSource ="Select [Nombre],[Grado] From [Maestros];"
+                    ColumnWidths ="2925;1440"
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =3741
+                            Top =453
+                            Width =930
+                            Height =240
+                            Name ="Texto42"
+                            Caption ="Maestro :"
+                            GUID = Begin
+                                0xc22c829055d293458b0c44dcd929fe7d
+                            End
+                        End
+                    End
+                End
+                Begin ComboBox
+                    Locked = NotDefault
+                    OverlapFlags =85
+                    ListWidth =1690
+                    Left =1587
+                    Top =453
+                    Width =1690
+                    TabIndex =3
+                    ColumnInfo ="\"\";\"\";\"10\";\"100\""
+                    GUID = Begin
+                        0x7bd82ee0ffee9548b9886af335a44dd3
+                    End
+                    Name ="Dia"
+                    ControlSource ="Dia"
+                    RowSourceType ="Table/Query"
+                    RowSource ="Select [Dia] From [Orden Dias];"
+                    ColumnWidths ="1440"
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =421
+                            Top =453
+                            Width =930
+                            Height =240
+                            Name ="Texto44"
+                            Caption ="Dia :"
+                            GUID = Begin
+                                0x73fab88d4853764583ab5dfd539414a2
+                            End
+                        End
+                    End
+                End
+                Begin ComboBox
+                    Locked = NotDefault
+                    OverlapFlags =85
+                    ListWidth =1690
+                    Left =3285
+                    Top =793
+                    Width =1240
+                    TabIndex =6
+                    ColumnInfo ="\"\";\"\";\"10\";\"10\""
+                    GUID = Begin
+                        0x18546da83e13bd4f88f49ba8d4ca101d
+                    End
+                    Name ="Salon"
+                    ControlSource ="Salon"
+                    RowSourceType ="Table/Query"
+                    RowSource ="Select [Salon] From [Salones];"
+                    ColumnWidths ="1440"
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =2389
+                            Top =793
+                            Width =660
+                            Height =240
+                            Name ="Texto46"
+                            Caption ="Salón :"
+                            GUID = Begin
+                                0xab5993eac3156c4a8d126f18c5152afd
+                            End
+                        End
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =226
+                    Top =4988
+                    Width =1131
+                    Height =471
+                    TabIndex =13
+                    Name ="B_srch_grupos"
+                    Caption ="Buscar"
+                    OnClick ="M_grupos.Buscar Grupo"
+                    GUID = Begin
+                        0x91e4bcf880c9494589c7591be955a308
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =7370
+                    Top =4988
+                    Width =1485
+                    Height =465
+                    TabIndex =14
+                    ForeColor =255
+                    Name ="B_term_grupos"
+                    Caption ="Terminar"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0x72ce2b9e4f9f1d40aa5b0ce6b5b99643
+                    End
+                End
+                Begin Subform
+                    Locked = NotDefault
+                    OverlapFlags =85
+                    Left =1133
+                    Top =3401
+                    Width =6795
+                    Height =1470
+                    TabIndex =15
+                    Name ="F_Alumnos Sub"
+                    SourceObject ="Form.F_Alumnos Sub"
+                    LinkChildFields ="Colegiaturas.AlumnoID"
+                    LinkMasterFields ="Alumno"
+                    EventProcPrefix ="F_Alumnos_Sub"
+                    GUID = Begin
+                        0xa59cb50e8985e54894983cf9d4c253be
+                    End
+                End
+                Begin TextBox
+                    Visible = NotDefault
+                    Locked = NotDefault
+                    OverlapFlags =85
+                    Left =7710
+                    Top =1247
+                    Width =336
+                    TabIndex =16
+                    Name ="Alumno"
+                    ControlSource ="=[F_Grupos Alumnos].Form!Credencial"
+                    GUID = Begin
+                        0x53c1e755c170804eb533b55127df6cda
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =1474
+                    Top =4988
+                    Width =1140
+                    Height =465
+                    TabIndex =17
+                    Name ="B_del_grupo"
+                    Caption ="Borrar"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0x675ed02dfabbb548aa0b2eae702cf23e
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =2721
+                    Top =4988
+                    Width =1140
+                    Height =465
+                    TabIndex =18
+                    Name ="B_edit_Grupo"
+                    Caption ="Edición"
+                    OnClick ="M_grupos.abrir edicion"
+                    GUID = Begin
+                        0xffa6a5ce109e3040a17f6ccd9da9fc2c
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =5669
+                    Top =4988
+                    Width =1125
+                    Height =465
+                    TabIndex =19
+                    Name ="B_rep_grupos"
+                    Caption ="Listado"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0x500444f331f42b4998a83ce2345f5c38
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =3968
+                    Top =4988
+                    Width =1131
+                    Height =463
+                    TabIndex =20
+                    Name ="Alta_grupo"
+                    Caption ="Altas"
+                    OnClick ="M_grupos.abrir alta"
+                    GUID = Begin
+                        0x95335a08f8714b4f9c82f8dea03b5049
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            Height =0
+            BackColor =12632256
+            Name ="PieDelFormulario2"
+            GUID = Begin
+                0xe687880192c428459c6b472dc0fde4fe
+            End
+        End
+    End
+End
+CodeBehindForm
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database   'Usar orden de base de datos en comparaciones de cadenas
+Dim db As Database, T_Alumnos As Recordset, T_Grupos As Recordset
+Dim x
+
+Private Sub B_add_grupo_Click()
+On Error GoTo Err_B_add_grupo_Click
+
+
+    DoCmd.GoToRecord , , A_NEWREC
+
+Exit_B_add_grupo_Click:
+    Exit Sub
+
+Err_B_add_grupo_Click:
+    MsgBox Error$
+    Resume Exit_B_add_grupo_Click
+    
+End Sub
+
+Private Sub B_del_grupo_Click()
+On Error GoTo Err_B_del_grupo_Click
+
+    x = InputBox("Esta seguro de querer borrar el grupo <S/N> ? ")
+    If x = "S" Then
+       Set db = CurrentDb()
+       Set T_Alumnos = db.OpenRecordset("Alumnos")
+       T_Alumnos.Index = "Grupo"
+       T_Alumnos.Seek "=", Clave
+       If T_Alumnos.NoMatch Then
+          Set T_Grupos = db.OpenRecordset("Grupos")
+          T_Grupos.Index = "PrimaryKey"
+          T_Grupos.Seek "=", Clave
+          If Not T_Grupos.NoMatch Then
+             T_Grupos.Delete
+          End If
+          DoCmd.GoToControl "Clave"
+          DoCmd.Requery
+       Else
+          MsgBox "Tiene Alumnos registrados no se puede dar de Baja"
+       End If
+    End If
+
+Exit_B_del_grupo_Click:
+    Exit Sub
+
+Err_B_del_grupo_Click:
+    MsgBox Error$
+    Resume Exit_B_del_grupo_Click
+    
+End Sub
+
+Private Sub B_rep_grupos_Click()
+On Error GoTo Err_B_rep_grupos_Click
+
+    Dim DocName As String
+
+    DocName = "R_grupos"
+    DoCmd.OpenReport DocName, A_PREVIEW
+
+Exit_B_rep_grupos_Click:
+    Exit Sub
+
+Err_B_rep_grupos_Click:
+    MsgBox Error$
+    Resume Exit_B_rep_grupos_Click
+    
+End Sub
+
+Private Sub B_term_grupos_Click()
+On Error GoTo Err_B_term_grupos_Click
+
+
+    DoCmd.Close
+
+Exit_B_term_grupos_Click:
+    Exit Sub
+
+Err_B_term_grupos_Click:
+    MsgBox Error$
+    Resume Exit_B_term_grupos_Click
+    
+End Sub
+
+Private Sub Botón51_Click()
+On Error GoTo Err_Botón51_Click
+
+
+    DoCmd.DoMenuItem A_FORMBAR, A_EDITMENU, 10, , A_MENU_VER20
+
+Exit_Botón51_Click:
+    Exit Sub
+
+Err_Botón51_Click:
+    MsgBox Error$
+    Resume Exit_Botón51_Click
+    
+End Sub
+
+Private Sub Botón60_Click()
+On Error GoTo Err_Botón60_Click
+
+    Dim DocName As String
+    Dim LinkCriteria As String
+
+    DocName = "F_Grupos Editar"
+    DoCmd.OpenForm DocName, , , LinkCriteria
+
+Exit_Botón60_Click:
+    Exit Sub
+
+Err_Botón60_Click:
+    MsgBox Error$
+    Resume Exit_Botón60_Click
+    
+End Sub
+
+Private Sub Form_Open(Cancel As Integer)
+Dim db As Database, FLogin As Form, TUser As Recordset, Forma As Form
+   Set db = CurrentDb()
+   Set Forma = Forms!F_Grupos
+   Set FLogin = Forms!login
+   Set TUser = db.OpenRecordset("Usuarios")
+   TUser.Index = "PrimaryKey"
+   TUser.Seek "=", FLogin!UserID
+   If Not TUser.NoMatch Then
+      If IsNull(TUser!A_G) Or TUser!A_G = "N" Then
+         MsgBox "El usuario no tiene privilegios de acceso"
+         DoCmd.CancelEvent
+      Else
+         If TUser!A_G = "C" Then
+            Forma.AllowEditing = False
+            Forma.DefaultEditing = 3
+            [B_del_grupo].Enabled = False
+            [B_edit_Grupo].Enabled = False
+            [Alta_grupo].Enabled = False
+         End If
+      End If
+   Else
+      MsgBox "El usuario no tiene clave de acceso registrada"
+      DoCmd.CancelEvent
+   End If
+
+End Sub

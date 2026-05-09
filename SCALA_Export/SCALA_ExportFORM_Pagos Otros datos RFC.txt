@@ -1,0 +1,223 @@
+Version =19
+VersionRequired =19
+Checksum =633924391
+Begin Form
+    AllowEditing = NotDefault
+    RecordSelectors = NotDefault
+    NavigationButtons = NotDefault
+    AllowDeletions = NotDefault
+    AllowAdditions = NotDefault
+    AllowEdits = NotDefault
+    DefaultView =0
+    ScrollBars =0
+    GridX =5
+    GridY =5
+    Width =3741
+    ItemSuffix =39
+    Left =1620
+    Top =4770
+    Right =4920
+    Bottom =5115
+    RecSrcDt = Begin
+        0x342ae65443cae140
+    End
+    GUID = Begin
+        0x7564c2e3a87994409151d87e9a30423f
+    End
+    NameMap = Begin
+        0x0acc0e5500000000000000000000000000000000000000000c00000002000000 ,
+        0x0000000000000000000000000000
+    End
+    RecordSource ="Q_RFC relacion"
+    Caption ="Otros datos del alumno RFC"
+    OnCurrent ="[Event Procedure]"
+    Begin
+        Begin Label
+            TextAlign =3
+            FontWeight =700
+            BackColor =12632256
+        End
+        Begin Rectangle
+            SpecialEffect =2
+            Width =850
+            Height =850
+        End
+        Begin CommandButton
+            TextFontFamily =2
+            Width =1701
+            Height =283
+        End
+        Begin OptionButton
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin CheckBox
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin TextBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin ListBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =1417
+            LabelX =-236
+        End
+        Begin ComboBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin FormHeader
+            Visible = NotDefault
+            Height =0
+            BackColor =12632256
+            Name ="EncabezadoDelFormulario1"
+            EventProcPrefix ="EncabezadoDelFormula"
+            GUID = Begin
+                0x02cd1c24099d604cbe66011d9badc87c
+            End
+        End
+        Begin Section
+            Height =680
+            BackColor =8421376
+            Name ="Detalle0"
+            GUID = Begin
+                0x6f639452f387f54f8d2b19a02fee4b47
+            End
+            Begin
+                Begin TextBox
+                    OverlapFlags =93
+                    Left =113
+                    Width =3525
+                    Height =229
+                    ColumnWidth =3090
+                    Name ="Nombre"
+                    ControlSource ="Nombre"
+                    StatusBarText ="Nombre del alumno"
+                    GUID = Begin
+                        0xe3b7484f1ec5a846910514cd7dbf0e2f
+                    End
+                End
+                Begin TextBox
+                    DecimalPlaces =0
+                    OverlapFlags =87
+                    Left =113
+                    Top =226
+                    Width =1304
+                    Height =199
+                    TabIndex =1
+                    Name ="RFC"
+                    ControlSource ="RFC"
+                    StatusBarText ="Clave del grupo del alumno"
+                    GUID = Begin
+                        0xa4c45ebbc859274c94a7ddbd00ae955a
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =87
+                    Left =2471
+                    Top =226
+                    Width =1134
+                    Height =199
+                    TabIndex =2
+                    Name ="Direccion1"
+                    ControlSource ="Direccion1"
+                    StatusBarText ="Fecha de ingreso"
+                    GUID = Begin
+                        0x00226efda6cbd247a5ac2a2bba580964
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =87
+                            Left =1571
+                            Top =231
+                            Width =780
+                            Height =210
+                            FontSize =6
+                            Name ="Texto29"
+                            Caption ="Direc1:"
+                            GUID = Begin
+                                0x368533256ff0c040b305dabb8e3236bc
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =2483
+                    Top =452
+                    Width =1134
+                    Height =199
+                    TabIndex =3
+                    Name ="Direccion2"
+                    ControlSource ="Direccion2"
+                    StatusBarText ="Fecha de ingreso"
+                    GUID = Begin
+                        0xe01399672c5d84469d51dc918e8ea79f
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            Height =0
+            BackColor =12632256
+            Name ="PieDelFormulario2"
+            GUID = Begin
+                0xffe269f46ca35a4aa7c221cbd0e2e102
+            End
+        End
+    End
+End
+CodeBehindForm
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database
+Dim db As Database
+Dim T_Alumnos As Recordset
+
+
+Private Sub Form_Current()
+    If IsNull(Forms!pagos![RFC_Para_Impresion]) Or Left(Forms!pagos![RFC_Para_Impresion], 5) = "     " Then
+       If IsNull(RFC) Or Left(RFC, 5) = "     " Then
+          Set db = CurrentDb()
+          Set T_Alumnos = db.OpenRecordset("Alumnos")
+          T_Alumnos.Index = "PrimaryKey"
+          T_Alumnos.Seek "=", Credencial
+          If Not T_Alumnos.NoMatch Then
+             Nombre_recibo = T_Alumnos!Nombre
+             Direc1_recibo = T_Alumnos!Direccion1
+             Direc2_Recibo = T_Alumnos!Direccion2
+             RFC_Recibo = "     "
+          End If
+          'T_Alumnos.Close
+       Else
+          Nombre_recibo = Nombre
+          Direc1_recibo = Direccion1
+          Direc2_Recibo = Direccion2
+          RFC_Recibo = RFC
+       End If
+       Forms![pagos]![RFC_Para_Impresion] = RFC_Recibo
+       Forms![pagos]![Nombre_Para_Impresion] = Nombre_recibo
+       Forms![pagos]![Direc1_Para_Impresion] = Direc1_recibo
+       Forms![pagos]![Direc2_Para_Impresion] = Direc2_Recibo
+    End If
+End Sub

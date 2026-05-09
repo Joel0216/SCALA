@@ -1,0 +1,759 @@
+Option Compare Database   'Usar orden de base de datos en comparaciones de cadenas
+Dim db As Database
+
+Function dig_ver()
+Dim num_cred%, diezm%, miles%, cientos%, dieces%, suma%, digito%
+   num_cred% = Credencial
+   diezm% = Int(num_cred% / 10000)
+   num_cred% = num_cred% - (diezm% * 10000)
+   miles% = Int(num_cred% / 1000)
+   num_cred% = num_cred% - (miles% * 1000)
+   cientos% = Int(num_cred% / 100)
+   num_cred% = num_cred% - (cientos% * 100)
+   dieces% = Int(num_cred% / 10)
+   num_cred% = num_cred% - (dieces% * 10)
+   suma% = (diezm% * 6) + (miles% * 5) + (cientos% * 4) + (dieces% * 3) + (num_cred% * 2)
+   digito% = suma% Mod 7
+   dig_ver = 7 - digito%
+
+End Function
+
+Function valor_cant(cantidad)
+Dim valorn, diezmill%, millones%, cienm%, diezm%, miles%, cientos%, dieces%, pesos%, centavos
+Dim Valor
+   
+   valorn = cantidad
+   diezmill% = 0
+   millones% = 0
+   cienm% = 0
+   diezm% = 0
+   miles% = 0
+   cientos% = 0
+   dieces% = 0
+   pesos% = 0
+   centavos = 0
+   diezmill% = Int(valorn / 10000000)
+   valorn = valorn - (diezmill% * 10000000)
+   millones% = Int(valorn / 1000000)
+   valorn = valorn - (millones% * 1000000)
+   cienm% = Int(valorn / 100000)
+   valorn = valorn - (cienm% * 100000)
+   diezm% = Int(valorn / 10000)
+   valorn = valorn - (diezm% * 10000)
+   miles% = Int(valorn / 1000)
+   valorn = valorn - (miles% * 1000)
+   cientos% = Int(valorn / 100)
+   valorn = valorn - (cientos% * 100)
+   dieces% = Int(valorn / 10)
+   valorn = valorn - (dieces% * 10)
+   pesos% = Int(valorn)
+   centavos = valorn - pesos%
+
+   ' Para decenas de millones
+   
+   Select Case diezmill%
+      Case 1
+         If millones% = 0 Then
+            Valor = "Diez Millones "
+         End If
+      Case 2
+         If millones% = 0 Then
+            Valor = "Veinte Millones "
+         Else
+            Valor = "Veinti"
+         End If
+      Case 3
+         If millones% = 0 Then
+            Valor = "Treinta Millones "
+         Else
+            Valor = "Treinta y "
+         End If
+      Case 4
+         If millones% = 0 Then
+            Valor = "Cuarenta Millones "
+         Else
+            Valor = "Cuarenta y "
+         End If
+      Case 5
+         If millones% = 0 Then
+            Valor = "Cincuenta Millones "
+         Else
+            Valor = "Cincuenta y "
+         End If
+      Case 6
+         If millones% = 0 Then
+            Valor = "Sesenta Millones "
+         Else
+            Valor = "Sesenta y "
+         End If
+      Case 7
+         If millones% = 0 Then
+            Valor = "Setenta Millones "
+         Else
+            Valor = "Setenta y "
+         End If
+      Case 8
+         If millones% = 0 Then
+            Valor = "Ochenta Millones "
+         Else
+            Valor = "Ochenta y "
+         End If
+      Case 9
+         If millones% = 0 Then
+            Valor = "Noventa Millones "
+         Else
+            Valor = "Noventa y "
+         End If
+   End Select
+
+   ' Para Millones
+   
+   Select Case millones%
+         Case 1
+            If diezmill% <> 0 Then
+               If diezmill% = 1 Then
+                  Valor = "Once Millones "
+               Else
+                  Valor = Valor + "un Millones "
+               End If
+            Else
+               Valor = "Un Millón "
+            End If
+         Case 2
+            If diezmill% <> 0 Then
+               If diezmill% = 1 Then
+                  Valor = "Doce Millones "
+               Else
+                  Valor = Valor + "dos Millones "
+               End If
+            Else
+               Valor = "Dos Millones "
+            End If
+         Case 3
+            If diezmill% <> 0 Then
+               If diezmill% = 1 Then
+                  Valor = "Trece Millones "
+               Else
+                  Valor = Valor + "tres Millones "
+               End If
+            Else
+               Valor = "Tres Millones "
+            End If
+         Case 4
+            If diezmill% <> 0 Then
+               If diezmill% = 1 Then
+                  Valor = "Catorce Millones "
+               Else
+                  Valor = Valor + "cuatro Millones "
+               End If
+            Else
+               Valor = "cuatro Millones "
+            End If
+         Case 5
+            If diezmill% <> 0 Then
+               If diezmill% = 1 Then
+                  Valor = "Quince Millones "
+               Else
+                  Valor = Valor + "cinco Millones "
+               End If
+            Else
+               Valor = "Cinco Millones "
+            End If
+         Case 6
+            If diezmill% <> 0 Then
+               If diezmill% = 1 Then
+                  Valor = "Dieciseis Millones "
+               Else
+                  Valor = Valor + "seis Millones "
+               End If
+            Else
+               Valor = "Seis Millones "
+            End If
+         Case 7
+            If diezmill% <> 0 Then
+               If diezmill% = 1 Then
+                  Valor = "Diecisiete Millones "
+               Else
+                  Valor = Valor + "siete Millones "
+               End If
+            Else
+               Valor = "Siete Millones "
+            End If
+         Case 8
+            If diezmill% <> 0 Then
+               If diezmill% = 1 Then
+                  Valor = "Dieciocho Millones "
+               Else
+                  Valor = Valor + "ocho Millones "
+               End If
+            Else
+               Valor = "Ocho Millones "
+            End If
+         Case 9
+            If diezmill% <> 0 Then
+               If diezmill% = 1 Then
+                  Valor = "Diecinueve Millones "
+               Else
+                  Valor = Valor + "nueve Millones "
+               End If
+            Else
+               Valor = "Nueve Millones "
+            End If
+   End Select
+   
+   ' Para Centenares de Miles
+   
+   Select Case cienm%
+         Case 1
+            If diezm% = 0 And miles% = 0 Then
+               Valor = Valor + "Cien Mil "
+            Else
+               Valor = Valor + "Ciento "
+            End If
+         Case 2
+            If diezm% = 0 And miles% = 0 Then
+               Valor = Valor + "Doscientos Mil "
+            Else
+               Valor = Valor + "Doscientos "
+            End If
+         Case 3
+            If diezm% = 0 And miles% = 0 Then
+               Valor = Valor + "Trescientos Mil "
+            Else
+               Valor = Valor + "Trescientos "
+            End If
+         Case 4
+            If diezm% = 0 And miles% = 0 Then
+               Valor = Valor + "Cuatrocientos Mil "
+            Else
+               Valor = Valor + "Cuatrocientos "
+            End If
+         Case 5
+            If diezm% = 0 And miles% = 0 Then
+               Valor = Valor + "Quinientos Mil "
+            Else
+               Valor = Valor + "Quinientos "
+            End If
+         Case 6
+            If diezm% = 0 And miles% = 0 Then
+               Valor = Valor + "Seicientos Mil "
+            Else
+               Valor = Valor + "Seicientos "
+            End If
+         Case 7
+            If diezm% = 0 And miles% = 0 Then
+               Valor = Valor + "Setecientos Mil "
+            Else
+               Valor = Valor + "Setecientos "
+            End If
+         Case 8
+            If diezm% = 0 And miles% = 0 Then
+               Valor = Valor + "Ochocientos Mil "
+            Else
+               Valor = Valor + "Ochocientos "
+            End If
+         Case 9
+            If diezm% = 0 And miles% = 0 Then
+               Valor = Valor + "Novecientos Mil "
+            Else
+               Valor = Valor + "Novecientos "
+            End If
+   End Select
+   
+   ' Para Decenas de Miles
+   
+   Select Case diezm%
+         Case 1
+            If miles% = 0 Then
+               Valor = Valor + "Diez Mil "
+            End If
+         Case 2
+            If miles% = 0 Then
+               Valor = Valor + "Veinte Mil "
+            Else
+               Valor = Valor + "Veinti "
+            End If
+         Case 3
+            If miles% = 0 Then
+               Valor = Valor + "Treinta Mil "
+            Else
+               Valor = Valor + "Treinta y "
+            End If
+         Case 4
+            If miles% = 0 Then
+               Valor = Valor + "Cuarenta Mil "
+            Else
+               Valor = Valor + "Cuarenta y "
+            End If
+         Case 5
+            If miles% = 0 Then
+               Valor = Valor + "Cincuenta Mil "
+            Else
+               Valor = Valor + "Cincuenta y "
+            End If
+         Case 6
+            If miles% = 0 Then
+               Valor = Valor + "Sesenta Mil "
+            Else
+               Valor = Valor + "Sesenta y "
+            End If
+         Case 7
+            If miles% = 0 Then
+               Valor = Valor + "Setenta Mil "
+            Else
+               Valor = Valor + "Setenta y "
+            End If
+         Case 8
+            If miles% = 0 Then
+               Valor = Valor + "Ochenta Mil "
+            Else
+               Valor = Valor + "Ochenta y "
+            End If
+         Case 9
+            If miles% = 0 Then
+               Valor = Valor + "Noventa Mil "
+            Else
+               Valor = Valor + "Noventa y "
+            End If
+   End Select
+   
+   ' Para Unidades de Miles
+   
+   Select Case miles%
+         Case 1
+            If diezm% <> 0 Then
+               If diezm% = 1 Then
+                  Valor = Valor + "Once Mil "
+               Else
+                  Valor = Valor + "un Mil "
+               End If
+            Else
+               Valor = Valor + "Un Mil "
+            End If
+         Case 2
+            If diezm% <> 0 Then
+               If diezm% = 1 Then
+                  Valor = Valor + "Doce Mil "
+               Else
+                  Valor = Valor + "dos Mil "
+               End If
+            Else
+               Valor = Valor + "Dos Mil "
+            End If
+         Case 3
+            If diezm% <> 0 Then
+               If diezm% = 1 Then
+                  Valor = Valor + "Trece Mil "
+               Else
+                  Valor = Valor + "tres Mil "
+               End If
+            Else
+               Valor = Valor + "Tres Mil "
+            End If
+         Case 4
+            If diezm% <> 0 Then
+               If diezm% = 1 Then
+                  Valor = Valor + "Catorce Mil "
+               Else
+                  Valor = Valor + "cuatro Mil "
+               End If
+            Else
+               Valor = Valor + "Cuatro Mil "
+            End If
+         Case 5
+            If diezm% <> 0 Then
+               If diezm% = 1 Then
+                  Valor = Valor + "Quince Mil "
+               Else
+                  Valor = Valor + "cinco Mil "
+               End If
+            Else
+               Valor = Valor + "Cinco Mil "
+            End If
+         Case 6
+            If diezm% <> 0 Then
+               If diezm% = 1 Then
+                  Valor = Valor + "Dieciseis Mil "
+               Else
+                  Valor = Valor + "seis Mil "
+               End If
+            Else
+               Valor = Valor + "Seis Mil "
+            End If
+         Case 7
+            If diezm% <> 0 Then
+               If diezm% = 1 Then
+                  Valor = Valor + "Diecisiete Mil "
+               Else
+                  Valor = Valor + "siete Mil "
+               End If
+            Else
+               Valor = Valor + "Siete Mil "
+            End If
+         Case 8
+            If diezm% <> 0 Then
+               If diezm% = 1 Then
+                  Valor = Valor + "Dieciocho Mil "
+               Else
+                  Valor = Valor + "ocho Mil "
+               End If
+            Else
+               Valor = Valor + "Ocho Mil "
+            End If
+         Case 9
+            If diezm% <> 0 Then
+               If diezm% = 1 Then
+                  Valor = Valor + "Diecinueve Mil "
+               Else
+                  Valor = Valor + "nueve Mil "
+               End If
+            Else
+               Valor = Valor + "Nueve Mil "
+            End If
+   End Select
+   
+   ' Para Cientos
+   
+   Select Case cientos%
+         Case 1
+            If dieces% = 0 And pesos% = 0 Then
+               Valor = Valor + "Cien "
+            Else
+               Valor = Valor + "Ciento "
+            End If
+         Case 2
+            Valor = Valor + "Doscientos "
+         Case 3
+            Valor = Valor + "Trescientos "
+         Case 4
+            Valor = Valor + "Cuatrocientos "
+         Case 5
+            Valor = Valor + "Quinientos "
+         Case 6
+            Valor = Valor + "Seicientos "
+         Case 7
+            Valor = Valor + "Setecientos "
+         Case 8
+            Valor = Valor + "Ochocientos "
+         Case 9
+            Valor = Valor + "Novecientos "
+   End Select
+   
+   ' Para Decenas
+   
+   Select Case dieces%
+         Case 1
+            If pesos% = 0 Then
+               Valor = Valor + "Diez "
+            End If
+         Case 2
+            If pesos% = 0 Then
+               Valor = Valor + "Veinte "
+            Else
+               Valor = Valor + "Veinti "
+            End If
+         Case 3
+            If pesos% = 0 Then
+               Valor = Valor + "Treinta "
+            Else
+               Valor = Valor + "Treinta y "
+            End If
+         Case 4
+            If pesos% = 0 Then
+               Valor = Valor + "Cuarenta "
+            Else
+               Valor = Valor + "Cuarenta y "
+            End If
+         Case 5
+            If pesos% = 0 Then
+               Valor = Valor + "Cincuenta "
+            Else
+               Valor = Valor + "Cincuenta y "
+            End If
+         Case 6
+            If pesos% = 0 Then
+               Valor = Valor + "Sesenta "
+            Else
+               Valor = Valor + "Sesenta y "
+            End If
+         Case 7
+            If pesos% = 0 Then
+               Valor = Valor + "Setenta "
+            Else
+               Valor = Valor + "Setenta y "
+            End If
+         Case 8
+            If pesos% = 0 Then
+               Valor = Valor + "Ochenta "
+            Else
+               Valor = Valor + "Ochenta y "
+            End If
+         Case 9
+            If pesos% = 0 Then
+               Valor = Valor + "Noventa "
+            Else
+               Valor = Valor + "Noventa y "
+            End If
+   End Select
+   
+   ' Para Unidades
+   
+   Select Case pesos%
+         Case 1
+            If dieces% <> 0 Then
+               If dieces% = 1 Then
+                  Valor = Valor + "Once "
+               Else
+                  Valor = Valor + "un "
+               End If
+            Else
+               Valor = Valor + "Un "
+            End If
+         Case 2
+            If dieces% <> 0 Then
+               If dieces% = 1 Then
+                  Valor = Valor + "Doce "
+               Else
+                  Valor = Valor + "dos "
+               End If
+            Else
+               Valor = Valor + "Dos "
+            End If
+         Case 3
+            If dieces% <> 0 Then
+               If dieces% = 1 Then
+                  Valor = Valor + "Trece "
+               Else
+                  Valor = Valor + "tres "
+               End If
+            Else
+               Valor = Valor + "Tres "
+            End If
+         Case 4
+            If dieces% <> 0 Then
+               If dieces% = 1 Then
+                  Valor = Valor + "Catorce "
+               Else
+                  Valor = Valor + "cuatro "
+               End If
+            Else
+               Valor = Valor + "Cuatro "
+            End If
+         Case 5
+            If dieces% <> 0 Then
+               If dieces% = 1 Then
+                  Valor = Valor + "Quince "
+               Else
+                  Valor = Valor + "cinco "
+               End If
+            Else
+               Valor = Valor + "Cinco "
+            End If
+         Case 6
+            If dieces% <> 0 Then
+               If dieces% = 1 Then
+                  Valor = Valor + "Dieciseis "
+               Else
+                  Valor = Valor + "seis "
+               End If
+            Else
+               Valor = Valor + "Seis "
+            End If
+         Case 7
+            If dieces% <> 0 Then
+               If dieces% = 1 Then
+                  Valor = Valor + "Diecisiete "
+               Else
+                  Valor = Valor + "siete "
+               End If
+            Else
+               Valor = Valor + "Siete "
+            End If
+         Case 8
+            If dieces% <> 0 Then
+               If dieces% = 1 Then
+                  Valor = Valor + "Dieciocho "
+               Else
+                  Valor = Valor + "ocho "
+               End If
+            Else
+               Valor = Valor + "Ocho "
+            End If
+         Case 9
+            If dieces% <> 0 Then
+               If dieces% = 1 Then
+                  Valor = Valor + "Diecinueve "
+               Else
+                  Valor = Valor + "nueve "
+               End If
+            Else
+               Valor = Valor + "Nueve "
+            End If
+   End Select
+   
+   valor_cant = Valor + "Pesos  " + Format(centavos * 100, "00") + "/100 m.n."
+   
+   
+End Function
+
+
+Function FormasAbiertas()
+Dim formaACerrar
+    ' Scan the open forms...
+
+    For i% = (Forms.Count - 1) To 0 Step -1
+        formaACerrar = Forms(i%).FormName
+        DoCmd.Close A_FORM, formaACerrar
+
+    Next i%
+
+End Function
+
+Function login()
+Dim Tlogin As Recordset, intCountLogin, FLogin As Form, Tusuarios As Recordset
+On Error GoTo Err_login
+   If intCountLogin <> 0 Then
+      If intCountLogin <> 1 And intCountLogin <> 2 Then intCountLogin = 0
+   End If
+   Set db = CurrentDb()
+   Set FLogin = Forms!login
+   Set Tusuarios = db.OpenRecordset("Usuarios")
+
+   UserID = FLogin!UserID
+   Password = FLogin!Password
+   Password = IIf(IsNull(Password), "", Password)
+   Tusuarios.Index = "Primarykey"
+   Tusuarios.Seek "=", UserID
+   If Tusuarios.NoMatch Then
+      intCountLogin = intCountLogin + 1
+      MsgBox "Nombre de usuario incorrecto", 48, "Mensaje del sistema"
+      If intCountLogin > 2 Then DoCmd.Close A_FORM, "Login"
+   Else
+      If Tusuarios!Password <> Password Then
+         intCountLogin = intCountLogin + 1
+         MsgBox "Clave incorrecta", 48, "Mensaje del sistema"
+         If intCountLogin > 2 Then DoCmd.Close A_FORM, "Login"
+      Else
+         A = hideform("Login")
+         Set db = CurrentDb()
+         Set Tlogin = db.OpenRecordset("login")
+         Tlogin.AddNew
+         Tlogin!UserID = UserID
+         Tlogin!LoginAt = Now
+         Tlogin.Update
+         Tlogin.Close
+         FLogin.Visible = False 'DoCmd Close a_form, "Login"
+         DoCmd.ShowToolbar "Form View", A_TOOLBAR_NO
+         DoCmd.OpenForm "MAIN_MENU"
+         DoCmd.Maximize
+         'DoCmd.RunMacro "Presenta Registro"
+      End If
+   End If
+   If Date > #8/1/2026# Then
+      MsgBox "-------", 16, "LOGIN ERRLOG"
+      DoCmd.Close A_FORM, "Login"
+   End If
+
+
+Exit_Login:
+    Exit Function
+
+Err_login:
+    MsgBox Error$
+    Resume Exit_Login
+
+End Function
+
+Function login1()
+Dim Tlogin As Recordset, intCountLogin, FLogin As Form, Tusuarios As Recordset
+On Error GoTo Err_login1
+   If intCountLogin <> 0 Then
+      If intCountLogin <> 1 And intCountLogin <> 2 Then intCountLogin = 0
+   End If
+   Set db = CurrentDb()
+   Set FLogin = Forms!login1
+   Set Tusuarios = db.OpenRecordset("Usuarios")
+
+   UserID = FLogin!UserID
+   Password = FLogin!Password
+   Password = IIf(IsNull(Password), "", Password)
+   Tusuarios.Index = "Primarykey"
+   Tusuarios.Seek "=", UserID
+   If Tusuarios.NoMatch Then
+      intCountLogin = intCountLogin + 1
+      MsgBox "Nombre de usuario incorrecto", 48, "Mensaje del sistema"
+      If intCountLogin > 2 Then
+         DoCmd.Close A_FORM, "Login"
+         DoCmd.RunMacro "Salida Total"
+      Else
+         DoCmd.CancelEvent
+      End If
+   Else
+      If Tusuarios!Password <> Password Then
+         intCountLogin = intCountLogin + 1
+         MsgBox "Clave incorrecta", 48, "Mensaje del sistema"
+         If intCountLogin > 2 Then
+            DoCmd.Close A_FORM, "Login"
+            DoCmd.RunMacro "Salida Total"
+         Else
+            DoCmd.CancelEvent
+         End If
+      Else
+         DoCmd.Close
+      End If
+   End If
+Exit_Login1:
+    Exit Function
+
+Err_login1:
+    MsgBox Error$
+    Resume Exit_Login1
+End Function
+
+Function logout()
+Dim db As Database, FLogin As Form, TUser As Recordset, Forma As Form
+On Error GoTo Err_logout
+Dim Clave_edicion
+   Set db = CurrentDb()
+   Set FLogin = Forms!login
+   Set TUser = db.OpenRecordset("Usuarios")
+   TUser.Index = "PrimaryKey"
+   TUser.Seek "=", FLogin!UserID
+   If Not TUser.NoMatch Then
+      If TUser!MANTO_GRAL <> "M" Then
+         DoCmd.RunMacro "Salida_Total"
+      End If
+   Else
+      DoCmd.RunMacro "Salida_Total"
+   End If
+   Clave_edicion = InputBox("", "")
+   If Clave_edicion <> "dmysaa" Then
+      DoCmd.RunMacro "Salida_Total"
+   End If
+Exit_Logout:
+    Exit Function
+
+Err_logout:
+    MsgBox Error$
+    Resume Exit_Logout
+
+End Function
+
+Function NoTools()
+On Error GoTo Err_NoTools
+   'Turn off the toolbar and DBC
+   DoCmd.Echo False
+   DoEvents
+   SendKeys "{tab 3}No{Enter}"
+   DoCmd.DoMenuItem 0, 2, 4
+   DoCmd.DoMenuItem 1, 4, 3
+   DoCmd.Echo True
+
+Exit_NoTools:
+    Exit Function
+
+Err_NoTools:
+    MsgBox Error$
+    Resume Exit_NoTools
+
+End Function

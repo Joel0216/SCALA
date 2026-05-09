@@ -1,0 +1,355 @@
+Version =19
+VersionRequired =19
+Checksum =1262057085
+Begin Form
+    PopUp = NotDefault
+    Modal = NotDefault
+    AutoCenter = NotDefault
+    DefaultView =0
+    GridX =5
+    GridY =5
+    Width =7370
+    ItemSuffix =22
+    Left =1980
+    Top =1755
+    Right =9630
+    Bottom =4215
+    RecSrcDt = Begin
+        0x10e9b79f37c5e140
+    End
+    GUID = Begin
+        0x6bf458c1358d91468c6a91f0ced66963
+    End
+    NameMap = Begin
+        0x0acc0e550000000018ce5bcb8630c4468b5c9233d078d56f00000000110187d0 ,
+        0xb849e34000000000000000005400610062006c0061004d006500640069006f00 ,
+        0x730000000000000032a151c5fdcb504bae6559168a155a290700000018ce5bcb ,
+        0x8630c4468b5c9233d078d56f5100750065004d006500640069006f0000000000 ,
+        0x00003ae57763b2d2114c9401c4a84f5f02130700000018ce5bcb8630c4468b5c ,
+        0x9233d078d56f44006500730063004d006500640069006f000000000000000000 ,
+        0x00000000000000000000000000000c0000000200000000000000000000000000 ,
+        0x00000000
+    End
+    RecordSource ="TablaMedios"
+    Caption ="Catálogo de Medios"
+    OnOpen ="[Event Procedure]"
+    Begin
+        Begin Label
+            TextAlign =3
+            FontWeight =700
+            BackColor =12632256
+        End
+        Begin Rectangle
+            SpecialEffect =2
+            Width =850
+            Height =850
+        End
+        Begin CommandButton
+            TextFontFamily =2
+            Width =1701
+            Height =283
+        End
+        Begin OptionButton
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin CheckBox
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin TextBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin ListBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =1417
+            LabelX =-236
+        End
+        Begin ComboBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin FormHeader
+            Height =558
+            BackColor =12632256
+            Name ="EncabezadoDelFormulario1"
+            EventProcPrefix ="EncabezadoDelFormula"
+            GUID = Begin
+                0x03861b60d39eba48971c7b0e274f9814
+            End
+            Begin
+                Begin Label
+                    BackStyle =0
+                    OverlapFlags =93
+                    TextAlign =1
+                    Left =488
+                    Top =153
+                    Width =2880
+                    Height =405
+                    FontSize =14
+                    ForeColor =8355711
+                    Name ="Texto12"
+                    Caption ="Catálogo de Medios"
+                    GUID = Begin
+                        0x7a0bef1c831c73409d3ffb106752a876
+                    End
+                End
+                Begin Label
+                    BackStyle =0
+                    OverlapFlags =215
+                    TextAlign =1
+                    Left =452
+                    Top =113
+                    Width =2880
+                    Height =405
+                    FontSize =14
+                    ForeColor =16777215
+                    Name ="Texto13"
+                    Caption ="Catálogo de Medios"
+                    GUID = Begin
+                        0x05bd8161ac6a3a4d8ae7025e4d7298a4
+                    End
+                End
+            End
+        End
+        Begin Section
+            Height =1927
+            BackColor =12632256
+            Name ="Detalle0"
+            GUID = Begin
+                0x858b40240e36714ea540137c679f6645
+            End
+            Begin
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =1582
+                    Top =113
+                    Width =855
+                    Name ="QueMedio"
+                    ControlSource ="QueMedio"
+                    StatusBarText ="Clave del Medio con que se entero"
+                    GUID = Begin
+                        0x702a97f59fa6784fb6e1d1893c63d530
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =452
+                            Top =113
+                            Width =1017
+                            Height =240
+                            Name ="Texto15"
+                            Caption ="Clave :"
+                            GUID = Begin
+                                0x424ebbca91b76f48af28a261d0c2ded0
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =1582
+                    Top =565
+                    Width =3525
+                    TabIndex =1
+                    Name ="DescMedio"
+                    ControlSource ="DescMedio"
+                    StatusBarText ="Descripcion del Medio por el que se entero"
+                    GUID = Begin
+                        0xae0f5bdcd23e2e4fbbb5663a1f4c8b7f
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =219
+                            Top =565
+                            Width =1250
+                            Height =240
+                            Name ="Texto17"
+                            Caption ="Descripción :"
+                            GUID = Begin
+                                0x2dde9af5b38ad04caa887b87df0a543b
+                            End
+                        End
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =566
+                    Top =1133
+                    Width =1125
+                    Height =555
+                    TabIndex =2
+                    Name ="B_add_medio"
+                    Caption ="Nuevo"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0x1ba74ef01af4e445b52ae19a77cf9047
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =2267
+                    Top =1133
+                    Width =1131
+                    Height =561
+                    TabIndex =3
+                    Name ="B_srch_medio"
+                    Caption ="Buscar"
+                    OnClick ="M_Varios Catalogos.Buscar Medio"
+                    GUID = Begin
+                        0x8d3696114946af4eb597c4c4ac33b1ac
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =3968
+                    Top =1133
+                    Width =1125
+                    Height =555
+                    TabIndex =4
+                    Name ="B_del_Medio"
+                    Caption ="Borrar"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0x52481442ce9b724dbb261dfec7caa329
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =5669
+                    Top =1133
+                    Width =1125
+                    Height =555
+                    TabIndex =5
+                    ForeColor =255
+                    Name ="B_term_medio"
+                    Caption ="Terminar captura"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0xcc82890e85496e45aac98fc17a477f45
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            Height =0
+            BackColor =12632256
+            Name ="PieDelFormulario2"
+            GUID = Begin
+                0x896985981512c047860add3bedbb176c
+            End
+        End
+    End
+End
+CodeBehindForm
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database   'Usar orden de base de datos en comparaciones de cadenas
+
+Private Sub B_add_medio_Click()
+On Error GoTo Err_B_add_medio_Click
+
+
+    DoCmd.GoToRecord , , A_NEWREC
+
+Exit_B_add_medio_Click:
+    Exit Sub
+
+Err_B_add_medio_Click:
+    MsgBox Error$
+    Resume Exit_B_add_medio_Click
+    
+End Sub
+
+Private Sub B_del_Medio_Click()
+On Error GoTo Err_B_del_Medio_Click
+
+
+    DoCmd.DoMenuItem A_FORMBAR, A_EDITMENU, A_SELECTRECORD_V2, , A_MENU_VER20
+    DoCmd.DoMenuItem A_FORMBAR, A_EDITMENU, A_DELETE_V2, , A_MENU_VER20
+
+Exit_B_del_Medio_Click:
+    Exit Sub
+
+Err_B_del_Medio_Click:
+    MsgBox Error$
+    Resume Exit_B_del_Medio_Click
+    
+End Sub
+
+Private Sub B_term_medio_Click()
+On Error GoTo Err_B_term_medio_Click
+
+
+    DoCmd.Close
+
+Exit_B_term_medio_Click:
+    Exit Sub
+
+Err_B_term_medio_Click:
+    MsgBox Error$
+    Resume Exit_B_term_medio_Click
+    
+End Sub
+
+Private Sub Botón19_Click()
+On Error GoTo Err_Botón19_Click
+
+
+    DoCmd.DoMenuItem A_FORMBAR, A_EDITMENU, 10, , A_MENU_VER20
+
+Exit_Botón19_Click:
+    Exit Sub
+
+Err_Botón19_Click:
+    MsgBox Error$
+    Resume Exit_Botón19_Click
+    
+End Sub
+
+Private Sub Form_Open(Cancel As Integer)
+Dim db As Database, FLogin As Form, TUser As Recordset, Forma As Form
+   Set db = CurrentDb()
+   Set Forma = Forms!F_Medios
+   Set FLogin = Forms!login
+   Set TUser = db.OpenRecordset("Usuarios")
+   TUser.Index = "PrimaryKey"
+   TUser.Seek "=", FLogin!UserID
+   If Not TUser.NoMatch Then
+      If IsNull(TUser!A_MEDIO) Or TUser!A_MEDIO = "N" Then
+         MsgBox "El usuario no tiene privilegios de acceso"
+         DoCmd.CancelEvent
+      Else
+         If TUser!A_MEDIO = "C" Then
+            Forma.AllowEditing = False
+            Forma.DefaultEditing = 3
+            [B_add_medio].Enabled = False
+            [B_del_Medio].Enabled = False
+         End If
+      End If
+   Else
+      MsgBox "El usuario no tiene clave de acceso registrada"
+      DoCmd.CancelEvent
+   End If
+
+End Sub

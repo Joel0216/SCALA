@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de Factores - Scala</title>
+    <link rel="stylesheet" href="grupos-listado.css">
+    <style>
+        #buscarInput {
+            background-color: #ffff00 !important;
+            color: #000 !important;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-container">
+        <!-- Barra de Menú Nativa -->
+        <nav class="menu-bar">
+            <span class="menu-item">Archivo</span>
+            <span class="menu-item">Módulos</span>
+            <span class="menu-item">Ver</span>
+            <span class="menu-item">Ayuda</span>
+        </nav>
+
+        <header>
+            <h1>Listado de Factores</h1>
+        </header>
+
+        <div class="content-area">
+            <div class="table-wrapper">
+                <table class="data-table" id="tblFactores">
+                    <thead>
+                        <tr>
+                            <th class="selector-cell"></th>
+                            <th>Maestro</th>
+                            <th>Curso</th>
+                            <th>Factor</th>
+                            <th>%</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaFactores">
+                        <!-- Se carga vía JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="pagination-nav">
+            <span>Registro:</span>
+            <button class="btn-nav" id="btnFirst">|◄</button>
+            <button class="btn-nav" id="btnPrev">◄</button>
+            <input type="text" class="page-input" id="currentPage" value="1" readonly>
+            <button class="btn-nav" id="btnNext">►</button>
+            <button class="btn-nav" id="btnLast">►|</button>
+            <span id="regTotal">de 0</span>
+        </div>
+
+        <footer>
+            <div class="search-box">
+                <input type="text" id="buscarInput" placeholder="Buscar por Maestro o Curso ..." autofocus>
+            </div>
+            <button class="btn-close" id="btnClose">Cerrar consulta</button>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="factores-lista.js"></script>
+</body>
+
+</html>

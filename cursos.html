@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cursos</title>
+    <link rel="stylesheet" href="cursos.css">
+</head>
+
+<body>
+    <div class="container">
+        <header class="app-header">
+            <h1>Cursos</h1>
+            <div class="datetime" id="datetime"></div>
+        </header>
+
+        <main class="app-main">
+            <div class="premium-grid grid-cols-2">
+                <!-- Configuración del Curso -->
+                <div class="premium-card">
+                    <h3>Configuración del Curso</h3>
+                    <div class="premium-grid grid-cols-2">
+                        <div class="premium-input-group">
+                            <label class="premium-label">Clave</label>
+                            <input type="text" id="clave" class="premium-input" disabled>
+                            <span class="info-text">Editable al crear/editar</span>
+                        </div>
+                        <div class="premium-input-group">
+                            <label class="premium-label">IVA</label>
+                            <input type="text" id="iva" class="premium-input" value="0.16" readonly>
+                            <span class="info-text">Siempre 16%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detalle Económico y Académico -->
+                <div class="premium-card">
+                    <h3>Detalle Académico</h3>
+                    <div class="premium-input-group">
+                        <label class="premium-label">Curso <span class="required">*</span></label>
+                        <input type="text" id="curso" class="premium-input" disabled placeholder="Nombre del curso">
+                    </div>
+                    <div class="premium-grid grid-cols-2">
+                        <div class="premium-input-group">
+                            <label class="premium-label">Costo <span class="required">*</span></label>
+                            <input type="text" id="costo" class="premium-input" disabled placeholder="$0.00"
+                                oninput="this.value=this.value.replace(/[^0-9.]/g,'').replace(/(\..*)\./g,'$1')">
+                        </div>
+                        <div class="premium-input-group">
+                            <label class="premium-label">Grado</label>
+                            <input type="text" id="grado" class="premium-input" disabled placeholder="Grado">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="app-footer" style="position: static; margin-top: 10px; border-radius: var(--radius-md); border-top: none; padding: 10px 20px;">
+                <button class="premium-btn btn-primary" id="btnNuevo" onclick="nuevoCurso()">NUEVO</button>
+                <button class="premium-btn btn-outline" id="btnCancelarNuevo" onclick="cancelarNuevo()" style="display: none;">CANCELAR</button>
+                <button class="premium-btn btn-primary" id="btnEditar" onclick="editarCurso()" disabled>EDITAR</button>
+                <button class="premium-btn btn-primary" id="btnBuscar" onclick="buscarCurso()">BUSCAR</button>
+                <button class="premium-btn btn-danger" id="btnBorrar" onclick="borrarCurso()" disabled>BORRAR</button>
+                <button class="premium-btn btn-outline" id="btnReporte" onclick="generarReporte()">REPORTES</button>
+                <div style="flex-grow: 1;"></div>
+                <button class="premium-btn btn-danger" onclick="terminar()">TERMINAR</button>
+            </div>
+        </main>
+    </div>    <!-- Modal de edición (Premium Redesign) -->
+    <div id="modalEdicion" class="modal premium-modal" style="display: none;">
+        <div class="premium-modal-content" style="width: 500px; max-width: 95vw;">
+            <div class="premium-modal-header" style="background: linear-gradient(135deg, var(--color-blueish), var(--color-pink)); padding: 20px;">
+                <h2 style="color: white; margin: 0; font-size: 1.4rem;">Editar Curso</h2>
+                <p style="color: rgba(255,255,255,0.8); margin: 5px 0 0 0; font-size: 0.85rem;">Actualice la información técnica del curso</p>
+            </div>
+            
+            <div class="premium-modal-body" style="padding: 25px;">
+                <div class="premium-grid grid-cols-2" style="margin-bottom: 20px;">
+                    <div class="premium-input-group">
+                        <label class="premium-label">Clave:</label>
+                        <input type="text" id="editClave" class="premium-input" readonly style="background-color: #f0f4f8; font-weight: bold;">
+                    </div>
+                    <div class="premium-input-group">
+                        <label class="premium-label">IVA:</label>
+                        <input type="text" id="editIva" class="premium-input" value="0.16" readonly style="background-color: #f0f4f8;">
+                    </div>
+                </div>
+
+                <div class="premium-input-group" style="margin-bottom: 20px;">
+                    <label class="premium-label">Nombre del Curso:</label>
+                    <input type="text" id="editCurso" class="premium-input" placeholder="Nombre descriptivo">
+                </div>
+
+                <div class="premium-grid grid-cols-2">
+                    <div class="premium-input-group">
+                        <label class="premium-label">Costo Mensual:</label>
+                        <input type="text" id="editCosto" class="premium-input" placeholder="$0.00"
+                            style="font-weight: 600; color: var(--primary);"
+                            oninput="this.value=this.value.replace(/[^0-9.]/g,'').replace(/(\..*)\./g,'$1')">
+                    </div>
+                    <div class="premium-input-group">
+                        <label class="premium-label">Grado Escolar:</label>
+                        <input type="text" id="editGrado" class="premium-input" placeholder="Ej: 1, 2, 3...">
+                    </div>
+                </div>
+            </div>
+
+            <div class="app-footer" style="padding: 20px; justify-content: flex-end; gap: 12px; background: #f8fafc; border-top: 1px solid #e2e8f0;">
+                <button class="premium-btn btn-outline" onclick="cancelarEdicion()" style="border-color: #cbd5e1; color: #64748b;">CANCELAR</button>
+                <button class="premium-btn btn-primary" onclick="guardarEdicion()" style="padding: 10px 30px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+                    GUARDAR CAMBIOS
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de confirmación de borrado -->
+    <div id="modalBorrar" class="modal premium-modal" style="display: none;">
+        <div class="premium-modal-content" style="max-width: 500px; margin: 10% auto;">
+            <div class="premium-modal-header" style="background: linear-gradient(135deg, #ff6b6b, #ee5253);">
+                <h2>¿Borrar Curso?</h2>
+            </div>
+            <div class="premium-modal-body">
+                <p id="mensajeBorrar" style="margin-bottom: 20px;">¿Está seguro de que desea borrar este curso?</p>
+                <div class="premium-input-group">
+                    <label class="premium-label">Razón del borrado:</label>
+                    <textarea id="razonBorrado" class="premium-input" rows="3" placeholder="Describa la razón..."></textarea>
+                </div>
+            </div>
+            <div class="app-footer" style="padding: 15px 20px; justify-content: flex-end; gap: 10px; border-top: 1px solid var(--border-color); background: var(--bg-secondary); border-radius: 0 0 var(--radius-lg) var(--radius-lg);">
+                <button class="premium-btn btn-outline" onclick="cancelarBorrado()">CANCELAR</button>
+                <button class="premium-btn btn-danger" onclick="confirmarBorrado()">CONFIRMAR ELIMINACIÓN</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal CRUD: Gestión de Tipos de Examen (Premium) -->
+    <div id="modalNuevoTipo" class="modal premium-modal" style="display:none; z-index:9999;">
+        <div class="premium-modal-content" style="max-width: 600px; margin: 5% auto;">
+            <div class="premium-modal-header">
+                <h3>Gestión de Tipos de Examen</h3>
+            </div>
+            <div class="premium-modal-body">
+                <div class="premium-card" style="background: var(--bg-light); border: 1px solid var(--color-light-blue); margin-bottom: 20px;">
+                    <input type="hidden" id="tipoEditId">
+                    <label class="premium-label">Descripción del Tipo <span class="required">*</span></label>
+                    <div style="display: flex; gap: 8px; margin-top: 6px;">
+                        <input type="text" id="inputNuevoTipo" placeholder="Ej: BATERIA, TEORIA..." class="premium-input" style="flex: 1;"
+                            onkeydown="if(event.key==='Enter') guardarNuevoTipo();">
+                        <button class="premium-btn btn-primary" onclick="guardarNuevoTipo()">GUARDAR</button>
+                        <button class="premium-btn btn-outline" onclick="limpiarFormTipoCurso()" title="Limpiar">LIMPIAR</button>
+                    </div>
+                </div>
+
+                <div class="premium-table-container">
+                    <table class="premium-table">
+                        <thead>
+                            <tr>
+                                <th>Clave</th>
+                                <th>Descripción</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="listaTiposCursoBody">
+                            <tr><td colspan="3" style="text-align:center;">Cargando...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="app-footer" style="padding: 15px 20px; justify-content: flex-end; border-top: 1px solid var(--border-color); background: var(--bg-secondary); border-radius: 0 0 var(--radius-lg) var(--radius-lg);">
+                <button class="premium-btn btn-outline" onclick="cerrarModalNuevoTipo()">CERRAR</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de búsqueda (Premium) -->
+    <div id="modalBusquedaCurso" class="modal premium-modal" style="display: none;">
+        <div class="premium-modal-content modal-busqueda-content" style="top: 20%; transform: translateX(-50%);">
+            <div class="premium-modal-header">
+                <span>Buscar Curso</span>
+            </div>
+            <div class="premium-modal-body">
+                <h2>Proporcione el Nombre del Curso o Código</h2>
+                <div style="display: flex; gap: 10px; margin-top: 15px;">
+                    <input type="text" id="inputBusquedaCurso" class="premium-input" placeholder="Nombre o código..."
+                        onkeyup="if(event.key==='Enter') ejecutarBusquedaCurso()">
+                    <button class="premium-btn btn-primary" onclick="ejecutarBusquedaCurso()">BUSCAR</button>
+                    <button class="premium-btn btn-outline" onclick="cerrarModalBusquedaCurso()">CANCELAR</button>
+                </div>
+                <div style="margin-top: 15px;">
+                    <label class="premium-label">Filtrar por Tipo:</label>
+                    <select id="filtroBusquedaTipo" class="premium-input">
+                        <option value="">(Todos los tipos)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de resultados (Premium) -->
+    <div id="modalResultadosCurso" class="modal premium-modal" style="display: none;">
+        <div class="premium-modal-content modal-resultados-content" style="top: 15%; transform: translateX(-50%); max-width: 700px;">
+            <div class="premium-modal-header">
+                <span id="tituloResultadosCurso">Resultados de Búsqueda</span>
+            </div>
+            <div class="premium-modal-body" style="padding: 10px;">
+                <div class="premium-table-container">
+                    <table class="premium-table" id="tablaResultadosCurso">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Curso</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bodyResultadosCurso"></tbody>
+                    </table>
+                </div>
+                <div class="paginacion-controles" id="paginacionControlesCursos" style="display: none; background: transparent; border: none; margin-top: 15px;">
+                    <button onclick="irPrimeraPaginaCursos()" class="premium-btn btn-outline" style="padding: 5px 10px; font-size: 0.8rem;">Primera</button>
+                    <button onclick="irPaginaAnteriorCursos()" class="premium-btn btn-outline" style="padding: 5px 10px; font-size: 0.8rem;">Anterior</button>
+                    <span id="infoPaginaCursos" style="font-size: 11px;">Página 1 de 1</span>
+                    <button onclick="irPaginaSiguienteCursos()" class="premium-btn btn-outline" style="padding: 5px 10px; font-size: 0.8rem;">Siguiente</button>
+                    <button onclick="irUltimaPaginaCursos()" class="premium-btn btn-outline" style="padding: 5px 10px; font-size: 0.8rem;">Última</button>
+                </div>
+            </div>
+            <div class="app-footer" style="padding: 15px 20px; justify-content: flex-end; border-top: 1px solid var(--border-color); background: var(--bg-secondary); border-radius: 0 0 var(--radius-lg) var(--radius-lg);">
+                <button class="premium-btn btn-outline" onclick="cerrarModalResultadosCurso()">CERRAR</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="supabase-config.js"></script>
+    <script src="utils-inputs.js"></script>
+    <script src="cursos.js"></script>
+</body>
+
+</html>

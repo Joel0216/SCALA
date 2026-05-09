@@ -1,0 +1,108 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #c0c0c0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #c0c0c0;
+    border: 2px solid #808080;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+}
+
+.header {
+    background: linear-gradient(to right, #000080, #1084d0);
+    color: white;
+    padding: 15px 20px;
+    text-align: center;
+}
+
+.header h1 {
+    font-size: 20px;
+    font-weight: normal;
+}
+
+form {
+    padding: 40px 20px;
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+label {
+    width: 120px;
+    text-align: right;
+    margin-right: 15px;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+input[type="text"] {
+    flex: 1;
+    padding: 8px;
+    border: 2px inset #dfdfdf;
+    background-color: white;
+    font-size: 16px;
+}
+
+.button-group {
+    display: flex;
+    gap: 15px;
+    margin-top: 40px;
+    justify-content: center;
+}
+
+.btn {
+    padding: 10px 25px;
+    border: 2px outset #dfdfdf;
+    background-color: #c0c0c0;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.btn:active {
+    border-style: inset;
+}
+
+.btn-terminar {
+    color: red;
+}
+
+.navigation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 15px;
+    background-color: #c0c0c0;
+    border-top: 2px solid #808080;
+}
+
+.nav-btn {
+    padding: 5px 15px;
+    border: 2px outset #dfdfdf;
+    background-color: #c0c0c0;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.nav-btn:active {
+    border-style: inset;
+}
+
+.record-info {
+    margin: 0 10px;
+    font-size: 14px;
+}

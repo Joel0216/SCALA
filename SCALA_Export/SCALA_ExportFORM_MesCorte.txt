@@ -1,0 +1,130 @@
+Version =19
+VersionRequired =19
+Checksum =-157361040
+Begin Form
+    NavigationButtons = NotDefault
+    DefaultView =0
+    ScrollBars =0
+    GridX =5
+    GridY =5
+    Width =3514
+    ItemSuffix =7
+    Left =390
+    Top =120
+    Right =10020
+    Bottom =5325
+    RecSrcDt = Begin
+        0xe374f55422dee140
+    End
+    GUID = Begin
+        0x74abfedf2d7f5c42bb064bc85b0b9e2b
+    End
+    NameMap = Begin
+        0x0acc0e5500000000000000000000000000000000000000000c00000002000000 ,
+        0x0000000000000000000000000000
+    End
+    OnOpen ="Move.Mes"
+    Begin
+        Begin CommandButton
+            TextFontFamily =2
+            Width =1701
+            Height =283
+        End
+        Begin ComboBox
+            Width =1701
+            LabelX =-1701
+        End
+        Begin Section
+            SpecialEffect =2
+            Height =2381
+            BackColor =16776960
+            Name ="Detalle0"
+            GUID = Begin
+                0xd1dd2a4c56b1ee42a672156f91b40be9
+            End
+            Begin
+                Begin ComboBox
+                    LimitToList = NotDefault
+                    RowSourceTypeInt =1
+                    OverlapFlags =85
+                    TextAlign =2
+                    ListRows =12
+                    Left =1392
+                    Top =706
+                    Width =1365
+                    Height =285
+                    FontSize =10
+                    TabIndex =1
+                    GUID = Begin
+                        0xb16d09a2afb3024eae0d12bed5458e3c
+                    End
+                    Name ="MesCorte"
+                    RowSourceType ="Value List"
+                    RowSource ="Enero;Febrero;Marzo;Abril;Mayo;Junio;Julio;Agosto;Septiembre;Octubre;Noviembre;D"
+                        "iciembre"
+                    StatusBarText ="Seleccione el mes de corte"
+                End
+                Begin Label
+                    OverlapFlags =85
+                    TextAlign =2
+                    Left =113
+                    Top =226
+                    Width =3175
+                    Height =227
+                    BackColor =16776960
+                    Name ="Text2"
+                    Caption ="Seleccione el Mes y Año de Corte"
+                    GUID = Begin
+                        0x4938bbdce0164c408b63b27cf125f3b7
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =680
+                    Top =679
+                    Width =667
+                    Height =312
+                    Name ="Button3"
+                    Caption ="O.K."
+                    OnClick ="Depuracion.CierraMesCorte"
+                    GUID = Begin
+                        0xf63d912eb8a53b469b4c5f345de0fa2a
+                    End
+                End
+                Begin ComboBox
+                    LimitToList = NotDefault
+                    RowSourceTypeInt =1
+                    OverlapFlags =85
+                    TextAlign =2
+                    Left =1390
+                    Top =1133
+                    Width =1367
+                    TabIndex =2
+                    GUID = Begin
+                        0x8ab2338ab825f942957233d99396cf12
+                    End
+                    Name ="AñoCorte"
+                    RowSourceType ="Value List"
+                    RowSource ="1994;1995;1996;1997;1998;1999"
+                    StatusBarText ="Seleccione el año de corte"
+                    DefaultValue ="=DefAño()"
+                End
+                Begin Label
+                    OverlapFlags =85
+                    TextAlign =2
+                    Left =225
+                    Top =1695
+                    Width =3060
+                    Height =405
+                    BackColor =16776960
+                    BorderColor =10
+                    Name ="Text6"
+                    Caption ="Seleccione el Mes y Año a partir del cual todavia desea conservar la información"
+                    GUID = Begin
+                        0xa0047b970256bd428ecbcff7a1923604
+                    End
+                End
+            End
+        End
+    End
+End

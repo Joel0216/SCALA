@@ -1,0 +1,4666 @@
+Option Compare Database   'Use database order for string comparisons
+
+Dim db As Database
+Dim TBajas As Recordset, TCurso As Recordset, TGrupos As Recordset, TAlumnos As Recordset, TRES_GRAL As Recordset
+Dim TCol As Recordset, TMes As Recordset, TRecibos As Recordset, TOperaciones As Recordset, TMeses As Recordset
+Dim TPorcen As Recordset
+Dim QDef As QueryDef, Reg As Recordset, TPA As Recordset, THonor As Recordset
+Dim cred_ant, Desc_Mes_Act, MesProceso%
+Dim Desc_mes1, Desc_mes2, Desc_mes3, Desc_mes4, Desc_mes5, Desc_mes6
+Dim Grupo_Ant, Nombre_ant, DV_ant, Inicio_Ant, Ingreso_Ant, Maestro_Ant, Curso_Ant, Telefono_Ant, Salon_Ant
+Dim RFC_ant, Factor_ant
+Dim MesesAct, Meses1, Meses2, Meses3, Meses4, Meses5, meses6
+Dim Fec_mesA, Fec_mes1, fec_mes2, Fec_mes3, Fec_mes4, Fec_mes5, Fec_mes6
+Dim Prec, Prec1, Prec2, Prec3, Prec4, Prec5, Prec6, PrecActPant
+Dim Hon, Hon1, Hon2, Hon3, HonActPant
+Dim Anio_Act%, Anio_reg%, Anio_Arch%, Mes_Ant%, Anio_Ant%
+Dim DmesProceso, Ult_Pago, Fecha_ult, Num_Alumnos, Mes_Ult%, Año_Ult%
+Dim MesMenos1%, MesMenos2%, MesMenos3%, MesMenos4%, No_deudor%, Mes_NoDeudor%, Año_NoDeudor%
+Dim MesMas1%, MesMas2%, MesMas3%, MesMenosOA%
+Dim Maestro_Ini, Maestro_Fin, descUltMes, fecha_corte, ReValFec_Cor, OrdenUltMes%
+Dim Answer, Cred_comp, Mes_Adelant%, Año_Adelant%, con_posterior
+Dim Ffinp, FIni, Finip, FFin, MesesActPant, MesesOA
+Dim Deudor1, Deudor2, Deudor3, DeudorOM, ImporteDeudor, DeudorA
+Dim Num_Bajas, Num_NuevoIngreso
+Dim AñoUltMes%, Ingreso_Al
+Dim Año_mes, AñoMes%, Año_comp, Mes_comp, A_M_comp, AMcomp%
+Dim AñoUltPago%
+Dim ReValF1, ReValF2, ReValF3, ReValF4, ReValF5, ReValF6
+Dim Beca_Ant, Reg_Ya, Si_Proceso
+Dim SeisMesesAntes
+Dim MesCorte%, AñoCorte%
+
+Function Alumnos_Sin_Pago_Col()
+Dim TSinPago As Recordset
+Set db = CurrentDb()
+Set TAlumnos = db.OpenRecordset("Alumnos_activos")
+Set TCol = db.OpenRecordset("Colegiaturas")
+Set TSinPago = db.OpenRecordset("SinPagoCol")
+Set db = CurrentDb()
+If Not TSinPago.BOF Then
+   Do Until TSinPago.EOF
+      TSinPago.Delete
+      TSinPago.MoveNext
+   Loop
+End If
+DoCmd.Hourglass True
+TCol.Index = "AlumnoID"
+DoCmd.Echo False, "VERIFICANDO ALUMNOS SIN PAGO DE COLEGIATURAS"
+TAlumnos.MoveFirst
+Do Until TAlumnos.EOF
+   DoCmd.Echo True, "Procesando Credencial : " + Str$(TAlumnos!Credencial)
+   TCol.Seek "=", TAlumnos!Credencial
+   If TCol.NoMatch Then
+      'MsgBox "Sin Pago en Cred = " + Str$(TAlumnos!Credencial)
+      TSinPago.AddNew
+      TSinPago!Credencial = TAlumnos!Credencial
+      TSinPago!dig_ver = TAlumnos!dig_ver
+      TSinPago!Nombre = TAlumnos!Nombre
+      TSinPago!Telefono = TAlumnos!Telefono
+      TSinPago!Grupo = TAlumnos!Grupo
+      TSinPago![Fecha Ingreso] = TAlumnos![Fecha Ingreso]
+      TSinPago.Update
+   End If
+   TAlumnos.MoveNext
+Loop
+DoCmd.Hourglass False
+'TAlumnos.Close
+
+End Function
+
+Function AlumnosXsalonYhora()
+Dim j, i, dia_anterior, hora_anterior, Inicio%, long_clave%, Clave1$, inic_izq%, Paso, long_curso%
+ReDim arr_sal(30)
+On Error GoTo Genera_errorSalon
+
+Si_Proceso = ""
+Do While Si_Proceso <> "S" And Si_Proceso <> "N"
+   Si_Proceso = InputBox("Desea Unicamente sacar el Reporte con los Datos Anteriormente Generados <S/N> ? ", "")
+   If Si_Proceso = "S" Then
+      Exit Function
+   End If
+Loop
+
+DoCmd.Hourglass True
+DoCmd.Echo True, "Borrando Datos Anteriores"
+Set db = CurrentDb()
+Set TPA = db.OpenRecordset("TAlumnosXSalonyHora")
+If Not TPA.BOF Then
+   Do Until TPA.EOF
+      TPA.Delete
+      TPA.MoveNext
+   Loop
+End If
+
+DoCmd.Echo False, "Ejecutando Query de Seleccion"
+
+Set QDef = db.QueryDefs("Orden Salones")
+Set Reg = QDef.OpenRecordset()
+Do Until Reg.EOF
+   i = i + 1
+   arr_sal(i) = Reg!Salon
+   Reg.MoveNext
+Loop
+Set QDef = db.QueryDefs("QrelacionGruposSalon1")
+Set Reg = QDef.OpenRecordset()
+
+If Reg.BOF Then
+   MsgBox "No Hay Registros Generados en el Rango", 48, "Mensaje de Confirmacion"
+   Exit Function
+End If
+
+Reg.MoveFirst
+
+Do Until Reg.EOF
+   DoCmd.Echo True, "Dia: " + Reg!Dia + " hora : " + Str(Reg![Hora entrada])
+   dia_anterior = Reg!Dia
+   TPA.AddNew
+   TPA!Dia = Reg!Dia
+   TPA!Hora = Reg![Hora entrada]
+   'TPA.Update
+   primer_vez = 1
+   Do Until dia_anterior <> Reg!Dia
+      hora_anterior = Reg![Hora entrada]
+      If primer_vez = 0 Then
+         TPA.AddNew
+         TPA!Dia = Reg!Dia
+         TPA!Hora = Reg![Hora entrada]
+         'TPA.Update
+      End If
+      primer_vez = 0
+      Do Until (hora_anterior <> Reg![Hora entrada]) Or (dia_anterior <> Reg!Dia) Or Reg.EOF
+         'If Reg!Salon = "A 1" Then
+         '   MsgBox "Salón = " + Reg!Salon + "  Arr_sal(3) = " + arr_sal(3)
+         'End If
+         For j = 1 To 30
+             If arr_sal(j) = Reg!Salon Then
+                i = j
+                Exit For
+             End If
+         Next
+         'inicio% = ((i - 1) * 10) + 1
+         long_clave% = Len(Reg!Clave)
+         If IsNumeric(Mid$(Reg!Clave, long_clave% - 2, 1)) Then
+            inic_izq% = long_clave% - 5
+         Else
+            inic_izq% = long_clave% - 4
+         End If
+         long_curso% = Len(Reg!Curso)
+         If IsNumeric(Mid$(Reg!Curso, long_curso%, 1)) Then
+            For j = 1 To 5
+              If Mid$(Reg!Curso, long_curso% - j, 1) = " " Then
+                 Paso = Mid$(Reg!Curso, long_curso% - j + 1, long_curso%)
+                 Exit For
+              End If
+            Next
+         Else
+            If IsNumeric(Mid$(Reg!Curso, long_curso% - 1, 1)) Then
+               For j = 1 To 5
+                 If Mid$(Reg!Curso, long_curso% - j, 1) = " " Then
+                    Paso = Mid$(Reg!Curso, long_curso% - j + 1, long_curso%)
+                    Exit For
+                 End If
+               Next
+            Else
+               If IsNumeric(Mid$(Reg!Curso, long_curso% - 2, 1)) Then
+                  For j = 1 To 5
+                    If Mid$(Reg!Curso, long_curso% - j, 1) = " " Then
+                       Paso = Mid$(Reg!Curso, long_curso% - j + 1, long_curso%)
+                       Exit For
+                    End If
+                  Next
+               Else
+                   Paso = " "
+               End If
+            End If
+         End If
+         Select Case i
+            Case 1
+               TPA!sa1 = Left$(Reg!Clave, inic_izq%)
+               TPA!al1 = Str$(Reg!Alumnos)
+               TPA!ni1 = Paso
+            Case 2
+               TPA!sa2 = Left$(Reg!Clave, inic_izq%)
+               TPA!al2 = Str$(Reg!Alumnos)
+               TPA!ni2 = Paso
+            Case 3
+               TPA!sa3 = Left$(Reg!Clave, inic_izq%)
+               TPA!al3 = Str$(Reg!Alumnos)
+               TPA!ni3 = Paso
+            Case 4
+               TPA!sa4 = Left$(Reg!Clave, inic_izq%)
+               TPA!al4 = Str$(Reg!Alumnos)
+               TPA!ni4 = Paso
+            Case 5
+               TPA!sa5 = Left$(Reg!Clave, inic_izq%)
+               TPA!al5 = Str$(Reg!Alumnos)
+               TPA!ni5 = Paso
+            Case 6
+               TPA!sa6 = Left$(Reg!Clave, inic_izq%)
+               TPA!al6 = Str$(Reg!Alumnos)
+               TPA!ni6 = Paso
+            Case 7
+               TPA!sa7 = Left$(Reg!Clave, inic_izq%)
+               TPA!al7 = Str$(Reg!Alumnos)
+               TPA!ni7 = Paso
+            Case 8
+               TPA!sa8 = Left$(Reg!Clave, inic_izq%)
+               TPA!al8 = Str$(Reg!Alumnos)
+               TPA!ni8 = Paso
+            Case 9
+               TPA!sa9 = Left$(Reg!Clave, inic_izq%)
+               TPA!al9 = Str$(Reg!Alumnos)
+               TPA!ni9 = Paso
+            Case 10
+               TPA!sa10 = Left$(Reg!Clave, inic_izq%)
+               TPA!al10 = Str$(Reg!Alumnos)
+               TPA!ni10 = Paso
+            Case 11
+               TPA!sa11 = Left$(Reg!Clave, inic_izq%)
+               TPA!al11 = Str$(Reg!Alumnos)
+               TPA!ni11 = Paso
+            Case 12
+               TPA!sa12 = Left$(Reg!Clave, inic_izq%)
+               TPA!al12 = Str$(Reg!Alumnos)
+               TPA!ni12 = Paso
+            Case 13
+               TPA!sa13 = Left$(Reg!Clave, inic_izq%)
+               TPA!al13 = Str$(Reg!Alumnos)
+               TPA!ni13 = Paso
+            Case 14
+               TPA!sa14 = Left$(Reg!Clave, inic_izq%)
+               TPA!al14 = Str$(Reg!Alumnos)
+               TPA!ni14 = Paso
+            Case 15
+               TPA!sa15 = Left$(Reg!Clave, inic_izq%)
+               TPA!al15 = Str$(Reg!Alumnos)
+               TPA!ni15 = Paso
+            Case 16
+               TPA!sa16 = Left$(Reg!Clave, inic_izq%)
+               TPA!al16 = Str$(Reg!Alumnos)
+               TPA!ni16 = Paso
+            Case 17
+               TPA!sa17 = Left$(Reg!Clave, inic_izq%)
+               TPA!al17 = Str$(Reg!Alumnos)
+               TPA!ni17 = Paso
+            Case 18
+               TPA!sa18 = Left$(Reg!Clave, inic_izq%)
+               TPA!al18 = Str$(Reg!Alumnos)
+               TPA!ni18 = Paso
+            Case 19
+               TPA!sa19 = Left$(Reg!Clave, inic_izq%)
+               TPA!al19 = Str$(Reg!Alumnos)
+               TPA!ni19 = Paso
+            Case 20
+               TPA!sa20 = Left$(Reg!Clave, inic_izq%)
+               TPA!al20 = Str$(Reg!Alumnos)
+               TPA!ni20 = Paso
+            Case 21
+               TPA!sa21 = Left$(Reg!Clave, inic_izq%)
+               TPA!al21 = Str$(Reg!Alumnos)
+               TPA!ni21 = Paso
+            Case 22
+               TPA!sa22 = Left$(Reg!Clave, inic_izq%)
+               TPA!al22 = Str$(Reg!Alumnos)
+               TPA!ni22 = Paso
+            Case 23
+               TPA!sa23 = Left$(Reg!Clave, inic_izq%)
+               TPA!al23 = Str$(Reg!Alumnos)
+               TPA!ni23 = Paso
+            Case 24
+               TPA!sa24 = Left$(Reg!Clave, inic_izq%)
+               TPA!al24 = Str$(Reg!Alumnos)
+               TPA!ni24 = Paso
+            Case 25
+               TPA!sa25 = Left$(Reg!Clave, inic_izq%)
+               TPA!al25 = Str$(Reg!Alumnos)
+               TPA!ni25 = Paso
+            Case 26
+               TPA!sa26 = Left$(Reg!Clave, inic_izq%)
+               TPA!al26 = Str$(Reg!Alumnos)
+               TPA!ni26 = Paso
+            Case 27
+               TPA!sa27 = Left$(Reg!Clave, inic_izq%)
+               TPA!al27 = Str$(Reg!Alumnos)
+               TPA!ni27 = Paso
+            Case 28
+               TPA!sa28 = Left$(Reg!Clave, inic_izq%)
+               TPA!al28 = Str$(Reg!Alumnos)
+               TPA!ni28 = Paso
+            Case 29
+               TPA!sa29 = Left$(Reg!Clave, inic_izq%)
+               TPA!al29 = Str$(Reg!Alumnos)
+               TPA!ni29 = Paso
+            Case 30
+               TPA!sa30 = Left$(Reg!Clave, inic_izq%)
+               TPA!al30 = Str$(Reg!Alumnos)
+               TPA!ni30 = Paso
+         End Select
+         Reg.MoveNext
+         If Reg.EOF Then
+            Exit Do
+         End If
+      Loop
+      TPA!ds1 = arr_sal(1)
+      TPA!ds2 = arr_sal(2)
+      TPA!ds3 = arr_sal(3)
+      TPA!ds4 = arr_sal(4)
+      TPA!ds5 = arr_sal(5)
+      TPA!ds6 = arr_sal(6)
+      TPA!ds7 = arr_sal(7)
+      TPA!ds8 = arr_sal(8)
+      TPA!ds9 = arr_sal(9)
+      TPA!ds10 = arr_sal(10)
+      TPA!ds11 = arr_sal(11)
+      TPA!ds12 = arr_sal(12)
+      TPA!ds13 = arr_sal(13)
+      TPA!ds14 = arr_sal(14)
+      TPA!ds15 = arr_sal(15)
+      TPA!ds16 = arr_sal(16)
+      TPA!ds17 = arr_sal(17)
+      TPA!ds18 = arr_sal(18)
+      TPA!ds19 = arr_sal(19)
+      TPA!ds20 = arr_sal(20)
+      TPA!ds21 = arr_sal(21)
+      TPA!ds22 = arr_sal(22)
+      TPA!ds23 = arr_sal(23)
+      TPA!ds24 = arr_sal(24)
+      TPA!ds25 = arr_sal(25)
+      TPA!ds26 = arr_sal(26)
+      TPA!ds27 = arr_sal(27)
+      TPA!ds28 = arr_sal(28)
+      TPA!ds29 = arr_sal(29)
+      TPA!ds30 = arr_sal(30)
+      TPA.Update
+      If Reg.EOF Then
+         Exit Do
+      End If
+   Loop
+   If Reg.EOF Then
+      Exit Do
+   End If
+Loop
+TPA.Close
+DoCmd.Hourglass False
+Exit Function
+
+Genera_errorSalon:
+ MsgBox "Clave de Grupo : " + Reg!Clave
+ 'Call LogError("AlumnosXsalonyHora", Err)
+ MsgBox "Ha ocurrido un error numero " + Str$(Err) + "  " + Error$(Err) + " en el procedimiento AlumnosXSalonyHora", 48, "Mensaje del sistema"
+Exit Function
+
+
+End Function
+
+Function CorrigeAlumnosXGrupo()
+On Error GoTo ErrorCorrigeAXG
+Dim ClaveSeg
+x = MsgBox("Este Proceso Corrige El numero de Alumnos en cada Grupo", 48, "Mensaje de Confirmacion")
+If x <> 1 Then
+   Exit Function
+End If
+
+ClaveSeg = InputBox("Teclee Clave de Seguridad", "")
+If ClaveSeg <> "CorrigeAIS" Then
+   Exit Function
+End If
+
+DoCmd.Hourglass True
+Set db = CurrentDb()
+Set TAlumnos = db.OpenRecordset("Alumnos")
+Set TGrupos = db.OpenRecordset("Grupos")
+
+DoCmd.Echo False, "Limpia campo de alumnos en Tabla : Grupo"
+TGrupos.MoveFirst
+Do Until TGrupos.EOF
+   TGrupos.Edit
+   TGrupos!Alumnos = 0
+   TGrupos.Update
+   TGrupos.MoveNext
+Loop
+
+DoCmd.Echo False, "Actualiza Campo de Alumnos con Informacion de Alumnos"
+TAlumnos.MoveFirst
+TGrupos.Index = "primarykey"
+Do Until TAlumnos.EOF
+   DoCmd.Echo True, "Procesando : " + Str(TAlumnos!Credencial)
+   TGrupos.Seek "=", TAlumnos!Grupo
+   If Not TGrupos.NoMatch Then
+      TGrupos.Edit
+      TGrupos!Alumnos = TGrupos!Alumnos + 1
+      TGrupos.Update
+   Else
+      TGrupos.Seek "=", "SCSINMSA08"
+      If Not TGrupos.NoMatch Then
+         TGrupos.Edit
+         TGrupos!Alumnos = TGrupos!Alumnos + 1
+         TGrupos.Update
+      Else
+         MsgBox "Error Indefinido", 48, "Mensaje de Error Critico"
+         Exit Function
+      End If
+   End If
+   TAlumnos.MoveNext
+Loop
+
+DoCmd.Hourglass False
+MsgBox "Fin de Proceso de Correccion de Datos de Grupo", 48, "Mensaje de Terminacion"
+
+Exit Function
+
+ErrorCorrigeAXG:
+ 'Call LogError("CorrigeAlumnosXGrupo", Err)
+ MsgBox "Ha ocurrido un error numero " + Str$(Err) + "  " + Error$(Err) + " en el procedimiento CorrigeAlumnosXGrupo", 48, "Mensaje del sistema"
+Exit Function
+
+End Function
+
+Function depuracion()
+On Error GoTo ErrorDepura
+Dim ClaveSeg, MesComp%, x
+Dim AñoArch%, MesArch%
+x = MsgBox("Depuracion de Colegiaturas, Recibos Y Operaciones de fechas anteriores, NOTA : Recuerde respaldar su información previamente", 48, "Mensaje de Confirmacion")
+If x <> 1 Then
+   Exit Function
+End If
+
+ClaveSeg = InputBox("Teclee Clave de Seguridad", "")
+If ClaveSeg <> "DepuraAIS" Then
+   Exit Function
+End If
+
+DoCmd.OpenForm "MesCorte", A_NORMAL, , , , A_DIALOG
+
+x = MsgBox("Seguro que desea el mes : " + Str$(MesCorte%) + " Del Año : " + Str$(AñoCorte%), 48, "Mensaje de Confirmación")
+If x <> 1 Then
+   Exit Function
+End If
+
+DoCmd.Hourglass True
+Set db = CurrentDb()
+Set TAlumnos = db.OpenRecordset("Alumnos")
+Set TGrupos = db.OpenRecordset("Grupos")
+Set TCol = db.OpenRecordset("Colegiaturas")
+Set TOperaciones = db.OpenRecordset("Operaciones")
+Set TRecibos = db.OpenRecordset("Recibos")
+Set TMeses = db.OpenRecordset("Meses")
+DoCmd.Echo False, "PROCESANDO EN COLEGIATURAS"
+TCol.MoveFirst
+
+TRecibos.Index = "PrimaryKey"
+TMeses.Index = "PrimaryKey"
+Do Until TCol.EOF
+   DoCmd.Echo True, "Procesando Registro en Colegiaturas # : " + TCol!ID
+   TMeses.Seek "=", TCol!Mes
+   If Not TMeses.NoMatch Then
+      MesComp% = TMeses!Orden
+   End If
+   If IsNull(TCol!AñoP) Then
+      If MesComp% < MesCorte% Then
+         TCol.Delete
+      Else
+         TRecibos.Seek "=", TCol!Recibo
+         If Not TRecibos.NoMatch Then             ' Opcion Valida la primera Vez NOV 94
+            If TRecibos!Fecha < #5/1/1994# Then
+               TCol.Delete
+            End If
+         Else
+            'MsgBox "Error Indefinido Registro # " + Str$(TCol!ID), 48, "Mensaje de Error Critico"
+            'Exit Function
+            TCol.Delete
+         End If
+      End If
+   Else
+      If TCol!AñoP < AñoCorte% Then
+         TCol.Delete
+      Else
+         If TCol!AñoP = AñoCorte% Then
+            If MesComp% < MesCorte% Then
+               TCol.Delete
+            End If
+         End If
+      End If
+   End If
+   TCol.MoveNext
+Loop
+
+DoCmd.Echo False, "PROCESANDO EN RECIBOS"
+TRecibos.MoveFirst
+TOperaciones.Index = "Recibo"
+TCol.Index = "Recibo"
+Do Until TRecibos.EOF
+   DoCmd.Echo True, "Procesando Recibo : " + TRecibos!Numero
+   TCol.Seek "=", TRecibos!Numero
+   If TCol.NoMatch Then
+      If Not IsNull(TRecibos!Fecha) Then
+         AñoArch% = DatePart("yyyy", TRecibos!Fecha)
+         MesArch% = DatePart("m", TRecibos!Fecha)
+         If AñoArch% < AñoCorte% Then
+            TOperaciones.Seek "=", TRecibos!Numero
+            If Not TOperaciones.NoMatch Then
+               Do Until TOperaciones!Recibo <> TRecibos!Numero
+                  TOperaciones.Delete
+                  TOperaciones.MoveNext
+               Loop
+            End If
+            TRecibos.Delete
+         Else
+            If AñoArch% = AñoCorte% Then
+               If MesArch% < MesCorte% Then
+                  TOperaciones.Seek "=", TRecibos!Numero
+                  If Not TOperaciones.NoMatch Then
+                     Do Until TOperaciones!Recibo <> TRecibos!Numero
+                        TOperaciones.Delete
+                        TOperaciones.MoveNext
+                     Loop
+                  End If
+                  TRecibos.Delete
+               End If
+            End If
+         End If
+      Else
+         TRecibos.Delete
+      End If
+   End If
+   TRecibos.MoveNext
+Loop
+
+DoCmd.Hourglass False
+MsgBox "Fin de Proceso de Depuracion de Datos", 48, "Mensaje de Terminacion"
+
+Exit Function
+
+ErrorDepura:
+ 'Call LogError("Depuracion", Err)
+ MsgBox "Ha ocurrido un error numero " + Str$(Err) + "  " + Error$(Err) + " en el procedimiento Depuracion", 48, "Mensaje del sistema"
+Exit Function
+
+End Function
+
+Function DepuraMes()
+Dim MesCor
+On Error GoTo DepuraMesEH
+Set db = CurrentDb()
+Set TMeses = db.OpenRecordset("Meses")
+MesCor = Forms!MesCorte!MesCorte
+AñoCorte% = Forms!MesCorte!AñoCorte
+If (MesCor <> "") And (AñoCorte% <> 0) Then
+   DoCmd.Close A_FORM, "MesCorte"
+   TMeses.Index = "PrimaryKey"
+   TMeses.Seek "=", MesCor
+   If Not TMeses.NoMatch Then
+      MesCorte% = TMeses!Orden
+   End If
+Else
+   Beep
+   MsgBox "Debe seleccionarse el mes y año de corte", 48, "Selecciona Fecha Corte"
+End If
+
+Exit Function
+
+DepuraMesEH:
+ 'Call LogError("DepuraMes", Err)
+ MsgBox "Ha ocurrido un error numero " + Str$(Err) + "  " + Error$(Err) + " en el procedimiento DepuraMes", 48, "Mensaje de Error"
+Exit Function
+
+End Function
+
+Function Gen_Deudores()
+Maestro_Ini = Null
+Maestro_Fin = Null
+
+On Error GoTo Genera_errorDeudores
+
+Si_Proceso = ""
+Do While Si_Proceso <> "S" And Si_Proceso <> "N"
+   Si_Proceso = InputBox("Desea Unicamente sacar el Reporte con los Datos Anteriormente Generados <S/N> ? ", "")
+   If Si_Proceso = "S" Then
+      Exit Function
+   End If
+Loop
+
+MesProceso% = InputBox("Mes De Corte (Mes que no pagando se considera deudor), Proporcione el numero del Mes : ", "")
+
+Anio_Act% = InputBox("De que Año (Ej. 1994) : ", "")
+
+Maestro_Ini = InputBox("Proporcione el Maestro o la Inicial con que desea comenzar el rango (Blancos = 'TODO') ", "")
+If IsNull(Maestro_Ini) Then
+   Maestro_Ini = "A"
+End If
+Do Until Not IsNull(Maestro_Fin)
+   Maestro_Fin = InputBox("Proporcione el Maestro o la Inicial con que desea terminar el rango (Blancos = 'TODO') ", "")
+   If IsNull(Maestro_Fin) Then
+      Maestro_Fin = "ZZZZ"
+   End If
+Loop
+
+DoCmd.Hourglass True
+DoCmd.Echo True, "Borrando Datos Anteriores"
+Set db = CurrentDb()
+Set TPA = db.OpenRecordset("TablaAlumnosDeudores")
+If Not TPA.BOF Then
+   Do Until TPA.EOF
+      TPA.Delete
+      TPA.MoveNext
+   Loop
+End If
+
+
+DoCmd.Echo False, "Ejecutando Query de Seleccion"
+
+Set QDef = db.QueryDefs("ParaAlumnos")
+QDef![Maestro Inicial : ] = Maestro_Ini
+QDef![Maestro Final : ] = Maestro_Fin
+
+Set Reg = QDef.OpenRecordset()
+DmesProceso = Choose(MesProceso%, "ENERO ", "FEBRERO ", "MARZO ", "ABRIL ", "MAYO ", "JUNIO ", "JULIO ", "AGOSTO ", "SEPTIEMBRE ", "OCTUBRE ", "NOVIEMBRE ", "DICIEMBRE ") + Str$(Anio_Act%)
+Desc_mes4 = IIf(MesProceso% = 1, "DIC" + Format(Str$((Anio_Act% - 1) - 2000), "00"), Choose(MesProceso% - 1, "ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV"))
+Desc_mes1 = IIf(MesProceso% >= 1 And MesProceso% <= 4, Choose(MesProceso%, "SEP", "OCT", "NOV", "DIC") + Format(Str$((Anio_Act% - 1) - 2000), "00"), Choose(MesProceso% - 4, "ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO"))
+Desc_mes2 = IIf(MesProceso% >= 1 And MesProceso% <= 3, Choose(MesProceso%, "OCT", "NOV", "DIC") + Format(Str$((Anio_Act% - 1) - 2000), "00"), Choose(MesProceso% - 3, "ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP"))
+Desc_mes3 = IIf(MesProceso% >= 1 And MesProceso% <= 2, Choose(MesProceso%, "NOV", "DIC") + Format(Str$((Anio_Act% - 1) - 2000), "00"), Choose(MesProceso% - 2, "ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT"))
+
+' Accesa a la rutina general de Revaluacion de las fechas de bajas
+
+Revalua_Fecha_Baja
+
+If Reg.BOF Then
+   MsgBox "No Hay Registros Generados en el Rango", 48, "Mensaje de Confirmacion"
+   Exit Function
+End If
+
+Reg.MoveFirst
+
+Do Until Reg.EOF
+
+   DoCmd.Echo True, "Procesando: " + Reg!Maestro + " " + Reg!Clave
+   Meses1 = 0
+   Meses2 = 0
+   Meses3 = 0
+   Meses4 = 0
+   MesesAct = 0
+   Fec_mesA = Null
+   Fec_mes1 = Null
+   fec_mes2 = Null
+   Fec_mes3 = Null
+   Fec_mes4 = Null
+   Ult_Pago = 0
+   Fecha_ult = Null
+   OrdenUltMes% = 0
+   AñoUltPago% = 0
+   Maestro_Ant = Reg!Maestro
+   Curso_Ant = Reg!Curso
+   Grupo_Ant = Reg!Clave
+   Inicio_Ant = Reg!Inicio
+   Num_Alumnos = Reg!Alumnos
+   cred_ant = Reg!Credencial
+   DV_ant = Reg!dig_ver
+   Nombre_ant = Reg!Nombre
+   Ingreso_Ant = Reg![Fecha Ingreso]
+   Beca_Ant = Reg!Porcentaje
+   
+   Do Until (Reg.EOF) Or (cred_ant <> Reg!Credencial)
+     
+      Anio_Arch% = DatePart("yyyy", Reg!Fecha)
+      
+      If (MesProceso% = Reg!Orden) Then
+         If Anio_Act% = Reg!AñoP Then
+            MesesAct = MesesAct + Reg!Precio
+            Fec_mesA = Reg!Fecha
+         End If
+      Else
+         If MesMenos4% = Reg!Orden Then
+            If (MesMenos4% >= 9) Then
+               If ((Anio_Act% - 1) = Reg!AñoP) Or (IsNull(Reg!AñoP) And Reg!Fecha > #4/30/1994#) Then
+                  Meses1 = Meses1 + Reg!Precio
+                  Fec_mes1 = Reg!Fecha
+               End If
+            Else
+               If Anio_Act% = Reg!AñoP Then
+                  Meses1 = Meses1 + Reg!Precio
+                  Fec_mes1 = Reg!Fecha
+               End If
+            End If
+         End If
+         If MesMenos3% = Reg!Orden Then
+            If (MesMenos3% >= 10) Then
+               If ((Anio_Act% - 1) = Reg!AñoP) Or (IsNull(Reg!AñoP) And Reg!Fecha > #4/30/1994#) Then
+                  Meses2 = Meses2 + Reg!Precio
+                  fec_mes2 = Reg!Fecha
+               End If
+            Else
+               If Anio_Act% = Reg!AñoP Then
+                  Meses2 = Meses2 + Reg!Precio
+                  fec_mes2 = Reg!Fecha
+               End If
+            End If
+         End If
+         If MesMenos2% = Reg!Orden Then
+            If (MesMenos2% >= 11) Then
+               If ((Anio_Act% - 1) = Reg!AñoP) Or (IsNull(Reg!AñoP) And Reg!Fecha >= #4/30/1994#) Then
+                  Meses3 = Meses3 + Reg!Precio
+                  Fec_mes3 = Reg!Fecha
+               End If
+            Else
+               If Anio_Act% = Reg!AñoP Then
+                  Meses3 = Meses3 + Reg!Precio
+                  Fec_mes3 = Reg!Fecha
+               End If
+            End If
+         End If
+         If MesMenos1% = Reg!Orden Then
+            If (MesMenos1% >= 12) Then
+               If ((Anio_Act% - 1) = Reg!AñoP) Or (IsNull(Reg!AñoP) And Reg!Fecha >= #4/30/1994#) Then
+                  Meses4 = Meses4 + Reg!Precio
+                  Fec_mes4 = Reg!Fecha
+               End If
+            Else
+               If Anio_Act% = Reg!AñoP Then
+                  Meses4 = Meses4 + Reg!Precio
+                  Fec_mes4 = Reg!Fecha
+               End If
+            End If
+         End If
+
+      End If
+
+      If (((Reg!Orden >= OrdenUltMes%) And (Reg!AñoP >= AñoUltPago%)) Or ((Reg!Orden <= OrdenUltMes%) And (Reg!AñoP > AñoUltPago%))) And Not IsNull(Reg!AñoP) Then
+         Ult_Pago = Reg!Precio
+         Fecha_ult = Reg!Fecha
+         OrdenUltMes% = Reg!Orden
+         AñoUltPago% = Reg!AñoP
+      Else
+         If IsNull(Reg!AñoP) Then
+            If (Reg!Orden >= OrdenUltMes%) And (Reg!Fecha > #4/30/1994#) And (AñoUltPago% <= 1994) Then
+               Ult_Pago = Reg!Precio
+               Fecha_ult = Reg!Fecha
+               OrdenUltMes% = Reg!Orden
+               AñoUltPago% = 1994
+            End If
+         End If
+      End If
+
+      cred_ant = Reg!Credencial
+      Reg.MoveNext
+      If Reg.EOF Then
+         Exit Do
+      End If
+   Loop
+
+   Si_Deudor = 0
+   If (IsNull(Fec_mesA) And MesesAct = 0) And (ReValFec_Cor >= Ingreso_Ant) Then '(ReValFec_Cor >= Inicio_Ant Or IsNull(Inicio_Ant)) And
+      Si_Deudor = 1
+   End If
+   If (IsNull(Fec_mes1) And Meses1 = 0) And (ReValF1 >= Ingreso_Ant) Then
+      Si_Deudor = 1
+   End If
+   If (IsNull(fec_mes2) And Meses2 = 0) And (ReValF2 >= Ingreso_Ant) Then
+      Si_Deudor = 1
+   End If
+   If (IsNull(Fec_mes3) And Meses3 = 0) And (ReValF3 >= Ingreso_Ant) Then
+      Si_Deudor = 1
+   End If
+   If (IsNull(Fec_mes4) And Meses4 = 0) And (ReValF4 >= Ingreso_Ant) Then
+      Si_Deudor = 1
+   End If
+   If Fecha_ult <= ReValF1 Then
+      If MesMenos4 >= 9 Then
+         If OrdenUltMes% <= MesMenos4% And AñoUltPago% < Anio_Act% Then
+            Si_Deudor = 1
+         End If
+      Else
+         If OrdenUltMes% < MesMenos4% And AñoUltPago% <= Anio_Act% Then
+            Si_Deudor = 1
+         End If
+      End If
+   End If
+
+   If (Si_Deudor = 1) Then
+      TPA.AddNew
+      TPA!Maestro = Maestro_Ant
+      TPA!Curso = Curso_Ant
+      TPA!Grupo = Grupo_Ant
+      TPA!Inicio = Inicio_Ant
+      TPA!Alumnos = Num_Alumnos
+      TPA!Credencial = cred_ant
+      TPA!dig_ver = DV_ant
+      TPA!Nombre = Nombre_ant
+      TPA!Ingreso = Ingreso_Ant
+      TPA!deudorAct = 0
+      If IsNull(Fec_mesA) And MesesAct = 0 Then
+         TPA!deudorAct = 1
+      End If
+      TPA!Ult_Pago = Ult_Pago
+      TPA!Fecha_ult = Fecha_ult
+      TPA!descUltMes = Choose(OrdenUltMes%, "ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE") + Format(Str$(AñoUltPago% - 2000), "00")
+      TPA!Num_Meses = 0
+      If MesMenos4% >= 9 Then
+         If (OrdenUltMes% < MesMenos4%) And (AñoUltPago% < Anio_Act%) Then
+            TPA!Num_Meses = (MesMenos4% - OrdenUltMes% - 1)
+         End If
+      Else
+         If AñoUltPago% < Anio_Act% Then
+            TPA!Num_Meses = (12 - OrdenUltMes%) + (MesMenos4% - 1)
+         Else
+            If (OrdenUltMes% < MesMenos4%) And (AñoUltPago% = Anio_Act%) Then
+               TPA!Num_Meses = MesMenos4% - 1 - OrdenUltMes%
+            End If
+         End If
+      End If
+      TPA!Dmes1 = Desc_mes1
+      TPA!Dmes2 = Desc_mes2
+      TPA!Dmes3 = Desc_mes3
+      TPA!DmesActual = Desc_mes4
+      TPA!Mes1 = Meses1
+      TPA!Mes2 = Meses2
+      TPA!Mes3 = Meses3
+      TPA!MesActual = Meses4
+      TPA!FMes1 = Fec_mes1
+      TPA!FMes2 = fec_mes2
+      TPA!FMes3 = Fec_mes3
+      TPA!FMesActual = Fec_mes4
+      TPA!NumMes1 = 0
+      If IsNull(Fec_mes1) Then
+         If Ingreso_Ant <= ReValF1 Then
+            TPA!NumMes1 = 1
+         End If
+      End If
+      TPA!NumMes2 = 0
+      If IsNull(fec_mes2) Then
+         If Ingreso_Ant <= ReValF2 Then
+            TPA!NumMes2 = 1
+         End If
+      End If
+      TPA!NumMes3 = 0
+      If IsNull(Fec_mes3) Then
+         If Ingreso_Ant <= ReValF3 Then
+            TPA!NumMes3 = 1
+         End If
+      End If
+      TPA!NumMes4 = 0
+      If IsNull(Fec_mes4) Then
+         If Ingreso_Ant <= ReValF4 Then
+            TPA!NumMes4 = 1
+         End If
+      End If
+      TPA!MesProceso = DmesProceso
+      TPA!Beca = Beca_Ant
+      TPA.Update
+   End If
+
+Loop
+DoCmd.Hourglass False
+Exit Function
+
+Genera_errorDeudores:
+MsgBox Maestro_Ant + " " + Grupo_Ant + " " + Nombre_ant + " " + Str$(cred_ant)
+ 'Call LogError("Gen_Deudores", Err)
+ MsgBox "Ha ocurrido un error numero " + Str$(Err) + "  " + Error$(Err) + " en el procedimiento Gen_Deudores", 48, "Mensaje del sistema"
+Exit Function
+
+End Function
+
+Function Gen_PagoAlumnos()
+Maestro_Ini = Null
+Maestro_Fin = Null
+
+On Error GoTo Genera_errorPA
+
+Si_Proceso = ""
+Do While Si_Proceso <> "S" And Si_Proceso <> "N"
+   Si_Proceso = InputBox("Desea Unicamente sacar el Reporte con los Datos Anteriormente Generados <S/N> ? ", "")
+   If Si_Proceso = "S" Then
+      Exit Function
+   End If
+Loop
+
+Answer = InputBox("Numero del Mes a Procesar : ", "")
+If Answer = "" Then
+   Exit Function
+End If
+If Not IsNumeric(Answer) Then
+   MsgBox "Mes No Numerico, reintente otra vez", 48, "Mensaje de Error"
+   Exit Function
+End If
+MesProceso% = Answer
+If MesProceso% < 1 Or MesProceso% > 12 Then
+   MsgBox "Mes fuera de rango, Reintente", 50, "Mensaje de Error"
+   Exit Function
+End If
+
+Answer = InputBox("De que Año (Ej. 1994) : ", "")
+If Answer = "" Then
+   Exit Function
+End If
+If Not IsNumeric(Answer) Then
+   MsgBox "Año No Numerico, Reintente", 50, "Mensaje de Error"
+   Exit Function
+End If
+Anio_Act% = Answer
+If Anio_Act% < 1993 Or Anio_Act% > 2009 Then
+   MsgBox "Año Fuera de Rango, Reintente", 50, "Mensaje de Error"
+   Exit Function
+End If
+
+Maestro_Ini = InputBox("Proporcione el Maestro o la Inicial con que desea comenzar el rango (Blancos = 'TODO') ", "")
+If IsNull(Maestro_Ini) Then
+   Maestro_Ini = "A"
+Else
+   If Maestro_Ini = "" Then
+      Exit Function
+   End If
+End If
+Do Until Not IsNull(Maestro_Fin)
+   Maestro_Fin = InputBox("Proporcione el Maestro o la Inicial con que desea terminar el rango (Blancos = 'TODO') ", "")
+   If IsNull(Maestro_Fin) Then
+      Maestro_Fin = "ZZZZZZZZZZZZ"
+   Else
+      If Maestro_Fin = "" Then
+         Exit Function
+      End If
+   End If
+Loop
+
+DoCmd.Hourglass True
+DoCmd.Echo True, "Borrando Datos Anteriores"
+Set db = CurrentDb()
+Set TPA = db.OpenRecordset("TablaAlumnosPago")
+If Not TPA.BOF Then
+   Do Until TPA.EOF
+      TPA.Delete
+      TPA.MoveNext
+   Loop
+End If
+
+
+DoCmd.Echo False, "Ejecutando Query de Seleccion"
+
+Set QDef = db.QueryDefs("ParaAlumnos")
+QDef![Maestro Inicial : ] = Maestro_Ini
+QDef![Maestro Final : ] = Maestro_Fin
+
+Set Reg = QDef.OpenRecordset()
+
+DmesProceso = Choose(MesProceso%, "ENERO ", "FEBRERO ", "MARZO ", "ABRIL ", "MAYO ", "JUNIO ", "JULIO ", "AGOSTO ", "SEPTIEMBRE ", "OCTUBRE ", "NOVIEMBRE ", "DICIEMBRE ") + Str$(Anio_Act%)
+Desc_Mes_Act = Choose(MesProceso%, "ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC")
+Desc_mes1 = IIf(MesProceso% >= 1 And MesProceso% <= 3, Choose(MesProceso%, "OCT", "NOV", "DIC") + Format(Str$((Anio_Act% - 1) - 2000), "00"), Choose(MesProceso% - 3, "ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP"))
+Desc_mes2 = IIf(MesProceso% >= 1 And MesProceso% <= 2, Choose(MesProceso%, "NOV", "DIC") + Format(Str$((Anio_Act% - 1) - 2000), "00"), Choose(MesProceso% - 2, "ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT"))
+Desc_mes3 = IIf(MesProceso% = 1, "DIC" + Format(Str$((Anio_Act% - 1) - 2000), "00"), Choose(MesProceso% - 1, "ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV"))
+Desc_mes4 = IIf(MesProceso% >= 1 And MesProceso% <= 11, Choose(MesProceso%, "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"), "ENE" + Format(Str$((Anio_Act% + 1) - 2000), "00"))
+Desc_mes5 = IIf(MesProceso% >= 1 And MesProceso% <= 10, Choose(MesProceso%, "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"), Choose(MesProceso% - 10, "ENE", "FEB") + Format(Str$((Anio_Act% + 1) - 2000), "00"))
+Desc_mes6 = IIf(MesProceso% >= 1 And MesProceso% <= 9, Choose(MesProceso%, "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"), Choose(MesProceso% - 9, "ENE", "FEB", "MAR") + Format(Str$((Anio_Act% + 1) - 2000), "00"))
+
+If MesProceso% = 1 Then
+   MesMenos3% = 10
+   MesMenos2% = 11
+   MesMenos1% = 12
+   MesMas1% = 2
+   MesMas2% = 3
+   MesMas3% = 4
+Else
+   If MesProceso% = 2 Then
+      MesMenos3% = 11
+      MesMenos2% = 12
+      MesMenos1% = 1
+      MesMas1% = 3
+      MesMas2% = 4
+      MesMas3% = 5
+   Else
+      If MesProceso% = 3 Then
+         MesMenos3% = 12
+         MesMenos2% = 1
+         MesMenos1% = 2
+         MesMas1% = 4
+         MesMas2% = 5
+         MesMas3% = 6
+      Else
+         MesMenos3% = MesProceso% - 3
+         MesMenos2% = MesProceso% - 2
+         MesMenos1% = MesProceso% - 1
+         If MesProceso% = 10 Then
+            MesMas1% = 11
+            MesMas2% = 12
+            MesMas3% = 1
+         Else
+            If MesProceso% = 11 Then
+               MesMas1% = 12
+               MesMas2% = 1
+               MesMas3% = 2
+            Else
+               If MesProceso% = 12 Then
+                  MesMas1% = 1
+                  MesMas2% = 2
+                  MesMas3% = 3
+               Else
+                  MesMas1% = MesProceso% + 1
+                  MesMas2% = MesProceso% + 2
+                  MesMas3% = MesProceso% + 3
+               End If
+            End If
+         End If
+      End If
+   End If
+End If
+
+Select Case MesProceso%
+       Case 1, 3, 5, 7, 8, 10, 12
+           fecha_corte = "31/" + Str$(MesProceso%) + "/" + Str$(Anio_Act%)
+       Case 4, 6, 9, 11
+           fecha_corte = "30/" + Str$(MesProceso%) + "/" + Str$(Anio_Act%)
+       Case 2
+           If (Anio_Act% Mod 4) = 0 Then
+              fecha_corte = "29/" + Str$(MesProceso%) + "/" + Str$(Anio_Act%)
+           Else
+              fecha_corte = "28/" + Str$(MesProceso%) + "/" + Str$(Anio_Act%)
+           End If
+End Select
+ReValFec_Cor = DateValue(fecha_corte)
+
+Select Case MesMenos3%
+       Case 1, 3, 5, 7, 8
+            fecha_corte = "31/" + Str$(MesMenos3%) + "/" + Str$(Anio_Act%)
+       Case 4, 6, 9
+            fecha_corte = "30/" + Str$(MesMenos3%) + "/" + Str$(Anio_Act%)
+       Case 2
+            If (Anio_Act% Mod 4) = 0 Then
+               fecha_corte = "29/" + Str$(MesMenos3%) + "/" + Str$(Anio_Act%)
+            Else
+               fecha_corte = "28/" + Str$(MesMenos3%) + "/" + Str$(Anio_Act%)
+            End If
+       Case 10, 12
+            fecha_corte = "31/" + Str$(MesMenos3%) + "/" + Str$(Anio_Act% - 1)
+       Case 11
+            fecha_corte = "30/" + Str$(MesMenos3%) + "/" + Str$(Anio_Act% - 1)
+End Select
+ReValF1 = DateValue(fecha_corte)
+
+Select Case MesMenos2%
+       Case 1, 3, 5, 7, 8, 10
+            fecha_corte = "31/" + Str$(MesMenos2%) + "/" + Str$(Anio_Act%)
+       Case 4, 6, 9
+            fecha_corte = "30/" + Str$(MesMenos2%) + "/" + Str$(Anio_Act%)
+       Case 2
+            If (Anio_Act% Mod 4) = 0 Then
+               fecha_corte = "29/" + Str$(MesMenos2%) + "/" + Str$(Anio_Act%)
+            Else
+               fecha_corte = "28/" + Str$(MesMenos2%) + "/" + Str$(Anio_Act%)
+            End If
+       Case 12
+            fecha_corte = "31/" + Str$(MesMenos2%) + "/" + Str$(Anio_Act% - 1)
+       Case 11
+            fecha_corte = "30/" + Str$(MesMenos2%) + "/" + Str$(Anio_Act% - 1)
+End Select
+ReValF2 = DateValue(fecha_corte)
+
+Select Case MesMenos1%
+       Case 1, 3, 5, 7, 8, 10
+            fecha_corte = "31/" + Str$(MesMenos1%) + "/" + Str$(Anio_Act%)
+       Case 4, 6, 9, 11
+            fecha_corte = "30/" + Str$(MesMenos1%) + "/" + Str$(Anio_Act%)
+       Case 2
+            If (Anio_Act% Mod 4) = 0 Then
+               fecha_corte = "29/" + Str$(MesMenos1%) + "/" + Str$(Anio_Act%)
+            Else
+               fecha_corte = "28/" + Str$(MesMenos1%) + "/" + Str$(Anio_Act%)
+            End If
+       Case 12
+            fecha_corte = "31/" + Str$(MesMenos1%) + "/" + Str$(Anio_Act% - 1)
+End Select
+ReValF3 = DateValue(fecha_corte)
+
+Select Case MesMas1%
+       Case 3, 5, 7, 8, 10, 12
+            fecha_corte = "31/" + Str$(MesMas1%) + "/" + Str$(Anio_Act%)
+       Case 4, 6, 9, 11
+            fecha_corte = "30/" + Str$(MesMas1%) + "/" + Str$(Anio_Act%)
+       Case 2
+            If (Anio_Act% Mod 4) = 0 Then
+               fecha_corte = "29/" + Str$(MesMas1%) + "/" + Str$(Anio_Act%)
+            Else
+               fecha_corte = "28/" + Str$(MesMas1%) + "/" + Str$(Anio_Act%)
+            End If
+       Case 1
+            fecha_corte = "31/" + Str$(MesMas1%) + "/" + Str$(Anio_Act% + 1)
+End Select
+ReValF4 = DateValue(fecha_corte)
+
+Select Case MesMas2%
+       Case 3, 5, 7, 8, 10
+            fecha_corte = "31/" + Str$(MesMas2%) + "/" + Str$(Anio_Act%)
+       Case 4, 6, 9, 11
+            fecha_corte = "30/" + Str$(MesMas2%) + "/" + Str$(Anio_Act%)
+       Case 2
+            If (Anio_Act% Mod 4) = 0 Then
+               fecha_corte = "29/" + Str$(MesMas2%) + "/" + Str$(Anio_Act% + 1)
+            Else
+               fecha_corte = "28/" + Str$(MesMas2%) + "/" + Str$(Anio_Act% + 1)
+            End If
+       Case 1
+            fecha_corte = "31/" + Str$(MesMas2%) + "/" + Str$(Anio_Act% + 1)
+End Select
+ReValF5 = DateValue(fecha_corte)
+
+Select Case MesMas3%
+       Case 5, 7, 8, 10
+            fecha_corte = "31/" + Str$(MesMas3%) + "/" + Str$(Anio_Act%)
+       Case 4, 6, 9, 11
+            fecha_corte = "30/" + Str$(MesMas3%) + "/" + Str$(Anio_Act%)
+       Case 2
+            If (Anio_Act% Mod 4) = 0 Then
+               fecha_corte = "29/" + Str$(MesMas3%) + "/" + Str$(Anio_Act% + 1)
+            Else
+               fecha_corte = "28/" + Str$(MesMas3%) + "/" + Str$(Anio_Act% + 1)
+            End If
+       Case 1, 3
+            fecha_corte = "31/" + Str$(MesMas3%) + "/" + Str$(Anio_Act% + 1)
+End Select
+ReValF6 = DateValue(fecha_corte)
+
+If Reg.BOF Then
+   MsgBox "No Hay Registros Generados en el Rango", 48, "Mensaje de Confirmacion"
+   Exit Function
+End If
+
+Reg.MoveFirst
+
+Do Until Reg.EOF
+
+   DoCmd.Echo True, "Procesando: " + Reg!Maestro + " " + Reg!Clave
+   Meses1 = 0
+   Meses2 = 0
+   Meses3 = 0
+   Meses4 = 0
+   Meses5 = 0
+   meses6 = 0
+   MesesAct = 0
+   Fec_mesA = Null
+   Fec_mes1 = Null
+   fec_mes2 = Null
+   Fec_mes3 = Null
+   Fec_mes4 = Null
+   Fec_mes5 = Null
+   Fec_mes6 = Null
+   Maestro_Ant = Reg!Maestro
+   Curso_Ant = Reg!Curso
+   Grupo_Ant = Reg!Clave
+   Inicio_Ant = Reg!Inicio
+   Num_Alumnos = Reg!Alumnos
+   cred_ant = Reg!Credencial
+   DV_ant = Reg!dig_ver
+   Nombre_ant = Reg!Nombre
+   Salon_Ant = Reg!Salon
+   Telefono_Ant = Reg!Telefono
+   Ingreso_Ant = Reg![Fecha Ingreso]
+   Beca_Ant = Reg!Porcentaje
+   
+   Do Until (Reg.EOF) Or (cred_ant <> Reg!Credencial)
+      
+      Anio_Arch% = DatePart("yyyy", Reg!Fecha)
+      
+      If (MesProceso% = Reg!Orden) Then
+         If Anio_Act% = Reg!AñoP Then
+            MesesAct = MesesAct + Reg!Precio
+            Fec_mesA = Reg!Fecha
+         End If
+      Else
+         If MesMenos3% = Reg!Orden Then
+            If (MesMenos3% >= 10) Then
+               If ((Anio_Act% - 1) = Reg!AñoP) Or (IsNull(Reg!AñoP) And Reg!Fecha >= #4/30/1994#) Then
+                  Meses1 = Meses1 + Reg!Precio
+                  Fec_mes1 = Reg!Fecha
+               End If
+            Else
+               If Anio_Act% = Reg!AñoP Then
+                  Meses1 = Meses1 + Reg!Precio
+                  Fec_mes1 = Reg!Fecha
+               End If
+            End If
+         End If
+         If MesMenos2% = Reg!Orden Then
+            If (MesMenos2% >= 11) Then
+               If ((Anio_Act% - 1) = Reg!AñoP) Or (IsNull(Reg!AñoP) And Reg!Fecha >= #4/30/1994#) Then
+                  Meses2 = Meses2 + Reg!Precio
+                  fec_mes2 = Reg!Fecha
+               End If
+            Else
+               If Anio_Act% = Reg!AñoP Then
+                  Meses2 = Meses2 + Reg!Precio
+                  fec_mes2 = Reg!Fecha
+               End If
+            End If
+         End If
+         If MesMenos1% = Reg!Orden Then
+            If (MesMenos1% >= 12) Then
+               If ((Anio_Act% - 1) = Reg!AñoP) Or (IsNull(Reg!AñoP) And Reg!Fecha >= #4/30/1994#) Then
+                  Meses3 = Meses3 + Reg!Precio
+                  Fec_mes3 = Reg!Fecha
+               End If
+            Else
+               If Anio_Act% = Reg!AñoP Then
+                  Meses3 = Meses3 + Reg!Precio
+                  Fec_mes3 = Reg!Fecha
+               End If
+            End If
+         End If
+
+         If MesMas1% = Reg!Orden Then
+            If (MesMas1% <= 1) Then
+               If (Anio_Act% + 1) = Reg!AñoP Then
+                  Meses4 = Meses4 + Reg!Precio
+                  Fec_mes4 = Reg!Fecha
+               End If
+            Else
+               If Anio_Act% = Reg!AñoP Then
+                  Meses4 = Meses4 + Reg!Precio
+                  Fec_mes4 = Reg!Fecha
+               End If
+            End If
+         End If
+         If MesMas2% = Reg!Orden Then
+            If (MesMas2% <= 2) Then
+               If (Anio_Act% + 1) = Reg!AñoP Then
+                  Meses5 = Meses5 + Reg!Precio
+                  Fec_mes5 = Reg!Fecha
+               End If
+            Else
+               If Anio_Act% = Reg!AñoP Then
+                  Meses5 = Meses5 + Reg!Precio
+                  Fec_mes5 = Reg!Fecha
+               End If
+            End If
+         End If
+         If MesMas3% = Reg!Orden Then
+            If (MesMas3% <= 3) Then
+               If (Anio_Act% + 1) = Reg!AñoP Then
+                  meses6 = meses6 + Reg!Precio
+                  Fec_mes6 = Reg!Fecha
+               End If
+            Else
+               If Anio_Act% = Reg!AñoP Then
+                  meses6 = meses6 + Reg!Precio
+                  Fec_mes6 = Reg!Fecha
+               End If
+            End If
+         End If
+      End If
+      cred_ant = Reg!Credencial
+      
+      Reg.MoveNext
+      If Reg.EOF Then
+         Exit Do
+      End If
+
+   Loop
+   
+   TPA.AddNew
+   TPA!Maestro = Maestro_Ant
+   TPA!Curso = Curso_Ant
+   TPA!Grupo = Grupo_Ant
+   TPA!Inicio = Inicio_Ant
+   TPA!Alumnos = Num_Alumnos
+   TPA!Credencial = cred_ant
+   TPA!dig_ver = DV_ant
+   TPA!Nombre = Nombre_ant
+   TPA!Ingreso = Ingreso_Ant
+   TPA!Telefono = Telefono_Ant
+   TPA!Salon = Salon_Ant
+   TPA!Dmes1 = Desc_mes1
+   TPA!Dmes2 = Desc_mes2
+   TPA!Dmes3 = Desc_mes3
+   TPA!Dmes4 = Desc_mes4
+   TPA!Dmes5 = Desc_mes5
+   TPA!Dmes6 = Desc_mes6
+   TPA!DmesActual = Desc_Mes_Act
+   TPA!Mes1 = Meses1
+   TPA!Mes2 = Meses2
+   TPA!Mes3 = Meses3
+   TPA!Mes4 = Meses4
+   TPA!Mes5 = Meses5
+   TPA!Mes6 = meses6
+   TPA!MesActual = MesesAct
+   TPA!FMes1 = Fec_mes1
+   TPA!FMes2 = fec_mes2
+   TPA!FMes3 = Fec_mes3
+   TPA!FMes4 = Fec_mes4
+   TPA!FMes5 = Fec_mes5
+   TPA!FMes6 = Fec_mes6
+   TPA!FMesActual = Fec_mesA
+   TPA!MesProceso = DmesProceso
+   TPA!NumMesesA = 0
+   If Not IsNull(Fec_mesA) Then
+      TPA!NumMesesA = 1
+   End If
+   TPA!NumMeses1 = 0
+   If Not IsNull(Fec_mes1) Then
+      TPA!NumMeses1 = 1
+   End If
+   TPA!NumMeses2 = 0
+   If Not IsNull(fec_mes2) Then
+      TPA!NumMeses2 = 1
+   End If
+   TPA!NumMeses3 = 0
+   If Not IsNull(Fec_mes3) Then
+      TPA!NumMeses3 = 1
+   End If
+   TPA!NumMeses4 = 0
+   If Not IsNull(Fec_mes4) Then
+      TPA!NumMeses4 = 1
+   End If
+   TPA!NumMeses5 = 0
+   If Not IsNull(Fec_mes5) Then
+      TPA!NumMeses5 = 1
+   End If
+   TPA!NumMeses6 = 0
+   If Not IsNull(Fec_mes6) Then
+      TPA!NumMeses6 = 1
+   End If
+   TPA!Beca = Beca_Ant
+
+   TPA.Update
+Loop
+DoCmd.Hourglass False
+Exit Function
+
+Genera_errorPA:
+ 'Call LogError("Gen_PagoAlumnos", Err)
+ MsgBox "Ha ocurrido un error numero " + Str$(Err) + "  " + Error$(Err) + " en el procedimiento Gen_PagoAlumnos", 48, "Mensaje del sistema"
+Exit Function
+
+End Function
+
+Function Gen_PagosAdelantados()
+Dim QDef As QueryDef, Reg As Recordset, TPA As Recordset
+Dim cred_ant, Desc_Mes_Act
+Dim Desc_mes4, Desc_mes5, Desc_mes6, MesProceso%
+Dim Grupo_Ant, Nombre_ant, DV_ant, Inicio_Ant, Ingreso_Ant, Maestro_Ant, Curso_Ant
+Dim MesesAct, Meses4, Meses5, meses6
+Dim Fec_mesA, Fec_mes4, Fec_mes5, Fec_mes6
+Dim Anio_Act%, Anio_reg%, Anio_Arch%, Mes_Ant%, Anio_Ant%
+Dim DmesProceso, Ult_Pago, Fecha_ult, Num_Alumnos, Mes_Ult%, Año_Ult%
+Dim MesMenos1%, MesMenos2%, MesMenos3%, MesMas1%, MesMas2%, MesMas3%
+Dim Maestro_Ini, Maestro_Fin, Mes_Adelan%, Año_adelan%, OrdenUltMes%, con_posterior
+Maestro_Ini = Null
+Maestro_Fin = Null
+
+On Error GoTo Genera_errorPAdel
+
+Si_Proceso = ""
+Do While Si_Proceso <> "S" And Si_Proceso <> "N"
+   Si_Proceso = InputBox("Desea Unicamente sacar el Reporte con los Datos Anteriormente Generados <S/N> ? ", "")
+   If Si_Proceso = "S" Then
+      Exit Function
+   End If
+Loop
+
+MesProceso% = InputBox("Mes De Corte (A partir del Pago del siguiente mes se considera pago adelantado), Proporcione Numero de Mes : ", "")
+
+Anio_Act% = InputBox("De que Año (Ej. 1994) : ", "")
+
+Maestro_Ini = InputBox("Proporcione el Maestro o la Inicial con que desea comenzar el rango (Blancos = 'TODO') ", "")
+If IsNull(Maestro_Ini) Then
+   Maestro_Ini = "A"
+End If
+Do Until Not IsNull(Maestro_Fin)
+   Maestro_Fin = InputBox("Proporcione el Maestro o la Inicial con que desea terminar el rango (Blancos = 'TODO') ", "")
+   If IsNull(Maestro_Fin) Then
+      Maestro_Fin = "ZZZZZZZZZZZZ"
+   End If
+Loop
+
+con_posterior = InputBox("Solo por Iniciar ? ", "")
+If con_posterior = "S" Then
+   Select Case MesProceso%
+       Case 1, 3, 5, 7, 8, 10, 12
+            fecha_corte = "31/" + Str$(MesProceso%) + "/" + Str$(Anio_Act%)
+       Case 4, 6, 9, 11
+            fecha_corte = "30/" + Str$(MesProceso%) + "/" + Str$(Anio_Act%)
+       Case 2
+            If (Anio_Act% Mod 4) = 0 Then
+               fecha_corte = "29/" + Str$(MesProceso%) + "/" + Str$(Anio_Act%)
+            Else
+               fecha_corte = "28/" + Str$(MesProceso%) + "/" + Str$(Anio_Act%)
+            End If
+   End Select
+Else
+   fecha_corte = "01/01/2000"
+End If
+
+Fecha_comp = DateValue(fecha_corte)
+
+DoCmd.Hourglass True
+
+DoCmd.Echo True, "Borrando Datos Anteriores"
+Set db = CurrentDb()
+Set TPA = db.OpenRecordset("TablaPagosAdelantados")
+If Not TPA.BOF Then
+   Do Until TPA.EOF
+      TPA.Delete
+      TPA.MoveNext
+   Loop
+End If
+
+
+DoCmd.Echo False, "Ejecutando Query de Seleccion"
+
+Set QDef = db.QueryDefs("ParaAlumnosAdel")
+QDef![Mes Pago Adelantado : ] = MesProceso%
+QDef![Año Pago Adelantado : ] = Anio_Act%
+QDef![Fecha corte] = Fecha_comp
+
+Set Reg = QDef.OpenRecordset()
+
+DmesProceso = Choose(MesProceso%, "ENERO ", "FEBRERO ", "MARZO ", "ABRIL ", "MAYO ", "JUNIO ", "JULIO ", "AGOSTO ", "SEPTIEMBRE ", "OCTUBRE ", "NOVIEMBRE ", "DICIEMBRE ") + Str$(Anio_Act%)
+Desc_Mes_Act = Choose(MesProceso%, "ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC")
+Desc_mes4 = IIf(MesProceso% >= 1 And MesProceso% <= 11, Choose(MesProceso%, "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"), "ENE" + Format(Str$((Anio_Act% + 1) - 2000), "00"))
+Desc_mes5 = IIf(MesProceso% >= 1 And MesProceso% <= 10, Choose(MesProceso%, "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"), Choose(MesProceso% - 10, "ENE", "FEB") + Format(Str$((Anio_Act% + 1) - 2000), "00"))
+Desc_mes6 = IIf(MesProceso% >= 1 And MesProceso% <= 9, Choose(MesProceso%, "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"), Choose(MesProceso% - 9, "ENE", "FEB", "MAR") + Format(Str$((Anio_Act% + 1) - 2000), "00"))
+
+If MesProceso% = 10 Then
+   MesMas1% = 11
+   MesMas2% = 12
+   MesMas3% = 1
+Else
+   If MesProceso% = 11 Then
+      MesMas1% = 12
+      MesMas2% = 1
+      MesMas3% = 2
+   Else
+      If MesProceso% = 12 Then
+         MesMas1% = 1
+         MesMas2% = 2
+         MesMas3% = 3
+      Else
+         MesMas1% = MesProceso% + 1
+         MesMas2% = MesProceso% + 2
+         MesMas3% = MesProceso% + 3
+      End If
+   End If
+End If
+
+If Reg.BOF Then
+   MsgBox "No Hay Registros Generados en el Rango", 48, "Mensaje de Confirmacion"
+   Exit Function
+End If
+
+Reg.MoveFirst
+
+Do Until Reg.EOF
+
+   DoCmd.Echo True, "Procesando: " + Reg!Maestro + " " + Reg!Clave
+   Meses4 = 0
+   Meses5 = 0
+   meses6 = 0
+   MesesAct = 0
+   Fec_mesA = Null
+   Fec_mes4 = Null
+   Fec_mes5 = Null
+   Fec_mes6 = Null
+   Ult_Pago = 0
+   Fecha_ult = Null
+   OrdenUltMes% = 0
+   Año_Ult% = 0
+   Maestro_Ant = Reg!Maestro
+   Curso_Ant = Reg!Curso
+   Grupo_Ant = Reg!Clave
+   Inicio_Ant = Reg!Inicio
+   Num_Alumnos = Reg!Alumnos
+   cred_ant = Reg!Credencial
+   DV_ant = Reg!dig_ver
+   Nombre_ant = Reg!Nombre
+   Ingreso_Ant = Reg![Fecha Ingreso]
+   
+   Do Until (cred_ant <> Reg!Credencial) Or (Reg.EOF)
+     
+         Anio_Arch% = DatePart("yyyy", Reg!Fecha)
+
+         If MesMas1% = Reg!Orden Then
+            If (MesMas1% <= 1) Then
+               If Reg!AñoP > (Anio_Act + 1) Then
+                  Meses4 = Meses4 + Reg!Precio
+                  Fec_mes4 = Reg!Fecha
+               End If
+            Else
+               If (Anio_Act% = Reg!AñoP) Then
+                  Meses4 = Meses4 + Reg!Precio
+                  Fec_mes4 = Reg!Fecha
+               End If
+            End If
+         End If
+         If MesMas2% = Reg!Orden Then
+            If (MesMas2% <= 2) Then
+               If Reg!AñoP > (Anio_Act + 1) Then
+                  Meses5 = Meses5 + Reg!Precio
+                  Fec_mes5 = Reg!Fecha
+               End If
+            Else
+               If (Anio_Act% = Reg!AñoP) Then
+                  Meses5 = Meses5 + Reg!Precio
+                  Fec_mes5 = Reg!Fecha
+               End If
+            End If
+         End If
+         If MesMas3% = Reg!Orden Then
+            If (MesMas3% <= 3) Then
+               If Reg!AñoP > (Anio_Act + 1) Then
+                  meses6 = meses6 + Reg!Precio
+                  Fec_mes6 = Reg!Fecha
+               End If
+            Else
+               If (Anio_Act% = Reg!AñoP) Then
+                  meses6 = meses6 + Reg!Precio
+                  Fec_mes6 = Reg!Fecha
+               End If
+            End If
+         End If
+      
+      If ((Reg!Orden > OrdenUltMes% And Reg!AñoP >= AñoUlt%) Or (Reg!Orden <= OrdenUltMes% And Reg!AñoP > Año_Ult%)) And Not IsNull(Reg!AñoP) Then
+         Ult_Pago = Reg!Precio
+         Fecha_ult = Reg!Fecha
+         OrdenUltMes% = Reg!Orden
+         Año_Ult% = Reg!AñoP
+      End If
+
+      cred_ant = Reg!Credencial
+      
+      Reg.MoveNext
+      If Reg.EOF Then
+         Exit Do
+      End If
+
+   Loop
+
+   
+   If Meses4 <> 0 Or Not IsNull(Fec_mes4) Or Meses5 <> 0 Or Not IsNull(Fec_mes5) Or meses6 <> 0 Or Not IsNull(Fec_mes6) Then
+      TPA.AddNew
+      TPA!Maestro = Maestro_Ant
+      TPA!Curso = Curso_Ant
+      TPA!Grupo = Grupo_Ant
+      TPA!Inicio = Inicio_Ant
+      TPA!Alumnos = Num_Alumnos
+      TPA!Credencial = cred_ant
+      TPA!dig_ver = DV_ant
+      TPA!Nombre = Nombre_ant
+      TPA!Ingreso = Ingreso_Ant
+      TPA!Ult_Pago = Ult_Pago
+      TPA!Fecha_ult = Fecha_ult
+      Select Case OrdenUltMes%
+         Case 1: TPA!OrdenUltMes = "ENERO"       ' + Right(año_ult%, 2)
+         Case 2: TPA!OrdenUltMes = "FEBRERO"     ' + Right(año_ult%, 2)
+         Case 3: TPA!OrdenUltMes = "MARZO"       '+ Right(año_ult%, 2)
+         Case 4: TPA!OrdenUltMes = "ABRIL"       '+ Right(año_ult%, 2)
+         Case 5: TPA!OrdenUltMes = "MAYO"        '+ Right(año_ult%, 2)
+         Case 6: TPA!OrdenUltMes = "JUNIO"       '+ Right(año_ult%, 2)
+         Case 7: TPA!OrdenUltMes = "JULIO"       '+ Right(año_ult%, 2)
+         Case 8: TPA!OrdenUltMes = "AGOSTO"      '+ Right(año_ult%, 2)
+         Case 9: TPA!OrdenUltMes = "SEPTIEMBRE"  '+ Right(año_ult%, 2)
+         Case 10: TPA!OrdenUltMes = "OCTUBRE"    '+ Right(año_ult%, 2)
+         Case 11: TPA!OrdenUltMes = "NOVIEMBRE"  '+ Right(año_ult%, 2)
+         Case 12: TPA!OrdenUltMes = "DICIEMBRE"  '+ Right(año_ult%, 2)
+      End Select
+      TPA!Dmes4 = Desc_mes4
+      TPA!Dmes5 = Desc_mes5
+      TPA!Dmes6 = Desc_mes6
+      TPA!Mes4 = Meses4
+      TPA!Mes5 = Meses5
+      TPA!Mes6 = meses6
+      TPA!FMes4 = Fec_mes4
+      TPA!FMes5 = Fec_mes5
+      TPA!FMes6 = Fec_mes6
+      TPA!MesProceso = DmesProceso
+      TPA.Update
+   End If
+Loop
+DoCmd.Hourglass False
+Exit Function
+
+Genera_errorPAdel:
+ 'Call LogError("Gen_PagosAdelantados", Err)
+ MsgBox "Ha ocurrido un error numero " + Str$(Err) + "  " + Error$(Err) + " en el procedimiento Gen_PagosAdelantados", 48, "Mensaje del sistema"
+Exit Function
+
+End Function
+
+Function Gen_ParaHon()
+On Error GoTo Genera_error
+Maestro_Ini = Null
+Maestro_Fin = Null
+
+Si_Proceso = ""
+Do While Si_Proceso <> "S" And Si_Proceso <> "N"
+   Si_Proceso = InputBox("Desea Unicamente sacar el Reporte con los Datos Anteriormente Generados <S/N> ? ", "")
+   If Si_Proceso = "S" Then
+      Exit Function
+   End If
+Loop
+
+MesProceso% = InputBox("Numero del Mes a Procesar : ", "")
+Anio_Act% = InputBox("De que Año (Ej. 1994) : ", "")
+
+Finip = InputBox("Fecha de Inicio del Periodo : ", "")
+If Finip = "" Then
+   Exit Function
+End If
+
+Ffinp = InputBox("Fecha de Fin del Perido : ", "")
+If Ffinp = "" Then
+   Exit Function
+End If
+
+FIni = DateValue(Finip)
+FFin = DateValue(Ffinp)
+
+Maestro_Ini = InputBox("Proporcione el Maestro o la Inicial con que desea comenzar el rango (Blancos = 'TODO') ", "")
+If IsNull(Maestro_Ini) Then
+   Maestro_Ini = "A"
+Else
+   If Maestro_Ini = "" Then
+      Exit Function
+   End If
+End If
+Maestro_Fin = InputBox("Proporcione el Maestro o la Inicial con que desea terminar el rango (Blancos = 'TODO') ", "")
+If IsNull(Maestro_Fin) Then
+   Maestro_Fin = "ZZZZZZZZZZZZ"
+Else
+   If Maestro_Fin = "" Then
+      Exit Function
+   End If
+End If
+
+DoCmd.Hourglass True
+DoCmd.Echo True, "Borrando Datos Anteriores"
+Set db = CurrentDb()
+Set THonor = db.OpenRecordset("TablaHonorarios")
+If Not THonor.BOF Then
+   Do Until THonor.EOF
+      THonor.Delete
+      THonor.MoveNext
+   Loop
+End If
+
+DoCmd.Echo False, "Ejecutando Query de Seleccion"
+
+Set QDef = db.QueryDefs("ParaHonorarios")
+QDef![Maestro Inicial : ] = Maestro_Ini
+QDef![Maestro Final : ] = Maestro_Fin
+Set Reg = QDef.OpenRecordset()
+
+DmesProceso = Choose(MesProceso%, "ENERO ", "FEBRERO ", "MARZO ", "ABRIL ", "MAYO ", "JUNIO ", "JULIO ", "AGOSTO ", "SEPTIEMBRE ", "OCTUBRE ", "NOVIEMBRE ", "DICIEMBRE ") + Str$(Anio_Act%)
+Desc_Mes_Act = Choose(MesProceso%, "ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC")
+Desc_mes1 = IIf(MesProceso% >= 1 And MesProceso% <= 3, Choose(MesProceso%, "OCT", "NOV", "DIC") + Format(Str$((Anio_Act% - 1) - 2000), "00"), Choose(MesProceso% - 3, "ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP"))
+Desc_mes2 = IIf(MesProceso% >= 1 And MesProceso% <= 2, Choose(MesProceso%, "NOV", "DIC") + Format(Str$((Anio_Act% - 1) - 2000), "00"), Choose(MesProceso% - 2, "ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT"))
+Desc_mes3 = IIf(MesProceso% = 1, "DIC" + Format(Str$((Anio_Act% - 1) - 2000), "00"), Choose(MesProceso% - 1, "ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV"))
+
+If MesProceso% = 1 Then
+   MesMenosOA% = 9
+   MesMenos3% = 10
+   MesMenos2% = 11
+   MesMenos1% = 12
+Else
+   If MesProceso% = 2 Then
+      MesMenosOA% = 10
+      MesMenos3% = 11
+      MesMenos2% = 12
+      MesMenos1% = 1
+   Else
+      If MesProceso% = 3 Then
+         MesMenosOA% = 11
+         MesMenos3% = 12
+         MesMenos2% = 1
+         MesMenos1% = 2
+      Else
+         MesMenosOA% = MesProceso% - 4
+         MesMenos3% = MesProceso% - 3
+         MesMenos2% = MesProceso% - 2
+         MesMenos1% = MesProceso% - 1
+      End If
+   End If
+End If
+
+
+Reg.MoveFirst
+
+Do Until Reg.EOF
+   DoCmd.Echo True, "Procesando: " + Reg!Maestro + " " + Reg!Curso
+   Anio_Ant% = 0
+   Mes_Ant% = 0
+   cred_ant = 0
+   Prec = 0
+   Meses1 = 0
+   Meses2 = 0
+   Meses3 = 0
+   MesesOA = 0
+   MesesAct = 0
+   MesesActPant = 0
+   Maestro_Ant = Reg!Maestro
+   Curso_Ant = Reg!Curso
+   RFC_ant = Reg!RFC
+   Grado_ant = Reg!Grado
+   Factor_ant = Reg!Factor
+   Ingreso_Ant = Reg![Fecha de Ingreso]
+   Grupo_Ant = Reg!Clave
+   Num_Alumnos = 0
+   Do Until (Reg.EOF) Or (Curso_Ant <> Reg!Curso) Or (Maestro_Ant <> Reg!Maestro)
+     
+      If cred_ant <> Reg!Credencial Then
+         Anio_Ant% = 0
+         Mes_Ant% = 0
+         If Reg![Fecha Ingreso] <= FFin Then 'Reg!Inicio <= FFin
+            Num_Alumnos = Num_Alumnos + 1
+         End If
+      End If
+      
+      Anio_Arch% = DatePart("yyyy", Reg!Fecha)
+
+      If Reg![Fecha Ingreso] <= FFin Then 'Reg!Inicio <= Ffin
+         If (Mes_Ant% = Reg!Orden) And (cred_ant = Reg!Credencial) And (Anio_Ant% = Reg!AñoP Or IsNull(Reg!AñoP)) Then
+            If Reg!Fecha >= FIni And Reg!Fecha <= FFin Then
+               Prec = Prec + Reg!Precio
+            End If
+         Else
+            If MesProceso% = Reg!Orden Then
+               If Reg!Fecha >= FIni And Reg!Fecha <= FFin Then
+                  If Reg!AñoP = Anio_Act% Then
+                     MesesAct = MesesAct + 1
+                     Prec = Prec + Reg!Precio
+                  Else
+                     If (Reg!AñoP < Anio_Act%) Then
+                        MesesOA = MesesOA + 1
+                        Prec = Prec + Reg!Precio
+                     End If
+                  End If
+               Else
+                  If (Reg!AñoP = Anio_Act%) And (Reg!Fecha < FIni) Then
+                     MesesActPant = MesesActPant + 1
+                     Prec = Prec + Reg!Precio
+                  End If
+               End If
+            Else
+               Reg_Ya = 0
+               If Reg!Fecha >= FIni And Reg!Fecha <= FFin Then
+                  If MesMenos3% = Reg!Orden Then
+                     If MesMenos3% >= 10 Then
+                        If Reg!AñoP = (Anio_Act% - 1) Then
+                           Meses1 = Meses1 + 1
+                           Reg_Ya = 1
+                        End If
+                     Else
+                        If Reg!AñoP = Anio_Act% Then
+                           Meses1 = Meses1 + 1
+                           Reg_Ya = 1
+                        End If
+                     End If
+                  End If
+                  If MesMenos2% = Reg!Orden Then
+                     If MesMenos2% >= 11 Then
+                        If Reg!AñoP = (Anio_Act% - 1) Then
+                           Meses2 = Meses2 + 1
+                           Reg_Ya = 1
+                        End If
+                     Else
+                        If Reg!AñoP = Anio_Act% Then
+                           Meses2 = Meses2 + 1
+                           Reg_Ya = 1
+                        End If
+                     End If
+                  End If
+                  If MesMenos1% = Reg!Orden Then
+                     If MesMenos1% = 12 Then
+                        If Reg!AñoP = (Anio_Act% - 1) Then
+                           Meses3 = Meses3 + 1
+                           Reg_Ya = 1
+                        End If
+                     Else
+                        If Reg!AñoP = Anio_Act% Then
+                           Meses3 = Meses3 + 1
+                           Reg_Ya = 1
+                        End If
+                     End If
+                  End If
+                  If Reg_Ya = 0 Then
+                     If (MesMenosOA% >= Reg!Orden) Then
+                        If MesMenosOA% >= 9 Then
+                           If Reg!AñoP = (Anio_Act% - 1) Then
+                              MesesOA = MesesOA + 1
+                              Reg_Ya = 1
+                           End If
+                        Else
+                           If Reg!AñoP = Anio_Act% Then
+                              MesesOA = MesesOA + 1
+                              Reg_Ya = 1
+                           End If
+                        End If
+                     Else
+                        If Reg!AñoP < Anio_Act% Then
+                           MesesOA = MesesOA + 1
+                           Reg_Ya = 1
+                        End If
+                     End If
+                  End If
+                  If Reg_Ya = 1 Then
+                     Prec = Prec + Reg!Precio
+                  End If
+               End If
+            End If
+         End If
+      End If
+      
+      Anio_Ant% = Reg!AñoP
+      Mes_Ant% = Reg!Orden
+      cred_ant = Reg!Credencial
+      Grupo_Ant = Reg!Clave
+      Reg.MoveNext
+
+      If Reg.EOF Then
+         Exit Do
+      End If
+   Loop
+   
+   THonor.AddNew
+   THonor!Maestro = Maestro_Ant
+   THonor!Curso = Curso_Ant
+   THonor!RFC = RFC_ant
+   THonor!Grado = Grado_ant
+   THonor!Factor = Factor_ant
+   THonor!Ingreso = Ingreso_Ant
+   THonor!Alumnos = Num_Alumnos
+   THonor!DmesActual = Desc_Mes_Act
+   THonor!Dmes1 = Desc_mes1
+   THonor!Dmes2 = Desc_mes2
+   THonor!Dmes3 = Desc_mes3
+   THonor!Mes1 = Meses1
+   THonor!Mes2 = Meses2
+   THonor!Mes3 = Meses3
+   THonor!OtrosMesesAnt = MesesOA
+   THonor!MesActual = MesesAct
+   THonor!MesActualPant = MesesActPant
+   THonor!totAlumnos = MesesAct + MesesActPant + Meses1 + Meses2 + Meses3 + MesesOA
+   THonor!pagoHonorario = THonor!totAlumnos * THonor!Factor
+   THonor!FecIni = FIni
+   THonor!FecFin = FFin
+   THonor!MesProceso = DmesProceso
+   THonor!Precio = Prec
+   THonor.Update
+Loop
+DoCmd.Hourglass False
+Exit Function
+
+Genera_error:
+ 'Call LogError("Gen_ParaHon", Err)
+ MsgBox "Ha ocurrido un error numero " + Str$(Err) + "  " + Error$(Err) + " en el procedimiento Gen_ParaHon", 48, "Mensaje del sistema"
+Exit Function
+
+End Function
+
+Function Gen_ResumenMaestros()
+Dim MasterRFC, MasterIng, MasterGrado, MasterFactor
+Dim TMaestros As Recordset
+On Error GoTo Genera_errorRM
+Maestro_Ini = Null
+Maestro_Fin = Null
+
+Si_Proceso = ""
+Do While Si_Proceso <> "S" And Si_Proceso <> "N"
+   Si_Proceso = InputBox("Desea Unicamente sacar el Reporte con los Datos Anteriormente Generados <S/N> ? ", "")
+   If Si_Proceso = "S" Then
+      Exit Function
+   End If
+Loop
+
+MesProceso% = InputBox("Numero del Mes a Procesar : ", "")
+Anio_Act% = InputBox("De que Año (Ej. 1994) : ", "")
+
+Finip = InputBox("Fecha de Inicio del Periodo : ", "")
+If Finip = "" Then
+   Exit Function
+End If
+
+Ffinp = InputBox("Fecha de Fin del Perido : ", "")
+If Ffinp = "" Then
+   Exit Function
+End If
+
+FIni = DateValue(Finip)
+FFin = DateValue(Ffinp)
+'Anio_Act% = DatePart("yyyy", FIni)
+
+Maestro_Ini = InputBox("Proporcione el Maestro o la Inicial con que desea comenzar el rango (Blancos = 'TODO') ", "")
+If IsNull(Maestro_Ini) Then
+   Maestro_Ini = "A"
+Else
+   If Maestro_Ini = "" Then
+      Exit Function
+   End If
+End If
+Do Until Not IsNull(Maestro_Fin)
+   Maestro_Fin = InputBox("Proporcione el Maestro o la Inicial con que desea terminar el rango (Blancos = 'TODO') ", "")
+   If IsNull(Maestro_Fin) Then
+      Maestro_Fin = "ZZZZZZZZZZZZ"
+   Else
+      If Maestro_Fin = "" Then
+         Exit Function
+      End If
+   End If
+Loop
+
+Set db = CurrentDb()
+
+DoCmd.Hourglass True
+
+DoCmd.Echo True, "Borrando Datos Anteriores"
+Set THonor = db.OpenRecordset("TablaHonorarios")
+If Not THonor.BOF Then
+   Do Until THonor.EOF
+      THonor.Delete
+      THonor.MoveNext
+   Loop
+End If
+
+DoCmd.Echo False, "Ejecutando Query de Seleccion"
+
+Set QDef = db.QueryDefs("ParaHonorarios")
+QDef![Maestro Inicial : ] = Maestro_Ini
+QDef![Maestro Final : ] = Maestro_Fin
+Set Reg = QDef.OpenRecordset()
+
+DmesProceso = Choose(MesProceso%, "ENERO ", "FEBRERO ", "MARZO ", "ABRIL ", "MAYO ", "JUNIO ", "JULIO ", "AGOSTO ", "SEPTIEMBRE ", "OCTUBRE ", "NOVIEMBRE ", "DICIEMBRE ") + Str$(Anio_Act%)
+Desc_Mes_Act = Choose(MesProceso%, "ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC")
+Desc_mes1 = IIf(MesProceso% >= 1 And MesProceso% <= 3, Choose(MesProceso%, "OCT", "NOV", "DIC") + Format(Str$((Anio_Act% - 1) - 2000), "00"), Choose(MesProceso% - 3, "ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP"))
+Desc_mes2 = IIf(MesProceso% >= 1 And MesProceso% <= 2, Choose(MesProceso%, "NOV", "DIC") + Format(Str$((Anio_Act% - 1) - 2000), "00"), Choose(MesProceso% - 2, "ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT"))
+Desc_mes3 = IIf(MesProceso% = 1, "DIC" + Format(Str$((Anio_Act% - 1) - 2000), "00"), Choose(MesProceso% - 1, "ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV"))
+
+If MesProceso% = 1 Then
+   MesMenosOA% = 9
+   MesMenos3% = 10
+   MesMenos2% = 11
+   MesMenos1% = 12
+   MesMas1% = 2
+Else
+   If MesProceso% = 2 Then
+      MesMenosOA% = 10
+      MesMenos3% = 11
+      MesMenos2% = 12
+      MesMenos1% = 1
+      MesMas1% = 3
+   Else
+      If MesProceso% = 3 Then
+         MesMenosOA% = 11
+         MesMenos3% = 12
+         MesMenos2% = 1
+         MesMenos1% = 2
+         MesMas1% = 4
+      Else
+         MesMenosOA% = MesProceso% - 4
+         MesMenos3% = MesProceso% - 3
+         MesMenos2% = MesProceso% - 2
+         MesMenos1% = MesProceso% - 1
+         If MesProceso% = 12 Then
+            MesMas1% = 1
+         Else
+            MesMas1% = MesProceso% + 1
+         End If
+      End If
+   End If
+End If
+
+Reg.MoveFirst
+
+Do Until Reg.EOF
+   DoCmd.Echo True, "Procesando Pagos De : " + Reg!Maestro + " " + Reg!Curso
+   Anio_Ant% = 0
+   Mes_Ant% = 0
+   cred_ant = 0
+   Prec = 0
+   Meses1 = 0
+   Meses2 = 0
+   Meses3 = 0
+   MesesOA = 0
+   MesesAct = 0
+   MesesActPant = 0
+   Meses4 = 0
+   Maestro_Ant = Reg!Maestro
+   Curso_Ant = Reg!Curso
+   RFC_ant = Reg!RFC
+   Grado_ant = Reg!Grado
+   Factor_ant = Reg!Factor
+   Ingreso_Ant = Reg![Fecha de Ingreso]
+   Grupo_Ant = Reg!Clave
+   Num_Alumnos = 0
+   Num_Alumnos1 = 0
+   Do Until (Reg.EOF) Or (Curso_Ant <> Reg!Curso) Or (Maestro_Ant <> Reg!Maestro)
+     
+      If cred_ant <> Reg!Credencial Then
+         Anio_Ant% = 0
+         Mes_Ant% = 0
+         If Reg![Fecha Ingreso] <= FFin Then 'And Reg!Inicio <= FFin Then
+            Num_Alumnos = Num_Alumnos + 1
+         Else
+            Num_Alumnos1 = Num_Alumnos1 + 1
+         End If
+      End If
+      
+      Anio_Arch% = DatePart("yyyy", Reg!Fecha)
+
+      If (cred_ant = Reg!Credencial) And (Mes_Ant% = Reg!Orden) And (Anio_Ant% = Reg!AñoP) Then
+         If Reg!Fecha >= FIni And Reg!Fecha <= FFin Then
+            Prec = Prec + Reg!Precio
+         End If
+      Else
+         If MesProceso% = Reg!Orden Then
+            If Reg!Fecha >= FIni And Reg!Fecha <= FFin Then
+               If Reg!AñoP = Anio_Act% Then
+                  If Reg![Fecha Ingreso] <= FFin Then 'And Reg!Inicio <= FFin Then
+                     MesesAct = MesesAct + 1
+                     Prec = Prec + Reg!Precio
+                  Else
+                     Prec = Prec + Reg!Precio
+                  End If
+               Else
+                  If Reg!AñoP < Anio_Act% Then
+                     MesesOA = MesesOA + 1
+                     Prec = Prec + Reg!Precio
+                  End If
+               End If
+            Else
+               If Reg!AñoP = Anio_Act% And Reg!Fecha < FIni Then
+                  If Reg![Fecha Ingreso] <= FFin Then 'And Reg!Inicio <= FFin Then
+                     MesesActPant = MesesActPant + 1
+                  End If
+                  'Prec = Prec + Reg!Precio   ' En Caso de llevarlo tambien agregar al primer then de este IF
+               End If
+            End If
+         Else
+            Reg_Ya = 0
+            If Reg!Fecha >= FIni And Reg!Fecha <= FFin Then
+               If MesMenos3% = Reg!Orden Then
+                  If MesMenos3% >= 10 Then
+                     If Reg!AñoP = (Anio_Act% - 1) Then
+                        Meses1 = Meses1 + 1
+                        Reg_Ya = 1
+                     End If
+                  Else
+                     If Reg!AñoP = Anio_Act% Then
+                        Meses1 = Meses1 + 1
+                        Reg_Ya = 1
+                     End If
+                  End If
+               End If
+               If MesMenos2% = Reg!Orden Then
+                  If MesMenos2% >= 11 Then
+                     If Reg!AñoP = (Anio_Act% - 1) Then
+                        Meses2 = Meses2 + 1
+                        Reg_Ya = 1
+                     End If
+                  Else
+                     If Reg!AñoP = Anio_Act% Then
+                        Meses2 = Meses2 + 1
+                        Reg_Ya = 1
+                     End If
+                  End If
+               End If
+               If MesMenos1% = Reg!Orden Then
+                  If MesMenos1% = 12 Then
+                     If Reg!AñoP = (Anio_Act% - 1) Then
+                        Meses3 = Meses3 + 1
+                        Reg_Ya = 1
+                     End If
+                  Else
+                     If Reg!AñoP = Anio_Act% Then
+                        Meses3 = Meses3 + 1
+                        Reg_Ya = 1
+                     End If
+                  End If
+               End If
+               If Reg_Ya = 0 Then
+                  If (MesMenosOA% >= Reg!Orden) Then
+                     If MesMenosOA% >= 9 Then
+                        If Reg!AñoP < Anio_Act% Then
+                           MesesOA = MesesOA + 1
+                           Reg_Ya = 1
+                        End If
+                     Else
+                        If Reg!AñoP = Anio_Act% Then
+                           MesesOA = MesesOA + 1
+                           Reg_Ya = 1
+                        End If
+                     End If
+                  Else
+                     If Reg!AñoP < Anio_Act% Then
+                        MesesOA = MesesOA + 1
+                        Reg_Ya = 1
+                     End If
+                  End If
+               End If
+               If Reg_Ya = 0 Then
+                  If (MesMas1% <= Reg!Orden) Then
+                     If Reg!AñoP >= Anio_Act% Then
+                        Meses4 = Meses4 + 1
+                        Reg_Ya = 1
+                     End If
+                  Else
+                     If Reg!AñoP > Anio_Act% Then
+                        Meses4 = Meses4 + 1
+                        Reg_Ya = 1
+                     End If
+                  End If
+               End If
+
+               If Reg_Ya = 1 Then
+                  Prec = Prec + Reg!Precio
+               End If
+            End If
+         End If
+      End If
+
+      Anio_Ant% = Reg!AñoP
+      Mes_Ant% = Reg!Orden
+      Grupo_Ant = Reg!Clave
+      cred_ant = Reg!Credencial
+
+      Reg.MoveNext
+
+      If Reg.EOF Then
+         Exit Do
+      End If
+   Loop
+   
+   THonor.AddNew
+   THonor!Maestro = Maestro_Ant
+   THonor!Curso = Curso_Ant
+   THonor!RFC = RFC_ant
+   THonor!Grado = Grado_ant
+   THonor!Factor = Factor_ant
+   THonor!Ingreso = Ingreso_Ant
+   THonor!Alumnos = Num_Alumnos
+   THonor!Alumnos1 = Num_Alumnos1
+   THonor!DmesActual = Desc_Mes_Act
+   THonor!Dmes1 = Desc_mes1
+   THonor!Dmes2 = Desc_mes2
+   THonor!Dmes3 = Desc_mes3
+   THonor!Mes1 = Meses1
+   THonor!Mes2 = Meses2
+   THonor!Mes3 = Meses3
+   THonor!Mes4 = Meses4 'Para meses posteriores a la fecha de corte
+   THonor!OtrosMesesAnt = MesesOA
+   THonor!MesActual = MesesAct
+   THonor!MesActualPant = MesesActPant
+   THonor!totAlumnos = MesesAct + MesesActPant + Meses1 + Meses2 + Meses3 + MesesOA
+   THonor!pagoHonorario = THonor!totAlumnos * THonor!Factor
+   THonor!FecIni = FIni
+   THonor!FecFin = FFin
+   THonor!MesProceso = DmesProceso
+   THonor!Precio = Prec
+   THonor!Bajas = 0
+   THonor.Update
+
+Loop
+
+'Reg.Close
+
+'
+' Genera los Deudores
+'
+
+DoCmd.Echo True, "Ejecutando Query para conocer Deudores "
+Set TCurso = db.OpenRecordset("Cursos")
+'Set QDef = Db.Querydefs("ParaHonorarios")
+'QDef![Maestro Inicial : ] = Maestro_Ini
+'QDef![Maestro Final : ] = Maestro_Fin
+'Set Reg = QDef.Openrecordset()
+
+'Accesa a la Rutina General para la Revaluacion de la fecha de Baja
+
+Revalua_Fecha_Baja
+
+Reg.MoveFirst
+
+Do Until Reg.EOF
+
+   DoCmd.Echo True, "Procesando deudores de: " + Reg!Maestro + " " + Reg!Curso
+   DeudorA = 0
+   Deudor1 = 0
+   Deudor2 = 0
+   DeudorOM = 0
+   Maestro_Ant = Reg!Maestro
+   Ingreso_Ant = Reg![Fecha de Ingreso]
+   Curso_Ant = Reg!Curso
+
+   Do Until (Reg.EOF) Or (Maestro_Ant <> Reg!Maestro) Or (Curso_Ant <> Reg!Curso)
+   
+      Meses1 = 0
+      Meses2 = 0
+      Meses3 = 0
+      Meses4 = 0
+      MesesAct = 0
+      Fec_mesA = Null
+      Fec_mes1 = Null
+      fec_mes2 = Null
+      Fec_mes3 = Null
+      Fec_mes4 = Null
+      cred_ant = Reg!Credencial
+      Inicio_Ant = Reg!Inicio
+      Grupo_Ant = Reg!Clave
+      Ingreso_Al = Reg![Fecha Ingreso]
+      Ult_Pago = 0
+      Fecha_ult = Null
+      OrdenUltMes% = 0
+      AñoUltPago% = 0
+      Do Until (Reg.EOF) Or (cred_ant <> Reg!Credencial)
+         
+         Anio_Arch% = DatePart("yyyy", Reg!Fecha)
+      
+         If (MesProceso% = Reg!Orden) Then
+            If (Anio_Act% = Reg!AñoP) And (Reg!Fecha <= FFin) Then
+               MesesAct = MesesAct + Reg!Precio
+               Fec_mesA = Reg!Fecha
+            End If
+         Else
+            If MesMenos4% = Reg!Orden Then
+               If (MesMenos4% >= 9) Then
+                  If ((Anio_Act% - 1) = Reg!AñoP) Then
+                     Meses1 = Meses1 + Reg!Precio
+                     Fec_mes1 = Reg!Fecha
+                  End If
+               Else
+                  If Anio_Act% = Reg!AñoP Then
+                     Meses1 = Meses1 + Reg!Precio
+                     Fec_mes1 = Reg!Fecha
+                  End If
+               End If
+            End If
+            If MesMenos3% = Reg!Orden Then
+               If (MesMenos3% >= 10) Then
+                  If ((Anio_Act% - 1) = Reg!AñoP) Then
+                     Meses2 = Meses2 + Reg!Precio
+                     fec_mes2 = Reg!Fecha
+                  End If
+               Else
+                  If Anio_Act% = Reg!AñoP Then
+                     Meses2 = Meses2 + Reg!Precio
+                     fec_mes2 = Reg!Fecha
+                  End If
+               End If
+            End If
+            If MesMenos2% = Reg!Orden Then
+               If (MesMenos2% >= 11) Then
+                  If ((Anio_Act% - 1) = Reg!AñoP) Then
+                     Meses3 = Meses3 + Reg!Precio
+                     Fec_mes3 = Reg!Fecha
+                  End If
+               Else
+                  If Anio_Act% = Reg!AñoP Then
+                     Meses3 = Meses3 + Reg!Precio
+                     Fec_mes3 = Reg!Fecha
+                  End If
+               End If
+            End If
+            If MesMenos1% = Reg!Orden Then
+               If (MesMenos1% >= 12) Then
+                  If ((Anio_Act% - 1) = Reg!AñoP) Then
+                     Meses4 = Meses4 + Reg!Precio
+                     Fec_mes4 = Reg!Fecha
+                  End If
+               Else
+                  If Anio_Act% = Reg!AñoP Then
+                     Meses4 = Meses4 + Reg!Precio
+                     Fec_mes4 = Reg!Fecha
+                  End If
+               End If
+            End If
+         End If
+
+         If (((Reg!Orden >= OrdenUltMes%) And (Reg!AñoP >= AñoUltPago%)) Or ((Reg!Orden <= OrdenUltMes%) And (Reg!AñoP > AñoUltPago%))) Then
+            Ult_Pago = Reg!Precio
+            Fecha_ult = Reg!Fecha
+            OrdenUltMes% = Reg!Orden
+            AñoUltPago% = Reg!AñoP
+         End If
+         Curso_Ant = Reg!Curso
+         Maestro_Ant = Reg!Maestro
+         cred_ant = Reg!Credencial
+         Reg.MoveNext
+         If Reg.EOF Then
+            Exit Do
+         End If
+      Loop
+
+      If (IsNull(Fec_mesA) And MesesAct = 0) And (ReValFec_Cor >= Ingreso_Al) Then '(ReValFec_Cor >= Inicio_Ant Or IsNull(Inicio_Ant)) And
+         DeudorA = DeudorA + 1
+      End If
+      If (IsNull(Fec_mes1) And Meses1 = 0) And (ReValF1 >= Ingreso_Al) Then
+         DeudorOM = DeudorOM + 1
+      End If
+      If (IsNull(fec_mes2) And Meses2 = 0) And (ReValF2 >= Ingreso_Al) Then
+         DeudorOM = DeudorOM + 1
+      End If
+      If (IsNull(Fec_mes3) And Meses3 = 0) And (ReValF3 >= Ingreso_Al) Then
+         Deudor1 = Deudor1 + 1
+      End If
+      If (IsNull(Fec_mes4) And Meses4 = 0) And (ReValF4 >= Ingreso_Al) Then
+         Deudor2 = Deudor2 + 1
+      End If
+      If MesMenos4% >= 9 Then
+         If (OrdenUltMes% < MesMenos4%) And (AñoUltPago% < Anio_Act%) Then
+            DeudorOM = DeudorOM + (MesMenos4% - OrdenUltMes% - 1)
+         End If
+       Else
+         If AñoUltPago% < Anio_Act% Then
+            DeudorOM = DeudorOM + (12 - OrdenUltMes%) + (MesMenos4% - 1)
+         Else
+            If (OrdenUltMes% < MesMenos4%) And (AñoUltPago% = Anio_Act%) Then
+               DeudorOM = DeudorOM + MesMenos4% - 1 - OrdenUltMes%
+            End If
+         End If
+      End If
+      
+      If Reg.EOF Then
+         Exit Do
+      End If
+   
+   Loop
+   TCurso.Index = "PrimaryKey"
+   TCurso.Seek "=", Curso_Ant
+   If Not TCurso.NoMatch Then
+      ImporteDeudor = (DeudorOM + Deudor1 + Deudor2 + DeudorA) * TCurso!Recargo
+   Else
+      ImporteDeudor = 0
+   End If
+
+   Reg_Ya = 0
+   THonor.Index = "Maestro"
+   THonor.Seek "=", Maestro_Ant
+
+   Do Until THonor.NoMatch
+      If THonor!Curso = Curso_Ant Then
+         THonor.Edit
+         THonor!DeudorOM = DeudorOM
+         THonor!Deudor1 = Deudor1
+         THonor!Deudor2 = Deudor2
+         THonor!DeudorA = DeudorA
+         THonor!ImporteDeudor = ImporteDeudor
+         THonor.Update
+         Reg_Ya = 1
+         Exit Do
+      End If
+      THonor.MoveNext
+      If THonor.EOF Then
+         Exit Do
+      End If
+   Loop
+
+   If Reg_Ya = 0 Then
+      THonor.AddNew
+      THonor!Maestro = Maestro_Ant
+      THonor!Curso = Curso_Ant
+      THonor!DeudorOM = DeudorOM
+      THonor!Deudor1 = Deudor1
+      THonor!Deudor2 = Deudor2
+      THonor!ImporteDeudor = ImporteDeudor
+      THonor!Bajas = 0
+      THonor.Update
+   End If
+   
+   If reg_eof Then
+      Exit Do
+   End If
+
+
+Loop
+
+Set TGrupos = db.OpenRecordset("Grupos")
+Set TAlumnos = db.OpenRecordset("Alumnos")
+TGrupos.Index = "Index1"
+TAlumnos.Index = "Grupo"
+THonor.MoveFirst
+Do Until THonor.EOF
+   DoCmd.Echo True, "Procesando Ingresos De : " + THonor!Maestro + " " + THonor!Curso
+   Num_NuevoIngreso = 0
+   TGrupos.Seek "=", THonor!Maestro, THonor!Curso
+   Do Until TGrupos.NoMatch Or TGrupos.EOF
+      TAlumnos.Seek "=", TGrupos!Clave
+      Do Until TAlumnos.NoMatch Or TAlumnos.EOF
+         If TAlumnos![Fecha Ingreso] >= FIni And TAlumnos![Fecha Ingreso] <= FFin Then
+            Num_NuevoIngreso = Num_NuevoIngreso + 1
+         End If
+         TAlumnos.MoveNext
+         If TAlumnos.EOF Then
+            Exit Do
+         End If
+         If TAlumnos!Grupo <> TGrupos!Clave Then
+            Exit Do
+         End If
+      Loop
+      TGrupos.MoveNext
+      If TGrupos.EOF Then
+         Exit Do
+      End If
+      If TGrupos!Maestro <> THonor!Maestro Or TGrupos!Curso <> THonor!Curso Then
+         Exit Do
+      End If
+   Loop
+   THonor.Edit
+   THonor!NuevoIngreso = Num_NuevoIngreso
+   THonor.Update
+   THonor.MoveNext
+   If THonor.EOF Then
+      Exit Do
+   End If
+Loop
+
+Reg.Close
+
+Set QDef = db.QueryDefs("BajasQRY1")
+QDef![Fecha Inicial] = FIni
+QDef![Fecha Final] = FFin
+Set Reg = QDef.OpenRecordset()
+Set TMaestros = db.OpenRecordset("Maestros")
+Set THonor = db.OpenRecordset("TablaHonorarios")
+Set TPorcen = db.OpenRecordset("Porcentajes")
+THonor.Index = "PrimaryKey"
+TMaestros.Index = "PrimaryKey"
+TPorcen.Index = "Index1"
+Reg.MoveFirst
+Do Until Reg.EOF
+   DoCmd.Echo True, "Procesando Bajas : " + Reg!Credencial
+   THonor.Seek "=", Reg!Maestro, Reg!Curso
+   If Not THonor.NoMatch Then
+      THonor.Edit
+      THonor!Bajas = THonor!Bajas + 1
+      THonor.Update
+   Else
+      TMaestros.Seek "=", Reg!Maestro
+      If TMaestros.NoMatch Then
+          MasterRFC = "Sin RFC"
+          MasterGrado = "Sin Grado"
+          MasterIng = #1/1/1990#
+      Else
+          MasterRFC = TMaestros!RFC
+          MasterGrado = TMaestros!Grado
+          MasterIng = TMaestros![Fecha de Ingreso]
+      End If
+      TPorcen.Seek "=", Reg!Maestro, Reg!Curso
+      If TPorcen.NoMatch Then
+         MasterFactor = 0
+      Else
+         MasterFactor = TPorcen!Factor
+      End If
+      THonor.AddNew
+      THonor!Maestro = Reg!Maestro
+      THonor!Curso = Reg!Curso
+      THonor!RFC = MasterRFC
+      THonor!Grado = MasterGrado
+      THonor!Factor = MasterFactor
+      THonor!Ingreso = MasterIng
+      THonor!Alumnos = 0
+      THonor!Alumnos1 = 0
+      THonor!DmesActual = Desc_Mes_Act
+      THonor!Dmes1 = Desc_mes1
+      THonor!Dmes2 = Desc_mes2
+      THonor!Dmes3 = Desc_mes3
+      THonor!Mes1 = 0
+      THonor!Mes2 = 0
+      THonor!Mes3 = 0
+      THonor!Mes4 = 0
+      THonor!OtrosMesesAnt = 0
+      THonor!MesActual = 0
+      THonor!MesActualPant = 0
+      THonor!totAlumnos = 0
+      THonor!pagoHonorario = 0
+      THonor!FecIni = FIni
+      THonor!FecFin = FFin
+      THonor!MesProceso = DmesProceso
+      THonor!Precio = 0
+      THonor!DeudorOM = 0
+      THonor!Deudor1 = 0
+      THonor!Deudor2 = 0
+      THonor!ImporteDeudor = 0
+      THonor!Bajas = 1
+      THonor.Update
+   End If
+   Reg.MoveNext
+Loop
+
+DoCmd.Hourglass False
+
+Exit Function
+
+Genera_errorRM:
+ 'Call LogError("Gen_ResumenMaestros", Err)
+ MsgBox "Ha ocurrido un error numero " + Str$(Err) + "  " + Error$(Err) + " en el procedimiento Gen_ResumenMaestros", 48, "Mensaje del sistema"
+Exit Function
+
+End Function
+
+Function Gen_Royalties()
+Dim T_Roy As Recordset
+Si_Proceso = ""
+Do While Si_Proceso <> "S" And Si_Proceso <> "N"
+   Si_Proceso = InputBox("Desea Unicamente sacar el Reporte con los Datos Anteriormente Generados <S/N> ? ", "")
+   If Si_Proceso = "S" Then
+      Exit Function
+   End If
+Loop
+
+Finip = InputBox("Fecha de Inicio del Periodo : ", "")
+If Finip = "" Then
+   Exit Function
+End If
+
+Ffinp = InputBox("Fecha de Fin del Perido : ", "")
+If Ffinp = "" Then
+   Exit Function
+End If
+
+FIni = DateValue(Finip)
+FFin = DateValue(Ffinp)
+
+Set db = CurrentDb()
+
+DoCmd.Hourglass True
+
+DoCmd.Echo True, "Borrando Datos Anteriores"
+Set T_Roy = db.OpenRecordset("Tabla_Royalties")
+If Not T_Roy.BOF Then
+   Do Until T_Roy.EOF
+      T_Roy.Delete
+      T_Roy.MoveNext
+   Loop
+End If
+
+DoCmd.Echo False, "Ejecutando Query de Total de Maestros"
+
+Set QDef = db.QueryDefs("Roy_Maestros")
+'QDef![Fecha Inicial] = FIni
+QDef![Fecha Final] = FFin
+Set Reg = QDef.OpenRecordset()
+
+total = Reg.RecordCount
+
+If total <> 0 Then
+   Reg.MoveFirst
+   Do Until Reg.EOF
+      DoCmd.Echo True, "Procesando Maestros de Curso : " + Reg!Curso
+   
+      T_Roy.AddNew
+      T_Roy!Curso = Reg!Curso
+      T_Roy![Num Maestros] = Reg!CuentaDeNombre
+      T_Roy.Update
+      Reg.MoveNext
+      If Reg.EOF Then
+         Exit Do
+      End If
+   Loop
+End If
+
+Reg.Close
+
+DoCmd.Echo False, "Ejecutando Query de Total de Alumnos"
+
+Set QDef = db.QueryDefs("Roy_Al_Fin_Mes")
+'QDef![Fecha Inicial] = FIni
+QDef![Fecha Final] = FFin
+Set Reg = QDef.OpenRecordset()
+
+total = Reg.RecordCount
+
+If total <> 0 Then
+   Reg.MoveFirst
+   Do Until Reg.EOF
+      DoCmd.Echo True, "Procesando Alumnos de Curso : " + Reg!Curso
+   
+      T_Roy.Index = "PrimaryKey"
+      T_Roy.Seek "=", Reg!Curso
+      If Not T_Roy.NoMatch Then
+         T_Roy.Edit
+         T_Roy![Fin de Mes] = Reg!CuentaDeCredencial
+         T_Roy.Update
+      Else
+         T_Roy.AddNew
+         T_Roy!Curso = Reg!Curso
+         T_Roy![Fin de Mes] = Reg!CuentaDeCredencial
+         T_Roy.Update
+      End If
+      Reg.MoveNext
+      If Reg.EOF Then
+         Exit Do
+      End If
+   Loop
+End If
+
+Reg.Close
+
+DoCmd.Echo False, "Ejecutando Query de Total de Nuevo Ingreso"
+
+Set QDef = db.QueryDefs("Roy_Nvo_Ing")
+QDef![Fecha Inicial] = FIni
+QDef![Fecha Final] = FFin
+Set Reg = QDef.OpenRecordset()
+
+total = Reg.RecordCount
+
+If total <> 0 Then
+   Reg.MoveFirst
+   Do Until Reg.EOF
+      DoCmd.Echo True, "Procesando Nuevo Ingreso de Curso : " + Reg!Curso
+      T_Roy.Index = "PrimaryKey"
+      T_Roy.Seek "=", Reg!Curso
+      If Not T_Roy.NoMatch Then
+         T_Roy.Edit
+         T_Roy![Nuevo Ingreso] = Reg!CuentaDeCredencial
+         T_Roy.Update
+      Else
+         T_Roy.AddNew
+         T_Roy![Nuevo Ingreso] = Reg!CuentaDeCredencial
+         T_Roy!Curso = Reg!Curso
+         T_Roy.Update
+      End If
+      Reg.MoveNext
+      If Reg.EOF Then
+         Exit Do
+      End If
+   Loop
+End If
+
+Reg.Close
+
+DoCmd.Echo False, "Ejecutando Query de Reingresos"
+
+Set QDef = db.QueryDefs("Roy_Reingreso")
+QDef![Fecha Inicial] = FIni
+QDef![Fecha Final] = FFin
+Set Reg = QDef.OpenRecordset()
+
+total = Reg.RecordCount
+
+If total <> 0 Then
+   Reg.MoveFirst
+   Do Until Reg.EOF
+      DoCmd.Echo True, "Procesando Reingreso de Curso : " + Reg!Curso
+      T_Roy.Index = "PrimaryKey"
+      T_Roy.Seek "=", Reg!Curso
+      If Not T_Roy.NoMatch Then
+         T_Roy.Edit
+         T_Roy!Reingreso = Reg!CuentaDeCredencial
+         T_Roy.Update
+      Else
+         T_Roy.AddNew
+         T_Roy!Reingreso = Reg!CuentaDeCredencial
+         T_Roy!Curso = Reg!Curso
+         T_Roy.Update
+      End If
+      Reg.MoveNext
+      If Reg.EOF Then
+         Exit Do
+      End If
+   Loop
+End If
+
+Reg.Close
+
+DoCmd.Echo False, "Ejecutando Query de Bajas"
+
+Set QDef = db.QueryDefs("Roy_Bajas")
+QDef![Fecha Inicial] = FIni
+QDef![Fecha Final] = FFin
+Set Reg = QDef.OpenRecordset()
+
+total = Reg.RecordCount
+
+If total <> 0 Then
+   Reg.MoveFirst
+   Do Until Reg.EOF
+      DoCmd.Echo True, "Procesando Bajas de Curso : " + Reg!Curso
+      T_Roy.Index = "PrimaryKey"
+      T_Roy.Seek "=", Reg!Curso
+      If Not T_Roy.NoMatch Then
+         T_Roy.Edit
+         T_Roy!Bajas = Reg!CuentaDeCredencial
+         T_Roy.Update
+      Else
+         T_Roy.AddNew
+         T_Roy!Bajas = Reg!CuentaDeCredencial
+         T_Roy!Curso = Reg!Curso
+         T_Roy.Update
+      End If
+      Reg.MoveNext
+      If Reg.EOF Then
+         Exit Do
+      End If
+   Loop
+End If
+
+Reg.Close
+
+DoCmd.Echo False, "Ejecutando Query de Cambios Bajas"
+
+Set QDef = db.QueryDefs("Roy_Cam_Bajas")
+QDef![Fecha Inicial] = FIni
+QDef![Fecha Final] = FFin
+Set Reg = QDef.OpenRecordset()
+
+total = Reg.RecordCount
+
+If total <> 0 Then
+   Reg.MoveFirst
+   Do Until Reg.EOF
+      DoCmd.Echo True, "Procesando Cambios Bajas de Curso : " + Reg![Curso Anterior]
+      T_Roy.Index = "PrimaryKey"
+      T_Roy.Seek "=", Reg![Curso Anterior]
+      If Not T_Roy.NoMatch Then
+         T_Roy.Edit
+         T_Roy![Cambios Bajas] = Reg!CuentaDeCredencial
+         T_Roy.Update
+      Else
+         T_Roy.AddNew
+         T_Roy![Cambios Bajas] = Reg!CuentaDeCredencial
+         If Not IsNull(Reg![Curso Anterior]) Then
+            T_Roy!Curso = Reg![Curso Anterior]
+         Else
+            T_Roy!Curso = "Sin Curso Cambios Bajas"
+         End If
+         T_Roy.Update
+      End If
+      Reg.MoveNext
+      If Reg.EOF Then
+         Exit Do
+      End If
+   Loop
+End If
+
+Reg.Close
+
+DoCmd.Echo False, "Ejecutando Query de Cambios Altas"
+
+Set QDef = db.QueryDefs("Roy_Cam_Altas")
+QDef![Fecha Inicial] = FIni
+QDef![Fecha Final] = FFin
+Set Reg = QDef.OpenRecordset()
+
+total = Reg.RecordCount
+
+If total <> 0 Then
+   Reg.MoveFirst
+   Do Until Reg.EOF
+      DoCmd.Echo True, "Procesando Cambios Altas de Curso : " + Reg![Curso Nuevo]
+      T_Roy.Index = "PrimaryKey"
+      T_Roy.Seek "=", Reg![Curso Nuevo]
+      If Not T_Roy.NoMatch Then
+         T_Roy.Edit
+         T_Roy![Cambios Altas] = Reg!CuentaDeCredencial
+         T_Roy.Update
+      Else
+         T_Roy.AddNew
+         T_Roy![Cambios Altas] = Reg!CuentaDeCredencial
+         If Not IsNull(Reg![Curso Nuevo]) Then
+            T_Roy!Curso = Reg![Curso Nuevo]
+         Else
+            T_Roy!Curso = "Sin Curso Cambios Altas"
+         End If
+         T_Roy.Update
+      End If
+      Reg.MoveNext
+      If Reg.EOF Then
+         Exit Do
+      End If
+   Loop
+End If
+
+Reg.Close
+
+DoCmd.Echo False, "Ejecutando Query de Colegiaturas"
+
+Set QDef = db.QueryDefs("Roy_Colegiaturas")
+QDef![Fecha Inicial] = FIni
+QDef![Fecha Final] = FFin
+Set Reg = QDef.OpenRecordset()
+
+total = Reg.RecordCount
+
+If total <> 0 Then
+   Reg.MoveFirst
+   Do Until Reg.EOF
+      DoCmd.Echo True, "Procesando Colegiaturas de Curso : " + Reg!Curso
+      T_Roy.Index = "PrimaryKey"
+      T_Roy.Seek "=", Reg!Curso
+      If Not T_Roy.NoMatch Then
+         T_Roy.Edit
+         T_Roy![Alumnos Pagaron] = Reg!CuentaDeAlumnoID
+         T_Roy![Colegiatura Mensual] = Reg!Costo
+         T_Roy![Total de Colegiaturas] = Reg!SumaDePrecio
+         T_Roy.Update
+      Else
+         T_Roy.AddNew
+         T_Roy![Alumnos Pagaron] = Reg!CuentaDeAlumnoID
+         T_Roy![Colegiatura Mensual] = Reg!Costo
+         T_Roy![Total de Colegiaturas] = Reg!SumaDePrecio
+         T_Roy!Curso = Reg!Curso
+         T_Roy.Update
+      End If
+      Reg.MoveNext
+      If Reg.EOF Then
+         Exit Do
+      End If
+   Loop
+End If
+
+Reg.Close
+
+DoCmd.Echo False, "Calculando Alumnos Mes anterior"
+
+T_Roy.MoveFirst
+Do Until T_Roy.EOF
+   DoCmd.Echo True, "Procesando Curso : " + T_Roy!Curso
+   T_Roy.Edit
+   T_Roy![Mes Anterior] = T_Roy![Fin de Mes] - T_Roy![Cambios Altas] + T_Roy![Cambios Bajas] + T_Roy!Bajas - T_Roy!Reingreso - T_Roy![Nuevo Ingreso]
+   T_Roy.Update
+   T_Roy.MoveNext
+   If T_Roy.EOF Then
+      Exit Do
+   End If
+Loop
+
+DoCmd.Hourglass False
+
+
+End Function
+
+Function Integridad()
+On Error GoTo ErrorIntegridad
+Dim x
+x = MsgBox("Verifica la Integridad de la BD en cuanto al Grupo de Alumnos Activos y los factores correpondientes", 48, "Mensaje de Confirmacion")
+If x <> 1 Then
+   Exit Function
+End If
+DoCmd.Hourglass True
+Set db = CurrentDb()
+Set TAlumnos = db.OpenRecordset("Alumnos")
+Set TGrupos = db.OpenRecordset("Grupos")
+Set TCurso = db.OpenRecordset("Cursos")
+Set TPorcen = db.OpenRecordset("Porcentajes")
+Set TCol = db.OpenRecordset("Colegiaturas")
+Set TOperaciones = db.OpenRecordset("Operaciones")
+Set TRecibos = db.OpenRecordset("Recibos")
+Set TMeses = db.OpenRecordset("Meses")
+DoCmd.Echo False, "Verificando Grupos en Alumnos activos"
+TAlumnos.MoveFirst
+
+TGrupos.Index = "PrimaryKey"
+TPorcen.Index = "Index1"
+Do Until TAlumnos.EOF
+   DoCmd.Echo True, "Procesando Alumnos Cred. # : " + TAlumnos!Credencial
+   TGrupos.Seek "=", TAlumnos!Grupo
+   If TGrupos.NoMatch Then
+      MsgBox "No existe el Grupo " + TAlumnos!Grupo + " de la Cred. # " + Str$(TAlumnos!Credencial)
+   Else
+      TPorcen.Seek "=", TGrupos!Maestro, TGrupos!Curso
+      If TPorcen.NoMatch Then
+         MsgBox "No existe factor para el Maestro : " + TGrupos!Maestro + " Curso : " + TGrupos!Curso
+      End If
+   End If
+   TAlumnos.MoveNext
+Loop
+
+DoCmd.Hourglass False
+MsgBox "Fin de Proceso de Verificacin de Integrídad de la Base de Datos", 48, "Mensaje de Terminacion"
+
+Exit Function
+
+ErrorIntegridad:
+ 'Call LogError("Integridad", Err)
+ MsgBox "Ha ocurrido un error numero " + Str$(Err) + "  " + Error$(Err) + " en el procedimiento Integridad", 48, "Mensaje del sistema"
+Exit Function
+
+End Function
+
+Function PARARESGRAL()
+On Error GoTo Genera_errorRES_GRAL
+Dim Tot_colegiaturas, Tot_inscripciones, Tot_Materiales, Tot_ExGrado, Tot_ExNivel
+Dim Tot_ExGrado96, Tot_ExGrado543, Tot_ExGradoBas, Tot_ExGradoEDR
+Dim Tot_Metodos, Tot_Otros, Tot_25, Tot_50, Tot_75, Tot_100, Tot_OtrosPorc
+Dim Num25, Num50, Num75, Num100, NumOtros
+Dim Tot_OpColegiaturas, Tot_OpInscripciones, Tot_OpMateriales, Tot_OpExGrado, Tot_OpExNivel
+Dim Tot_OpExGrado96, Tot_OpExGrado543, Tot_OpExGradoBas, Tot_OpExGradoEDR
+Dim Tot_OpMetodos, Tot_OpOtros
+Dim Tot_IvaColegiaturas, Tot_IvaInscripciones, Tot_IvaMateriales, Tot_IvaExGrado, Tot_IvaExNivel
+Dim Tot_IVAExGrado96, Tot_IVAExGrado543, Tot_IVAExGradoBas, Tot_IVAExGradoEDR
+Dim Tot_IvaMetodos, ToT_IvaOtros
+Dim NumOtrosPorc, Num_Meses
+Dim adm1, adm2, adm3, adma, dm1, dm2, dm3, dma
+Dim apm1, apm2, apm3, apm4, apm5, apm6, apmActual, apmActualOM1, apmActualOM2, apmactualOM3
+Dim m1, m2, m3, m4, m5, m6, mActual, mActualOM1, mActualOM2, mActualOM3
+Dim pmm1, pmm2, pmm3, pmmActual, pmmActualOM1, pmmActualOM2, pmmActualOM3
+Dim Tot_Pago1, Tot_Pago2, Tot_Pago3, Tot_Pago4, Tot_Pago5
+Dim Tot_numPago1, Tot_numPago2, Tot_numPago3, Tot_numPago4, Tot_numPago5
+Dim NumeroDeBajasPeriodo, ImporteDeBajasPeriodo
+Dim MesesActPant1, MesesActPant2, MesesActPant3
+Dim PrecActAnt1, PrecActPant2, PrecActPant3
+Dim HonActPant1, HonActPant2, HonActPant3
+Dim Mes_Pago%
+Si_Proceso = ""
+Do While Si_Proceso <> "S" And Si_Proceso <> "N"
+   Si_Proceso = InputBox("Desea Unicamente sacar el Reporte con los Datos Anteriormente Generados <S/N> ? ", "")
+   If Si_Proceso = "S" Then
+      Exit Function
+   End If
+Loop
+
+MesProceso% = InputBox("Numero del Mes a Procesar : ", "")
+Anio_Act% = InputBox("Año del Mes A Procesar : ", "")
+Finip = InputBox("Fecha de Inicio del Periodo : ", "")
+If Finip = "" Then
+   Exit Function
+End If
+
+Ffinp = InputBox("Fecha de Fin del Perido : ", "")
+If Ffinp = "" Then
+   Exit Function
+End If
+
+FIni = DateValue(Finip)
+FFin = DateValue(Ffinp)
+
+DmesProceso = Choose(MesProceso%, "ENERO ", "FEBRERO ", "MARZO ", "ABRIL ", "MAYO ", "JUNIO ", "JULIO ", "AGOSTO ", "SEPTIEMBRE ", "OCTUBRE ", "NOVIEMBRE ", "DICIEMBRE ") + Str$(Anio_Act%)
+Desc_mes1 = IIf(MesProceso% >= 1 And MesProceso% <= 3, Choose(MesProceso%, "OCTUBRE", "NOVIEMBRE", "DICIEMBRE") + Format(Str$((Anio_Act% - 1) - 2000), "00"), Choose(MesProceso% - 3, "ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIMBRE"))
+Desc_mes2 = IIf(MesProceso% >= 1 And MesProceso% <= 2, Choose(MesProceso%, "NOVIEMBRE", "DICIEMBRE") + Format(Str$((Anio_Act% - 1) - 2000), "00"), Choose(MesProceso% - 2, "ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE"))
+Desc_mes3 = IIf(MesProceso% = 1, "DICIEMBRE" + Format(Str$((Anio_Act% - 1) - 2000), "00"), Choose(MesProceso% - 1, "ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE"))
+Desc_mes4 = IIf(MesProceso% >= 1 And MesProceso% <= 11, Choose(MesProceso%, "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"), "ENERO" + Format(Str$((Anio_Act% + 1) - 2000), "00"))
+Desc_mes5 = IIf(MesProceso% >= 1 And MesProceso% <= 10, Choose(MesProceso%, "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"), Choose(MesProceso% - 10, "ENERO", "FEBRERO") + Format(Str$((Anio_Act% + 1) - 2000), "00"))
+Desc_mes6 = IIf(MesProceso% >= 1 And MesProceso% <= 9, Choose(MesProceso%, "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"), Choose(MesProceso% - 9, "ENERO", "FEBRERO", "MARZO") + Format(Str$((Anio_Act% + 1) - 2000), "00"))
+
+If MesProceso% = 1 Then
+   MesMenos3% = 10
+   MesMenos2% = 11
+   MesMenos1% = 12
+   MesMas1% = 2
+   MesMas2% = 3
+   MesMas3% = 4
+Else
+   If MesProceso% = 2 Then
+      MesMenos3% = 11
+      MesMenos2% = 12
+      MesMenos1% = 1
+      MesMas1% = 3
+      MesMas2% = 4
+      MesMas3% = 5
+   Else
+      If MesProceso% = 3 Then
+         MesMenos3% = 12
+         MesMenos2% = 1
+         MesMenos1% = 2
+         MesMas1% = 4
+         MesMas2% = 5
+         MesMas3% = 6
+      Else
+         MesMenos3% = MesProceso% - 3
+         MesMenos2% = MesProceso% - 2
+         MesMenos1% = MesProceso% - 1
+         If MesProceso% = 10 Then
+            MesMas1% = 11
+            MesMas2% = 12
+            MesMas3% = 1
+         Else
+            If MesProceso% = 11 Then
+               MesMas1% = 12
+               MesMas2% = 1
+               MesMas3% = 2
+            Else
+               If MesProceso% = 12 Then
+                  MesMas1% = 1
+                  MesMas2% = 2
+                  MesMas3% = 3
+               Else
+                  MesMas1% = MesProceso% + 1
+                  MesMas2% = MesProceso% + 2
+                  MesMas3% = MesProceso% + 3
+               End If
+            End If
+         End If
+      End If
+   End If
+End If
+
+Select Case MesProceso%
+       Case 1
+           fecha_corte = "31/07/" + Str$(Anio_Act% - 1)
+       Case 2
+           fecha_corte = "31/08/" + Str$(Anio_Act% - 1)
+       Case 3
+           fecha_corte = "30/09/" + Str$(Anio_Act% - 1)
+       Case 4
+           fecha_corte = "31/10/" + Str$(Anio_Act% - 1)
+       Case 5
+           fecha_corte = "30/11/" + Str$(Anio_Act% - 1)
+       Case 6
+           fecha_corte = "31/12/" + Str$(Anio_Act% - 1)
+       Case 7
+           fecha_corte = "31/01/" + Str$(Anio_Act%)
+       Case 8
+           If (Anio_Act% Mod 4) = 0 Then
+              fecha_corte = "29/02/" + Str$(Anio_Act%)
+           Else
+              fecha_corte = "28/02/" + Str$(Anio_Act%)
+           End If
+       Case 9
+           fecha_corte = "31/03/" + Str$(Anio_Act%)
+       Case 10
+           fecha_corte = "30/04/" + Str$(Anio_Act%)
+       Case 11
+           fecha_corte = "31/05/" + Str$(Anio_Act%)
+       Case 12
+           fecha_corte = "30/06/" + Str$(Anio_Act%)
+End Select
+SeisMesesAntes = DateValue(fecha_corte)
+
+DoCmd.Hourglass True
+
+Set db = CurrentDb()
+Set TRES_GRAL = db.OpenRecordset("Tabla_Res_Gral")
+If Not TRES_GRAL.BOF Then
+   Do Until TRES_GRAL.EOF
+      TRES_GRAL.Delete
+      TRES_GRAL.MoveNext
+   Loop
+End If
+
+TRES_GRAL.AddNew
+TRES_GRAL!MesProceso = MesProceso%
+TRES_GRAL!FechaInicio = FIni
+TRES_GRAL!FechaFin = FFin
+TRES_GRAL!FechaCreacion = Now
+TRES_GRAL!Dmes1 = Desc_mes1
+TRES_GRAL!Dmes2 = Desc_mes2
+TRES_GRAL!Dmes3 = Desc_mes3
+TRES_GRAL!Dmes4 = Desc_mes4
+TRES_GRAL!Dmes5 = Desc_mes5
+TRES_GRAL!Dmes6 = Desc_mes6
+TRES_GRAL!DmesActual = DmesProceso
+TRES_GRAL.Update
+
+DoCmd.Echo False, "Obteniendo Total de Alumnos En el Periodo"
+Set QDef = db.QueryDefs("RES_GRAL1")
+QDef![FECHA FIN : ] = FFin
+
+Set Reg = QDef.OpenRecordset()
+Reg.MoveFirst
+TRES_GRAL.MoveFirst
+TRES_GRAL.Edit
+TRES_GRAL!TotalAlumnos = Reg!CountOfCredencial
+TRES_GRAL!IngresoAlumnos = Reg!Expr1
+TRES_GRAL.Update
+Reg.Close
+
+DoCmd.Echo False, "Obteniendo Numero de Bajas"
+Set QDef = db.QueryDefs("RES_GRAL2")
+QDef![FECHA DE INICIO : ] = FIni
+QDef![FECHA FIN : ] = FFin
+Set Reg = QDef.OpenRecordset()
+Reg.MoveFirst
+TRES_GRAL.MoveFirst
+TRES_GRAL.Edit
+TRES_GRAL!TotalBajas = Reg!CountOfCredencial
+TRES_GRAL!ImporteBajas = Reg!Expr1
+NumeroDeBajasPeriodo = Reg!CountOfCredencial
+ImporteDeBajasPeriodo = Reg!Expr1
+TRES_GRAL.Update
+Reg.Close
+
+DoCmd.Echo False, "Obteniendo Numero de Nuevos Ingresos"
+Set QDef = db.QueryDefs("RES_GRAL3")
+QDef![FECHA DE INICIO : ] = FIni
+QDef![FECHA FIN : ] = FFin
+Set Reg = QDef.OpenRecordset()
+Reg.MoveFirst
+TRES_GRAL.MoveFirst
+TRES_GRAL.Edit
+TRES_GRAL!TotalNvoIngreso = Reg!CountOfCredencial
+TRES_GRAL!ImporteNvoIngreso = Reg!Expr1
+TRES_GRAL.Update
+Reg.Close
+
+DoCmd.Echo False, "Obteniendo Numero de Alumnos Mes Anterior"
+Set QDef = db.QueryDefs("RES_GRAL11")
+QDef![FECHA DE INICIO : ] = FIni
+Set Reg = QDef.OpenRecordset()
+Reg.MoveFirst
+TRES_GRAL.MoveFirst
+TRES_GRAL.Edit
+TRES_GRAL!NumAlumnosMesAnt = Reg!CountOfCredencial + NumeroDeBajasPeriodo
+TRES_GRAL!ImporteAlumnosMesAnt = Reg!Expr1 + ImporteDeBajasPeriodo
+TRES_GRAL.Update
+Reg.Close
+
+DoCmd.Echo False, "Obteniendo Numero de Alumnos Por Ingresar"
+Set QDef = db.QueryDefs("RES_GRAL12")
+QDef![FECHA FIN : ] = FFin
+Set Reg = QDef.OpenRecordset()
+Reg.MoveFirst
+TRES_GRAL.MoveFirst
+TRES_GRAL.Edit
+TRES_GRAL!NumAlumnosPorIng = Reg!CountOfCredencial
+TRES_GRAL!ImporteAlumnosPorIng = Reg!Expr1
+TRES_GRAL.Update
+Reg.Close
+
+DoCmd.Echo False, "Obteniendo Total de Alumnos En BD"
+Set QDef = db.QueryDefs("RES_GRAL13")
+Set Reg = QDef.OpenRecordset()
+Reg.MoveFirst
+TRES_GRAL.MoveFirst
+TRES_GRAL.Edit
+TRES_GRAL!TotalAlumnosBD = Reg!CountOfCredencial
+TRES_GRAL!ImporteAlumnosBD = Reg!Expr1
+TRES_GRAL.Update
+Reg.Close
+
+DoCmd.Echo False, "Obteniendo Numero de Operaciones"
+Set QDef = db.QueryDefs("RES_GRAL4")
+QDef![FECHA DE INICIO : ] = FIni
+QDef![FECHA FIN : ] = FFin
+Set Reg = QDef.OpenRecordset()
+Reg.MoveFirst
+TRES_GRAL.MoveFirst
+TRES_GRAL.Edit
+TRES_GRAL!NumOperaciones = Reg!SumaDeCantidad
+TRES_GRAL!TotalIngresos = Reg!SumOfNeto
+TRES_GRAL!IVACobrado = Reg!SumOfIVA
+TRES_GRAL.Update
+Reg.Close
+
+DoCmd.Echo False, "Obteniendo Numero de Recibos"
+Set QDef = db.QueryDefs("RES_GRAL5")
+QDef![FECHA DE INICIO : ] = FIni
+QDef![FECHA FIN : ] = FFin
+Set Reg = QDef.OpenRecordset()
+Reg.MoveFirst
+TRES_GRAL.MoveFirst
+TRES_GRAL.Edit
+TRES_GRAL!NumRecibos = Reg!CountOfNumero
+TRES_GRAL.Update
+Reg.Close
+
+DoCmd.Echo False, "Obteniendo Numero de Grupos"
+Set QDef = db.QueryDefs("RES_GRAL6")
+QDef![FECHA FIN : ] = FFin
+Set Reg = QDef.OpenRecordset()
+Reg.MoveFirst
+TRES_GRAL.MoveFirst
+TRES_GRAL.Edit
+TRES_GRAL!NumGrupos = Reg!CountOfClave
+TRES_GRAL.Update
+Reg.Close
+
+DoCmd.Echo False, "Obteniendo Numero de Cursos"
+Set QDef = db.QueryDefs("RES_GRAL7")
+Set Reg = QDef.OpenRecordset()
+Reg.MoveFirst
+TRES_GRAL.MoveFirst
+TRES_GRAL.Edit
+TRES_GRAL!NumCursos = Reg!CountOfCurso
+TRES_GRAL.Update
+Reg.Close
+
+DoCmd.Echo False, "Obteniendo Numero de Maestros"
+Set QDef = db.QueryDefs("RES_GRAL8")
+QDef![FECHA FIN : ] = FFin
+Set Reg = QDef.OpenRecordset()
+Reg.MoveFirst
+TRES_GRAL.MoveFirst
+TRES_GRAL.Edit
+TRES_GRAL!NumMaestros = Reg!CountOfNombre
+TRES_GRAL.Update
+Reg.Close
+
+Tot_OpMateriales = 0
+Tot_Materiales = 0
+Tot_IvaMateriales = 0
+Tot_OpColegiaturas = 0
+Tot_colegiaturas = 0
+Tot_IvaColegiaturas = 0
+Tot_OpInscripciones = 0
+Tot_inscripciones = 0
+Tot_IvaInscripciones = 0
+Tot_OpExGrado96 = 0
+Tot_ExGrado96 = 0
+Tot_IVAExGrado96 = 0
+Tot_OpExGrado543 = 0
+Tot_ExGrado543 = 0
+Tot_IVAExGrado543 = 0
+Tot_OpExGradoBas = 0
+Tot_ExGradoBas = 0
+Tot_IVAExGradoBas = 0
+Tot_OpExGradoEDR = 0
+Tot_ExGradoEDR = 0
+Tot_IVAExGradoEDR = 0
+Tot_OpExNivel = 0
+Tot_ExNivel = 0
+Tot_IvaExNivel = 0
+Tot_OpMetodos = 0
+Tot_Metodos = 0
+Tot_IvaMetodos = 0
+Tot_OpLibros = 0
+Tot_Libros = 0
+Tot_IvaLibros = 0
+Tot_OpConciertos = 0
+Tot_Conciertos = 0
+Tot_IvaConciertos = 0
+Tot_OpOtros = 0
+Tot_Otros = 0
+ToT_IvaOtros = 0
+
+DoCmd.Echo False, "Obteniendo Total de Ingresos por Tipo"
+Set QDef = db.QueryDefs("RES_GRAL9")
+QDef![FECHA DE INICIO : ] = FIni
+QDef![FECHA FIN : ] = FFin
+Set Reg = QDef.OpenRecordset()
+Reg.MoveFirst
+Do Until Reg.EOF
+   If Reg!Grupo = "Colegiaturas" Then
+      Tot_colegiaturas = Tot_colegiaturas + Reg!SumOfNeto
+      Tot_OpColegiaturas = Tot_OpColegiaturas + Reg!SumaDeCantidad
+      Tot_IvaColegiaturas = Tot_IvaColegiaturas + Reg!SumOfIVA
+   Else
+      If Reg!Grupo = "Inscripciones" Then
+         Tot_inscripciones = Tot_inscripciones + Reg!SumOfNeto
+         Tot_OpInscripciones = Tot_OpInscripciones + Reg!SumaDeCantidad
+         Tot_IvaInscripciones = Tot_IvaInscripciones + Reg!SumOfIVA
+      Else
+         If Reg!Grupo = "Examen Gdo 5-4-3" Then
+            Tot_ExGrado543 = Tot_ExGrado543 + Reg!SumOfNeto
+            Tot_OpExGrado543 = Tot_OpExGrado543 + Reg!SumaDeCantidad
+            Tot_IVAExGrado543 = Tot_IVAExGrado543 + Reg!SumOfIVA
+         Else
+            If Reg!Grupo = "Examen gdo 9-6" Then
+               Tot_ExGrado96 = Tot_ExGrado96 + Reg!SumOfNeto
+               Tot_OpExGrado96 = Tot_OpExGrado96 + Reg!SumaDeCantidad
+               Tot_IVAExGrado96 = Tot_IVAExGrado96 + Reg!SumOfIVA
+            Else
+               If Reg!Grupo = "Examen Gdo. Bas." Then
+                  Tot_ExGradoBas = Tot_ExGradoBas + Reg!SumOfNeto
+                  Tot_OpExGradoBas = Tot_OpExGradoBas + Reg!SumaDeCantidad
+                  Tot_IVAExGradoBas = Tot_IVAExGradoBas + Reg!SumOfIVA
+               Else
+                  If Reg!Grupo = "Examen Esc. de Rock" Then
+                     Tot_ExGradoEDR = Tot_ExGradoEDR + Reg!SumOfNeto
+                     Tot_OpExGradoEDR = Tot_OpExGradoEDR + Reg!SumaDeCantidad
+                     Tot_IVAExGradoEDR = Tot_IVAExGradoEDR + Reg!SumOfIVA
+                  Else
+                     If Reg!Grupo = "Examen Nivel 13-10" Then
+                        Tot_ExNivel = Tot_ExNivel + Reg!SumOfNeto
+                        Tot_OpExNivel = Tot_OpExNivel + Reg!SumaDeCantidad
+                        Tot_IvaExNivel = Tot_IvaExNivel + Reg!SumOfIVA
+                     Else
+                        If Reg!Grupo = "Materiales" Then
+                           Tot_Materiales = Tot_Materiales + Reg!SumOfNeto
+                           Tot_OpMateriales = Tot_OpMateriales + Reg!SumaDeCantidad
+                           Tot_IvaMateriales = Tot_IvaMateriales + Reg!SumOfIVA
+                        Else
+                           If Reg!Grupo = "Métodos" Then
+                              Tot_Metodos = Tot_Metodos + Reg!SumOfNeto
+                              Tot_OpMetodos = Tot_OpMetodos + Reg!SumaDeCantidad
+                              Tot_IvaMetodos = Tot_IvaMetodos + Reg!SumOfIVA
+                           Else
+                              If Reg!Grupo = "Libros" Then
+                                 Tot_Libros = Tot_Libros + Reg!SumOfNeto
+                                 Tot_OpLibros = Tot_OpLibros + Reg!SumaDeCantidad
+                                 Tot_IvaLibros = Tot_IvaLibros + Reg!SumOfIVA
+                              Else
+                                 If Reg!Grupo = "Conciertos" Or Reg!Grupo = "Concierto de Guit." Then
+                                    Tot_Conciertos = Tot_Conciertos + Reg!SumOfNeto
+                                    Tot_OpConciertos = Tot_OpConciertos + Reg!SumaDeCantidad
+                                    Tot_IvaConciertos = Tot_IvaConciertos + Reg!SumOfIVA
+                                 Else
+                                    Tot_Otros = Tot_Otros + Reg!SumOfNeto
+                                    Tot_OpOtros = Tot_OpOtros + Reg!SumaDeCantidad
+                                    ToT_IvaOtros = ToT_IvaOtros + Reg!SumOfIVA
+                                 End If
+                              End If
+                           End If
+                        End If
+                     End If
+                  End If
+               End If
+            End If
+         End If
+      End If
+   End If
+   Reg.MoveNext
+   If Reg.EOF Then
+      Exit Do
+   End If
+Loop
+TRES_GRAL.MoveFirst
+TRES_GRAL.Edit
+TRES_GRAL!OperacionesMateriales = Tot_OpMateriales
+TRES_GRAL!IngresosMateriales = Tot_Materiales
+TRES_GRAL!IvaMateriales = Tot_IvaMateriales
+TRES_GRAL!OperacionesColegiaturas = Tot_OpColegiaturas
+TRES_GRAL!IngresosColegiaturas = Tot_colegiaturas
+TRES_GRAL!IVAColegiaturas = Tot_IvaColegiaturas
+TRES_GRAL!OperacionesInscripciones = Tot_OpInscripciones
+TRES_GRAL!IngresosInscripciones = Tot_inscripciones
+TRES_GRAL!IvaInscripciones = Tot_IvaInscripciones
+TRES_GRAL!OperacionesExGrado96 = Tot_OpExGrado96
+TRES_GRAL!IngresosExGrado96 = Tot_ExGrado96
+TRES_GRAL!IVAExGrado96 = Tot_IVAExGrado96
+TRES_GRAL!OperacionesExGrado543 = Tot_OpExGrado543
+TRES_GRAL!IngresosExGrado543 = Tot_ExGrado543
+TRES_GRAL!IVAExGrado543 = Tot_IVAExGrado543
+TRES_GRAL!OperacionesExGradoBas = Tot_OpExGradoBas
+TRES_GRAL!IngresosExGradoBas = Tot_ExGradoBas
+TRES_GRAL!IVAExGradoBas = Tot_IVAExGradoBas
+TRES_GRAL!OperacionesExGradoEDR = Tot_OpExGradoEDR
+TRES_GRAL!IngresosExGradoEDR = Tot_ExGradoEDR
+TRES_GRAL!IVAExGradoEDR = Tot_IVAExGradoEDR
+TRES_GRAL!OperacionesExNivel = Tot_OpExNivel
+TRES_GRAL!IngresosExNivel = Tot_ExNivel
+TRES_GRAL!IvaExNivel = Tot_IvaExNivel
+TRES_GRAL!OperacionesMetodos = Tot_OpMetodos
+TRES_GRAL!IngresosMetodos = Tot_Metodos
+TRES_GRAL!IVAMetodos = Tot_IvaMetodos
+TRES_GRAL!OperacionesLibros = Tot_OpLibros
+TRES_GRAL!IngresosLibros = Tot_Libros
+TRES_GRAL!IVALibros = Tot_IvaLibros
+TRES_GRAL!OperacionesConciertos = Tot_OpConciertos
+TRES_GRAL!IngresosConciertos = Tot_Conciertos
+TRES_GRAL!IVAConciertos = Tot_IvaConciertos
+TRES_GRAL!OperacionesOtros = Tot_OpOtros
+TRES_GRAL!IngresosOtros = Tot_Otros
+TRES_GRAL!IvaOtros = ToT_IvaOtros
+TRES_GRAL.Update
+
+Tot_Pago1 = 0
+Tot_numPago1 = 0
+Tot_Pago2 = 0
+Tot_numPago2 = 0
+Tot_Pago3 = 0
+Tot_numPago3 = 0
+Tot_Pago4 = 0
+Tot_numPago4 = 0
+Tot_Pago5 = 0
+Tot_numPago5 = 0
+DoCmd.Echo False, "Obteniendo Formas de Pago"
+Set QDef = db.QueryDefs("RES_GRAL91")
+QDef![FECHA DE INICIO : ] = FIni
+QDef![FECHA FIN : ] = FFin
+Set Reg = QDef.OpenRecordset()
+Reg.MoveFirst
+Do Until Reg.EOF
+   If Reg!Pago = "1" Then
+      Tot_Pago1 = Tot_Pago1 + Reg!SumOfNeto
+      Tot_numPago1 = Tot_numPago1 + Reg!CountOfID
+   Else
+      If Reg!Pago = "2" Then
+         Tot_Pago2 = Tot_Pago2 + Reg!SumOfNeto
+         Tot_numPago2 = Tot_numPago2 + Reg!CountOfID
+      Else
+         If Reg!Pago = "3" Then
+            Tot_Pago3 = Tot_Pago3 + Reg!SumOfNeto
+            Tot_numPago3 = Tot_numPago3 + Reg!CountOfID
+         Else
+            If Reg!Pago = "4" Then
+               Tot_Pago4 = Tot_Pago4 + Reg!SumOfNeto
+               Tot_numPago4 = Tot_numPago4 + Reg!CountOfID
+            Else
+               Tot_Pago5 = Tot_Pago5 + Reg!SumOfNeto
+               Tot_numPago5 = Tot_numPago5 + Reg!CountOfID
+            End If
+         End If
+      End If
+   End If
+   Reg.MoveNext
+   If Reg.EOF Then
+      Exit Do
+   End If
+Loop
+TRES_GRAL.MoveFirst
+TRES_GRAL.Edit
+TRES_GRAL!DescPago1 = "Efectivo"
+TRES_GRAL!NumPago1 = Tot_numPago1
+TRES_GRAL!ImpPago1 = Tot_Pago1
+TRES_GRAL!DescPago2 = "Cheques"
+TRES_GRAL!NumPago2 = Tot_numPago2
+TRES_GRAL!ImpPago2 = Tot_Pago2
+TRES_GRAL!DescPago3 = "Ef. y Cheque"
+TRES_GRAL!NumPago3 = Tot_numPago3
+TRES_GRAL!ImpPago3 = Tot_Pago3
+TRES_GRAL!DescPago4 = "Linea Banamex"
+TRES_GRAL!NumPago4 = Tot_numPago4
+TRES_GRAL!ImpPago4 = Tot_Pago4
+TRES_GRAL!DescPago5 = "Tarjeta Crédito"
+TRES_GRAL!NumPago5 = Tot_numPago5
+TRES_GRAL!ImpPago5 = Tot_Pago5
+TRES_GRAL.Update
+
+Num25 = 0
+Num50 = 0
+Num75 = 0
+Num100 = 0
+NumOtrosPorc = 0
+Tot_25 = 0
+Tot_50 = 0
+Tot_75 = 0
+Tot_100 = 0
+Tot_OtrosPorc = 0
+DoCmd.Echo False, "Obteniendo Becas"
+Set QDef = db.QueryDefs("RES_GRAL10")
+QDef![FECHA FIN : ] = FFin
+Set Reg = QDef.OpenRecordset()
+Reg.MoveFirst
+Do Until Reg.EOF
+   If Reg!Porcentaje = 0.5 Then
+      Num50 = Num50 + Reg!CountOfNombre
+      Tot_50 = Tot_50 + Reg!Expr1
+   Else
+      If Reg!Porcentaje = 1 Then
+         Num100 = Num100 + Reg!CountOfNombre
+         Tot_100 = Tot_100 + Reg!Expr1
+      Else
+         If Reg!Porcentaje = 0.25 Then
+            Num25 = Num25 + Reg!CountOfNombre
+            Tot_25 = Tot_25 + Reg!Expr1
+         Else
+            If Reg!Porcentaje = 0.75 Then
+               Num75 = Num75 + Reg!CountOfNombre
+               Tot_75 = Tot_75 + Reg!Expr1
+            Else
+               NumOtrosPorc = NumOtrosPorc + Reg!CountOfNombre
+               Tot_OtrosPorc = Tot_OtrosPorc + Reg!Expr1
+            End If
+         End If
+      End If
+   End If
+   Reg.MoveNext
+   If Reg.EOF Then
+      Exit Do
+   End If
+Loop
+TRES_GRAL.MoveFirst
+TRES_GRAL.Edit
+TRES_GRAL!AlumnosBeca25 = Num25
+TRES_GRAL!Beca25 = Tot_25
+TRES_GRAL!AlumnosBeca50 = Num50
+TRES_GRAL!Beca50 = Tot_50
+TRES_GRAL!AlumnosBeca75 = Num75
+TRES_GRAL!Beca75 = Tot_75
+TRES_GRAL!AlumnosBeca100 = Num100
+TRES_GRAL!Beca100 = Tot_100
+TRES_GRAL!AlumnosOtrosPorc = NumOtrosPorc
+TRES_GRAL!BecaOtros = Tot_OtrosPorc
+TRES_GRAL.Update
+
+DoCmd.Echo False, "Generando Resumen de Pagos"
+
+Set QDef = db.QueryDefs("ParaHonorarios")
+QDef![Maestro Inicial : ] = " "
+QDef![Maestro Final : ] = "Z"
+Set Reg = QDef.OpenRecordset()
+
+Reg.MoveFirst
+
+cred_ant = 0
+Prec = 0
+apm1 = 0
+apm2 = 0
+apm3 = 0
+apm4 = 0
+apm5 = 0
+apm6 = 0
+apmActual = 0
+apmActualOM1 = 0
+apmActualOM2 = 0
+apmactualOM3 = 0
+m1 = 0
+m2 = 0
+m3 = 0
+m4 = 0
+m5 = 0
+m6 = 0
+mActual = 0
+mActualOM1 = 0
+mActualOM2 = 0
+mActualOM3 = 0
+pmm1 = 0
+pmm2 = 0
+pmm3 = 0
+pmmActual = 0
+pmmActualOM1 = 0
+pmmActualOM2 = 0
+pmmActualOM3 = 0
+Ingreso_Ant = Reg![Fecha de Ingreso]
+Grupo_Ant = Reg!Clave
+
+Do Until Reg.EOF
+   DoCmd.Echo True, "Procesando Pagos De : " + Reg!Maestro + " " + Reg!Curso
+   Anio_Ant% = 0
+   Mes_Ant% = 0
+   cred_ant = 0
+   Meses1 = 0
+   Meses2 = 0
+   Meses3 = 0
+   Meses4 = 0
+   Meses5 = 0
+   meses6 = 0
+   MesesAct = 0
+   MesesActPant1 = 0
+   MesesActPant2 = 0
+   MesesActPant3 = 0
+   Prec1 = 0
+   Prec2 = 0
+   Prec3 = 0
+   Prec4 = 0
+   Prec5 = 0
+   Prec6 = 0
+   Prec = 0
+   PrecActPant1 = 0
+   PrecActPant2 = 0
+   PrecActPant3 = 0
+   Hon1 = 0
+   Hon2 = 0
+   Hon3 = 0
+   Hon = 0
+   HonActPant1 = 0
+   HonActPant2 = 0
+   HonActPant3 = 0
+   Maestro_Ant = Reg!Maestro
+   Curso_Ant = Reg!Curso
+   Do Until (Reg.EOF) Or (Curso_Ant <> Reg!Curso) Or (Maestro_Ant <> Reg!Maestro)
+     
+      If cred_ant <> Reg!Credencial Then
+         Anio_Ant% = 0
+         Mes_Ant% = 0
+      End If
+      
+      Anio_Arch% = DatePart("yyyy", Reg!Fecha)
+      Mes_Pago% = DatePart("m", Reg!Fecha)
+
+      If (Mes_Ant% = Reg!Orden) And (Reg!AñoP = Anio_Ant%) And (cred_ant = Reg!Credencial) Then
+         If Reg!Fecha >= FIni And Reg!Fecha <= FFin Then
+            If Reg!Orden = MesProceso% Then
+               Prec = Prec + Reg!Precio
+            Else
+               If Reg!Orden = MesMenos2% Then
+                  Prec2 = Prec2 + Reg!Precio
+               Else
+                  If Reg!Orden = MesMenos1% Then
+                     Prec3 = Prec3 + Reg!Precio
+                  Else
+                     If Reg!Orden = MesMas1% Then
+                        Prec4 = Prec4 + Reg!Precio
+                     Else
+                        If Reg!Orden = MesMas2% Then
+                           Prec5 = Prec5 + Reg!Precio
+                        Else
+                           If (Reg!Orden <= MesMenos3% And Reg!AñoP <= Anio_Act%) Or (Reg!Orden > MesMenos3% And Reg!AñoP < Anio_Act%) Then
+                              Prec1 = Prec1 + Reg!Precio
+                           Else
+                              If (Reg!Orden >= MesMas3% And Reg!AñoP >= Anio_Act%) Or (Reg!Orden < MesMas3% And Reg!AñoP > Anio_Act%) Then
+                                 Prec6 = Prec6 + Reg!Precio
+                              End If
+                           End If
+                        End If
+                     End If
+                  End If
+               End If
+            End If
+         End If
+      Else
+         If (MesProceso% = Reg!Orden) And (Reg!AñoP = Anio_Act%) Then
+            If Reg!Fecha >= FIni And Reg!Fecha <= FFin Then
+               If Reg![Fecha Ingreso] <= FFin Then 'And Reg!Inicio <= FFin Then
+                  MesesAct = MesesAct + 1
+                  Prec = Prec + Reg!Precio
+                  Hon = Hon + Reg!Factor
+               Else
+                  Prec = Prec + Reg!Precio
+               End If
+            Else
+               If Reg![Fecha Ingreso] <= FFin Then
+                  If Reg!Fecha < FIni Then
+                     If Mes_Pago% = MesMenos1% Then
+                        MesesActPant3 = MesesActPant3 + 1
+                        PrecActPant3 = PrecActPant3 + Reg!Precio
+                        HonActPant3 = HonActPant3 + Reg!Factor
+                     Else
+                        If Mes_Pago% = MesMenos2% Then
+                           MesesActPant2 = MesesActPant2 + 1
+                           PrecActPant2 = PrecActPant2 + Reg!Precio
+                           HonActPant2 = HonActPant2 + Reg!Factor
+                        Else
+                           If (Mes_Pago% <= MesMenos3%) And (Anio_Arch% <= Anio_Act%) Then
+                              MesesActPant1 = MesesActPant1 + 1
+                              PrecActPant1 = PrecActPant1 + Reg!Precio
+                              HonActPant1 = HonActPant1 + Reg!Factor
+                           Else
+                              If (Mes_Pago% > MesMenos3%) And (Anio_Arch% < Anio_Act%) Then
+                                 MesesActPant1 = MesesActPant1 + 1
+                                 PrecActPant1 = PrecActPant1 + Reg!Precio
+                                 HonActPant1 = HonActPant1 + Reg!Factor
+                              End If
+                           End If
+                        End If
+                     End If
+                  End If
+               End If
+            End If
+         Else
+            Reg_Ya = 0
+            If Reg!Fecha >= FIni And Reg!Fecha <= FFin Then
+               If MesMenos2% = Reg!Orden Then
+                  If MesMenos2% >= 11 Then
+                     If Reg!AñoP = Anio_Act% - 1 Then
+                        Meses2 = Meses2 + 1
+                        Prec2 = Prec2 + Reg!Precio
+                        Hon2 = Hon2 + Reg!Factor
+                        Reg_Ya = 1
+                     End If
+                  Else
+                     If Reg!AñoP = Anio_Act% Then
+                        Meses2 = Meses2 + 1
+                        Prec2 = Prec2 + Reg!Precio
+                        Hon2 = Hon2 + Reg!Factor
+                        Reg_Ya = 1
+                     End If
+                  End If
+               End If
+               If MesMenos1% = Reg!Orden Then
+                  If MesMenos1% = 12 Then
+                     If Reg!AñoP = Anio_Act% - 1 Then
+                        Meses3 = Meses3 + 1
+                        Prec3 = Prec3 + Reg!Precio
+                        Hon3 = Hon3 + Reg!Factor
+                        Reg_Ya = 1
+                     End If
+                  Else
+                     If Reg!AñoP = Anio_Act% Then
+                        Meses3 = Meses3 + 1
+                        Prec3 = Prec3 + Reg!Precio
+                        Hon3 = Hon3 + Reg!Factor
+                        Reg_Ya = 1
+                     End If
+                  End If
+               End If
+               If MesMas1% = Reg!Orden Then
+                  If MesMas1% = 1 Then
+                     If Reg!AñoP = Anio_Act% + 1 Then
+                        Meses4 = Meses4 + 1
+                        Prec4 = Prec4 + Reg!Precio
+                        Reg_Ya = 1
+                     End If
+                  Else
+                     If Reg!AñoP = Anio_Act% Then
+                        Meses4 = Meses4 + 1
+                        Prec4 = Prec4 + Reg!Precio
+                        Reg_Ya = 1
+                     End If
+                  End If
+               End If
+               If MesMas2% = Reg!Orden Then
+                  If MesMas2% <= 2 Then
+                     If Reg!AñoP = Anio_Act% + 1 Then
+                        Meses5 = Meses5 + 1
+                        Prec5 = Prec5 + Reg!Precio
+                        Reg_Ya = 1
+                     End If
+                  Else
+                     If Reg!AñoP = Anio_Act% Then
+                        Meses5 = Meses5 + 1
+                        Prec5 = Prec5 + Reg!Precio
+                        Reg_Ya = 1
+                     End If
+                  End If
+               End If
+               If Reg_Ya = 0 Then
+                  If (Reg!Orden >= MesMas3%) And (Reg!AñoP >= Anio_Act%) Then
+                     meses6 = meses6 + 1
+                     Prec6 = Prec6 + Reg!Precio
+                     Reg_Ya = 1
+                  Else
+                     If (Reg!Orden < MesMas3%) And (Reg!AñoP > Anio_Act%) Then
+                        meses6 = meses6 + 1
+                        Prec6 = Prec6 + Reg!Precio
+                        Reg_Ya = 1
+                     End If
+                  End If
+               End If
+               If Reg_Ya = 0 Then
+                  If (Reg!Orden <= MesMenos3%) And (Reg!AñoP <= Anio_Act%) Then
+                     Meses1 = Meses1 + 1
+                     Prec1 = Prec1 + Reg!Precio
+                     Hon1 = Hon1 + Reg!Factor
+                     Reg_Ya = 1
+                  Else
+                     If (Reg!Orden > MesMenos3%) And (Reg!AñoP < Anio_Act%) Then
+                        Meses1 = Meses1 + 1
+                        Prec1 = Prec1 + Reg!Precio
+                        Hon1 = Hon1 + Reg!Factor
+                        Reg_Ya = 1
+                     End If
+                  End If
+               End If
+            End If
+         End If
+      End If
+
+      Anio_Ant% = Reg!AñoP
+      Mes_Ant% = Reg!Orden
+      cred_ant = Reg!Credencial
+      Grupo_Ant = Reg!Clave
+      
+      Reg.MoveNext
+
+      If Reg.EOF Then
+         Exit Do
+      End If
+   Loop
+   
+   apm1 = apm1 + Meses1
+   apm2 = apm2 + Meses2
+   apm3 = apm3 + Meses3
+   apm4 = apm4 + Meses4
+   apm5 = apm5 + Meses5
+   apm6 = apm6 + meses6
+   apmActual = apmActual + MesesAct
+   apmActualOM1 = apmActualOM1 + MesesActPant1
+   apmActualOM2 = apmActualOM2 + MesesActPant2
+   apmactualOM3 = apmactualOM3 + MesesActPant3
+   m1 = m1 + Prec1
+   m2 = m2 + Prec2
+   m3 = m3 + Prec3
+   m4 = m4 + Prec4
+   m5 = m5 + Prec5
+   m6 = m6 + Prec6
+   mActual = mActual + Prec
+   mActualOM1 = mActualOM1 + PrecActPant1
+   mActualOM2 = mActualOM2 + PrecActPant2
+   mActualOM3 = mActualOM3 + PrecActPant3
+   pmm1 = pmm1 + Hon1
+   pmm2 = pmm2 + Hon2
+   pmm3 = pmm3 + Hon3
+   pmmActual = pmmActual + Hon
+   pmmActualOM1 = pmmActualOM1 + HonActPant1
+   pmmActualOM2 = pmmActualOM2 + HonActPant2
+   pmmActualOM3 = pmmActualOM3 + HonActPant3
+
+   If Reg.EOF Then
+      Exit Do
+   End If
+
+Loop
+
+TRES_GRAL.MoveFirst
+TRES_GRAL.Edit
+TRES_GRAL!AlumnosPagoMes1 = apm1
+TRES_GRAL!AlumnosPagoMes2 = apm2
+TRES_GRAL!AlumnosPagoMes3 = apm3
+TRES_GRAL!AlumnosPagoMesActual = apmActual
+TRES_GRAL!AlumnosPagoMesActualOM1 = apmActualOM1
+TRES_GRAL!AlumnosPagoMesActualOM2 = apmActualOM2
+TRES_GRAL!AlumnosPagoMesActualOM3 = apmactualOM3
+TRES_GRAL!AlumnosPagoMes4 = apm4
+TRES_GRAL!AlumnosPagoMes5 = apm5
+TRES_GRAL!AlumnosPagoMes6 = apm6
+TRES_GRAL!Mes1 = m1
+TRES_GRAL!Mes2 = m2
+TRES_GRAL!Mes3 = m3
+TRES_GRAL!MesActual = mActual
+TRES_GRAL!MesActualOM1 = mActualOM1
+TRES_GRAL!MesActualOM2 = mActualOM2
+TRES_GRAL!MesActualOM3 = mActualOM3
+TRES_GRAL!Mes4 = m4
+TRES_GRAL!Mes5 = m5
+TRES_GRAL!Mes6 = m6
+TRES_GRAL!PagoMaestroMes1 = pmm1
+TRES_GRAL!PagoMaestroMes2 = pmm2
+TRES_GRAL!PagoMaestroMes3 = pmm3
+TRES_GRAL!PagoMaestroActual = pmmActual
+TRES_GRAL!PagoMaestroActualOM1 = pmmActualOM1
+TRES_GRAL!PagoMaestroActualOM2 = pmmActualOM2
+TRES_GRAL!PagoMaestroActualOM3 = pmmActualOM3
+TRES_GRAL.Update
+
+'
+' Genera los Deudores
+'
+
+solo_deud:
+DoCmd.Echo True, "Generando Los Deudores"
+
+' Llama a la Rutina que revalua las fechas de corte para bajas
+
+Revalua_Fecha_Baja
+
+Set TCurso = db.OpenRecordset("Cursos")
+'Set QDef = Db.Querydefs("ParaHonorarios")
+'QDef![Maestro Inicial : ] = "Pedro"
+'QDef![Maestro Final : ] = "Pidro"
+'Set Reg = QDef.Openrecordset()
+
+If Reg.BOF Then
+   MsgBox "No Hay Registros Generados en el Rango", 48, "Mensaje de Confirmacion"
+   Exit Function
+End If
+
+Reg.MoveFirst
+
+adm1 = 0
+adm2 = 0
+adm3 = 0
+adma = 0
+dm1 = 0
+dm2 = 0
+dm3 = 0
+dma = 0
+
+Do Until Reg.EOF
+
+   DoCmd.Echo True, "Procesando Deudores de : " + Reg!Maestro + " " + Reg!Clave
+   Meses1 = 0
+   Meses2 = 0
+   Meses3 = 0
+   Meses4 = 0
+   MesesAct = 0
+   Fec_mesA = Null
+   Fec_mes1 = Null
+   fec_mes2 = Null
+   Fec_mes3 = Null
+   Fec_mes4 = Null
+   Ult_Pago = 0
+   Fecha_ult = Null
+   Maestro_Ant = Reg!Maestro
+   Curso_Ant = Reg!Curso
+   Grupo_Ant = Reg!Clave
+   Inicio_Ant = Reg!Inicio
+   cred_ant = Reg!Credencial
+   Ingreso_Ant = Reg![Fecha Ingreso]
+   AñoUltPago% = 0
+   OrdenUltMes% = 0
+   
+   Do Until (Reg.EOF) Or (cred_ant <> Reg!Credencial)
+      
+      If (MesProceso% = Reg!Orden) Then
+         If (Anio_Act% = Reg!AñoP) And (Reg!Fecha <= FFin) Then
+            MesesAct = MesesAct + Reg!Precio
+            Fec_mesA = Reg!Fecha
+         End If
+      Else
+         If MesMenos4% = Reg!Orden Then
+            If (MesMenos4% >= 9) Then
+               If ((Anio_Act% - 1) = Reg!AñoP) Then
+                  Meses1 = Meses1 + Reg!Precio
+                  Fec_mes1 = Reg!Fecha
+               End If
+            Else
+               If Anio_Act% = Reg!AñoP Then
+                  Meses1 = Meses1 + Reg!Precio
+                  Fec_mes1 = Reg!Fecha
+               End If
+            End If
+         End If
+         If MesMenos3% = Reg!Orden Then
+            If (MesMenos3% >= 10) Then
+               If ((Anio_Act% - 1) = Reg!AñoP) Then
+                  Meses2 = Meses2 + Reg!Precio
+                  fec_mes2 = Reg!Fecha
+               End If
+            Else
+               If Anio_Act% = Reg!AñoP Then
+                  Meses2 = Meses2 + Reg!Precio
+                  fec_mes2 = Reg!Fecha
+               End If
+            End If
+         End If
+         If MesMenos2% = Reg!Orden Then
+            If (MesMenos2% >= 11) Then
+               If ((Anio_Act% - 1) = Reg!AñoP) Then
+                  Meses3 = Meses3 + Reg!Precio
+                  Fec_mes3 = Reg!Fecha
+               End If
+            Else
+               If Anio_Act% = Reg!AñoP Then
+                  Meses3 = Meses3 + Reg!Precio
+                  Fec_mes3 = Reg!Fecha
+               End If
+            End If
+         End If
+         If MesMenos1% = Reg!Orden Then
+            If (MesMenos1% >= 12) Then
+               If ((Anio_Act% - 1) = Reg!AñoP) Then
+                  Meses4 = Meses4 + Reg!Precio
+                  Fec_mes4 = Reg!Fecha
+               End If
+            Else
+               If Anio_Act% = Reg!AñoP Then
+                  Meses4 = Meses4 + Reg!Precio
+                  Fec_mes4 = Reg!Fecha
+               End If
+            End If
+         End If
+      End If
+
+      If (((Reg!Orden >= OrdenUltMes%) And (Reg!AñoP >= AñoUltPago%)) Or ((Reg!Orden <= OrdenUltMes%) And (Reg!AñoP > AñoUltPago%))) Then
+         Ult_Pago = Reg!Precio
+         Fecha_ult = Reg!Fecha
+         OrdenUltMes% = Reg!Orden
+         AñoUltPago% = Reg!AñoP
+      End If
+
+      cred_ant = Reg!Credencial
+      Reg.MoveNext
+      If Reg.EOF Then
+         Exit Do
+      End If
+   Loop
+
+   TCurso.Index = "PrimaryKey"
+   TCurso.Seek "=", Curso_Ant
+   If Not TCurso.NoMatch Then
+      If Not IsNull(TCurso!Recargo) Then
+         ImporteDeudor = TCurso!Recargo
+      Else
+         ImporteDeudor = 0
+      End If
+   Else
+      ImporteDeudor = 0
+   End If
+   If (IsNull(Fec_mesA) And MesesAct = 0) And (ReValFec_Cor >= Ingreso_Ant) Then '(ReValFec_Cor >= Inicio_Ant Or IsNull(Inicio_Ant)) And
+      adma = adma + 1
+      dma = dma + ImporteDeudor
+   End If
+   If (IsNull(Fec_mes1) And Meses1 = 0) And (ReValF1 >= Ingreso_Ant) Then
+      adm1 = adm1 + 1
+      dm1 = dm1 + ImporteDeudor
+   End If
+   If (IsNull(fec_mes2) And Meses2 = 0) And (ReValF2 >= Ingreso_Ant) Then
+      adm1 = adm1 + 1
+      dm1 = dm1 + ImporteDeudor
+   End If
+   If (IsNull(Fec_mes3) And Meses3 = 0) And (ReValF3 >= Ingreso_Ant) Then
+      adm2 = adm2 + 1
+      dm2 = dm2 + ImporteDeudor
+   End If
+   If (IsNull(Fec_mes4) And Meses4 = 0) And (ReValF4 >= Ingreso_Ant) Then
+      adm3 = adm3 + 1
+      dm3 = dm3 + ImporteDeudor
+   End If
+
+   If MesMenos4% >= 9 Then
+      If (OrdenUltMes% < MesMenos4%) And (AñoUltPago% < Anio_Act%) Then
+         Num_Meses = (MesMenos4% - OrdenUltMes% - 1)
+         adm1 = adm1 + Num_Meses
+         dm1 = dm1 + (ImporteDeudor * Num_Meses)
+      End If
+   Else
+      If AñoUltPago% < Anio_Act% Then
+         Num_Meses = (12 - OrdenUltMes%) + (MesMenos4% - 1)
+         adm1 = adm1 + Num_Meses
+         dm1 = dm1 + (Num_Meses * ImporteDeudor)
+      Else
+         If (OrdenUltMes% < MesMenos4%) And (AñoUltPago% = Anio_Act%) Then
+            Num_Meses = MesMenos4% - 1 - OrdenUltMes%
+            adm1 = adm1 + Num_Meses
+            dm1 = dm1 + (ImporteDeudor * Num_Meses)
+         End If
+      End If
+   End If
+      
+Loop
+
+TRES_GRAL.MoveFirst
+TRES_GRAL.Edit
+TRES_GRAL!AlumnosDeudoresMes1 = adm1
+TRES_GRAL!AlumnosDeudoresMes2 = adm2
+TRES_GRAL!AlumnosDeudoresMes3 = adm3
+TRES_GRAL!AlumnosDeudoresMesAct = adma
+TRES_GRAL!DeudorMes1 = dm1
+TRES_GRAL!DeudorMes2 = dm2
+TRES_GRAL!DeudorMes3 = dm3
+TRES_GRAL!DeudorMesActual = dma
+TRES_GRAL.Update
+
+Reg.Close
+
+'
+'  Genera Pagos Por Alumnos Dados de Baja
+'
+
+DoCmd.Echo False, "Generando Pagos Por Alumnos Dados de Baja"
+
+Set QDef = db.QueryDefs("ParaHonorariosBajas")
+QDef![FECHA DE INICIO : ] = FIni
+QDef![FECHA FIN : ] = FFin
+Set Reg = QDef.OpenRecordset()
+
+If Reg.BOF Then
+   MsgBox "No Hay Registros En Bajas", 48, "Mensaje de Confirmacion"
+   TRES_GRAL.MoveFirst
+   TRES_GRAL.Edit
+   TRES_GRAL!AlumnosBPagoMes1 = 0
+   TRES_GRAL!AlumnosBPagoMes2 = 0
+   TRES_GRAL!AlumnosBPagoMes3 = 0
+   TRES_GRAL!AlumnosBPagoMesActual = 0
+   TRES_GRAL!AlumnosBPagoMesActualOM1 = 0
+   TRES_GRAL!AlumnosBPagoMesActualOM2 = 0
+   TRES_GRAL!AlumnosBPagoMesActualOM3 = 0
+   TRES_GRAL!AlumnosBPagoMes4 = 0
+   TRES_GRAL!AlumnosBPagoMes5 = 0
+   TRES_GRAL!AlumnosBPagoMes6 = 0
+   TRES_GRAL!BMes1 = 0
+   TRES_GRAL!BMes2 = 0
+   TRES_GRAL!BMes3 = 0
+   TRES_GRAL!BMesActual = 0
+   TRES_GRAL!BMesActualOM1 = 0
+   TRES_GRAL!BMesActualOM2 = 0
+   TRES_GRAL!BMesActualOM3 = 0
+   TRES_GRAL!BMes4 = 0
+   TRES_GRAL!BMes5 = 0
+   TRES_GRAL!BMes6 = 0
+   TRES_GRAL!BPagoMaestroMes1 = 0
+   TRES_GRAL!BPagoMaestroMes2 = 0
+   TRES_GRAL!BPagoMaestroMes3 = 0
+   TRES_GRAL!BPagoMaestroActual = 0
+   TRES_GRAL!BPagoMaestroActualOM1 = 0
+   TRES_GRAL!BPagoMaestroActualOM2 = 0
+   TRES_GRAL!BPagoMaestroActualOM3 = 0
+   TRES_GRAL.Update
+   Exit Function
+End If
+
+Reg.MoveFirst
+
+cred_ant = 0
+Prec = 0
+apm1 = 0
+apm2 = 0
+apm3 = 0
+apm4 = 0
+apm5 = 0
+apm6 = 0
+apmActual = 0
+apmActualOM1 = 0
+apmActualOM2 = 0
+apmactualOM3 = 0
+m1 = 0
+m2 = 0
+m3 = 0
+m4 = 0
+m5 = 0
+m6 = 0
+mActual = 0
+mActualOM1 = 0
+mActualOM2 = 0
+mActualOM3 = 0
+pmm1 = 0
+pmm2 = 0
+pmm3 = 0
+pmmActual = 0
+pmmActualOM1 = 0
+pmmActualOM2 = 0
+pmmActualOM3 = 0
+Ingreso_Ant = Reg![Fecha de Ingreso]
+Grupo_Ant = Reg!Clave
+
+Do Until Reg.EOF
+   DoCmd.Echo True, "Procesando Pagos En Bajas : " + Reg!Maestro + " " + Reg!Curso
+   Anio_Ant% = 0
+   Mes_Ant% = 0
+   cred_ant = 0
+   Meses1 = 0
+   Meses2 = 0
+   Meses3 = 0
+   Meses4 = 0
+   Meses5 = 0
+   meses6 = 0
+   MesesAct = 0
+   MesesActPant1 = 0
+   MesesActPant2 = 0
+   MesesActPant3 = 0
+   Prec1 = 0
+   Prec2 = 0
+   Prec3 = 0
+   Prec4 = 0
+   Prec5 = 0
+   Prec6 = 0
+   Prec = 0
+   PrecActPant1 = 0
+   PrecActPant2 = 0
+   PrecActPant3 = 0
+   Hon1 = 0
+   Hon2 = 0
+   Hon3 = 0
+   Hon = 0
+   HonActPant1 = 0
+   HonActPant2 = 0
+   HonActPant3 = 0
+   Maestro_Ant = Reg!Maestro
+   Curso_Ant = Reg!Curso
+   Do Until (Reg.EOF) Or (Curso_Ant <> Reg!Curso) Or (Maestro_Ant <> Reg!Maestro)
+     
+      If cred_ant <> Reg!Credencial Then
+         Anio_Ant% = 0
+         Mes_Ant% = 0
+      End If
+      
+      Anio_Arch% = DatePart("yyyy", Reg!Fecha)
+      Mes_Pago% = DatePart("m", Reg!Fecha)
+
+      If (Mes_Ant% = Reg!Orden) And (Anio_Ant% = Reg!AñoP) And (cred_ant = Reg!Credencial) Then
+         If Reg!Fecha >= FIni And Reg!Fecha <= FFin Then
+            If Reg!Orden = MesProceso% Then
+               Prec = Prec + Reg!Precio
+            Else
+               If Reg!Orden = MesMenos2% Then
+                  Prec2 = Prec2 + Reg!Precio
+               Else
+                  If Reg!Orden = MesMenos1% Then
+                     Prec3 = Prec3 + Reg!Precio
+                  Else
+                     If Reg!Orden = MesMas1% Then
+                        Prec4 = Prec4 + Reg!Precio
+                     Else
+                        If Reg!Orden = MesMas2% Then
+                           Prec5 = Prec5 + Reg!Precio
+                        Else
+                           If (Reg!Orden <= MesMenos3% And Reg!AñoP <= Anio_Act%) Or (Reg!Orden > MesMenos3% And Reg!AñoP < Anio_Act%) Then
+                              Prec1 = Prec1 + Reg!Precio
+                           Else
+                              If (Reg!Orden >= MesMas3% And Reg!AñoP >= Anio_Act%) Or (Reg!Orden < MesMas3% And Reg!AñoP > Anio_Act%) Then
+                                 Prec6 = Prec6 + Reg!Precio
+                              End If
+                           End If
+                        End If
+                     End If
+                  End If
+               End If
+            End If
+         End If
+      Else
+         If (MesProceso% = Reg!Orden) And (Reg!AñoP = Anio_Act%) Then
+            If Reg!Fecha >= FIni And Reg!Fecha <= FFin Then
+               If Reg![Fecha Ingreso] <= FFin Then 'And Reg!Inicio <= FFin Then
+                  MesesAct = MesesAct + 1
+                  Prec = Prec + Reg!Precio
+                  Hon = Hon + Reg!Factor
+               Else
+                  Prec = Prec + Reg!Precio
+               End If
+            Else
+               If Reg!Fecha < FIni Then
+                  If Mes_Pago% = MesMenos1% Then
+                     MesesActPant3 = MesesActPant3 + 1
+                     PrecActPant3 = PrecActPant3 + Reg!Precio
+                     HonActPant3 = HonActPant3 + Reg!Factor
+                  Else
+                     If Mes_Pago% = MesMenos2% Then
+                        MesesActPant2 = MesesActPant2 + 1
+                        PrecActPant2 = PrecActPant2 + Reg!Precio
+                        HonActPant2 = HonActPant2 + Reg!Factor
+                     Else
+                        If Reg!Fecha < FIni Then
+                           If Mes_Pago% <= MesMenos3% And Anio_Arch% <= Anio_Act% Then
+                              MesesActPant1 = MesesActPant1 + 1
+                              PrecActPant1 = PrecActPant1 + Reg!Precio
+                              HonActPant1 = HonActPant1 + Reg!Factor
+                           Else
+                              If (Mes_Pago% > MesMenos3%) And (Anio_Arch% < Anio_Act%) Then
+                                 MesesActPant1 = MesesActPant1 + 1
+                                 PrecActPant1 = PrecActPant + Reg!Precio
+                                 HonActPant1 = HonActPant1 + Reg!Factor
+                              End If
+                           End If
+                        End If
+                     End If
+                  End If
+               End If
+            End If
+         Else
+            Reg_Ya = 0
+            If Reg!Fecha >= FIni And Reg!Fecha <= FFin Then
+               If MesMenos2% = Reg!Orden Then
+                  If MesMenos2% >= 11 Then
+                     If Reg!AñoP = Anio_Act% - 1 Then
+                        Meses2 = Meses2 + 1
+                        Prec2 = Prec2 + Reg!Precio
+                        Hon2 = Hon2 + Reg!Factor
+                        Reg_Ya = 1
+                     End If
+                  Else
+                     If Reg!AñoP = Anio_Act% Then
+                        Meses2 = Meses2 + 1
+                        Prec2 = Prec2 + Reg!Precio
+                        Hon2 = Hon2 + Reg!Factor
+                        Reg_Ya = 1
+                     End If
+                  End If
+               End If
+               If MesMenos1% = Reg!Orden Then
+                  If MesMenos1% = 12 Then
+                     If Reg!AñoP = Anio_Act% - 1 Then
+                        Meses3 = Meses3 + 1
+                        Prec3 = Prec3 + Reg!Precio
+                        Hon3 = Hon3 + Reg!Factor
+                        Reg_Ya = 1
+                     End If
+                  Else
+                     If Reg!AñoP = Anio_Act% Then
+                        Meses3 = Meses3 + 1
+                        Prec3 = Prec3 + Reg!Precio
+                        Hon3 = Hon3 + Reg!Factor
+                        Reg_Ya = 1
+                     End If
+                  End If
+               End If
+               If MesMas1% = Reg!Orden Then
+                  If MesMas1% = 1 Then
+                     If Reg!AñoP = Anio_Act% + 1 Then
+                        Meses4 = Meses4 + 1
+                        Prec4 = Prec4 + Reg!Precio
+                        Reg_Ya = 1
+                     End If
+                  Else
+                     If Reg!AñoP = Anio_Act% Then
+                        Meses4 = Meses4 + 1
+                        Prec4 = Prec4 + Reg!Precio
+                        Reg_Ya = 1
+                     End If
+                  End If
+               End If
+               If MesMas2% = Reg!Orden Then
+                  If MesMas2% <= 2 Then
+                     If Reg!AñoP = Anio_Act% + 1 Then
+                        Meses5 = Meses5 + 1
+                        Prec5 = Prec5 + Reg!Precio
+                        Reg_Ya = 1
+                     End If
+                  Else
+                     If Reg!AñoP = Anio_Act% Then
+                        Meses5 = Meses5 + 1
+                        Prec5 = Prec5 + Reg!Precio
+                        Reg_Ya = 1
+                     End If
+                  End If
+               End If
+               If Reg_Ya = 0 Then
+                  If (Reg!Orden >= MesMas3%) And (Reg!AñoP >= Anio_Act%) Then
+                     meses6 = meses6 + 1
+                      Prec6 = Prec6 + Reg!Precio
+                      Reg_Ya = 1
+                  Else
+                     If (Reg!Orden < MesMas3%) And (Reg!AñoP > Anio_Act%) Then
+                        meses6 = meses6 + 1
+                        Prec6 = Prec6 + Reg!Precio
+                        Reg_Ya = 1
+                     End If
+                  End If
+               End If
+               If Reg_Ya = 0 Then
+                  If (Reg!Orden <= MesMenos3%) And (Reg!AñoP <= Anio_Act%) Then
+                     Meses1 = Meses1 + 1
+                     Prec1 = Prec1 + Reg!Precio
+                     Hon1 = Hon1 + Reg!Factor
+                     Reg_Ya = 1
+                  Else
+                     If (Reg!Orden > MesMenos3%) And (Reg!AñoP < Anio_Act%) Then
+                        Meses1 = Meses1 + 1
+                        Prec1 = Prec1 + Reg!Precio
+                        Hon1 = Hon1 + Reg!Factor
+                        Reg_Ya = 1
+                     End If
+                  End If
+               End If
+            End If
+         End If
+      End If
+
+      Anio_Ant% = Reg!AñoP
+      Mes_Ant% = Reg!Orden
+      cred_ant = Reg!Credencial
+      Grupo_Ant = Reg!Clave
+
+      Reg.MoveNext
+
+      If Reg.EOF Then
+         Exit Do
+      End If
+   Loop
+   
+   apm1 = apm1 + Meses1
+   apm2 = apm2 + Meses2
+   apm3 = apm3 + Meses3
+   apm4 = apm4 + Meses4
+   apm5 = apm5 + Meses5
+   apm6 = apm6 + meses6
+   apmActual = apmActual + MesesAct
+   apmActualOM1 = apmActualOM1 + MesesActPant1
+   apmActualOM2 = apmActualOM2 + MesesActPant2
+   apmactualOM3 = apmactualOM3 + MesesActPant3
+   m1 = m1 + Prec1
+   m2 = m2 + Prec2
+   m3 = m3 + Prec3
+   m4 = m4 + Prec4
+   m5 = m5 + Prec5
+   m6 = m6 + Prec6
+   mActual = mActual + Prec
+   mActualOM1 = mActualOM1 + PrecActPant1
+   mActualOM2 = mActualOM2 + PrecActPant2
+   mActualOM3 = mActualOM3 + PrecActPant3
+   pmm1 = pmm1 + Hon1
+   pmm2 = pmm2 + Hon2
+   pmm3 = pmm3 + Hon3
+   pmmActual = pmmActual + Hon
+   pmmActualOM1 = pmmActualOM1 + HonActPant1
+   pmmActualOM2 = pmmActualOM2 + HonActPant2
+   pmmActualOM3 = pmmActualOM3 + HonActPant3
+
+   If Reg.EOF Then
+      Exit Do
+   End If
+
+Loop
+Reg.Close
+
+TRES_GRAL.MoveFirst
+TRES_GRAL.Edit
+TRES_GRAL!AlumnosBPagoMes1 = apm1
+TRES_GRAL!AlumnosBPagoMes2 = apm2
+TRES_GRAL!AlumnosBPagoMes3 = apm3
+TRES_GRAL!AlumnosBPagoMesActual = apmActual
+TRES_GRAL!AlumnosBPagoMesActualOM1 = apmActualOM1
+TRES_GRAL!AlumnosBPagoMesActualOM2 = apmActualOM2
+TRES_GRAL!AlumnosBPagoMesActualOM3 = apmactualOM3
+TRES_GRAL!AlumnosBPagoMes4 = apm4
+TRES_GRAL!AlumnosBPagoMes5 = apm5
+TRES_GRAL!AlumnosBPagoMes6 = apm6
+TRES_GRAL!BMes1 = m1
+TRES_GRAL!BMes2 = m2
+TRES_GRAL!BMes3 = m3
+TRES_GRAL!BMesActual = mActual
+TRES_GRAL!BMesActualOM1 = mActualOM1
+TRES_GRAL!BMesActualOM2 = mActualOM2
+TRES_GRAL!BMesActualOM3 = mActualOM3
+TRES_GRAL!BMes4 = m4
+TRES_GRAL!BMes5 = m5
+TRES_GRAL!BMes6 = m6
+TRES_GRAL!BPagoMaestroMes1 = pmm1
+TRES_GRAL!BPagoMaestroMes2 = pmm2
+TRES_GRAL!BPagoMaestroMes3 = pmm3
+TRES_GRAL!BPagoMaestroActual = pmmActual
+TRES_GRAL!BPagoMaestroActualOM1 = pmmActualOM1
+TRES_GRAL!BPagoMaestroActualOM2 = pmmActualOM2
+TRES_GRAL!BPagoMaestroActualOM3 = pmmActualOM3
+TRES_GRAL.Update
+
+DoCmd.Hourglass False
+
+Exit Function
+
+Genera_errorRES_GRAL:
+ 'Call LogError("Gen. Resumen General", Err)
+ MsgBox "Ha ocurrido un error numero " + Str$(Err) + "  " + Error$(Err) + " en el procedimiento Gen Resumen General", 48, "Mensaje del sistema"
+Exit Function
+
+
+End Function
+
+Function QuePagoNI(num_cred)
+On Error GoTo QuePagoNIEH
+Dim QueP%, Año_Ant%
+Set db = CurrentDb()
+Set TCol = db.OpenRecordset("Colegiaturas")
+Set TMes = db.OpenRecordset("Meses")
+TCol.Index = "AlumnoID"
+TMes.Index = "PrimaryKey"
+TCol.Seek "=", num_cred
+
+DoCmd.Hourglass True
+
+If TCol.NoMatch Then
+   QuePagoNI = "Sin Pago"
+Else
+   QueP% = 0
+   Año_Ant% = 0
+   Do While Not TCol.NoMatch
+      TMes.Seek "=", TCol!Mes
+      If IsNull(TCol!AñoP) Or (Año_Ant% <= TCol!AñoP) Then
+         If QueP% <= TMes!Orden Then
+            QueP% = TMes!Orden
+            If Not IsNull(TCol!AñoP) Then
+               Año_Ant% = TCol!AñoP
+            Else
+               Año_Ant% = 0
+            End If
+         End If
+      End If
+      TCol.MoveNext
+      If (TCol.EOF) Or (num_cred <> TCol!AlumnoID) Then
+         Exit Do
+      End If
+   Loop
+   If Año_Ant% = 0 And QueP% = 0 Then
+      QuePagoNI = "Sin Pago"
+   Else
+      If Año_Ant <> 0 Then
+         QuePagoNI = Choose(QueP%, "ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC") + Str$(Año_Ant%)
+      Else
+         QuePagoNI = Choose(QueP%, "ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC")
+      End If
+   End If
+End If
+
+DoCmd.Hourglass False
+Exit Function
+
+QuePagoNIEH:
+ 'Call LogError("QuePagoNI", Err)
+ MsgBox "Ha ocurrido un error numero " + Str$(Err) + "  " + Error$(Err) + " en el procedimiento QuePagoNI", 48, "Mensaje del sistema"
+Exit Function
+
+End Function
+
+Function rellena94()
+Dim ClaveSeg, MesComp%
+
+MsgBox "Rutina para Rellenar Año 1994 en los Registro depurados"
+
+ClaveSeg = InputBox("Teclee Clave de Seguridad", "")
+If ClaveSeg <> "RellenaAIS" Then
+   Exit Function
+End If
+
+Set db = CurrentDb()
+Set TCol = db.OpenRecordset("Colegiaturas")
+Set TMeses = db.OpenRecordset("Meses")
+DoCmd.Echo False, "Rellenando COLEGIATURAS"
+TCol.MoveFirst
+TMeses.Index = "PrimaryKey"
+Do Until TCol.EOF
+   DoCmd.Echo True, "Procesando Registro en Colegiaturas # : " + TCol!ID
+   TMeses.Seek "=", TCol!Mes
+   If Not TMeses.NoMatch Then
+      MesComp% = TMeses!Orden
+   End If
+   If IsNull(TCol!AñoP) Then
+      If MesComp% = 11 Or MesComp% = 12 Then
+         TCol.Edit
+         TCol!AñoP = 1994
+         TCol.Update
+      End If
+   End If
+   TCol.MoveNext
+Loop
+
+End Function
+
+Sub Revalua_Fecha_Baja()
+
+If MesProceso% = 1 Then
+   MesMenos4% = 9
+   MesMenos3% = 10
+   MesMenos2% = 11
+   MesMenos1% = 12
+Else
+   If MesProceso% = 2 Then
+      MesMenos4% = 10
+      MesMenos3% = 11
+      MesMenos2% = 12
+      MesMenos1% = 1
+   Else
+      If MesProceso% = 3 Then
+         MesMenos4% = 11
+         MesMenos3% = 12
+         MesMenos2% = 1
+         MesMenos1% = 2
+      Else
+         If MesProceso% = 4 Then
+            MesMenos4% = 12
+            MesMenos3% = 1
+            MesMenos2% = 2
+            MesMenos1% = 3
+         Else
+            MesMenos4% = MesProceso% - 4
+            MesMenos3% = MesProceso% - 3
+            MesMenos2% = MesProceso% - 2
+            MesMenos1% = MesProceso% - 1
+         End If
+      End If
+   End If
+End If
+
+Select Case MesProceso%
+       Case 1, 3, 5, 7, 8, 10, 12
+           fecha_corte = "31/" + Str$(MesProceso%) + "/" + Str$(Anio_Act%)
+       Case 4, 6, 9, 11
+           fecha_corte = "30/" + Str$(MesProceso%) + "/" + Str$(Anio_Act%)
+       Case 2
+           If (Anio_Act% Mod 4) = 0 Then
+              fecha_corte = "29/" + Str$(MesProceso%) + "/" + Str$(Anio_Act%)
+           Else
+              fecha_corte = "28/" + Str$(MesProceso%) + "/" + Str$(Anio_Act%)
+           End If
+End Select
+ReValFec_Cor = DateValue(fecha_corte)
+
+Select Case MesMenos4%
+       Case 1, 3, 5, 7, 8
+            fecha_corte = "31/" + Str$(MesMenos4%) + "/" + Str$(Anio_Act%)
+       Case 4, 6
+            fecha_corte = "30/" + Str$(MesMenos4%) + "/" + Str$(Anio_Act%)
+       Case 2
+            If (Anio_Act% Mod 4) = 0 Then
+               fecha_corte = "29/" + Str$(MesMenos4%) + "/" + Str$(Anio_Act%)
+            Else
+               fecha_corte = "28/" + Str$(MesMenos4%) + "/" + Str$(Anio_Act%)
+            End If
+       Case 10, 12
+            fecha_corte = "31/" + Str$(MesMenos4%) + "/" + Str$(Anio_Act% - 1)
+       Case 9, 11
+            fecha_corte = "30/" + Str$(MesMenos4%) + "/" + Str$(Anio_Act% - 1)
+End Select
+ReValF1 = DateValue(fecha_corte)
+
+Select Case MesMenos3%
+       Case 1, 3, 5, 7, 8
+            fecha_corte = "31/" + Str$(MesMenos3%) + "/" + Str$(Anio_Act%)
+       Case 4, 6, 9
+            fecha_corte = "30/" + Str$(MesMenos3%) + "/" + Str$(Anio_Act%)
+       Case 2
+            If (Anio_Act% Mod 4) = 0 Then
+               fecha_corte = "29/" + Str$(MesMenos3%) + "/" + Str$(Anio_Act%)
+            Else
+               fecha_corte = "28/" + Str$(MesMenos3%) + "/" + Str$(Anio_Act%)
+            End If
+       Case 10, 12
+            fecha_corte = "31/" + Str$(MesMenos3%) + "/" + Str$(Anio_Act% - 1)
+       Case 11
+            fecha_corte = "30/" + Str$(MesMenos3%) + "/" + Str$(Anio_Act% - 1)
+End Select
+ReValF2 = DateValue(fecha_corte)
+
+Select Case MesMenos2%
+       Case 1, 3, 5, 7, 8, 10
+            fecha_corte = "31/" + Str$(MesMenos2%) + "/" + Str$(Anio_Act%)
+       Case 4, 6, 9
+            fecha_corte = "30/" + Str$(MesMenos2%) + "/" + Str$(Anio_Act%)
+       Case 2
+            If (Anio_Act% Mod 4) = 0 Then
+               fecha_corte = "29/" + Str$(MesMenos2%) + "/" + Str$(Anio_Act%)
+            Else
+               fecha_corte = "28/" + Str$(MesMenos2%) + "/" + Str$(Anio_Act%)
+            End If
+       Case 12
+            fecha_corte = "31/" + Str$(MesMenos2%) + "/" + Str$(Anio_Act% - 1)
+       Case 11
+            fecha_corte = "30/" + Str$(MesMenos2%) + "/" + Str$(Anio_Act% - 1)
+End Select
+ReValF3 = DateValue(fecha_corte)
+
+Select Case MesMenos1%
+       Case 1, 3, 5, 7, 8, 10
+            fecha_corte = "31/" + Str$(MesMenos1%) + "/" + Str$(Anio_Act%)
+       Case 4, 6, 9, 11
+            fecha_corte = "30/" + Str$(MesMenos1%) + "/" + Str$(Anio_Act%)
+       Case 2
+            If (Anio_Act% Mod 4) = 0 Then
+               fecha_corte = "29/" + Str$(MesMenos1%) + "/" + Str$(Anio_Act%)
+            Else
+               fecha_corte = "28/" + Str$(MesMenos1%) + "/" + Str$(Anio_Act%)
+            End If
+       Case 12
+            fecha_corte = "31/" + Str$(MesMenos1%) + "/" + Str$(Anio_Act% - 1)
+End Select
+ReValF4 = DateValue(fecha_corte)
+Exit Sub
+
+End Sub
+
+Function VERIF_RECIBO()
+On Error GoTo ErrorVerRec
+Dim x
+x = MsgBox("Verifica la que existan todos los recibos y colegiaturas", 48, "Mensaje de Confirmacion")
+If x <> 1 Then
+   Exit Function
+End If
+Finip = InputBox("Fecha de Inicio del Periodo : ", "")
+If Finip = "" Then
+   Exit Function
+End If
+
+Ffinp = InputBox("Fecha de Fin del Perido : ", "")
+If Ffinp = "" Then
+   Exit Function
+End If
+
+FIni = DateValue(Finip)
+FFin = DateValue(Ffinp)
+
+DoCmd.Hourglass True
+
+Set db = CurrentDb()
+Set TCol = db.OpenRecordset("Colegiaturas")
+Set TOperaciones = db.OpenRecordset("Operaciones")
+Set TRecibos = db.OpenRecordset("Recibos")
+DoCmd.Echo False, "VERIFICANDO LOS RECIBOS"
+TRecibos.MoveFirst
+TOperaciones.Index = "Recibo"
+TCol.Index = "Recibo"
+Do Until TRecibos.EOF
+   DoCmd.Echo True, "Procesando Recibo : " + Str(TRecibos!Numero)
+   If TRecibos.Fecha >= FIni And TRecibos.Fecha <= FFin Then
+      TOperaciones.Seek "=", TRecibos!Numero
+      If Not TOperaciones.NoMatch Then
+         If TOperaciones!Grupo = "Colegiaturas" Then
+            TCol.Seek "=", TOperaciones!Recibo
+            If TCol.NoMatch Then
+               MsgBox "Recibo No. " + Str$(TOperaciones!Recibo) + " No Encuentra la Colegitura "
+            End If
+         End If
+      End If
+   End If
+   TRecibos.MoveNext
+Loop
+
+DoCmd.Hourglass False
+Exit Function
+ErrorVerRec:
+ 'Call LogError("Verif_Recibo", Err)
+ MsgBox "Ha ocurrido un error numero " + Str$(Err) + "  " + Error$(Err) + " en el procedimiento Verif_recibo", 48, "Mensaje del sistema"
+Exit Function
+
+End Function
+
+Function VERIFICA_CRED()
+
+Finip = InputBox("Fecha de Inicio del Periodo : ", "")
+If Finip = "" Then
+   Exit Function
+End If
+
+Ffinp = InputBox("Fecha de Fin del Perido : ", "")
+If Ffinp = "" Then
+   Exit Function
+End If
+
+FIni = DateValue(Finip)
+FFin = DateValue(Ffinp)
+
+DoCmd.Hourglass True
+Set db = CurrentDb()
+Set TAlumnos = db.OpenRecordset("Alumnos")
+TAlumnos.Index = "PrimaryKey"
+DoCmd.Echo False, "VERIFICANDO LAS CREDENCIALES DE PAGO"
+Set QDef = db.QueryDefs("RES_GRAL15")
+QDef![FECHA DE INICIO : ] = FIni
+QDef![FECHA FIN : ] = FFin
+
+Set Reg = QDef.OpenRecordset()
+Reg.MoveFirst
+Do Until Reg.EOF
+   DoCmd.Echo True, "Procesando Credencial : " + Str$(Reg!AlumnoID)
+   TAlumnos.Seek "=", Reg!AlumnoID
+   If TAlumnos.NoMatch Then
+      MsgBox "Credencial No. " + Str$(Reg!AlumnoID) + " No Encontrado en recibo " + Str$(Reg!Recibo)
+   End If
+   Reg.MoveNext
+Loop
+DoCmd.Hourglass False
+Reg.Close
+
+End Function

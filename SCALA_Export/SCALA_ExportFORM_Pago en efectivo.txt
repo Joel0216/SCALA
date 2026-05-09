@@ -1,0 +1,208 @@
+Version =19
+VersionRequired =19
+Checksum =52827988
+Begin Form
+    PopUp = NotDefault
+    Modal = NotDefault
+    GridX =5
+    GridY =5
+    Width =7029
+    ItemSuffix =9
+    Left =885
+    Top =1560
+    Right =8490
+    Bottom =5910
+    RecSrcDt = Begin
+        0x94abf65422dee140
+    End
+    GUID = Begin
+        0x7f58fa8b0f102f468beddaa123ee2d4b
+    End
+    NameMap = Begin
+        0x0acc0e550000000050abcb3fca68b145b5ac4220c448da3f01000000da9404d6 ,
+        0x419be24000000000000000005000610067006f0073000000000000003b89c076 ,
+        0xaf76c24693dd09a5cbaf2cf80600000050abcb3fca68b145b5ac4220c448da3f ,
+        0x4d006f006e0074006f005f00500061006e007400000000000000000000000000 ,
+        0x000000000000000000000c000000020000000000000000000000000000000000
+    End
+    Begin
+        Begin CommandButton
+            TextFontFamily =2
+            Width =1701
+            Height =283
+        End
+        Begin TextBox
+            Width =1701
+            LabelX =-1701
+        End
+        Begin Section
+            Height =2494
+            BackColor =16776960
+            Name ="Detalle0"
+            GUID = Begin
+                0x0617dab0f15a8144b48a5a18c1be4ef7
+            End
+            Begin
+                Begin TextBox
+                    Locked = NotDefault
+                    TabStop = NotDefault
+                    OverlapFlags =85
+                    Left =3745
+                    Top =566
+                    Name ="Cant_A_Pagar"
+                    ControlSource ="=Forms!Pagos!Monto_Pant"
+                    Format ="$#,##0.00;($#,##0.00)"
+                    GUID = Begin
+                        0x4b877231780eaa4fbf228672ac8ced5e
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =1247
+                            Top =566
+                            Width =2070
+                            Height =240
+                            Name ="Texto1"
+                            Caption ="Cantidad a pagar :"
+                            GUID = Begin
+                                0x10e0f2d9d5851d4ca4aefda6ab189817
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =3746
+                    Top =1020
+                    TabIndex =1
+                    Name ="Cantidad_Recibida"
+                    Format ="$#,##0.00;($#,##0.00)"
+                    OnExit ="[Event Procedure]"
+                    GUID = Begin
+                        0x8d71f91fea3a3e4e81c8afb9e431fdbf
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =1247
+                            Top =1020
+                            Width =2070
+                            Height =240
+                            Name ="Texto3"
+                            Caption ="Cantidad Recibida :"
+                            GUID = Begin
+                                0x26e0cc175f236c4389c0afb06d938f24
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    TabStop = NotDefault
+                    OverlapFlags =85
+                    Left =3746
+                    Top =1474
+                    TabIndex =2
+                    Name ="Cambio"
+                    Format ="$#,##0.00;($#,##0.00)"
+                    GUID = Begin
+                        0x18c0207c47200e4ca947da02dca022e9
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =1247
+                            Top =1474
+                            Width =2070
+                            Height =240
+                            Name ="Texto5"
+                            Caption ="Cambio :"
+                            GUID = Begin
+                                0xd6f5fb19608b934dac86780205826637
+                            End
+                        End
+                    End
+                End
+                Begin Label
+                    SpecialEffect =2
+                    OldBorderStyle =1
+                    BorderWidth =2
+                    OverlapFlags =85
+                    TextAlign =2
+                    Left =568
+                    Top =113
+                    Width =5668
+                    Height =340
+                    FontSize =10
+                    ForeColor =16711680
+                    Name ="Texto7"
+                    Caption ="FAVOR DE PROPORCIONAR LA CANTIDAD RECIBIDA"
+                    GUID = Begin
+                        0x6313c0842a493241b64faef5dfcecf4a
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =5102
+                    Top =1814
+                    Width =1125
+                    Height =465
+                    TabIndex =3
+                    ForeColor =255
+                    Name ="B_Term_Forma_de_Pago"
+                    Caption ="Terminar"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0x450c5f4e2efecf4a8182e3fade7cdd89
+                    End
+                End
+            End
+        End
+    End
+End
+CodeBehindForm
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database   'Usar orden de base de datos en comparaciones de cadenas
+Dim F_Pago As Form
+
+Private Sub B_Term_Forma_de_Pago_Click()
+On Error GoTo Err_B_Term_Forma_de_Pago_Click
+Dim x
+    If Not IsNull(Cantidad_Recibida) And Cantidad_Recibida >= Cant_A_Pagar Then
+       Set F_Pago = Forms!pagos
+       F_Pago!Efectivo = Cantidad_Recibida - Cambio
+       F_Pago!Cheque = 0
+       F_Pago!DatosCheque = " "
+       DoCmd.Close
+       DoCmd.GoToControl "B_Prin_rec"
+    Else
+       x = InputBox("La cantidad recibida es menor que la cantidad a pagar, aun asi desea terminar <S/N> ? ")
+       If x = "S" Then
+          DoCmd.Close
+          DoCmd.GoToControl "B_Prin_Rec"
+       End If
+    End If
+
+Exit_B_Term_Forma_de_Pago_Click:
+    Exit Sub
+
+Err_B_Term_Forma_de_Pago_Click:
+    MsgBox Error$
+    Resume Exit_B_Term_Forma_de_Pago_Click
+    
+End Sub
+
+Private Sub Cantidad_Recibida_Exit(Cancel As Integer)
+
+   If (Cantidad_Recibida) < Cant_A_Pagar Then
+      MsgBox "La cantidad recibida es menor a la cantidad a pagar"
+      DoCmd.GoToControl "Cantidad_Recibida"
+      Exit Sub
+   Else
+      Cambio = Cantidad_Recibida - Cant_A_Pagar
+   End If
+
+End Sub

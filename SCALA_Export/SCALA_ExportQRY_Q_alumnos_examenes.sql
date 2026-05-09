@@ -1,0 +1,3 @@
+SELECT DISTINCTROW RelacionExamenes.Credencial, ProgramacionExamenes.ClaveExamen, ProgramacionExamenes.FechaExamen, ProgramacionExamenes.HoraExamen, ProgramacionExamenes.MaestroBase, RelacionExamenes.GradoNivel, RelacionExamenes.[Certificado Num], RelacionExamenes.Aprobo
+FROM ProgramacionExamenes INNER JOIN RelacionExamenes ON ProgramacionExamenes.ClaveExamen=RelacionExamenes.ClaveExamen
+ORDER BY RelacionExamenes.Credencial, ProgramacionExamenes.FechaExamen;

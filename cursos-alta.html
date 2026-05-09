@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alta de Cursos</title>
+    <link rel="stylesheet" href="cursos-alta.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>ALTA DE CURSOS</h1>
+            <div class="datetime" id="datetime"></div>
+        </header>
+
+        <main>
+            <div class="form-section">
+                <div class="form-row">
+                    <label>Curso: <span class="required">*</span></label>
+                    <input type="text" id="curso" class="input-xlarge" placeholder="Nombre del curso">
+                </div>
+
+                <div class="form-row">
+                    <label>Tipo de Examen:</label>
+                    <select id="tipoExamenCurso" class="input-large">
+                        <option value="">(Ninguno / General)</option>
+                    </select>
+                    <span class="info-text">Vincula este curso a un tipo de examen</span>
+                </div>
+
+                <div class="form-row">
+                    <label>Grado del Curso:</label>
+                    <input type="text" id="grado" class="input-medium" placeholder="Ej: 1er Grado, Nivel 1...">
+                </div>
+
+                <div class="form-row">
+                    <label>Curso Siguiente:</label>
+                    <select id="cursoSiguiente" class="input-large">
+                        <option value="">-- Seleccione el siguiente nivel --</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <label>Clave:</label>
+                    <input type="text" id="clave" class="input-small" readonly style="background: #e0e0e0;">
+                    <span class="info-text">Se genera automáticamente</span>
+                </div>
+
+                <div class="form-row">
+                    <label>Costo: <span class="required">*</span></label>
+                    <input type="number" id="costo" class="input-medium" step="0.01" placeholder="0.00">
+                </div>
+
+                <div class="form-row">
+                    <label>IVA: <span class="required">*</span></label>
+                    <input type="number" id="iva" class="input-small" step="0.01" value="0.16">
+                    <span class="info-text">Porcentaje (ej: 0.16 = 16%)</span>
+                </div>
+
+                <div class="form-row">
+                    <label>Recargo:</label>
+                    <input type="number" id="recargo" class="input-medium" step="0.01" value="0.00">
+                </div>
+
+
+                <div class="form-row">
+                    <label>Descripción:</label>
+                    <textarea id="descripcion" class="input-textarea" rows="3"
+                        placeholder="Descripción del curso"></textarea>
+                </div>
+
+                <div class="required-note">
+                    <span class="required">*</span> Campos obligatorios
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <button class="action-btn" onclick="guardarCurso()">Guardar</button>
+            <button class="action-btn" onclick="limpiarFormulario()">Limpiar</button>
+            <button class="btn-cancelar" onclick="cancelarAlta()">Cancelar</button>
+        </footer>
+    </div>
+
+    <script src="supabase-config.js"></script>
+    <script src="utils-inputs.js"></script>
+    <script src="cursos-alta.js"></script>
+</body>
+
+</html>

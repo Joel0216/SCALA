@@ -1,0 +1,452 @@
+Version =19
+VersionRequired =19
+Checksum =1000826136
+Begin Form
+    PopUp = NotDefault
+    Modal = NotDefault
+    AutoCenter = NotDefault
+    DefaultView =0
+    GridX =5
+    GridY =5
+    Width =7370
+    ItemSuffix =29
+    Left =1980
+    Top =1560
+    Right =9630
+    Bottom =6915
+    RecSrcDt = Begin
+        0x03d8e39f37c5e140
+    End
+    GUID = Begin
+        0x0c925a0015f8c846a414a19ce44f5e92
+    End
+    NameMap = Begin
+        0x0acc0e5500000000c3f244a17a24bc4f8dbf783da71edb7f000000003318e8d0 ,
+        0xb849e3400000000000000000520046004300200043006c00690065006e007400 ,
+        0x65007300000000000000ca9ea7744ddb8d49b96b164751c0d88801000000080e ,
+        0x69d1b849e34028d42702bb3f2a0346005f005200460043002000430072006500 ,
+        0x640065006e006300690061006c0065007300000000000000b35a0a44d2cfd446 ,
+        0xa526f5fe4068e52600000000c7b4e7d0b849e34028d42702bb3f2a0352004600 ,
+        0x43002000430072006500640065006e006300690061006c006500730000000000 ,
+        0x000046c1608fd3ef9443ae3dc2b69b2f9feb07000000b35a0a44d2cfd446a526 ,
+        0xf5fe4068e5265200460043000000000000002a0dde3b74ceb249a5e9fdae2522 ,
+        0x926507000000c3f244a17a24bc4f8dbf783da71edb7f52004600430000000000 ,
+        0x0000c1be9ec7dd2cde43905e1efb356b26e907000000c3f244a17a24bc4f8dbf ,
+        0x783da71edb7f4e006f006d006200720065000000000000002957550c5561f343 ,
+        0xb542775eb81ada2e07000000c3f244a17a24bc4f8dbf783da71edb7f44006900 ,
+        0x720065006300630069006f006e0031000000000000008a52617dc36ef0429010 ,
+        0x1a841231588907000000c3f244a17a24bc4f8dbf783da71edb7f440069007200 ,
+        0x65006300630069006f006e003200000000000000000000000000000000000000 ,
+        0x000000000c000000020000000000000000000000000000000000
+    End
+    RecordSource ="RFC Clientes"
+    Caption ="RFC Clientes"
+    OnOpen ="[Event Procedure]"
+    MenuBar ="Barra Main"
+    Begin
+        Begin Label
+            TextAlign =3
+            FontWeight =700
+            BackColor =12632256
+        End
+        Begin Rectangle
+            SpecialEffect =2
+            Width =850
+            Height =850
+        End
+        Begin CommandButton
+            TextFontFamily =2
+            Width =1701
+            Height =283
+        End
+        Begin OptionButton
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin CheckBox
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin TextBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin ListBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =1417
+            LabelX =-236
+        End
+        Begin ComboBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin Subform
+            SpecialEffect =2
+            Width =1701
+            Height =1701
+        End
+        Begin FormHeader
+            Height =558
+            BackColor =12632256
+            Name ="EncabezadoDelFormulario1"
+            EventProcPrefix ="EncabezadoDelFormula"
+            GUID = Begin
+                0x857994d9785ccd4285870be2edd847f7
+            End
+            Begin
+                Begin Label
+                    BackStyle =0
+                    OverlapFlags =93
+                    TextAlign =1
+                    Left =488
+                    Top =153
+                    Width =1920
+                    Height =405
+                    FontSize =14
+                    ForeColor =8355711
+                    Name ="Texto12"
+                    Caption ="RFC Clientes"
+                    GUID = Begin
+                        0x6797566aa7c8734d87d7055124a7ec1e
+                    End
+                End
+                Begin Label
+                    BackStyle =0
+                    OverlapFlags =215
+                    TextAlign =1
+                    Left =452
+                    Top =113
+                    Width =1920
+                    Height =405
+                    FontSize =14
+                    ForeColor =16777215
+                    Name ="Texto13"
+                    Caption ="RFC Clientes"
+                    GUID = Begin
+                        0xc741d6628dc4fb46a4faa48f8f4b651b
+                    End
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    TabStop = NotDefault
+                    OverlapFlags =85
+                    Left =5102
+                    Top =113
+                    Width =2041
+                    Height =227
+                    Name ="Campo26"
+                    ControlSource ="=Now()"
+                    GUID = Begin
+                        0x8dae4bb984718541a8e8d6d1b1ec2d27
+                    End
+                End
+            End
+        End
+        Begin Section
+            CanGrow = NotDefault
+            Height =4875
+            BackColor =12632256
+            Name ="Detalle0"
+            GUID = Begin
+                0x22dc559d0c20e54785aa6691f16416fe
+            End
+            Begin
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =1582
+                    Top =113
+                    Width =2280
+                    Name ="RFC"
+                    ControlSource ="RFC"
+                    GUID = Begin
+                        0xb724a74631e1db429851396215ae388a
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =904
+                            Top =113
+                            Width =565
+                            Height =240
+                            Name ="Texto15"
+                            Caption ="RFC:"
+                            GUID = Begin
+                                0xeee9561ef68cab48b9df9021082aa453
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =1582
+                    Top =565
+                    Width =3180
+                    TabIndex =1
+                    Name ="Nombre"
+                    ControlSource ="Nombre"
+                    GUID = Begin
+                        0x1f422d5758c1f44d8d91f5cfc84cd210
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =678
+                            Top =565
+                            Width =791
+                            Height =240
+                            Name ="Texto17"
+                            Caption ="Nombre:"
+                            GUID = Begin
+                                0x22edecdfc2bc7f409c5d3ac7e0aa183a
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =1582
+                    Top =1017
+                    Width =3180
+                    TabIndex =2
+                    Name ="Direccion1"
+                    ControlSource ="Direccion1"
+                    GUID = Begin
+                        0x0f0d627f455ad944960a9c3e983ba4c8
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =339
+                            Top =1017
+                            Width =1130
+                            Height =240
+                            Name ="Texto19"
+                            Caption ="Dirección :"
+                            GUID = Begin
+                                0x132382a74ec4cf41b52759d5472ca064
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =1582
+                    Top =1469
+                    Width =3180
+                    TabIndex =3
+                    Name ="Direccion2"
+                    ControlSource ="Direccion2"
+                    GUID = Begin
+                        0x32a7fb551eb1514abd28e145a892ec1c
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =566
+                    Top =4308
+                    Width =1125
+                    Height =465
+                    TabIndex =4
+                    Name ="B_add_rfc"
+                    Caption ="Nuevo"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0x4854311e6a08fe4e8ec819cf259c2fd2
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =3968
+                    Top =4308
+                    Width =1140
+                    Height =465
+                    TabIndex =5
+                    Name ="B_del_rfc"
+                    Caption ="Borrar"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0xc72892759b79da41915d9ded504cd8cc
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =5669
+                    Top =4308
+                    Width =1125
+                    Height =465
+                    TabIndex =6
+                    ForeColor =255
+                    Name ="B_term_rfc"
+                    Caption ="Terminar"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0x78bd18aafcdc2e4d9d6e1cf3ef6d140c
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =2267
+                    Top =4308
+                    Width =1131
+                    Height =456
+                    TabIndex =7
+                    Name ="B_srch_rfc"
+                    Caption ="Buscar"
+                    OnClick ="M_Varios Catalogos.Buscar Rfc"
+                    GUID = Begin
+                        0xc91c8046e9f0ac479636a2e8ba89e871
+                    End
+                End
+                Begin Subform
+                    OverlapFlags =87
+                    Left =1927
+                    Top =2054
+                    Width =2385
+                    Height =1905
+                    TabIndex =8
+                    Name ="RFC Credenciales"
+                    SourceObject ="Form.F_RFC Credenciales"
+                    LinkChildFields ="RFC"
+                    LinkMasterFields ="RFC"
+                    EventProcPrefix ="RFC_Credenciales"
+                    GUID = Begin
+                        0x36e718d631074d479af777dfc62eebfb
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =93
+                            TextAlign =0
+                            Left =1920
+                            Top =1815
+                            Width =2115
+                            Height =240
+                            Name ="Etiqueta28"
+                            Caption ="Credenciales Asociadas"
+                            GUID = Begin
+                                0x9e2006214367be4ea5e457605b2b5f4a
+                            End
+                        End
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            Height =0
+            BackColor =12632256
+            Name ="PieDelFormulario2"
+            GUID = Begin
+                0x8ffb7d9839dabb4aaf23e5a79914fb5a
+            End
+        End
+    End
+End
+CodeBehindForm
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database   'Usar orden de base de datos en comparaciones de cadenas
+
+Private Sub B_add_rfc_Click()
+On Error GoTo Err_B_add_rfc_Click
+
+
+    DoCmd.GoToRecord , , A_NEWREC
+
+Exit_B_add_rfc_Click:
+    Exit Sub
+
+Err_B_add_rfc_Click:
+    MsgBox Error$
+    Resume Exit_B_add_rfc_Click
+    
+End Sub
+
+Private Sub B_del_rfc_Click()
+On Error GoTo Err_B_del_rfc_Click
+
+
+    DoCmd.DoMenuItem A_FORMBAR, A_EDITMENU, A_SELECTRECORD_V2, , A_MENU_VER20
+    DoCmd.DoMenuItem A_FORMBAR, A_EDITMENU, A_DELETE_V2, , A_MENU_VER20
+
+Exit_B_del_rfc_Click:
+    Exit Sub
+
+Err_B_del_rfc_Click:
+    MsgBox Error$
+    Resume Exit_B_del_rfc_Click
+    
+End Sub
+
+Private Sub B_term_rfc_Click()
+On Error GoTo Err_B_term_rfc_Click
+
+
+    DoCmd.Close
+
+Exit_B_term_rfc_Click:
+    Exit Sub
+
+Err_B_term_rfc_Click:
+    MsgBox Error$
+    Resume Exit_B_term_rfc_Click
+    
+End Sub
+
+Private Sub Botón25_Click()
+On Error GoTo Err_Botón25_Click
+
+
+    DoCmd.DoMenuItem A_FORMBAR, A_EDITMENU, 10, , A_MENU_VER20
+
+Exit_Botón25_Click:
+    Exit Sub
+
+Err_Botón25_Click:
+    MsgBox Error$
+    Resume Exit_Botón25_Click
+    
+End Sub
+
+Private Sub Form_Open(Cancel As Integer)
+Dim db As Database, FLogin As Form, TUser As Recordset, Forma As Form
+   Set db = CurrentDb()
+   Set Forma = Forms!F_Rfc
+   Set FLogin = Forms!login
+   Set TUser = db.OpenRecordset("Usuarios")
+   TUser.Index = "PrimaryKey"
+   TUser.Seek "=", FLogin!UserID
+   If Not TUser.NoMatch Then
+      If IsNull(TUser!A_RFC) Or TUser!A_RFC = "N" Then
+         MsgBox "El usuario no tiene privilegios de acceso"
+         DoCmd.CancelEvent
+      Else
+         If TUser!A_RFC = "C" Then
+            Forma.AllowEditing = False
+            Forma.DefaultEditing = 3
+            [B_add_rfc].Enabled = False
+            [B_del_rfc].Enabled = False
+         End If
+      End If
+   Else
+      MsgBox "El usuario no tiene clave de acceso registrada"
+      DoCmd.CancelEvent
+   End If
+
+End Sub

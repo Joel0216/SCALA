@@ -1,0 +1,181 @@
+Version =19
+VersionRequired =19
+Checksum =-885399421
+Begin Form
+    AllowFilters = NotDefault
+    PopUp = NotDefault
+    RecordSelectors = NotDefault
+    MaxButton = NotDefault
+    MinButton = NotDefault
+    NavigationButtons = NotDefault
+    DefaultView =0
+    ScrollBars =0
+    ViewsAllowed =1
+    BorderStyle =1
+    Width =5700
+    ItemSuffix =12
+    Left =1860
+    Top =1620
+    Right =6705
+    Bottom =3990
+    HelpContextId =26
+    RecSrcDt = Begin
+        0x677f169f37c5e140
+    End
+    GUID = Begin
+        0xd7427be750f26740b70d2f64a01aecba
+    End
+    NameMap = Begin
+        0x0acc0e5500000000000000000000000000000000000000000c00000002000000 ,
+        0x0000000000000000000000000000
+    End
+    Caption ="SAA - Borrando un usuario"
+    OnOpen ="[Event Procedure]"
+    HelpFile ="pim.hlp"
+    DatasheetFontName ="Helv"
+    Begin
+        Begin Label
+            TextAlign =3
+            Width =15
+            Height =15
+            FontWeight =700
+            BackColor =12632256
+            FontName ="Helv"
+        End
+        Begin TextBox
+            AddColon = NotDefault
+            OldBorderStyle =0
+            LabelAlign =3
+            LabelX =-150
+            FontName ="Helv"
+        End
+        Begin ComboBox
+            AddColon = NotDefault
+            OldBorderStyle =0
+            LabelAlign =3
+            LabelX =-825
+            FontName ="Helv"
+        End
+        Begin FormHeader
+            Height =0
+            BackColor =12632256
+            Name ="EncabezadoDelFormulario0"
+            EventProcPrefix ="EncabezadoDelFormula"
+            GUID = Begin
+                0x79349c0383fb8048b363fd029a4714e7
+            End
+        End
+        Begin Section
+            Height =1560
+            BackColor =12632256
+            Name ="Detalle1"
+            GUID = Begin
+                0xadace0f5c4ef7e48bec9c3d902d2a6ae
+            End
+            Begin
+                Begin Rectangle
+                    OldBorderStyle =0
+                    OverlapFlags =93
+                    Left =2499
+                    Top =315
+                    Width =1440
+                    Height =240
+                    BackColor =8421504
+                    Name ="UserNameFrame"
+                    GUID = Begin
+                        0x1b68d198f706324bb96b28f37d4bfd79
+                    End
+                End
+                Begin TextBox
+                    OldBorderStyle =1
+                    OverlapFlags =215
+                    Left =2559
+                    Top =255
+                    Name ="UserID"
+                    StatusBarText ="User name"
+                    GUID = Begin
+                        0x787ab5b50caa884cbe2246bc916c3a0a
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =975
+                            Top =255
+                            Width =1440
+                            Height =240
+                            Name ="LblUserName"
+                            Caption ="Nombre:"
+                            GUID = Begin
+                                0x93f928db4d8ca04d9af9260ed0fd7569
+                            End
+                        End
+                    End
+                End
+                Begin CommandButton
+                    Default = NotDefault
+                    OverlapFlags =85
+                    Left =3030
+                    Top =945
+                    TabIndex =1
+                    Name ="BtnOK"
+                    Caption ="OK"
+                    OnClick ="=BorrarUsuarioOK()"
+                    GUID = Begin
+                        0x6f3dad32633f5542a982ef12b656d3d5
+                    End
+                End
+                Begin CommandButton
+                    Cancel = NotDefault
+                    OverlapFlags =85
+                    Left =585
+                    Top =900
+                    TabIndex =2
+                    Name ="BtnCancel"
+                    Caption ="Cancel"
+                    OnClick ="=CloseForm(\"BorrarUsuario\")"
+                    GUID = Begin
+                        0x947b32156c90bd43ba61835b9930ce4a
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            Height =0
+            BackColor =8421504
+            Name ="PieDelFormulario2"
+            GUID = Begin
+                0xa942598e3fbdde44b70e19e96a473c11
+            End
+        End
+    End
+End
+CodeBehindForm
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Private Sub Form_Open(Cancel As Integer)
+Dim db As Database, FLogin As Form, TUser As Recordset, Forma As Form
+   Set db = CurrentDb()
+   Set Forma = Forms!BorrarUsuario
+   Set FLogin = Forms!login
+   Set TUser = db.OpenRecordset("Usuarios")
+   TUser.Index = "PrimaryKey"
+   TUser.Seek "=", FLogin!UserID
+   If Not TUser.NoMatch Then
+      If IsNull(TUser!S_BU) Or TUser!S_BU = "N" Then
+         MsgBox "El usuario no tiene privilegios de acceso"
+         DoCmd.CancelEvent
+      Else
+         'wu_CenterDoc (Formulario.CVent)
+         If TUser!S_BU = "C" Then
+            Forma.AllowEditing = False
+            Forma.DefaultEditing = 3
+         End If
+      End If
+   Else
+      MsgBox "El usuario no tiene clave de acceso registrada"
+      DoCmd.CancelEvent
+   End If
+
+End Sub

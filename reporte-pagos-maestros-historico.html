@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histórico de Pagos a Maestros</title>
+    <style>
+        body { font-family: 'MS Sans Serif', Arial, sans-serif; background: #ece9d8; padding: 20px; }
+        .container { background: white; padding: 20px; border: 2px outset #fff; max-width: 1000px; margin: auto; }
+        h1 { font-size: 18px; text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; }
+        .filter-section { margin-bottom: 20px; background: #dfdfdf; padding: 10px; border: 2px inset #fff; display: flex; gap: 10px; align-items: center; }
+        table { width: 100%; border-collapse: collapse; font-size: 11px; margin-top: 10px; }
+        th, td { border: 1px solid #808080; padding: 4px; text-align: right; }
+        th { background: #dfdfdf; text-align: center; }
+        td:first-child { text-align: left; }
+        .no-print { margin-bottom: 10px; }
+        .btn { padding: 5px 15px; border: 2px outset #fff; background: #dfdfdf; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="no-print">
+            <button class="btn" onclick="window.print()">Imprimir</button>
+            <button class="btn" onclick="window.location.href='reportes.html'">Regresar</button>
+        </div>
+        <h1>HISTÓRICO DE PAGOS A MAESTROS</h1>
+        
+        <div class="filter-section no-print">
+            <label>Año:</label>
+            <input type="number" id="anioSelect" value="2026" style="width:70px;">
+            <button class="btn" onclick="cargarReporte()">CONSULTAR</button>
+        </div>
+
+        <div id="reportContent">Ingrese el año y presione CONSULTAR</div>
+    </div>
+
+    <script src="supabase-config.js"></script>
+    <script>
+        async function cargarReporte() {
+            const client = window.supabase;
+            const anio = document.getElementById('anioSelect').value;
+            const content = document.getElementById('reportContent');
+            content.innerHTML = 'Cargando...';
+
+            try {
+                // Obtener pagos de maestros en el año
+                const { data, error } = await client
+                    .from('pagos_maestros')
+                    .select('*, maestros(nombre)')
+                    .gte('periodo_inicio', `${anio}-01-01`)
+                    .lte('periodo_inicio', `${anio}-12-31`)
+                    .order('periodo_inicio', { ascending: false });
+
+                if (error) throw error;
+
+                if (!data || data.length === 0) {
+                    content.innerHTML = '<p style="text-align:center;">No se encontraron registros de pagos para el año ' + anio + '.</p>';
+                    return;
+                }
+
+                let html = `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Maestro</th>
+                                <th>Instrumento</th>
+                                <th>Neto</th>
+                                <th>Ret. ISR</th>
+                                <th>Ret. IVA</th>
+                                <th>IVA</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+
+                data.forEach(p => {
+                    html += `
+                        <tr>
+                            <td>${new Date(p.periodo_inicio).toLocaleDateString()}</td>
+                            <td>${p.maestros?.nombre || '---'}</td>
+                            <td>${p.instrumento || '---'}</td>
+                            <td style="font-weight:bold;">$${p.pago_neto.toFixed(2)}</td>
+                            <td>$${p.retencion_isr.toFixed(2)}</td>
+                            <td>$${p.retencion_iva.toFixed(2)}</td>
+                            <td>$${p.iva.toFixed(2)}</td>
+                            <td>$${p.subtotal.toFixed(2)}</td>
+                        </tr>
+                    `;
+                });
+
+                html += `</tbody></table>`;
+                content.innerHTML = html;
+
+            } catch (e) {
+                content.innerHTML = 'Error: ' + e.message;
+            }
+        }
+    </script>
+</body>
+</html>

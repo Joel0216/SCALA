@@ -1,0 +1,60 @@
+/* Grupos Premium Styles */
+@import url('theme.css');
+
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Specific styling for group management */
+.btn-small-search {
+    background: var(--bg-light);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 2px 8px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.btn-small-search:hover {
+    background: var(--color-light-blue);
+    border-color: var(--primary);
+}
+
+/* Attendance Grid Styles */
+.asistencia-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+}
+
+.asistencia-cell {
+    padding: 10px;
+    border-radius: var(--radius-sm);
+    text-align: center;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* Colors for attendance states */
+.state-none { background: #eaebed; color: #6b7280; }
+.state-present { background: #22c55e; color: white; font-weight: 600; }
+.state-late { background: #f97316; color: white; font-weight: 600; }
+.state-absent { background: #ef4444; color: white; font-weight: 600; }
+
+/* Modal specialization */
+.modal-asistencia-content {
+    max-width: 950px;
+    margin: 2% auto;
+}
+
+.modal-altas-content, .modal-edicion-content {
+    max-width: 800px;
+    margin: 2% auto;
+}

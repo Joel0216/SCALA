@@ -1,0 +1,394 @@
+Version =19
+VersionRequired =19
+Checksum =1259162811
+Begin Form
+    PopUp = NotDefault
+    Modal = NotDefault
+    MaxButton = NotDefault
+    MinButton = NotDefault
+    NavigationButtons = NotDefault
+    DefaultView =0
+    ScrollBars =0
+    ViewsAllowed =1
+    BorderStyle =1
+    GridX =8
+    GridY =8
+    Width =7995
+    ItemSuffix =49
+    Left =675
+    Top =1650
+    Right =8835
+    Bottom =6900
+    RecSrcDt = Begin
+        0x0e74daa037c5e140
+    End
+    GUID = Begin
+        0x4335f3dbcbd3354b9c55ff02d07cf211
+    End
+    NameMap = Begin
+        0x0acc0e5500000000000000000000000000000000000000000c00000002000000 ,
+        0x0000000000000000000000000000
+    End
+    Caption ="Sistema de administración de academias"
+    Begin
+        Begin Label
+            BackStyle =0
+            TextAlign =3
+            FontWeight =700
+        End
+        Begin Rectangle
+            SpecialEffect =2
+            Width =850
+            Height =850
+        End
+        Begin Line
+            Width =1701
+        End
+        Begin CommandButton
+            TextFontFamily =2
+            Width =1701
+            Height =283
+        End
+        Begin OptionButton
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =202
+            Height =202
+            LabelX =-168
+        End
+        Begin CheckBox
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =202
+            Height =202
+            LabelX =-168
+        End
+        Begin TextBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            LabelX =-168
+        End
+        Begin FormHeader
+            Height =0
+            BackColor =8421376
+            Name ="EncabezadoDelFormulario0"
+            EventProcPrefix ="EncabezadoDelFormula"
+            GUID = Begin
+                0x5aa3d312b8a3984d9e2c6a1de742f152
+            End
+        End
+        Begin Section
+            Height =5314
+            BackColor =8421376
+            Name ="Detalle1"
+            GUID = Begin
+                0x54268532edb9c34d82b2d05d0103ff3b
+            End
+            Begin
+                Begin Label
+                    OverlapFlags =93
+                    TextAlign =2
+                    Left =2054
+                    Top =3259
+                    Width =3969
+                    Height =213
+                    FontWeight =400
+                    Name ="Text23"
+                    Caption ="SAA es un programa desarrollado por:"
+                    GUID = Begin
+                        0x8a39753bc82497438c940a4715952860
+                    End
+                End
+                Begin Label
+                    OverlapFlags =95
+                    TextAlign =2
+                    Left =1829
+                    Top =3472
+                    Width =4479
+                    Height =212
+                    FontWeight =400
+                    Name ="Text24"
+                    Caption ="Arturo Izumi Shibata para Yamaha de México, S.A. de C.V."
+                    GUID = Begin
+                        0x060fca9694285648875e6c3e990c3d4e
+                    End
+                End
+                Begin Label
+                    OverlapFlags =95
+                    TextAlign =2
+                    Left =2054
+                    Top =3685
+                    Width =3969
+                    Height =212
+                    FontWeight =400
+                    Name ="Text25"
+                    Caption ="Av. Insurgentes Sur # 1208, Col. Del Valle"
+                    GUID = Begin
+                        0x3bd687a2c4751d4eae4afcb22358877d
+                    End
+                End
+                Begin Label
+                    OverlapFlags =87
+                    TextAlign =2
+                    Left =1499
+                    Top =3897
+                    Width =5154
+                    Height =213
+                    FontWeight =400
+                    Name ="Text27"
+                    Caption ="03100 México D.F., Tel 5559-2559 y 5559-2448, FAX : 5559-4434"
+                    GUID = Begin
+                        0x8b5734d01d9d374382ac3ee44f852e64
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =3259
+                    Top =4889
+                    Width =1127
+                    Height =355
+                    Name ="Button28"
+                    Caption ="ACEPTAR"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0x0a0d8536671dd44ba450528ffa609496
+                    End
+                End
+                Begin Label
+                    OverlapFlags =93
+                    TextAlign =2
+                    Left =70
+                    Top =354
+                    Width =7511
+                    Height =212
+                    FontWeight =400
+                    Name ="Text29"
+                    Caption ="Este programa está registrado ante la Secretaría General de Derechos de Autor."
+                    GUID = Begin
+                        0xb28177e2c1ab5648b4d4d8d0b8e95054
+                    End
+                End
+                Begin Label
+                    OverlapFlags =95
+                    TextAlign =2
+                    Left =70
+                    Top =566
+                    Width =7511
+                    Height =212
+                    FontWeight =400
+                    Name ="Text30"
+                    Caption ="Ninguna parte de este Programa puede ser reproducido o transmitido de ninguna fo"
+                        "rma,"
+                    GUID = Begin
+                        0x658322de138b3e4db9938b4a31c122a7
+                    End
+                End
+                Begin Label
+                    OverlapFlags =95
+                    TextAlign =2
+                    Left =70
+                    Top =779
+                    Width =7511
+                    Height =212
+                    FontWeight =400
+                    Name ="Text31"
+                    Caption ="ni por cualquier medio, ya sea electrónico o mecánico, con ningún propósito, sin"
+                        " la previa"
+                    GUID = Begin
+                        0x30383ceb0a47a441b3d47e8e1b63b793
+                    End
+                End
+                Begin Label
+                    OverlapFlags =85
+                    TextAlign =2
+                    Left =283
+                    Top =1488
+                    Width =7560
+                    Height =405
+                    FontWeight =400
+                    Name ="Text32"
+                    Caption ="Ninguna garantía se dá con respecto al sistema, su calidad o desempeño. El progr"
+                        "ama se vende tal como es, y el comprador asume todo el riesgo de su desempeño o "
+                        "calidad."
+                    GUID = Begin
+                        0xc2628ebc2994eb4d85020a2d160770e6
+                    End
+                End
+                Begin Label
+                    OverlapFlags =93
+                    TextAlign =2
+                    Left =212
+                    Top =1913
+                    Width =7605
+                    Height =630
+                    FontWeight =400
+                    Name ="Text33"
+                    Caption ="Bajo ninguna circunstancia el autor es responsable de algún daño causado por el "
+                        " mal entendido o defecto del programa o su documentación, aún sin que el autor n"
+                        "o haya notificado de la posibilidad de tal daño."
+                    GUID = Begin
+                        0x2b237ea2e6a3aa43af0d0a6b5f183548
+                    End
+                End
+                Begin Label
+                    OverlapFlags =93
+                    TextAlign =2
+                    Left =141
+                    Top =2692
+                    Width =3898
+                    Height =283
+                    FontSize =10
+                    FontWeight =400
+                    Name ="Text34"
+                    Caption ="Este programa tiene licencia de uso para :"
+                    GUID = Begin
+                        0x14a76818a67b1f418ed69d589f9fd088
+                    End
+                End
+                Begin Line
+                    BorderWidth =3
+                    OverlapFlags =85
+                    Left =141
+                    Top =3188
+                    Width =7370
+                    Name ="Line35"
+                    GUID = Begin
+                        0x2afce9b5870dcd49b290e2f89a545fbb
+                    End
+                End
+                Begin Line
+                    BorderWidth =1
+                    OverlapFlags =93
+                    Left =70
+                    Top =283
+                    Width =7795
+                    BorderColor =16777215
+                    Name ="Line36"
+                    GUID = Begin
+                        0x913c42c8be498547813b816c268d1f93
+                    End
+                End
+                Begin Line
+                    BorderWidth =1
+                    OverlapFlags =87
+                    Left =70
+                    Top =283
+                    Width =0
+                    Height =963
+                    BorderColor =16777215
+                    Name ="Line38"
+                    GUID = Begin
+                        0xaa040d2301468842a2e1eee0042b5f45
+                    End
+                End
+                Begin Line
+                    BorderWidth =1
+                    OverlapFlags =87
+                    Left =7866
+                    Top =283
+                    Width =0
+                    Height =963
+                    Name ="Line39"
+                    GUID = Begin
+                        0x48a8ca88d84fc94d86cb1d495d614c21
+                    End
+                End
+                Begin Line
+                    BorderWidth =1
+                    OverlapFlags =85
+                    Left =70
+                    Top =1275
+                    Width =7795
+                    BorderColor =16777215
+                    Name ="Line40"
+                    GUID = Begin
+                        0x98872aa67860104dbb0fe2300273884d
+                    End
+                End
+                Begin Line
+                    BorderWidth =1
+                    OverlapFlags =87
+                    Left =141
+                    Top =2551
+                    Width =7645
+                    Name ="Line41"
+                    GUID = Begin
+                        0x079903c2f4cd4e42ba873c4878bb84f4
+                    End
+                End
+                Begin Line
+                    BorderWidth =3
+                    OverlapFlags =85
+                    Left =212
+                    Top =4251
+                    Width =7370
+                    Name ="Line45"
+                    GUID = Begin
+                        0xc6dc65d159f15b4da424527c435ad877
+                    End
+                End
+                Begin Label
+                    OverlapFlags =215
+                    TextAlign =2
+                    Left =3826
+                    Top =2622
+                    Width =4155
+                    Height =495
+                    FontSize =10
+                    ForeColor =16777215
+                    Name ="Text46"
+                    Caption ="Casa Musical de Mérida S.A. de C.V. por  Yamaha de México S.A. de C.V."
+                    GUID = Begin
+                        0xa137b1438f3c0d43b80c7b1de8123b45
+                    End
+                End
+                Begin Label
+                    OverlapFlags =87
+                    TextAlign =2
+                    Left =212
+                    Top =992
+                    Width =7511
+                    Height =212
+                    FontWeight =400
+                    Name ="Texto47"
+                    Caption ="autorización por escrito de YAMAHA DE MEXICO, S.A. de C.V."
+                    GUID = Begin
+                        0xe01b4e9ab4296d47a57cc82818e6e6a1
+                    End
+                End
+                Begin Label
+                    OverlapFlags =85
+                    Left =2834
+                    Top =4464
+                    Width =1830
+                    Height =275
+                    Name ="Etiqueta48"
+                    Caption ="MARZO DEL 2000"
+                    GUID = Begin
+                        0xc34f63730854d5419d8ac2d25715b174
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            Height =0
+            BackColor =8421376
+            Name ="PieDelFormulario2"
+            GUID = Begin
+                0x2cc11d5c4537a24eb69449cee57dda5a
+            End
+        End
+    End
+End
+CodeBehindForm
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Private Sub Button28_Click()
+DoCmd.Close
+
+End Sub

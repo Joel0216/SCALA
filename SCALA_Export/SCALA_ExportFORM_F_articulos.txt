@@ -1,0 +1,493 @@
+Version =19
+VersionRequired =19
+Checksum =-378296987
+Begin Form
+    PopUp = NotDefault
+    DefaultView =0
+    GridX =5
+    GridY =5
+    Width =8050
+    ItemSuffix =34
+    Left =885
+    Top =1560
+    Right =9225
+    Bottom =4710
+    RecSrcDt = Begin
+        0x2de3439f37c5e140
+    End
+    GUID = Begin
+        0x1cc815c2aa8adc43ba876d7d8a7bdffb
+    End
+    NameMap = Begin
+        0x0acc0e5500000000158a3c338aba204e864840a50002beaf00000000f4c8f885 ,
+        0xb64ce34000000000000000004100720074006900630075006c006f0073000000 ,
+        0x00000000da4098ee2340d34f9cf5e4fe6d08002207000000158a3c338aba204e ,
+        0x864840a50002beaf43006c00610076006500000000000000b1344c9e5faf724a ,
+        0xa03336fd62ebb48f07000000158a3c338aba204e864840a50002beaf44006500 ,
+        0x73006300720069007000630069006f006e000000000000008483410c068baa48 ,
+        0xbe89277914eca44807000000158a3c338aba204e864840a50002beaf50007200 ,
+        0x6500630069006f00000000000000744fd72a6fbdf24982dd3418ae2de7da0700 ,
+        0x0000158a3c338aba204e864840a50002beaf4900560041000000000000008b16 ,
+        0x366e45fc0a4e97b454541f0a26d407000000158a3c338aba204e864840a50002 ,
+        0xbeaf530074006f0063006b000000000000008fc68f494ffb8445ab095e0be554 ,
+        0xfbae07000000158a3c338aba204e864840a50002beaf47007200750070006f00 ,
+        0x000000000000529b3dee689b064abbe7e4d4e452be63000000006143c0d0b849 ,
+        0xe340000000000000000047007200750070006f00730020004100720074006900 ,
+        0x630075006c006f00730000000000000000000000000000000000000000000000 ,
+        0x0c000000020000000000000000000000000000000000
+    End
+    RecordSource ="Articulos"
+    Caption ="Articulos"
+    OnOpen ="[Event Procedure]"
+    MenuBar ="Barra Main"
+    Begin
+        Begin Label
+            TextAlign =3
+            FontWeight =700
+            BackColor =12632256
+        End
+        Begin Rectangle
+            SpecialEffect =2
+            Width =850
+            Height =850
+        End
+        Begin CommandButton
+            TextFontFamily =2
+            Width =1701
+            Height =283
+        End
+        Begin OptionButton
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin CheckBox
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin TextBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin ListBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =1417
+            LabelX =-236
+        End
+        Begin ComboBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin FormHeader
+            Height =558
+            BackColor =12632256
+            Name ="EncabezadoDelFormulario1"
+            EventProcPrefix ="EncabezadoDelFormula"
+            GUID = Begin
+                0x47ba909fabc9774fa3f548b72a3be06d
+            End
+            Begin
+                Begin Label
+                    BackStyle =0
+                    OverlapFlags =93
+                    TextAlign =1
+                    Left =488
+                    Top =153
+                    Width =1305
+                    Height =405
+                    FontSize =14
+                    ForeColor =8355711
+                    Name ="Texto12"
+                    Caption ="Articulos"
+                    GUID = Begin
+                        0x883067573fd73f46bd8b078410fd0a10
+                    End
+                End
+                Begin Label
+                    BackStyle =0
+                    OverlapFlags =215
+                    TextAlign =1
+                    Left =452
+                    Top =113
+                    Width =1305
+                    Height =405
+                    FontSize =14
+                    ForeColor =16777215
+                    Name ="Texto13"
+                    Caption ="Articulos"
+                    GUID = Begin
+                        0x7df1f5c17740c94aa2990893b5a65d24
+                    End
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    TabStop = NotDefault
+                    OverlapFlags =85
+                    Left =5669
+                    Top =113
+                    Width =2154
+                    Height =235
+                    Name ="Campo32"
+                    ControlSource ="=Now()"
+                    GUID = Begin
+                        0x78140e5a5532c549851d0a63cbc9ce38
+                    End
+                End
+            End
+        End
+        Begin Section
+            Height =2607
+            BackColor =12632256
+            Name ="Detalle0"
+            GUID = Begin
+                0xb2f65d823b0f454ebc82f060d0391b5d
+            End
+            Begin
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =1698
+                    Top =113
+                    Width =1530
+                    ColumnWidth =690
+                    Name ="Clave"
+                    ControlSource ="Clave"
+                    GUID = Begin
+                        0x319bf553d965104e8dd65fdbb00722e6
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =907
+                            Top =113
+                            Width =678
+                            Height =240
+                            Name ="Texto15"
+                            Caption ="Clave:"
+                            GUID = Begin
+                                0xd135ab081dcc3f44885d77ef34db84b4
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =4870
+                    Top =113
+                    Width =3060
+                    ColumnWidth =3960
+                    TabIndex =1
+                    Name ="Descripcion"
+                    ControlSource ="Descripcion"
+                    GUID = Begin
+                        0x85705cc16d6199428ff13a49d5bdfd74
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =3401
+                            Top =113
+                            Width =1243
+                            Height =240
+                            Name ="Texto17"
+                            Caption ="Descripcion:"
+                            GUID = Begin
+                                0xa3eb36b8b9fcd442a6006ac9243e7715
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    DecimalPlaces =2
+                    OverlapFlags =85
+                    Left =1698
+                    Top =793
+                    Width =1920
+                    ColumnWidth =645
+                    TabIndex =3
+                    Name ="Precio"
+                    ControlSource ="Precio"
+                    Format ="General Number"
+                    GUID = Begin
+                        0xc331c7362caafb4bb286eed64f874f06
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =907
+                            Top =793
+                            Width =678
+                            Height =240
+                            Name ="Texto19"
+                            Caption ="Precio:"
+                            GUID = Begin
+                                0xc9d6083de77b854a9775d14daad8b258
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =1698
+                    Top =1133
+                    Width =2268
+                    ColumnWidth =510
+                    TabIndex =4
+                    Name ="IVA"
+                    ControlSource ="IVA"
+                    Format ="Fixed"
+                    GUID = Begin
+                        0x71f3e70049056f4b8c7c60af847f0865
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =1133
+                            Top =1133
+                            Width =452
+                            Height =240
+                            Name ="Texto21"
+                            Caption ="IVA:"
+                            GUID = Begin
+                                0x7f3057f1e59a7f429d58cd547c33681e
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    DecimalPlaces =0
+                    OverlapFlags =85
+                    Left =1698
+                    Top =1474
+                    Width =2268
+                    ColumnWidth =705
+                    TabIndex =5
+                    Name ="Stock"
+                    ControlSource ="Stock"
+                    Format ="Fixed"
+                    GUID = Begin
+                        0xfe45273cc351bf44a37f9964fbdb42a1
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =907
+                            Top =1474
+                            Width =678
+                            Height =240
+                            Name ="Texto23"
+                            Caption ="Stock:"
+                            GUID = Begin
+                                0x0a2c6902c5ac1949a2d31dd46adff024
+                            End
+                        End
+                    End
+                End
+                Begin ComboBox
+                    OverlapFlags =85
+                    ListWidth =2905
+                    Left =1697
+                    Top =453
+                    Width =3280
+                    TabIndex =2
+                    ColumnInfo ="\"\";\"\";\"10\";\"40\""
+                    GUID = Begin
+                        0x4c3523e4b6262248bf38bd0d986e279c
+                    End
+                    Name ="Grupo"
+                    ControlSource ="Grupo"
+                    RowSourceType ="Table/Query"
+                    RowSource ="Select [Grupo] From [Grupos Articulos];"
+                    ColumnWidths ="2655"
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =566
+                            Top =453
+                            Width =930
+                            Height =240
+                            Name ="Texto27"
+                            Caption ="Grupo :"
+                            GUID = Begin
+                                0x4af93fc275e5264ea7ced22fec3d3782
+                            End
+                        End
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =6236
+                    Top =2040
+                    Width =1125
+                    Height =465
+                    TabIndex =6
+                    ForeColor =255
+                    Name ="B_term_articulo"
+                    Caption ="Terminar"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0x5fe20739d069f9488825239c378481fd
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =1133
+                    Top =2040
+                    Width =1125
+                    Height =465
+                    TabIndex =7
+                    Name ="B_add_articulo"
+                    Caption ="Nuevo"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0x1f45faa8c687634b9eaa2585deaec13b
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =2834
+                    Top =2040
+                    Width =1131
+                    Height =441
+                    TabIndex =8
+                    Name ="B_srch_articulo"
+                    Caption ="Buscar"
+                    OnClick ="M_Varios Catalogos.Buscar Articulo"
+                    GUID = Begin
+                        0x7c26e7386efc5d4593f42b9ca7e37beb
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =4535
+                    Top =2040
+                    Width =1125
+                    Height =465
+                    TabIndex =9
+                    Name ="B_del_articulo"
+                    Caption ="Borrar"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0x625044f48974954f9f88143d4cd6b373
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            Height =0
+            BackColor =12632256
+            Name ="PieDelFormulario2"
+            GUID = Begin
+                0xb281ef9dd79ced469044e074f832eaaa
+            End
+        End
+    End
+End
+CodeBehindForm
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database   'Usar orden de base de datos en comparaciones de cadenas
+
+Private Sub B_add_articulo_Click()
+On Error GoTo Err_B_add_articulo_Click
+
+
+    DoCmd.GoToRecord , , A_NEWREC
+    DoCmd.GoToControl "Clave"
+
+Exit_B_add_articulo_Click:
+    Exit Sub
+
+Err_B_add_articulo_Click:
+    MsgBox Error$
+    Resume Exit_B_add_articulo_Click
+    
+End Sub
+
+Private Sub B_del_articulo_Click()
+On Error GoTo Err_B_del_articulo_Click
+
+
+    DoCmd.DoMenuItem A_FORMBAR, A_EDITMENU, A_SELECTRECORD_V2, , A_MENU_VER20
+    DoCmd.DoMenuItem A_FORMBAR, A_EDITMENU, A_DELETE_V2, , A_MENU_VER20
+
+Exit_B_del_articulo_Click:
+    Exit Sub
+
+Err_B_del_articulo_Click:
+    MsgBox Error$
+    Resume Exit_B_del_articulo_Click
+    
+End Sub
+
+Private Sub B_term_articulo_Click()
+On Error GoTo Err_B_term_articulo_Click
+
+
+    DoCmd.Close
+
+Exit_B_term_articulo_Click:
+    Exit Sub
+
+Err_B_term_articulo_Click:
+    MsgBox Error$
+    Resume Exit_B_term_articulo_Click
+    
+End Sub
+
+Private Sub Botón30_Click()
+On Error GoTo Err_Botón30_Click
+
+
+    DoCmd.DoMenuItem A_FORMBAR, A_EDITMENU, 10, , A_MENU_VER20
+
+Exit_Botón30_Click:
+    Exit Sub
+
+Err_Botón30_Click:
+    MsgBox Error$
+    Resume Exit_Botón30_Click
+    
+End Sub
+
+Private Sub Form_Open(Cancel As Integer)
+Dim db As Database, FLogin As Form, TUser As Recordset, Forma As Form
+   Set db = CurrentDb()
+   Set Forma = Forms!F_Articulos
+   Set FLogin = Forms!login
+   Set TUser = db.OpenRecordset("Usuarios")
+   TUser.Index = "PrimaryKey"
+   TUser.Seek "=", FLogin!UserID
+   If Not TUser.NoMatch Then
+      If IsNull(TUser!A_ART) Or TUser!A_ART = "N" Then
+         MsgBox "El usuario no tiene privilegios de acceso"
+         DoCmd.CancelEvent
+      Else
+         If TUser!A_ART = "C" Then
+            Forma.AllowEditing = False
+            Forma.DefaultEditing = 3
+            [B_add_articulo].Enabled = False
+            [B_del_articulo].Enabled = False
+         End If
+      End If
+   Else
+      MsgBox "El usuario no tiene clave de acceso registrada"
+      DoCmd.CancelEvent
+   End If
+End Sub

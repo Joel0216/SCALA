@@ -1,0 +1,57 @@
+/* Salones Premium Styles */
+@import url('theme.css');
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Sub-grid (Instrumentos) visualization */
+.subgrid-area {
+    margin-top: 20px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table th {
+    background: var(--bg-light);
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 0.8rem;
+    padding: 12px;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+.data-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--bg-light);
+    font-size: 0.9rem;
+}
+
+/* Special button for adding instruments inside cards */
+.btn-add-inline {
+    background: var(--color-light-blue);
+    color: var(--primary);
+    border: 1px dashed var(--primary);
+    border-radius: var(--radius-sm);
+    padding: 5px 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-add-inline:hover {
+    background: var(--primary);
+    color: white;
+}

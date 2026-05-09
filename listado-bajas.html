@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de Alumnos Dados de Baja - Scala</title>
+    <link rel="stylesheet" href="theme.css">
+</head>
+
+<body>
+    <div class="container" style="max-height: 100vh; overflow: hidden; display: flex; flex-direction: column;">
+        <header class="app-header">
+            <div>
+                <h1>Listado de Alumnos Dados de Baja</h1>
+            </div>
+            <div style="display: flex; gap:10px; align-items:center;">
+                <input type="text" id="buscarInput" class="premium-input" placeholder="Buscar por Nombre o Credencial..." autofocus style="min-width: 300px; color: #000; font-weight: 600;">
+            </div>
+        </header>
+
+        <main class="app-main" style="flex: 1; overflow: hidden; display: flex; flex-direction: column; padding-bottom: 0;">
+            <div class="premium-card" style="flex: 1; display: flex; flex-direction: column; overflow: hidden; margin-bottom: 0;">
+                <div class="premium-table-container" style="flex: 1; overflow-y: auto;">
+                    <table class="premium-table" id="tblBajas">
+                        <thead style="position: sticky; top: 0; z-index: 10;">
+                            <tr>
+                                <th></th>
+                                <th>Credencial</th>
+                                <th>Nombre Completo</th>
+                                <th>Grupo</th>
+                                <th>F. Ingreso</th>
+                                <th>Grado</th>
+                                <th>F. Baja</th>
+                                <th>Motivo</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaBajas" style="cursor: pointer;">
+                            <!-- Se carga vía JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div style="display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 15px; padding: 10px;">
+                    <button class="premium-btn btn-outline" id="btnFirst" style="min-width: 45px; padding: 5px;">|◄</button>
+                    <button class="premium-btn btn-outline" id="btnPrev" style="min-width: 45px; padding: 5px;">◄</button>
+                    <input type="text" class="premium-input" id="currentPage" value="1" readonly style="width: 50px; text-align: center;">
+                    <button class="premium-btn btn-outline" id="btnNext" style="min-width: 45px; padding: 5px;">►</button>
+                    <button class="premium-btn btn-outline" id="btnLast" style="min-width: 45px; padding: 5px;">►|</button>
+                    <span id="regTotal" style="font-size: 0.85rem; color: var(--text-dark); font-weight: 500;">de 0</span>
+                </div>
+            </div>
+        </main>
+
+        <footer class="app-footer">
+            <div style="flex-grow: 1;"></div>
+            <button class="premium-btn btn-danger" id="btnClose">CERRAR CONSULTA</button>
+        </footer>
+    </div>
+
+    <!-- Paginador inner (utilizado por updatePaginador en Utils) -->
+    <div id="pg-nav-inner" style="display:none;"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="listado-bajas.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,237 @@
+Version =19
+VersionRequired =19
+Checksum =2123895898
+Begin Form
+    AllowEditing = NotDefault
+    RecordSelectors = NotDefault
+    NavigationButtons = NotDefault
+    AllowDeletions = NotDefault
+    AllowAdditions = NotDefault
+    AllowEdits = NotDefault
+    DefaultView =0
+    ScrollBars =0
+    GridX =5
+    GridY =5
+    Width =2948
+    ItemSuffix =25
+    Left =1170
+    Top =525
+    Right =8880
+    Bottom =5370
+    RecSrcDt = Begin
+        0x1857f95422dee140
+    End
+    GUID = Begin
+        0x77ba4413844fdc4caa32ae916e021b90
+    End
+    NameMap = Begin
+        0x0acc0e5500000000000000000000000000000000000000000c00000002000000 ,
+        0x0000000000000000000000000000
+    End
+    RecordSource ="Articulos"
+    Begin
+        Begin Label
+            TextAlign =3
+            FontWeight =700
+            BackColor =12632256
+        End
+        Begin Rectangle
+            SpecialEffect =2
+            Width =850
+            Height =850
+        End
+        Begin Line
+            Width =1701
+        End
+        Begin OptionButton
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin CheckBox
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin TextBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin ListBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =1417
+            LabelX =-236
+        End
+        Begin ComboBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin FormHeader
+            Visible = NotDefault
+            Height =453
+            BackColor =12632256
+            Name ="EncabezadoDelFormulario1"
+            EventProcPrefix ="EncabezadoDelFormula"
+            GUID = Begin
+                0xc4688c3ab1b6af4681bd1c9dcbe0c8cd
+            End
+            Begin
+                Begin TextBox
+                    Visible = NotDefault
+                    OverlapFlags =85
+                    Left =1131
+                    Top =113
+                    Width =1530
+                    ColumnWidth =690
+                    Name ="Clave"
+                    ControlSource ="Clave"
+                    GUID = Begin
+                        0x8a8c3963834dd040bfe659986f8b94d8
+                    End
+                    Begin
+                        Begin Label
+                            Visible = NotDefault
+                            OverlapFlags =85
+                            Left =340
+                            Top =113
+                            Width =678
+                            Height =240
+                            Name ="Texto13"
+                            Caption ="Clave:"
+                            GUID = Begin
+                                0x381946208182b94495d61f13a0e37fab
+                            End
+                        End
+                    End
+                End
+            End
+        End
+        Begin Section
+            Height =907
+            BackColor =8421376
+            Name ="Detalle0"
+            GUID = Begin
+                0x9b9db800d5421e46b42d7ac547936549
+            End
+            Begin
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =113
+                    Width =2715
+                    ColumnWidth =3960
+                    Name ="Descripcion"
+                    ControlSource ="Descripcion"
+                    GUID = Begin
+                        0xbf99283e04e551438d300812178d418a
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =93
+                    Left =791
+                    Top =340
+                    Width =1248
+                    ColumnWidth =705
+                    TabIndex =1
+                    Name ="Stock"
+                    ControlSource ="Stock"
+                    Format ="Fixed"
+                    GUID = Begin
+                        0xbed66acce247aa408145c62d1e11d54a
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =93
+                            Top =340
+                            Width =693
+                            Height =240
+                            BackColor =8421376
+                            Name ="Texto17"
+                            Caption ="Stock:"
+                            GUID = Begin
+                                0x6e2b1acdbb127c49b681fa27d21cc1f7
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =247
+                    Left =791
+                    Top =567
+                    Width =1245
+                    ColumnWidth =645
+                    TabIndex =2
+                    Name ="Precio"
+                    ControlSource ="Precio"
+                    Format ="General Number"
+                    GUID = Begin
+                        0xf8533332dc75b24b9ad8dbc900f097e0
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =215
+                            Top =567
+                            Width =678
+                            Height =240
+                            BackColor =8421376
+                            Name ="Texto19"
+                            Caption ="Precio:"
+                            GUID = Begin
+                                0xebe54e529c9b0b41aab35a37911b434b
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =93
+                    Left =2267
+                    Top =566
+                    Width =468
+                    ColumnWidth =510
+                    TabIndex =3
+                    Name ="IVA"
+                    ControlSource ="IVA"
+                    Format ="Fixed"
+                    GUID = Begin
+                        0x626a5aad8ccb454797eaffd786e3f4cd
+                    End
+                End
+                Begin Label
+                    OverlapFlags =215
+                    TextAlign =2
+                    Left =2267
+                    Top =340
+                    Width =454
+                    Height =226
+                    BackColor =8421376
+                    Name ="Texto23"
+                    Caption ="IVA"
+                    GUID = Begin
+                        0x7769489db00c294498a008188ebcf501
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            Height =0
+            BackColor =12632256
+            Name ="PieDelFormulario2"
+            GUID = Begin
+                0x3dbc44aadff9434b933bd42ff9f8582f
+            End
+        End
+    End
+End

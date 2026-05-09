@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de Grupos - Scala</title>
+    <link rel="stylesheet" href="grupos-listado.css">
+</head>
+
+<body>
+    <div class="main-container">
+        <!-- Barra de Menú Nativa -->
+        <nav class="menu-bar">
+            <span class="menu-item">Archivo</span>
+            <span class="menu-item">Módulos</span>
+            <span class="menu-item">Ver</span>
+            <span class="menu-item">Ayuda</span>
+        </nav>
+
+        <header>
+            <h1>Listado de Grupos</h1>
+        </header>
+
+        <div class="content-area">
+            <div class="table-wrapper">
+                <table class="data-table" id="tblGrupos">
+                    <thead>
+                        <tr>
+                            <th class="selector-cell"></th>
+                            <th>Clave</th>
+                            <th>Curso</th>
+                            <th>Grado</th>
+                            <th>Maestro</th>
+                            <th>Día</th>
+                            <th>Horario</th>
+                            <th>Salón</th>
+                            <th>Cupo</th>
+                            <th>Inscritos</th>
+                            <th>Disp.</th>
+                            <th>% Occ.</th>
+                            <th>Inicio</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyGrupos">
+                        <!-- Se carga vía JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="pagination-nav">
+            <span>Registro:</span>
+            <button class="btn-nav" id="btnFirst">|◄</button>
+            <button class="btn-nav" id="btnPrev">◄</button>
+            <input type="text" class="page-input" id="currentPage" value="1" readonly>
+            <button class="btn-nav" id="btnNext">►</button>
+            <button class="btn-nav" id="btnLast">►|</button>
+            <span id="regTotal">de 0</span>
+        </div>
+
+        <footer>
+            <div class="search-box">
+                <input type="text" id="mainSearch" placeholder="Buscar por Nombre o Clave de Grupo" autofocus>
+            </div>
+            <button class="btn-close" id="btnClose">Cerrar consulta</button>
+        </footer>
+    </div>
+
+    <!-- PANEL DE EDICIÓN (MODAL WINDOWS) -->
+    <div class="edit-modal" id="editModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>Edición de Grupo</span>
+                <span style="cursor:pointer"
+                    onclick="document.getElementById('editModal').style.display='none'">[X]</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Clave:</label>
+                    <input type="text" id="editClave" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Curso:</label>
+                    <select id="editCurso"></select>
+                </div>
+                <div class="form-group">
+                    <label>Maestro:</label>
+                    <select id="editMaestro"></select>
+                </div>
+                <div class="form-group">
+                    <label>Día:</label>
+                    <select id="editDia">
+                        <option value="Lunes">Lunes</option>
+                        <option value="Martes">Martes</option>
+                        <option value="Miercoles">Miercoles</option>
+                        <option value="Jueves">Jueves</option>
+                        <option value="Viernes">Viernes</option>
+                        <option value="Sabado">Sabado</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Hora Entrada:</label>
+                    <input type="text" id="editHentrada">
+                </div>
+                <div class="form-group">
+                    <label>Hora Salida:</label>
+                    <input type="text" id="editHsalida">
+                </div>
+                <div class="form-group">
+                    <label>Salón:</label>
+                    <input type="text" id="editSalon">
+                </div>
+                <div class="form-group">
+                    <label>Cupo:</label>
+                    <input type="number" id="editCupo">
+                </div>
+                <div class="form-group">
+                    <label>Lección Actual:</label>
+                    <input type="text" id="editLeccion">
+                </div>
+                <div class="form-group">
+                    <label>Activo:</label>
+                    <input type="checkbox" id="editActivo">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-action btn-delete" id="btnEliminar">Eliminar grupo</button>
+                <div style="flex:1"></div>
+                <button class="btn-action"
+                    onclick="document.getElementById('editModal').style.display='none'">Cancelar</button>
+                <button class="btn-action btn-save" id="btnGuardar">Guardar cambios</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="grupos-listado.js"></script>
+</body>
+
+</html>

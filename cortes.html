@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCALA - Cortes de Caja</title>
+        <link rel="stylesheet" href="theme.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+        <style>
+            /* Custom additions for Cortes */
+            body {
+                margin: 0;
+            }
+            .wrap {
+                max-width: 1200px;
+                margin: 20px auto;
+                padding: 0 15px;
+            }
+            .filters {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 15px;
+                align-items: flex-end;
+                margin-bottom: 20px;
+            }
+            .cards {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 15px;
+                margin-bottom: 20px;
+            }
+            .card {
+                padding: 15px;
+            }
+            .card .title {
+                font-size: 13px;
+                color: var(--text-muted);
+                margin-bottom: 5px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+            .card .value {
+                font-size: 22px;
+                font-weight: 700;
+                color: var(--primary);
+            }
+            .section-title {
+                margin: 20px 0 10px;
+                font-weight: 600;
+                color: var(--primary);
+                font-size: 1.2rem;
+            }
+            .status {
+                margin-top: 15px;
+                font-size: 14px;
+                color: var(--text-muted);
+            }
+            .right { text-align: right !important; }
+            .muted { color: var(--text-muted); }
+            
+            /* Cajas Flatpickr para días con operaciones */
+            .flatpickr-day.has-operations {
+                background: var(--primary) !important;
+                color: #fff !important;
+                border-color: var(--primary) !important;
+                font-weight: 700;
+                border-radius: 50%;
+                opacity: 0.9;
+            }
+            .flatpickr-day.has-operations:hover {
+                opacity: 1;
+            }
+
+            @media print {
+                @page {
+                    size: letter portrait;
+                    margin: 1.5cm;
+                }
+                body {
+                    background: #fff;
+                    font-size: 10pt;
+                }
+                .no-print {
+                    display: none !important;
+                }
+                .wrap {
+                    margin: 0;
+                    padding: 0;
+                    max-width: none;
+                }
+                .app-header {
+                    box-shadow: none;
+                    border-bottom: 1px solid #000;
+                    color: #000;
+                    background: none;
+                    padding: 10px 0;
+                }
+                .app-header h1, .app-header .muted, .app-header #datetime {
+                    color: #000;
+                }
+                .premium-card {
+                    box-shadow: none;
+                    border: none;
+                    padding: 0;
+                }
+                .cards {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 10px;
+                    border-bottom: 1px solid #ccc;
+                    padding-bottom: 10px;
+                    margin-bottom: 10px;
+                }
+                .card {
+                    flex: 1;
+                    min-width: 150px;
+                    border: 1px solid #ddd;
+                    padding: 10px;
+                    page-break-inside: avoid;
+                }
+                .premium-table-container {
+                    box-shadow: none;
+                    border: 1px solid #000;
+                }
+                .premium-table th {
+                    background: #f0f0f0;
+                    color: #000;
+                    padding: 8px;
+                    font-size: 10pt;
+                    border-bottom: 2px solid #000;
+                }
+                .premium-table td {
+                    padding: 6px 8px;
+                    font-size: 9pt;
+                    border-bottom: 1px solid #ccc;
+                }
+                tr {
+                    page-break-inside: avoid;
+                }
+                table {
+                    width: 100%;
+                    table-layout: auto;
+                }
+            }
+        </style>
+</head>
+<body>
+    <div class="wrap">
+        <header class="app-header">
+            <div>
+                <h1>SCALA - Cortes de Caja</h1>
+                <div id="tituloCorte" class="muted" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;"></div>
+            </div>
+            <div id="datetime"></div>
+        </header>
+        
+        <main class="app-main premium-card" style="margin-top: 20px;">
+            <div class="filters no-print">
+                <div class="premium-input-group">
+                    <label class="premium-label">Tipo de corte</label>
+                    <select id="tipoCorte" class="premium-input">
+                        <option value="1">Corte 1 (detalle diario)</option>
+                        <option value="2">Corte 2 (resumen diario)</option>
+                        <option value="3">Corte 3 (resumen por rango)</option>
+                    </select>
+                </div>
+                <div class="premium-input-group" id="fieldFecha">
+                    <label class="premium-label">Fecha</label>
+                    <input type="text" id="fechaUnica" class="premium-input" placeholder="Seleccione fecha...">
+                </div>
+                <div class="premium-input-group" id="fieldInicio" style="display:none;">
+                    <label class="premium-label">Fecha inicio</label>
+                    <input type="text" id="fechaInicio" class="premium-input" placeholder="Seleccione inicio...">
+                </div>
+                <div class="premium-input-group" id="fieldFinal" style="display:none;">
+                    <label class="premium-label">Fecha final</label>
+                    <input type="text" id="fechaFinal" class="premium-input" placeholder="Seleccione fin...">
+                </div>
+                <button class="premium-btn btn-primary" id="btnGenerar">Generar</button>
+                <button class="premium-btn btn-secondary" id="btnImprimir">Imprimir</button>
+                <button class="premium-btn btn-outline" id="btnVolver">Volver a Caja</button>
+            </div>
+
+            <div class="cards" id="cardsResumen"></div>
+
+            <div class="section-title" id="tituloTabla1"></div>
+            <div class="premium-table-container">
+                <table id="tablaPrincipal" class="premium-table">
+                    <thead></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <div class="section-title" id="tituloTabla2"></div>
+            <div class="premium-table-container" id="wrapTabla2" style="display:none;">
+                <table id="tablaSecundaria" class="premium-table">
+                    <thead></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <div class="status" id="statusMsg"></div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
+    <script src="supabase-config.js"></script>
+    <script src="cortes.js"></script>
+</body>
+</html>

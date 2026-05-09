@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Prospectos - Scala Premium</title>
+    <link rel="stylesheet" href="prospectos.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header con Degradado -->
+        <header class="app-header">
+            <h1>Registro de Prospectos</h1>
+        </header>
+
+        <main class="app-main">
+            <form id="prospectosForm" autocomplete="off">
+                
+                <div class="premium-grid grid-cols-2">
+                    
+                    <!-- SECCIÓN 1: Información del Prospecto -->
+                    <section class="section-card">
+                        <div class="card-header">
+                            <h3>Información del Prospecto</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="premium-grid grid-cols-2">
+                                <div class="premium-input-group">
+                                    <label class="premium-label">ID Prospecto</label>
+                                    <input type="text" id="idProspecto" name="idProspecto" class="premium-input" readonly>
+                                </div>
+                                <div class="premium-input-group">
+                                    <label class="premium-label">Fecha Atención</label>
+                                    <input type="date" id="fechaAtencion" name="fechaAtencion" class="premium-input">
+                                </div>
+                            </div>
+
+                            <div class="premium-input-group">
+                                <label class="premium-label">Nombre(s)</label>
+                                <input type="text" id="nombre" name="nombre" class="premium-input" placeholder="Nombre del interesado" required>
+                            </div>
+
+                            <div class="premium-input-group">
+                                <label class="premium-label">Apellidos</label>
+                                <input type="text" id="apellidos" name="apellidos" class="premium-input" placeholder="Apellidos">
+                            </div>
+
+                            <div class="premium-grid grid-cols-2">
+                                <div class="premium-input-group">
+                                    <label class="premium-label">Edad</label>
+                                    <input type="number" id="edad" name="edad" class="premium-input">
+                                </div>
+                                <div class="premium-input-group">
+                                    <label class="premium-label">Teléfono</label>
+                                    <input type="text" id="telefono" name="telefono" class="premium-input" placeholder="Pje: 999 000 0000">
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- SECCIÓN 2: Interés y Captación -->
+                    <section class="section-card">
+                        <div class="card-header">
+                            <h3>Interés y Captación</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="premium-input-group">
+                                <label class="premium-label">Curso de Interés</label>
+                                <select id="curso" name="curso" class="premium-input">
+                                    <option value="">-- Seleccione un curso --</option>
+                                </select>
+                            </div>
+
+                            <div class="premium-grid grid-cols-2">
+                                <div class="premium-input-group">
+                                    <label class="premium-label">Medio Enterado</label>
+                                    <select id="medioEntero" name="medioEntero" class="premium-input">
+                                        <option value="RECOMENDACION">Recomendación</option>
+                                        <option value="INTERNET">Internet</option>
+                                        <option value="REDES">Redes Sociales</option>
+                                        <option value="VOLANTE">Volante</option>
+                                        <option value="RADIO">Radio / TV</option>
+                                        <option value="OTRO">Otro</option>
+                                    </select>
+                                </div>
+                                <div class="premium-input-group">
+                                    <label class="premium-label">Quién recomienda</label>
+                                    <input type="text" id="recomienda" name="recomienda" class="premium-input">
+                                </div>
+                            </div>
+
+                            <div class="premium-grid grid-cols-2">
+                                <div class="premium-input-group">
+                                    <label class="premium-label">Estado Inscripción</label>
+                                    <select id="seInscribio" name="seInscribio" class="premium-input">
+                                        <option value="No">No Inscrito</option>
+                                        <option value="Si">Inscrito</option>
+                                    </select>
+                                </div>
+                                <div class="premium-input-group">
+                                    <label class="premium-label">Sigue Interesado</label>
+                                    <select id="sigueInteresado" name="sigueInteresado" class="premium-input">
+                                        <option value="Si">Sí</option>
+                                        <option value="No">No</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="premium-input-group">
+                                <label class="premium-label">Atendió</label>
+                                <input type="text" id="atendio" name="atendio" class="premium-input" placeholder="Nombre del personal">
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- SECCIÓN 3: Ubicación -->
+                    <section class="section-card">
+                        <div class="card-header">
+                            <h3>Ubicación</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="premium-input-group">
+                                <label class="premium-label">Dirección</label>
+                                <input type="text" id="direccion" name="direccion" class="premium-input" placeholder="Calle y número">
+                            </div>
+                            <div class="premium-grid grid-cols-2">
+                                <div class="premium-input-group">
+                                    <label class="premium-label">Ciudad</label>
+                                    <input type="text" id="ciudad" name="ciudad" class="premium-input" value="Mérida">
+                                </div>
+                                <div class="premium-input-group">
+                                    <label class="premium-label">Código Postal</label>
+                                    <input type="text" id="codigoPostal" name="codigoPostal" class="premium-input">
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- SECCIÓN 4: Preferencias de Horario -->
+                    <section class="section-card">
+                        <div class="card-header">
+                            <h3>Preferencias de Horario</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="premium-grid grid-cols-2">
+                                <div class="premium-input-group">
+                                    <label class="premium-label">Primer Día</label>
+                                    <select id="diaPreferente1" name="diaPreferente1" class="premium-input">
+                                        <option value="">-- Seleccione --</option>
+                                        <option value="LUNES">Lunes</option>
+                                        <option value="MARTES">Martes</option>
+                                        <option value="MIERCOLES">Miércoles</option>
+                                        <option value="JUEVES">Jueves</option>
+                                        <option value="VIERNES">Viernes</option>
+                                        <option value="SABADO">Sábado</option>
+                                    </select>
+                                </div>
+                                <div class="premium-input-group">
+                                    <label class="premium-label">Primera Hora</label>
+                                    <input type="time" id="horaPreferente1" name="horaPreferente1" class="premium-input">
+                                </div>
+                            </div>
+
+                            <div class="premium-grid grid-cols-2">
+                                <div class="premium-input-group">
+                                    <label class="premium-label">Segundo Día</label>
+                                    <select id="diaPreferente2" name="diaPreferente2" class="premium-input">
+                                        <option value="">-- Seleccione --</option>
+                                        <option value="LUNES">Lunes</option>
+                                        <option value="MARTES">Martes</option>
+                                        <option value="MIERCOLES">Miércoles</option>
+                                        <option value="JUEVES">Jueves</option>
+                                        <option value="VIERNES">Viernes</option>
+                                        <option value="SABADO">Sábado</option>
+                                    </select>
+                                </div>
+                                <div class="premium-input-group">
+                                    <label class="premium-label">Segunda Hora</label>
+                                    <input type="time" id="horaPreferente2" name="horaPreferente2" class="premium-input">
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+
+                <!-- NOTAS ADICIONALES -->
+                <section class="section-card" style="margin-bottom: 0;">
+                    <div class="card-header">
+                        <h3>Notas Adicionales</h3>
+                    </div>
+                    <div class="card-body">
+                        <textarea id="nota" name="nota" class="premium-input" rows="4" placeholder="Observaciones sobre el seguimiento del prospecto..."></textarea>
+                    </div>
+                </section>
+
+                <!-- FOOTER CON BOTONES -->
+                <footer class="app-footer">
+                    <button type="button" class="premium-btn btn-primary" id="nuevoBtn" onclick="nuevoProspecto()">Nuevo</button>
+                    <button type="button" class="premium-btn btn-primary" id="guardarBtn" onclick="saveProspecto()" style="display: none;">Guardar</button>
+                    <button type="button" class="premium-btn btn-secondary" id="cancelarBtn" onclick="cancelarAccion()" style="display: none;">Cancelar</button>
+                    <button type="button" class="premium-btn btn-secondary" id="buscarBtn" onclick="buscarProspecto()">Buscar</button>
+                    <button type="button" class="premium-btn btn-danger" id="borrarBtn" onclick="deleteProspecto()">Borrar</button>
+                    
+                    <button type="button" class="premium-btn btn-finish" id="terminarBtn" onclick="terminarProspectos()">SALIR</button>
+                </footer>
+            </form>
+        </main>
+    </div>
+
+    <!-- Modal de Resultados de Búsqueda (Estilo Listado de Alumnos) -->
+    <div id="modalResultadosProspecto" class="premium-modal">
+        <div class="premium-modal-content" style="max-width: 900px; width: 90%; height: 85vh; display: flex; flex-direction: column;">
+            <div class="premium-modal-header" style="padding: 20px 30px;">
+                <h2 style="margin: 0; font-size: 1.8rem; letter-spacing: 1px;">Listado de Prospectos</h2>
+                <button class="modal-close" onclick="cerrarModalResultadosProspecto()" 
+                    style="background:transparent; border:none; color:white; font-size:2rem; cursor:pointer;">&times;</button>
+            </div>
+            
+            <div class="premium-modal-body" style="padding: 25px; flex: 1; overflow: hidden; display: flex; flex-direction: column; background: #f8fafc;">
+                
+                <!-- Barra de búsqueda integrada -->
+                <div class="section-card" style="margin-bottom: 20px; padding: 15px; border-radius: 12px; box-shadow: var(--shadow-sm);">
+                    <div class="premium-input-group" style="margin: 0;">
+                        <input type="text" id="inputBuscarProspectoModal" class="premium-input" 
+                            placeholder="Buscar por nombre, apellidos o ID..." 
+                            oninput="ejecutarFiltroProspectos()"
+                            style="height: 50px; font-size: 1.1rem; padding-left: 20px; border-radius: 10px;">
+                    </div>
+                </div>
+
+                <!-- Tabla de resultados -->
+                <div class="premium-table-container" style="flex: 1; border: 1px solid #e2e8f0; border-radius: 12px; background: white;">
+                    <table class="premium-table">
+                        <thead style="position: sticky; top: 0; z-index: 10;">
+                            <tr>
+                                <th style="text-align: center; width: 80px;">ID</th>
+                                <th>Nombre Completo</th>
+                                <th style="width: 150px;">Teléfono</th>
+                                <th style="text-align: center; width: 150px;">Fecha Atenc.</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bodyResultadosProspecto">
+                            <!-- Resultados dinámicos -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Paginación / Info (Simulado) -->
+                <div style="padding: 10px; text-align: center; font-size: 0.85rem; color: #64748b; font-weight: 600;">
+                    <span id="infoConteoProspectos">Cargando prospectos...</span>
+                </div>
+            </div>
+
+            <div class="app-footer" style="padding: 15px 30px; justify-content: flex-end; background: white; border-top: 1px solid #edf2f7;">
+                <button class="premium-btn btn-secondary" onclick="cerrarModalResultadosProspecto()" 
+                    style="background: white; color: #738fbd; border: 2px solid #738fbd; padding: 10px 30px;">CERRAR CONSULTA</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="supabase-config.js"></script>
+    <script src="utils-inputs.js"></script>
+    <script src="prospectos.js"></script>
+</body>
+</html>

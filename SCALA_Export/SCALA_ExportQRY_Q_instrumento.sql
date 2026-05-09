@@ -1,0 +1,3 @@
+SELECT DISTINCTROW tablainstrumento.QueInstrumento, tablainstrumento.DescripcionInst
+FROM tablainstrumento
+ORDER BY tablainstrumento.QueInstrumento;

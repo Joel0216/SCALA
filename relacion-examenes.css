@@ -1,0 +1,47 @@
+/* Relación de Exámenes Premium Styles */
+@import url('theme.css');
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.alumnos-section-premium {
+    margin-top: 30px;
+}
+
+.table-header-premium {
+    background: var(--primary-gradient);
+    color: white;
+    padding: 12px 20px;
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+}
+
+.premium-table-container {
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+    border: 1px solid var(--border-color);
+    border-top: none;
+    background: white;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/* Specific table cell adjustments */
+.premium-table th, .premium-table td {
+    padding: 10px 8px;
+    font-size: 0.85rem;
+}
+
+.premium-table .col-check {
+    width: 40px;
+    text-align: center;
+}
+
+.premium-table .col-name {
+    min-width: 200px;
+}

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scala - Menu de Procesos de Cobros</title>
+    <link rel="stylesheet" href="caja.css?v=2">
+</head>
+
+<body data-section="Caja">
+    <div class="container">
+        <header>
+            <h1>Scala - Academia de música</h1>
+            <h2>MENU DE PROCESOS DE COBROS</h2>
+            <div class="datetime" id="datetime"></div>
+        </header>
+
+        <main>
+            <div class="top-section">
+                <div class="logo-container">
+                    <img src="Scala_logo.png" alt="Scala Logo" id="mainLogo">
+                </div>
+
+                <button class="menu-btn top-left" onclick="irACobros()">
+                    COBROS
+                </button>
+
+                <button class="menu-btn top-right" onclick="irARecibosCancelados()">
+                    RECIBOS<br>CANCELADOS
+                </button>
+
+                <button class="menu-btn center-btn" onclick="irAConsultaBajas()">
+                    CONSULTA Y BAJAS
+                </button>
+
+                <button class="menu-btn honorarios-btn" onclick="irAHonorarios()">
+                    HONORARIOS MAESTROS
+                </button>
+            </div>
+
+            <div class="bottom-section">
+                <button class="menu-btn bottom-left" onclick="generarCorte1()">
+                    CORTE 1
+                </button>
+
+                <div class="info-box">
+                    FAVOR DE SELECCIONAR<br>EL REPORTE DE CORTE<br>QUE DESEA
+                </div>
+
+                <button class="menu-btn bottom-right" onclick="generarCorte3()">
+                    CORTE 3
+                </button>
+
+                <button class="menu-btn bottom-center" onclick="generarCorte2()">
+                    CORTE 2
+                </button>
+            </div>
+        </main>
+
+        <footer>
+            <button class="exit-btn" onclick="terminarCaja()">
+                TERMINAR
+            </button>
+        </footer>
+    </div>
+
+    <script src="supabase-config.js"></script>
+    <script src="session-manager.js"></script>
+    <script src="utils-inputs.js"></script>
+    <script src="caja.js?v=2"></script>
+</body>
+
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programación de Exámenes</title>
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="programacion-examenes.css">
+</head>
+
+    <div class="main-container">
+        <header class="app-header">
+            <h1>Programación de Exámenes</h1>
+            <div class="datetime" id="datetime"></div>
+        </header>
+
+        <main class="app-main">
+            <div class="premium-grid grid-cols-2">
+                <!-- PANEL IZQUIERDO: DATOS BÁSICOS -->
+                <div class="premium-card">
+                    <h3>Información del Examen</h3>
+                    <div class="premium-grid grid-cols-2">
+                        <div class="premium-input-group">
+                            <label class="premium-label">Clave de Examen</label>
+                            <input type="text" id="claveExamen" maxlength="20" class="premium-input" placeholder="Ej: EX-001">
+                        </div>
+                    </div>
+                    <div class="premium-grid grid-cols-2">
+                        <div class="premium-input-group">
+                            <label class="premium-label">Fecha</label>
+                            <input type="date" id="fechaExamen" class="premium-input">
+                        </div>
+                        <div class="premium-input-group">
+                            <label class="premium-label">Hora</label>
+                            <input type="time" id="horaExamen" value="19:00" class="premium-input">
+                        </div>
+                    </div>
+                    <div class="premium-grid grid-cols-2">
+                        <div class="premium-input-group">
+                            <label class="premium-label">Salón</label>
+                            <select id="salonExamen" class="premium-input">
+                                <option value="">Seleccione...</option>
+                            </select>
+                        </div>
+                        <div class="premium-input-group">
+                            <label class="premium-label">Costo ($)</label>
+                            <input type="number" id="costoExamen" step="0.01" min="0" value="0.00" class="premium-input">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PANEL DERECHO: PERSONAL Y GRUPO -->
+                <div class="premium-card">
+                    <h3>Personal y Grupo</h3>
+                    <div class="premium-input-group">
+                        <label class="premium-label">Maestro Base</label>
+                        <div class="search-input-wrapper">
+                            <input type="text" id="maestroBase" readonly placeholder="Seleccione maestro..." class="premium-input">
+                            <button type="button" onclick="abrirBuscadorMaestro('maestroBase')" class="premium-btn btn-outline" title="Buscar Maestro">B</button>
+                        </div>
+                    </div>
+                    <div class="premium-grid grid-cols-2">
+                        <div class="premium-input-group">
+                            <label class="premium-label">Examinador 1</label>
+                            <div class="search-input-wrapper">
+                                <input type="text" id="examinador1" readonly placeholder="Seleccione..." class="premium-input">
+                                <button type="button" onclick="abrirBuscadorMaestro('examinador1')" class="premium-btn btn-outline" title="Buscar Maestro">B</button>
+                            </div>
+                        </div>
+                        <div class="premium-input-group">
+                            <label class="premium-label">Examinador 2</label>
+                            <div class="search-input-wrapper">
+                                <input type="text" id="examinador2" readonly placeholder="Seleccione..." class="premium-input">
+                                <button type="button" onclick="abrirBuscadorMaestro('examinador2')" class="premium-btn btn-outline" title="Buscar Maestro">B</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="premium-input-group">
+                        <label class="premium-label">Grupo a Examinar</label>
+                        <div class="search-input-wrapper">
+                            <input type="text" id="grupoExamen" readonly placeholder="Seleccione grupo..." class="premium-input">
+                            <input type="hidden" id="grupoExamenId">
+                            <button type="button" onclick="abrirBuscadorGrupo()" class="premium-btn btn-outline" title="Buscar Grupo">B</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONTROLES DE ACCIÓN -->
+            <div class="app-footer" style="position: static; margin-top: 20px; border-radius: var(--radius-md); border-top: none; padding: 20px;">
+                <div id="btnGroupPrincipal" style="display: flex; gap: 10px; width: 100%; align-items: center;">
+                    <button id="btnNuevo" class="premium-btn btn-primary" onclick="nuevoExamen()">Nuevo</button>
+                    <button id="btnGuardar" class="premium-btn btn-primary" style="display: none;" onclick="guardarExamen()">Guardar</button>
+                    <button id="btnCancelar" class="premium-btn btn-outline" style="display: none;" onclick="cancelarExamen()">Cancelar</button>
+                    <button id="btnBuscar" class="premium-btn btn-primary" onclick="abrirBuscadorExamenes()">Buscar</button>
+                    <button id="btnBorrar" class="premium-btn btn-secondary" onclick="borrarExamen()">Borrar</button>
+                    
+                    <div class="nav-container" style="margin-left: auto; display: flex; align-items: center; gap: 10px; background: var(--bg-light); padding: 5px 15px; border-radius: var(--radius-lg); border: 1px solid var(--border-color);">
+                        <span style="font-size: 0.85rem; font-weight: 600;">Reg. <span id="registroActual">0</span> / <span id="totalRegistros">0</span></span>
+                        <div style="display: flex; gap: 4px;">
+                            <button id="btnPrimero" class="premium-btn btn-outline" style="padding: 2px 8px;">|--</button>
+                            <button id="btnAnterior" class="premium-btn btn-outline" style="padding: 2px 8px;">--</button>
+                            <input type="number" id="inputRegistro" value="1" min="1" class="premium-input" style="width: 55px; padding: 3px; text-align: center; border: none; background: transparent;">
+                            <button id="btnSiguiente" class="premium-btn btn-outline" style="padding: 2px 8px;">++</button>
+                            <button id="btnUltimo" class="premium-btn btn-outline" style="padding: 2px 8px;">++|</button>
+                        </div>
+                    </div>
+                    
+                    <button id="btnTerminar" class="premium-btn btn-danger" onclick="window.location.href='examenes-menu.html'">TERMINAR</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal búsqueda de Maestros (Premium) -->
+    <div id="modalBuscadorMaestro" class="modal premium-modal" style="display:none;">
+        <div class="premium-modal-content" style="max-width:550px; margin: 5% auto;">
+            <div class="premium-modal-header">
+                <h2>Búsqueda de Maestros</h2>
+            </div>
+            <div class="premium-modal-body" style="padding: 20px;">
+                <input type="text" id="inputBuscadorMaestro" placeholder="Escriba el nombre del maestro..." class="premium-input"
+                    oninput="filtrarMaestrosBuscador(this.value)" style="margin-bottom: 15px;">
+                <div class="premium-table-container" style="height: 300px;">
+                    <table class="premium-table">
+                        <thead>
+                            <tr>
+                                <th>Nombre Completo</th>
+                            </tr>
+                        </thead>
+                        <tbody id="listaMaestrosBuscador"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="app-footer" style="padding: 15px 20px; justify-content: flex-end; border: none;">
+                <button onclick="document.getElementById('modalBuscadorMaestro').style.display='none'" class="premium-btn btn-outline">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal búsqueda de Grupos (Premium) -->
+    <div id="modalBuscadorGrupo" class="modal premium-modal" style="display:none;">
+        <div class="premium-modal-content" style="max-width:750px; margin: 5% auto;">
+            <div class="premium-modal-header">
+                <h2>Búsqueda de Grupos</h2>
+            </div>
+            <div class="premium-modal-body" style="padding: 20px;">
+                <input type="text" id="inputBuscadorGrupo" placeholder="Nombre o clave del grupo..." class="premium-input"
+                    oninput="filtrarGruposBuscador(this.value)" style="margin-bottom: 15px;">
+                <div class="premium-table-container" style="height: 350px;">
+                    <table class="premium-table">
+                        <thead>
+                            <tr>
+                                <th>Grupo/Clave</th>
+                                <th>Curso</th>
+                                <th>Maestro</th>
+                            </tr>
+                        </thead>
+                        <tbody id="listaGruposBuscador"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="app-footer" style="padding: 15px 20px; justify-content: flex-end; border: none;">
+                <button onclick="document.getElementById('modalBuscadorGrupo').style.display='none'" class="premium-btn btn-outline">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal búsqueda de exámenes (Premium) -->
+    <div id="modalBuscadorExamenes" class="modal premium-modal" style="display: none;">
+        <div class="premium-modal-content" style="max-width: 750px; margin: 5% auto;">
+            <div class="premium-modal-header">
+                <h2>Listado de Programación de Exámenes</h2>
+            </div>
+            <div class="premium-modal-body" style="padding: 20px;">
+                <input type="text" id="inputBusquedaExamen" placeholder="Filtrar por clave de examen..." class="premium-input"
+                    oninput="filtrarExamenes(this.value)" style="margin-bottom: 15px;">
+                <div class="premium-table-container" style="height: 350px;">
+                    <table class="premium-table" id="tablaResultados">
+                        <thead>
+                            <tr>
+                                <th>Clave</th>
+                                <th>Fecha</th>
+                                <th>Grupo</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bodyResultados" style="cursor: pointer;"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="app-footer" style="padding: 15px 20px; justify-content: flex-end; border: none;">
+                <button onclick="document.getElementById('modalBuscadorExamenes').style.display='none'" class="premium-btn btn-outline">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="supabase-config.js"></script>
+    <script src="utils-inputs.js"></script>
+    <script src="programacion-examenes.js"></script>
+</body>
+
+</html>

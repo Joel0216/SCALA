@@ -1,0 +1,239 @@
+Version =19
+VersionRequired =19
+Checksum =1552372125
+Begin Form
+    PopUp = NotDefault
+    Modal = NotDefault
+    RecordSelectors = NotDefault
+    MaxButton = NotDefault
+    MinButton = NotDefault
+    ControlBox = NotDefault
+    NavigationButtons = NotDefault
+    DefaultView =0
+    ScrollBars =0
+    GridX =5
+    GridY =5
+    Width =4762
+    ItemSuffix =20
+    Left =885
+    Top =1560
+    Right =8775
+    Bottom =6420
+    RecSrcDt = Begin
+        0x8b54f15422dee140
+    End
+    GUID = Begin
+        0x25cd7b1c5dc27148ad50829b72128a68
+    End
+    NameMap = Begin
+        0x0acc0e5500000000c6a5bef056f25842acc4b8efe8a3bd3500000000c1166cd1 ,
+        0xb849e340000000000000000055006c0074005f00720065006300690062006f00 ,
+        0x00000000000033ef4d1d5b2d0a429efb2b20653d9bee07000000c6a5bef056f2 ,
+        0x5842acc4b8efe8a3bd35520065006300690062006f0000000000000000000000 ,
+        0x0000000000000000000000000c00000002000000000000000000000000000000 ,
+        0x0000
+    End
+    RecordSource ="Ult_recibo"
+    Caption ="Modifica Ultimo Recibo"
+    MenuBar ="Barra Main"
+    Begin
+        Begin Label
+            TextAlign =3
+            FontWeight =700
+            BackColor =12632256
+        End
+        Begin Rectangle
+            SpecialEffect =2
+            Width =850
+            Height =850
+        End
+        Begin Line
+            Width =1701
+        End
+        Begin CommandButton
+            TextFontFamily =2
+            Width =1701
+            Height =283
+        End
+        Begin OptionButton
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin CheckBox
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin TextBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin ListBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =1417
+            LabelX =-236
+        End
+        Begin ComboBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin FormHeader
+            Height =558
+            BackColor =16776960
+            Name ="EncabezadoDelFormulario1"
+            EventProcPrefix ="EncabezadoDelFormula"
+            GUID = Begin
+                0x30486d57641edc439dca653e03138025
+            End
+            Begin
+                Begin Label
+                    BackStyle =0
+                    OverlapFlags =93
+                    TextAlign =1
+                    Left =488
+                    Top =153
+                    Width =3300
+                    Height =405
+                    FontSize =14
+                    ForeColor =8355711
+                    Name ="Texto12"
+                    Caption ="Modifica Ultimo Recibo"
+                    GUID = Begin
+                        0x166958df0eedef448f8428bd4c021cfd
+                    End
+                End
+                Begin Label
+                    BackStyle =0
+                    OverlapFlags =215
+                    TextAlign =1
+                    Left =452
+                    Top =113
+                    Width =3300
+                    Height =405
+                    FontSize =14
+                    ForeColor =16777215
+                    Name ="Texto13"
+                    Caption ="Modifica Ultimo Recibo"
+                    GUID = Begin
+                        0x591ece60a2afa14a9786303396ae88ef
+                    End
+                End
+            End
+        End
+        Begin Section
+            Height =1814
+            BackColor =16776960
+            Name ="Detalle0"
+            GUID = Begin
+                0x2a8f202c5ad2a749ac6950cfc9fdec72
+            End
+            Begin
+                Begin TextBox
+                    DecimalPlaces =0
+                    OverlapFlags =85
+                    Left =2037
+                    Top =793
+                    Width =1005
+                    Name ="Recibo"
+                    ControlSource ="Recibo"
+                    StatusBarText ="Para guardar el ultimo Recibo"
+                    GUID = Begin
+                        0x8759e87a1d441448bf38cdddd99b22b4
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =1133
+                            Top =793
+                            Width =791
+                            Height =240
+                            BackColor =16776960
+                            Name ="Texto15"
+                            Caption ="Recibo:"
+                            GUID = Begin
+                                0x6669f1481238144482d87eb836d8fa9f
+                            End
+                        End
+                    End
+                End
+                Begin Label
+                    OverlapFlags =85
+                    TextAlign =2
+                    Left =680
+                    Top =113
+                    Width =2955
+                    Height =405
+                    BackColor =16776960
+                    Name ="Texto16"
+                    Caption ="Favor de proporcionar el próximo número de recibo"
+                    GUID = Begin
+                        0xd4dcb0f3f6f7d44a878c152820bcc499
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =3401
+                    Top =1133
+                    Width =855
+                    Height =465
+                    TabIndex =1
+                    ForeColor =255
+                    Name ="B_Close_Last_recibo"
+                    Caption ="Cerrar"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0x4992d0a4eb16ea46adcc30b839986d29
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            Visible = NotDefault
+            Height =0
+            BackColor =12632256
+            Name ="PieDelFormulario2"
+            GUID = Begin
+                0x9491807b1ba75e4db64dcfd46095e315
+            End
+        End
+    End
+End
+CodeBehindForm
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database   'Usar orden de base de datos en comparaciones de cadenas
+
+Private Sub B_Close_Last_recibo_Click()
+On Error GoTo Err_B_Close_Last_recibo_Click
+
+
+    DoCmd.Close
+    DoCmd.GoToControl "Prox_Recibo"
+    DoCmd.Requery
+    DoCmd.GoToControl "Botón79"
+
+Exit_B_Close_Last_recibo_Click:
+    Exit Sub
+
+Err_B_Close_Last_recibo_Click:
+    MsgBox Error$
+    Resume Exit_B_Close_Last_recibo_Click
+    
+End Sub

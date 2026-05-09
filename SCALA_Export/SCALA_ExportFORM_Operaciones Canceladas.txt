@@ -1,0 +1,391 @@
+Version =19
+VersionRequired =19
+Checksum =16464062
+Begin Form
+    AllowEditing = NotDefault
+    AllowDeletions = NotDefault
+    AllowAdditions = NotDefault
+    AllowEdits = NotDefault
+    DefaultView =2
+    GridX =5
+    GridY =5
+    Width =3975
+    ItemSuffix =45
+    Left =1170
+    Top =960
+    Right =11460
+    Bottom =7245
+    RecSrcDt = Begin
+        0xe374f55422dee140
+    End
+    GUID = Begin
+        0x2ec2b27ceb824d48901f28e9353c8b6d
+    End
+    NameMap = Begin
+        0x0acc0e550000000003c099cb5a155b40a7931af0fc997296000000004ff5dbd0 ,
+        0xb849e34000000000000000004f007000650072006100630069006f006e006500 ,
+        0x73002000430061006e00630065006c0061006400610073000000000000000433 ,
+        0xfac1bf8a4c4c9c8c1c99d5c718530700000003c099cb5a155b40a7931af0fc99 ,
+        0x72964d006f006e0074006f00000000000000f181f8874f2f50419a5e6552b23a ,
+        0x41150700000003c099cb5a155b40a7931af0fc997296430061006e0074006900 ,
+        0x640061006400000000000000ac0db0980c4ce840813e9c876e3381fb07000000 ,
+        0x03c099cb5a155b40a7931af0fc9972964400650073006300750065006e007400 ,
+        0x6f000000000000008e72d5564213fc4db301d7188c0e24eb0700000003c099cb ,
+        0x5a155b40a7931af0fc9972964e00650074006f00000000000000994aa19c1879 ,
+        0x734ea152ffc7066fc6dc0700000003c099cb5a155b40a7931af0fc9972964300 ,
+        0x72006500640065006e006300690061006c00000000000000ca7c715feb45b84f ,
+        0xa03ff7832efcbc3f00000000f20a7fd0b849e340000000000000000041006c00 ,
+        0x75006d006e006f007300000000000000376842492cb30346b6625c398ef7c996 ,
+        0x07000000ca7c715feb45b84fa03ff7832efcbc3f4e006f006d00620072006500 ,
+        0x000000000000fbabec0f18f0b748a2258c5e61e294a10700000003c099cb5a15 ,
+        0x5b40a7931af0fc99729647007200750070006f000000000000009d31fa492ddf ,
+        0x1b48a96f2b38681a7e2f0700000003c099cb5a155b40a7931af0fc9972964f00 ,
+        0x7000650072006100630069006f006e00000000000000158a3c338aba204e8648 ,
+        0x40a50002beaf000000008de930d1b849e3400000000000000000410072007400 ,
+        0x6900630075006c006f007300000000000000da4098ee2340d34f9cf5e4fe6d08 ,
+        0x002207000000158a3c338aba204e864840a50002beaf43006c00610076006500 ,
+        0x000000000000b1344c9e5faf724aa03336fd62ebb48f07000000158a3c338aba ,
+        0x204e864840a50002beaf4400650073006300720069007000630069006f006e00 ,
+        0x0000000000008b16366e45fc0a4e97b454541f0a26d407000000158a3c338aba ,
+        0x204e864840a50002beaf530074006f0063006b00000000000000c5581217495a ,
+        0x6549b0398ad833e235670700000003c099cb5a155b40a7931af0fc9972966900 ,
+        0x76006100000000000000fa5ee2971ee1b446960b404a40822c550700000003c0 ,
+        0x99cb5a155b40a7931af0fc997296470065006e006500720061006c0000000000 ,
+        0x00007db578241c881249ac8b4988a83663cf060000002ec2b27ceb824d48901f ,
+        0x28e9353c8b6d6900760061000000000000001df5d4181ef64b47ade4a18fb2a2 ,
+        0xb5b3060000002ec2b27ceb824d48901f28e9353c8b6d4e00650074006f000000 ,
+        0x00000000000000000000000000000000000000000c0000000200000000000000 ,
+        0x00000000000000000000
+    End
+    RecordSource ="Operaciones Canceladas"
+    Begin
+        Begin Label
+            TextAlign =3
+            FontWeight =700
+            BackColor =12632256
+        End
+        Begin Rectangle
+            SpecialEffect =2
+            Width =850
+            Height =850
+        End
+        Begin OptionButton
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin CheckBox
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin TextBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin ListBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =1417
+            LabelX =-236
+        End
+        Begin ComboBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin FormHeader
+            Height =0
+            BackColor =12632256
+            Name ="EncabezadoDelFormulario1"
+            EventProcPrefix ="EncabezadoDelFormula"
+            GUID = Begin
+                0x1c98cd479d53d94faddc39cccd457833
+            End
+        End
+        Begin Section
+            Height =3741
+            BackColor =12632256
+            Name ="Detalle0"
+            GUID = Begin
+                0x67fa54581d28964286eb60e548912230
+            End
+            Begin
+                Begin TextBox
+                    Locked = NotDefault
+                    OverlapFlags =85
+                    Left =1587
+                    Top =1587
+                    Width =1128
+                    ColumnWidth =750
+                    TabIndex =2
+                    Name ="Monto"
+                    ControlSource ="Monto"
+                    Format ="$#,##0.00;($#,##0.00)"
+                    StatusBarText ="Cantidad cobrada por la operacion"
+                    GUID = Begin
+                        0xcca211c67dd2454e928d9ef49509dca6
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =678
+                            Top =1474
+                            Width =678
+                            Height =240
+                            Name ="Texto17"
+                            Caption ="Lista"
+                            GUID = Begin
+                                0x72e73f2b1824bf489e224e2f41bd8501
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    DecimalPlaces =0
+                    OverlapFlags =85
+                    Left =1587
+                    Top =2381
+                    Width =783
+                    ColumnWidth =570
+                    TabIndex =3
+                    Name ="Cantidad"
+                    ControlSource ="Cantidad"
+                    Format ="Fixed"
+                    StatusBarText ="Cantidad de articulos en esa operacion"
+                    GUID = Begin
+                        0xbc41b09a55cec445b1f1c497591bf32d
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =452
+                            Top =2381
+                            Width =904
+                            Height =240
+                            Name ="Texto23"
+                            Caption ="Cant:"
+                            GUID = Begin
+                                0xd13ed055d396014a9030953a65b70c60
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =93
+                    Left =1587
+                    Top =1133
+                    Width =1023
+                    ColumnWidth =705
+                    TabIndex =5
+                    Name ="Descuento"
+                    ControlSource ="Descuento"
+                    Format ="Percent"
+                    StatusBarText ="Porcentaje de descuento o recargo en la operacion"
+                    GUID = Begin
+                        0xff71b83d136fb64598f67861e13b3398
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =93
+                            Left =571
+                            Top =1133
+                            Width =785
+                            Height =240
+                            Name ="Texto25"
+                            Caption ="% D.I."
+                            GUID = Begin
+                                0x86ae8059598230409b4a7decb37450a6
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    OverlapFlags =85
+                    Left =1587
+                    Top =2834
+                    Width =1473
+                    ColumnWidth =915
+                    TabIndex =6
+                    Name ="Neto"
+                    ControlSource ="Neto"
+                    Format ="$#,##0.00;($#,##0.00)"
+                    GUID = Begin
+                        0x1df5d4181ef64b47ade4a18fb2a2b5b3
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =791
+                            Top =2721
+                            Width =565
+                            Height =240
+                            Name ="Texto29"
+                            Caption ="Neto"
+                            GUID = Begin
+                                0x2e97340a9cde4941a032ffb2c5d36eea
+                            End
+                        End
+                    End
+                End
+                Begin ComboBox
+                    ColumnHeads = NotDefault
+                    OverlapFlags =85
+                    ColumnCount =3
+                    ListWidth =5875
+                    Left =1587
+                    Top =113
+                    Width =970
+                    ColumnWidth =825
+                    ColumnInfo ="\"\";\"\";\"\";\"\";\"\";\"\";\"4\";\"4\""
+                    GUID = Begin
+                        0x53a40af79e3ebc40b9b0e0ab0defa3d6
+                    End
+                    Name ="Credencial"
+                    ControlSource ="Credencial"
+                    RowSourceType ="Table/Query"
+                    RowSource ="Select [Credencial],[Nombre],[Grupo] From [Alumnos];"
+                    ColumnWidths ="720;3465;1440"
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =426
+                            Top =113
+                            Width =930
+                            Height =240
+                            Name ="Texto31"
+                            Caption ="Cred."
+                            GUID = Begin
+                                0x36ff043f16f0f444806b22c85ebee5c1
+                            End
+                        End
+                    End
+                End
+                Begin ComboBox
+                    ColumnHeads = NotDefault
+                    OverlapFlags =85
+                    ColumnCount =3
+                    ListWidth =5950
+                    Left =1587
+                    Top =566
+                    Width =2155
+                    ColumnWidth =3750
+                    TabIndex =1
+                    ColumnInfo ="\"\";\"\";\"\";\"\";\"\";\"\";\"10\";\"40\""
+                    GUID = Begin
+                        0x7c3d30f39fcd4d4580575860990f1aaf
+                    End
+                    Name ="Oeracion"
+                    ControlSource ="Operacion"
+                    RowSourceType ="Table/Query"
+                    RowSource ="Select [Clave],[Descripcion],[Stock] From [Articulos];"
+                    ColumnWidths ="705;3555;1440"
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =426
+                            Top =566
+                            Width =930
+                            Height =240
+                            Name ="Texto33"
+                            Caption ="Operación"
+                            GUID = Begin
+                                0x72d7dfb3d2cf8a479c95a9f118df5169
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    Visible = NotDefault
+                    Locked = NotDefault
+                    TabStop = NotDefault
+                    OverlapFlags =85
+                    Left =1587
+                    Top =3288
+                    ColumnWidth =15
+                    TabIndex =7
+                    Name ="iva"
+                    ControlSource ="iva"
+                    Format ="$#,##0.00;($#,##0.00)"
+                    GUID = Begin
+                        0x7db578241c881249ac8b4988a83663cf
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =421
+                            Top =3288
+                            Width =930
+                            Height =240
+                            Name ="Texto42"
+                            Caption ="Campo41:"
+                            GUID = Begin
+                                0x70adf1b7cbb57e44b72684880eaa2263
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =247
+                    Left =1587
+                    Top =907
+                    ColumnWidth =720
+                    TabIndex =4
+                    Name ="general"
+                    ControlSource ="General"
+                    Format ="Percent"
+                    GUID = Begin
+                        0x354629c8dd48b3468d2ade7cff9a0d52
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =87
+                            Left =421
+                            Top =907
+                            Width =930
+                            Height =240
+                            Name ="Texto44"
+                            Caption ="% D.G."
+                            GUID = Begin
+                                0x9a3b280f6275804d959df9c806031fa3
+                            End
+                        End
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            Height =907
+            BackColor =12632256
+            Name ="PieDelFormulario2"
+            GUID = Begin
+                0x1ad21e2e6c60f14193ce4b5cb9896ec7
+            End
+            Begin
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =1700
+                    Top =113
+                    Name ="TotalNeto"
+                    ControlSource ="=IIf(Not isnull([iva]),Sum([Neto]-[iva]),Sum([neto]))"
+                    GUID = Begin
+                        0xddfe22d257ae064bb56c844ca11f9d94
+                    End
+                End
+            End
+        End
+    End
+End

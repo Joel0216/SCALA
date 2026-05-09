@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RFC Clientes - Scala</title>
+    <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+    <div class="container">
+        <header class="app-header">
+            <h1>Gestión de RFC Clientes</h1>
+            <div class="datetime" id="datetime"></div>
+        </header>
+
+        <main class="app-main">
+            <div class="premium-grid grid-cols-2">
+                <!-- Datos Fiscales -->
+                <div class="premium-card">
+                    <h3>Información Fiscal</h3>
+                    <div class="premium-input-group">
+                        <label class="premium-label">RFC</label>
+                        <input type="text" id="rfc" class="premium-input" readonly placeholder="RFC del Cliente">
+                    </div>
+
+                    <div class="premium-input-group">
+                        <label class="premium-label">Nombre o Razón Social</label>
+                        <input type="text" id="nombre" class="premium-input" readonly placeholder="Nombre completo">
+                    </div>
+
+                    <div class="premium-input-group">
+                        <label class="premium-label">Dirección Fiscal / Domicilio</label>
+                        <input type="text" id="direccion" class="premium-input" readonly placeholder="Calle, número, colonia...">
+                    </div>
+
+                    <div class="premium-input-group">
+                        <label class="premium-label">Correo Electrónico de Facturación</label>
+                        <input type="text" id="correo" class="premium-input" readonly placeholder="Email para el envío de facturas">
+                    </div>
+                </div>
+
+                <!-- Credenciales Asociadas -->
+                <div class="premium-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid var(--color-pale-pink); padding-bottom: 10px;">
+                        <h3 style="margin: 0; border: none; padding: 0;">Credenciales Asociadas</h3>
+                        <input type="text" id="rfcGridHeader" class="premium-input" style="width: 150px; text-align: center;" readonly disabled placeholder="RFC Actual">
+                    </div>
+
+                    <div class="premium-table-container" style="height: 250px; overflow-y: auto;">
+                        <table class="premium-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 50px; text-align: center;">Acción</th>
+                                    <th>Credencial</th>
+                                </tr>
+                            </thead>
+                            <tbody id="credencialesGrid"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="app-footer" style="position: static; margin-top: 20px; border-radius: var(--radius-md); border-top: none; padding: 20px;">
+                <div id="btnGroupDefault" style="display: flex; gap: 10px; width: 100%;">
+                    <!-- Quitamos onclick y usamos IDs para vinculación en rfc-clientes.js -->
+                    <button type="button" class="premium-btn btn-primary" id="btnNuevo">NUEVO</button>
+                    <button type="button" class="premium-btn btn-primary" id="btnBuscar">BUSCAR</button>
+                    <button type="button" class="premium-btn btn-danger" id="btnBorrar">BORRAR</button>
+                    <div style="flex-grow: 1;"></div>
+                    <button type="button" class="premium-btn btn-danger" id="btnTerminar">TERMINAR</button>
+                </div>
+                <div id="btnGroupEdicion" style="display: none; gap: 10px; width: 100%;">
+                    <button type="button" class="premium-btn btn-outline" id="btnCancelar">CANCELAR</button>
+                    <div style="flex-grow: 1;"></div>
+                    <button type="button" class="premium-btn btn-primary" id="btnGuardar">GUARDAR RFC</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODALES -->
+    <div id="searchModal" class="premium-modal" style="display: none;">
+        <div class="premium-modal-content" style="max-width: 800px;">
+            <div class="premium-modal-header"><h2>Buscar RFC</h2></div>
+            <div class="premium-modal-body" style="padding: 20px;">
+                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                    <input type="text" id="searchInput" class="premium-input" placeholder="RFC o nombre...">
+                    <button id="btnEjecutarBusqueda" class="premium-btn btn-primary">BUSCAR</button>
+                </div>
+                <div class="premium-table-container" style="height: 350px;">
+                    <table class="premium-table"><thead><tr><th>RFC</th><th>Nombre</th><th>Correo</th></tr></thead><tbody id="bodyResultados"></tbody></table>
+                </div>
+            </div>
+            <div class="app-footer" style="position: static;"><button id="btnCerrarBusqueda" class="premium-btn btn-outline">CERRAR</button></div>
+        </div>
+    </div>
+
+    <div id="modalLupaAlumnos" class="premium-modal" style="display: none;">
+        <div class="premium-modal-content" style="max-width: 750px;">
+            <div class="premium-modal-header"><h2>Vincular Alumno</h2></div>
+            <div class="premium-modal-body" style="padding: 20px;">
+                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                    <input type="text" id="inputLupaAlumnos" class="premium-input" placeholder="Nombre...">
+                    <button id="btnEjecutarLupa" class="premium-btn btn-primary">BUSCAR</button>
+                </div>
+                <div class="premium-table-container" style="height: 300px;"><table class="premium-table"><thead><tr><th>Credencial</th><th>Alumno</th></tr></thead><tbody id="bodyLupaAlumnos"></tbody></table></div>
+            </div>
+            <div class="app-footer" style="position: static;"><button id="btnCerrarLupa" class="premium-btn btn-outline">CERRAR</button></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="utils-inputs.js"></script>
+    <script src="rfc-clientes.js"></script>
+</body>
+</html>

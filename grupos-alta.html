@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alta de Grupos</title>
+    <link rel="stylesheet" href="grupos-alta.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Alta de Grupos</h1>
+            <div class="datetime" id="datetime"></div>
+        </div>
+
+        <form id="altaForm">
+            <!-- Clave (generada automáticamente) -->
+            <div class="form-group">
+                <label for="clave">Clave:</label>
+                <input type="text" id="clave" name="clave" readonly>
+            </div>
+
+            <!-- Curso con dropdown -->
+            <div class="form-group">
+                <label for="cursoId">Curso: *</label>
+                <select id="cursoId" name="cursoId" required>
+                    <option value="">-- Seleccione un curso --</option>
+                </select>
+            </div>
+
+            <!-- Maestro con dropdown -->
+            <div class="form-group">
+                <label for="maestroId">Nombre (Maestro): *</label>
+                <select id="maestroId" name="maestroId" required>
+                    <option value="">-- Seleccione un maestro --</option>
+                </select>
+            </div>
+
+            <!-- Día y Tipo Pago -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="dia">Día: *</label>
+                    <select id="dia" name="dia" required>
+                        <option value="">-- Seleccione --</option>
+                        <option value="LU">Lunes</option>
+                        <option value="MA">Martes</option>
+                        <option value="MI">Miércoles</option>
+                        <option value="JU">Jueves</option>
+                        <option value="VI">Viernes</option>
+                        <option value="SA">Sábado</option>
+                        <option value="DO">Domingo</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="tipo_pago_maestro">Tipo Pago Maestro:</label>
+                    <select id="tipo_pago_maestro" name="tipo_pago_maestro">
+                        <option value="ALUMNO">Por Alumno</option>
+                        <option value="HORA">Por Hora</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Horarios -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="horaEntrada">Hora entrada: *</label>
+                    <input type="time" id="horaEntrada" name="horaEntrada">
+                </div>
+                <div class="form-group">
+                    <label for="horaSalida">Hora salida: *</label>
+                    <input type="time" id="horaSalida" name="horaSalida">
+                </div>
+            </div>
+
+            <!-- Salón con información de instrumentos -->
+            <div class="form-group">
+                <label for="salon">Salón: *</label>
+                <select id="salon" name="salon">
+                    <option value="">-- Seleccione --</option>
+                </select>
+            </div>
+            <div id="salonInfo" class="salon-info"></div>
+
+            <!-- Cupo y Alumnos -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="cupo">Cupo: *</label>
+                    <input type="number" id="cupo" name="cupo" value="0" min="0">
+                </div>
+                <div class="form-group">
+                    <label for="alumnos">Alumnos:</label>
+                    <input type="number" id="alumnos" name="alumnos" value="0" readonly>
+                </div>
+            </div>
+
+            <!-- Inicio -->
+            <div class="form-group">
+                <label for="inicio">Inicio: *</label>
+                <input type="date" id="inicio" name="inicio">
+            </div>
+
+            <!-- Lección (opcional) -->
+            <div class="form-group">
+                <label for="leccion">Lección:</label>
+                <input type="text" id="leccion" name="leccion" value="Null">
+            </div>
+
+            <!-- Fecha Lección (opcional) -->
+            <div class="form-group">
+                <label for="fechaLeccion">Fecha Lección:</label>
+                <input type="date" id="fechaLeccion" name="fechaLeccion">
+            </div>
+
+            <!-- Botones -->
+            <div class="button-group">
+                <button type="button" class="btn btn-primary" id="nuevoBtn">Nuevo</button>
+                <button type="button" class="btn" id="cancelarBtn">Cancelar</button>
+                <button type="button" class="btn btn-terminar" id="terminarBtn">Terminar</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="utils-inputs.js"></script>
+    <script src="grupos-alta.js"></script>
+</body>
+
+</html>

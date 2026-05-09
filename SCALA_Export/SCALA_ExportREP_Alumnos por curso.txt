@@ -1,0 +1,421 @@
+Version =19
+VersionRequired =19
+Checksum =-1171190750
+Begin Report
+    LayoutForPrint = NotDefault
+    GridX =64
+    GridY =64
+    Width =9433
+    ItemSuffix =39
+    Left =825
+    Top =180
+    Right =11460
+    Bottom =7350
+    RecSrcDt = Begin
+        0x64f18867cc99e240
+    End
+    GUID = Begin
+        0x485b36d8079fa34a99de19291e02f108
+    End
+    NameMap = Begin
+        0x0acc0e55000000009cab9d8fed2c1747b23eced835b25a380000000096f41d31 ,
+        0x774ce340000000000000000051005f0041006c0075006d006e006f0020007900 ,
+        0x200047007200750070006f00000000000000bfa14471afe63d448e1484a070b1 ,
+        0x727b070000009cab9d8fed2c1747b23eced835b25a3843007500720073006f00 ,
+        0x000000000000e8bb53c10f446047a547bcc4063d3f97070000009cab9d8fed2c ,
+        0x1747b23eced835b25a38430072006500640065006e006300690061006c000000 ,
+        0x00000000c08b025cf3a59f42b0b910e4ce2840d7070000009cab9d8fed2c1747 ,
+        0xb23eced835b25a3847007200750070006f000000000000007e2a9b028d5e8347 ,
+        0x83b04f8690cb8fa2070000009cab9d8fed2c1747b23eced835b25a3854006500 ,
+        0x6c00650066006f006e006f00000000000000376842492cb30346b6625c398ef7 ,
+        0xc996070000009cab9d8fed2c1747b23eced835b25a384e006f006d0062007200 ,
+        0x6500000000000000000000000000000000000000000000000c00000002000000 ,
+        0x0000000000000000000000000000
+    End
+    RecordSource ="Q_Alumno y Grupo"
+    PrtMip = Begin
+        0x6f0400006e0400006f0400006e04000000000000d92400000001000001000000 ,
+        0x010000006501000000000000a10700000100000000000000
+    End
+    PrtDevMode = Begin
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x010400059c00340243ef800501000100ea0a6f08640001000800780002000100 ,
+        0x9000010001004361727461000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000010000000000000001000000 ,
+        0x0200000001000000ffffffff0000000000000000000000000000000044494e55 ,
+        0x2200000034020000825a07f20000000000000000000000000000000000000000 ,
+        0x0000000000000000080000000100000000000100070000000100000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x00000000000000000000000000000000
+    End
+    PrtDevNames = Begin
+        0x0800120021000100000000000000000000000000000000000000000000000000 ,
+        0x00555342303031003031000000000000000000000000000000
+    End
+    Begin
+        Begin Label
+            TextFontFamily =18
+            FontSize =10
+            FontWeight =700
+            FontName ="Times New Roman"
+        End
+        Begin Line
+            Width =1701
+        End
+        Begin BoundObjectFrame
+            AutoLabel = NotDefault
+            OldBorderStyle =0
+            Width =4536
+            Height =2835
+            LabelX =-1701
+        End
+        Begin TextBox
+            AutoLabel = NotDefault
+            OldBorderStyle =0
+            TextFontFamily =18
+            Width =1701
+            Height =270
+            LabelX =-1701
+            FontSize =10
+            FontName ="Times New Roman"
+        End
+        Begin PageBreak
+            Width =283
+        End
+        Begin BreakLevel
+            GroupHeader = NotDefault
+            GroupFooter = NotDefault
+            ControlSource ="Curso"
+        End
+        Begin BreakLevel
+            ControlSource ="Nombre"
+        End
+        Begin FormHeader
+            KeepTogether = NotDefault
+            Height =0
+            Name ="EncabezadoDelInforme0"
+            EventProcPrefix ="EncabezadoDelInforme"
+            GUID = Begin
+                0xef3b24e5de14cf439aada8526afd4e93
+            End
+        End
+        Begin PageHeader
+            Height =1142
+            Name ="EncabezadoDePágina1"
+            GUID = Begin
+                0x08ab177d0d12b844a75fc3b346643fd1
+            End
+            Begin
+                Begin Label
+                    OverlapFlags =81
+                    TextAlign =2
+                    Left =2719
+                    Top =177
+                    Width =4128
+                    Height =380
+                    FontSize =14
+                    Name ="Text21"
+                    Caption ="Alumnos por curso"
+                    GUID = Begin
+                        0xcde942bc13aecb448bf7234501a370d9
+                    End
+                End
+                Begin Line
+                    OverlapFlags =81
+                    Left =141
+                    Top =61
+                    Width =9072
+                    Name ="Line22"
+                    GUID = Begin
+                        0xce01a7f3cde50549972c1168868a6933
+                    End
+                End
+                Begin Line
+                    OverlapFlags =81
+                    Left =141
+                    Top =119
+                    Width =9072
+                    Name ="Line23"
+                    GUID = Begin
+                        0x876e2dea4d378546802e2cd99e5883f3
+                    End
+                End
+                Begin TextBox
+                    FontItalic = NotDefault
+                    OverlapFlags =81
+                    TextAlign =1
+                    Left =929
+                    Top =283
+                    Width =1666
+                    Height =283
+                    Name ="Field28"
+                    ControlSource ="=Now()"
+                    Format ="Medium Date"
+                    GUID = Begin
+                        0x416b750ca4b1e84cba0468769d2e352b
+                    End
+                End
+                Begin Line
+                    OverlapFlags =81
+                    Left =124
+                    Top =611
+                    Width =9072
+                    Name ="Line30"
+                    GUID = Begin
+                        0x5a2a655ebc03e342b8b44b8f0429cf90
+                    End
+                End
+                Begin Line
+                    OverlapFlags =81
+                    Left =124
+                    Top =669
+                    Width =9072
+                    Name ="Line31"
+                    GUID = Begin
+                        0xc5cb783bf0247040bad1a894d28f4a55
+                    End
+                End
+                Begin TextBox
+                    FontItalic = NotDefault
+                    OverlapFlags =81
+                    TextAlign =3
+                    Left =8051
+                    Top =283
+                    Width =812
+                    Height =257
+                    TabIndex =1
+                    Name ="Field29"
+                    ControlSource ="=Page"
+                    GUID = Begin
+                        0x088672b848e8a844a2b6e4b0d97d0fb3
+                    End
+                End
+                Begin Label
+                    FontItalic = NotDefault
+                    OverlapFlags =83
+                    Left =7316
+                    Top =283
+                    Width =735
+                    Height =285
+                    FontWeight =400
+                    Name ="Text32"
+                    Caption ="Pagina"
+                    GUID = Begin
+                        0x326944c78aa2e441bdf2d6bdf2cef32d
+                    End
+                End
+                Begin Label
+                    OverlapFlags =81
+                    Left =947
+                    Top =748
+                    Width =780
+                    Height =285
+                    Name ="Text34"
+                    Caption ="Nombre"
+                    GUID = Begin
+                        0x90d73ae7c50994408df36e5fa43ef6b6
+                    End
+                End
+                Begin Label
+                    OverlapFlags =81
+                    Left =4728
+                    Top =744
+                    Width =555
+                    Height =285
+                    Name ="Text35"
+                    Caption ="Cred."
+                    GUID = Begin
+                        0xa2e9017e45f7284a87b218ed733adf58
+                    End
+                End
+                Begin Label
+                    OverlapFlags =81
+                    Left =5924
+                    Top =735
+                    Width =850
+                    Height =284
+                    Name ="Text36"
+                    Caption ="Telefono"
+                    GUID = Begin
+                        0x4be8f2413a28f940909075c0f743a790
+                    End
+                End
+                Begin Label
+                    OverlapFlags =81
+                    Left =7625
+                    Top =761
+                    Width =629
+                    Height =275
+                    Name ="Text37"
+                    Caption ="Grupo"
+                    GUID = Begin
+                        0xce279f8d6339d14da43374229857a847
+                    End
+                End
+            End
+        End
+        Begin BreakHeader
+            KeepTogether = NotDefault
+            Height =611
+            Name ="EncabezadoDelGrupo2"
+            GUID = Begin
+                0x8576232c3e96bc4e800a54e36df85cae
+            End
+            Begin
+                Begin TextBox
+                    OverlapFlags =81
+                    TextAlign =2
+                    Left =3118
+                    Top =124
+                    Width =3969
+                    FontSize =12
+                    FontWeight =700
+                    Name ="Curso"
+                    ControlSource ="Curso"
+                    StatusBarText ="Curso impartido en el grupo"
+                    GUID = Begin
+                        0xe06f25e62f4efb44b6b02306568d4dd7
+                    End
+                End
+                Begin Line
+                    OverlapFlags =81
+                    Left =132
+                    Top =469
+                    Width =9072
+                    Name ="Line33"
+                    GUID = Begin
+                        0xc25beef5f384cd458a6911296c9e6d3c
+                    End
+                End
+            End
+        End
+        Begin Section
+            KeepTogether = NotDefault
+            Height =256
+            Name ="Detalle3"
+            GUID = Begin
+                0x56d482d5beba45489d12690b6020d335
+            End
+            Begin
+                Begin TextBox
+                    Locked = NotDefault
+                    DecimalPlaces =0
+                    OverlapFlags =81
+                    TextAlign =3
+                    Left =4393
+                    Width =881
+                    Height =204
+                    ColumnWidth =1050
+                    Name ="Credencial"
+                    ControlSource ="Credencial"
+                    Format ="General Number"
+                    StatusBarText ="Alumno ID"
+                    GUID = Begin
+                        0x65b82c06b700cc4ca969fa77c881d85d
+                    End
+                End
+                Begin TextBox
+                    DecimalPlaces =0
+                    OverlapFlags =81
+                    Left =7591
+                    Top =17
+                    Width =1460
+                    Height =204
+                    TabIndex =1
+                    Name ="Grupo"
+                    ControlSource ="Grupo"
+                    StatusBarText ="Clave del grupo del alumno"
+                    GUID = Begin
+                        0xdaedad2ad5cbc842854962df6d1d54db
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =81
+                    TextAlign =2
+                    Left =5456
+                    Top =17
+                    Width =1830
+                    Height =204
+                    TabIndex =2
+                    Name ="Telefono"
+                    ControlSource ="Telefono"
+                    StatusBarText ="Telefono del alumno"
+                    GUID = Begin
+                        0xc419999069f4cd4989f62421c65bda3a
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =81
+                    Left =177
+                    Top =17
+                    Width =4101
+                    Height =225
+                    ColumnWidth =3090
+                    TabIndex =3
+                    Name ="Nombre"
+                    ControlSource ="Nombre"
+                    StatusBarText ="Nombre del alumno"
+                    GUID = Begin
+                        0x742d5b154571a74d8219d02b8c34626c
+                    End
+                End
+            End
+        End
+        Begin BreakFooter
+            KeepTogether = NotDefault
+            Height =132
+            Name ="PieDelGrupo4"
+            GUID = Begin
+                0xc3d1f2c95f9e61498b8c5a20a5f100b7
+            End
+            Begin
+                Begin Line
+                    OverlapFlags =81
+                    Left =4113
+                    Top =2
+                    Width =1200
+                    Name ="Line8"
+                    GUID = Begin
+                        0x5ded23bccfb2704ba03c8b7a50bcd6ec
+                    End
+                End
+                Begin PageBreak
+                    Top =88
+                    Name ="PageBreak38"
+                    GUID = Begin
+                        0xb1e8c4711efe1a4fbbed5b5a29f293ee
+                    End
+                End
+            End
+        End
+        Begin PageFooter
+            Height =0
+            Name ="PieDePágina5"
+            GUID = Begin
+                0x0a41bf9d10127c488c5866f53143018d
+            End
+        End
+        Begin FormFooter
+            KeepTogether = NotDefault
+            Height =0
+            Name ="PieDelInforme6"
+            GUID = Begin
+                0x79fb57de5f7c1f40873ead93c94cd797
+            End
+        End
+    End
+End

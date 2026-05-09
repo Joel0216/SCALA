@@ -1,0 +1,733 @@
+Version =19
+VersionRequired =19
+Checksum =-947511330
+Begin Form
+    AutoCenter = NotDefault
+    DefaultView =0
+    ScrollBars =0
+    ViewsAllowed =1
+    RecordLocks =2
+    GridX =5
+    GridY =5
+    Width =9964
+    ItemSuffix =56
+    Left =30
+    Right =9570
+    Bottom =6060
+    RecSrcDt = Begin
+        0x8b54f15422dee140
+    End
+    GUID = Begin
+        0x788c87dadfc775498ffe0de747426472
+    End
+    NameMap = Begin
+        0x0acc0e550000000015d178f63036c4438d689e070f8e22310000000077ee8bd0 ,
+        0xb849e3400000000000000000500072006f00730070006500630074006f007300 ,
+        0x000000000000afb3973982258345b3d22f8154c6a31e0700000015d178f63036 ,
+        0xc4438d689e070f8e22314e006f006d006200720065000000000000001275a7e3 ,
+        0x2d2a0e4595cf1d6bd5774b600700000015d178f63036c4438d689e070f8e2231 ,
+        0x4100700065006c006c00690064006f007300000000000000ed45ee6b57c2034c ,
+        0x8b25d1324af2cceb0700000015d178f63036c4438d689e070f8e223144006900 ,
+        0x72006500630063006900f3006e00000000000000e2f529a3c62c7841b87d2d60 ,
+        0xc23af4c90700000015d178f63036c4438d689e070f8e22314300690075006400 ,
+        0x6100640000000000000070e0141b16938b46826240b4ae653f960700000015d1 ,
+        0x78f63036c4438d689e070f8e22314300f3006400690067006f0050006f007300 ,
+        0x740061006c000000000000005131d0704f9653409408e28ffb3f74ea07000000 ,
+        0x15d178f63036c4438d689e070f8e22314e00fa006d0044006500540065006c00 ,
+        0xe9006600000000000000e84ca1f0516042429cdac16def67e1de0700000015d1 ,
+        0x78f63036c4438d689e070f8e22314100740065006e0064006900f30000000000 ,
+        0x0000fcaf9e10a114cf48bef8b37db81eae680700000015d178f63036c4438d68 ,
+        0x9e070f8e22314e006f00740061000000000000007938feb98d3539429e38b39d ,
+        0x35c03a9b0700000015d178f63036c4438d689e070f8e22314900440044006500 ,
+        0x43006c00690065006e0074006500000000000000bcb15454c084324ebb95e006 ,
+        0x36d155e40700000015d178f63036c4438d689e070f8e22317100200072006500 ,
+        0x63006f006d00690065006e006400610000000000000085db9a3be02acf409553 ,
+        0x6a79b78fc1140700000015d178f63036c4438d689e070f8e22314400ed006100 ,
+        0x2000500072006500660065007200690062006c00650020003100000000000000 ,
+        0x4b39e4977519c44d946de25b5a5f9e610700000015d178f63036c4438d689e07 ,
+        0x0f8e22314400ed0061002000500072006500660065007200690062006c006500 ,
+        0x2000320000000000000026499f06de1db348b496e5a685652f1c0700000015d1 ,
+        0x78f63036c4438d689e070f8e223148006f007200610020007000720065007200 ,
+        0x65006e007400650020003100000000000000bf2f244d115130488f00721fd787 ,
+        0x283c0700000015d178f63036c4438d689e070f8e223148006f00720061002000 ,
+        0x70007200650066006500720065006e007400650020003200000000000000d7ea ,
+        0xc7c0361d69498e075266d1aabdca0700000015d178f63036c4438d689e070f8e ,
+        0x223145006400610064000000000000003aa185bb3a3bd84993a06cef32a912a5 ,
+        0x0700000015d178f63036c4438d689e070f8e2231460065006300680061002000 ,
+        0x6400650020006100740065006e0063006900f3006e000000000000003ac8cf1a ,
+        0xd7e65e4d8cebca8db24b11930700000015d178f63036c4438d689e070f8e2231 ,
+        0x53006900670075006500200069006e0074006500720065007300610064006f00 ,
+        0x000000000000c022d8fa525e834eb0313213c86418a00700000015d178f63036 ,
+        0xc4438d689e070f8e223153006500200049006e00730063007200690062006900 ,
+        0xf3000000000000003368566951f81e44a6ea462f912cef690700000015d178f6 ,
+        0x3036c4438d689e070f8e223143007500720073006f00000000000000c35e10d7 ,
+        0x351aee409d6aa227ee615e8f00000000bad4b9d0b849e3400000000000000000 ,
+        0x43007500720073006f007300000000000000feba365a7e02dd44a1dcfc39ef6d ,
+        0x172b0700000015d178f63036c4438d689e070f8e22314d006500640069006f00 ,
+        0x2000710075006500200073006500200065006e00740065007200f30000000000 ,
+        0x000018ce5bcb8630c4468b5c9233d078d56f00000000110187d0b849e3400000 ,
+        0x0000000000005400610062006c0061004d006500640069006f00730000000000 ,
+        0x000032a151c5fdcb504bae6559168a155a290700000018ce5bcb8630c4468b5c ,
+        0x9233d078d56f5100750065004d006500640069006f000000000000003ae57763 ,
+        0xb2d2114c9401c4a84f5f02130700000018ce5bcb8630c4468b5c9233d078d56f ,
+        0x44006500730063004d006500640069006f000000000000000000000000000000 ,
+        0x00000000000000000c000000020000000000000000000000000000000000
+    End
+    RecordSource ="Prospectos"
+    Caption ="Prospectos"
+    OnClose ="MAIN_MENU"
+    Begin
+        Begin Label
+            TextAlign =3
+            FontWeight =700
+            BackColor =12632256
+        End
+        Begin Rectangle
+            SpecialEffect =2
+            Width =850
+            Height =850
+        End
+        Begin CommandButton
+            TextFontFamily =2
+            Width =1251
+            Height =576
+            ForeColor =255
+        End
+        Begin OptionButton
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin CheckBox
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin TextBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin ListBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =1417
+            LabelX =-236
+        End
+        Begin ComboBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin FormHeader
+            Height =445
+            BackColor =12632256
+            Name ="EncabezadoDelFormulario1"
+            EventProcPrefix ="EncabezadoDelFormula"
+            GUID = Begin
+                0xb73c099d5df45d4bb2609ab640861c6a
+            End
+            Begin
+                Begin Label
+                    BackStyle =0
+                    OverlapFlags =93
+                    TextAlign =1
+                    Left =149
+                    Top =40
+                    Width =2505
+                    Height =405
+                    FontSize =14
+                    ForeColor =8355711
+                    Name ="Texto12"
+                    Caption ="Prospectos"
+                    GUID = Begin
+                        0x41a91cb2fafd2b409c78f076f15b45ab
+                    End
+                End
+                Begin Label
+                    BackStyle =0
+                    OverlapFlags =215
+                    TextAlign =1
+                    Left =120
+                    Width =3345
+                    Height =375
+                    FontSize =14
+                    ForeColor =16777215
+                    Name ="Texto13"
+                    Caption ="Registro de Prospectos"
+                    GUID = Begin
+                        0xb3bcd4fe26dd4e4c9b7e47ad0062a1de
+                    End
+                End
+            End
+        End
+        Begin Section
+            ForceNewPage =3
+            Height =4762
+            BackColor =12632256
+            Name ="Detalle0"
+            GUID = Begin
+                0xc35af52137fd4c4aa4c58d4e6b548362
+            End
+            Begin
+                Begin TextBox
+                    OverlapFlags =93
+                    Left =904
+                    Top =566
+                    Width =2280
+                    TabIndex =2
+                    Name ="Nombre"
+                    ControlSource ="Nombre"
+                    GUID = Begin
+                        0x7908b519441ce14e97c73560a218586d
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Top =566
+                            Width =791
+                            Height =240
+                            Name ="Texto17"
+                            Caption ="Nombre:"
+                            GUID = Begin
+                                0x6eac4b9c6131134f864b0e84bafbc18c
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =1243
+                    Top =907
+                    Width =2280
+                    TabIndex =3
+                    Name ="Apellidos"
+                    ControlSource ="Apellidos"
+                    GUID = Begin
+                        0x4d1a3a9aa43f9b439cc5d40ff3684d05
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =226
+                            Top =907
+                            Width =904
+                            Height =240
+                            Name ="Texto19"
+                            Caption ="Apellidos:"
+                            GUID = Begin
+                                0x8780619113cbf8479f0019f8e0705802
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =87
+                    Left =1146
+                    Top =1247
+                    Width =7809
+                    TabIndex =7
+                    Name ="Dirección"
+                    ControlSource ="Dirección"
+                    GUID = Begin
+                        0x880b261e7895aa4491fb0d6ad23fa2ce
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =93
+                            Left =226
+                            Top =1247
+                            Width =912
+                            Height =240
+                            Name ="Texto21"
+                            Caption ="Dirección:"
+                            GUID = Begin
+                                0x58efb466d5870e479a22140f95367c91
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =1130
+                    Top =1587
+                    Width =2280
+                    TabIndex =8
+                    Name ="Ciudad"
+                    ControlSource ="Ciudad"
+                    GUID = Begin
+                        0x4d3d5581fdbad44ba9b2b71efcf96866
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =226
+                            Top =1587
+                            Width =791
+                            Height =240
+                            Name ="Texto23"
+                            Caption ="Ciudad:"
+                            GUID = Begin
+                                0x401df04ead784a4281f8c67836b4478d
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =5437
+                    Top =1587
+                    Width =1530
+                    TabIndex =9
+                    Name ="CódigoPostal"
+                    ControlSource ="CódigoPostal"
+                    OnClick ="MAIN_MENU.ABRIR M_ARCHIVOS"
+                    GUID = Begin
+                        0xca37c563f49c0441a71d1d878e95c017
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =3968
+                            Top =1587
+                            Width =1356
+                            Height =240
+                            Name ="Texto25"
+                            Caption ="Código postal:"
+                            GUID = Begin
+                                0x1e6db6d53baa07498fda84b619db0bc7
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =5211
+                    Top =907
+                    Width =2730
+                    TabIndex =6
+                    Name ="NúmDeTeléf"
+                    ControlSource ="NúmDeTeléf"
+                    GUID = Begin
+                        0xe71c47f24e649449889ffe913dcd60ec
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =3855
+                            Top =907
+                            Width =1243
+                            Height =240
+                            Name ="Texto29"
+                            Caption ="Núm de teléf:"
+                            GUID = Begin
+                                0x1e24508ad8ccca4798fd41196d142bfe
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =87
+                    Left =7257
+                    Top =3061
+                    Width =1695
+                    TabIndex =17
+                    Name ="Atendió"
+                    ControlSource ="Atendió"
+                    GUID = Begin
+                        0x050f8fa02feb314e8fc6ce07382efa0e
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =93
+                            Left =6348
+                            Top =3061
+                            Width =916
+                            Height =240
+                            Name ="Texto31"
+                            Caption ="Atendió:"
+                            GUID = Begin
+                                0x1a783295c6e5fa48b842e7faa9cd8cd0
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    ScrollBars =2
+                    OverlapFlags =87
+                    Left =799
+                    Top =2948
+                    Width =5550
+                    Height =1140
+                    TabIndex =16
+                    Name ="Nota"
+                    ControlSource ="Nota"
+                    GUID = Begin
+                        0x0baf13c8ce2c1a4f9cd83221c7d2f294
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =93
+                            Left =226
+                            Top =2948
+                            Width =565
+                            Height =240
+                            Name ="Texto33"
+                            Caption ="Nota:"
+                            GUID = Begin
+                                0x7914a3f757dac94083a6afea4afd19a1
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =1740
+                    Top =113
+                    Width =855
+                    Height =225
+                    Name ="IDDeCliente"
+                    ControlSource ="IDDeCliente"
+                    GUID = Begin
+                        0x2919437c7b1abf479de066250bbec04f
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =113
+                            Top =120
+                            Width =1590
+                            Height =255
+                            Name ="Texto15"
+                            Caption ="ID del prospecto:"
+                            GUID = Begin
+                                0xe4759108f3f53f41895db86bff8bd298
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =87
+                    Left =5337
+                    Top =1927
+                    Width =3606
+                    TabIndex =11
+                    Name ="q recomienda"
+                    ControlSource ="q recomienda"
+                    EventProcPrefix ="q_recomienda"
+                    GUID = Begin
+                        0xaf02cfa8085cf94cabbfb4d2dfdf5267
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =93
+                            Left =4081
+                            Top =1927
+                            Width =1245
+                            Height =225
+                            Name ="Texto36"
+                            Caption ="Q recomienda"
+                            GUID = Begin
+                                0xf809f8f884f33249a7a0b3430eccef96
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =215
+                    Left =920
+                    Top =2267
+                    Width =1566
+                    TabIndex =12
+                    Name ="Día Preferible 1"
+                    ControlSource ="Día Preferible 1"
+                    EventProcPrefix ="Día_Preferible_1"
+                    GUID = Begin
+                        0x598d309054da464192dabb8d8272ebcf
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =93
+                            Top =2267
+                            Width =1500
+                            Height =240
+                            Name ="Texto38"
+                            Caption ="Día Preferible 1:"
+                            GUID = Begin
+                                0xcd3dcddc9fcf5f46ab5e0f6dc3cc0ef8
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =215
+                    Left =920
+                    Top =2607
+                    Width =1566
+                    TabIndex =14
+                    Name ="Día Preferible 2"
+                    ControlSource ="Día Preferible 2"
+                    EventProcPrefix ="Día_Preferible_2"
+                    GUID = Begin
+                        0x405686e9f4b60d49b28b31c5e2989a45
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =93
+                            Top =2607
+                            Width =1500
+                            Height =240
+                            Name ="Texto39"
+                            Caption ="Día Preferible 2:"
+                            GUID = Begin
+                                0x5014b481007b4f49be2c9b0c547900b8
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =4328
+                    Top =2267
+                    Width =1116
+                    TabIndex =13
+                    Name ="Hora prerente 1"
+                    ControlSource ="Hora prerente 1"
+                    EventProcPrefix ="Hora_prerente_1"
+                    GUID = Begin
+                        0x8b2dd6c14c37d345b4c5396154786f64
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =2607
+                            Top =2267
+                            Width =1485
+                            Height =240
+                            Name ="Texto40"
+                            Caption ="Hora prerente 1:"
+                            GUID = Begin
+                                0xe1f3a034dcdaea44ae2d7ec280ec5171
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =4328
+                    Top =2607
+                    Width =1116
+                    TabIndex =15
+                    Name ="Hora preferente 2"
+                    ControlSource ="Hora preferente 2"
+                    EventProcPrefix ="Hora_preferente_2"
+                    GUID = Begin
+                        0x7f5879ac68fd42408515ef7ffb16bc57
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =2607
+                            Top =2607
+                            Width =1650
+                            Height =240
+                            Name ="Texto41"
+                            Caption ="Hora preferente 2:"
+                            GUID = Begin
+                                0x3de34d464f8e0d4498c62f2418a5c123
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =3996
+                    Top =566
+                    TabIndex =4
+                    Name ="Edad"
+                    ControlSource ="Edad"
+                    GUID = Begin
+                        0x2ac895aa5d881247bccfcbf776a8189f
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =87
+                            Left =3175
+                            Top =566
+                            Width =585
+                            Height =240
+                            Name ="Texto42"
+                            Caption ="Edad:"
+                            GUID = Begin
+                                0xd0368005212e364f8fb2650c0d8b05fa
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =6511
+                    Top =113
+                    TabIndex =1
+                    Name ="Fecha de atención"
+                    ControlSource ="Fecha de atención"
+                    Format ="General Date"
+                    DefaultValue ="=Now()"
+                    EventProcPrefix ="Fecha_de_atención"
+                    GUID = Begin
+                        0xc7b71f02d2d929408d205ac65d0e4d54
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =4535
+                            Top =113
+                            Width =1740
+                            Height =240
+                            Name ="Texto46"
+                            Caption ="Fecha de atención:"
+                            GUID = Begin
+                                0x76f2e25ea41c514b82746643b8a25c12
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =7261
+                    Top =2607
+                    TabIndex =18
+                    Name ="Sigue interesado"
+                    ControlSource ="Sigue interesado"
+                    Format ="Yes/No"
+                    EventProcPrefix ="Sigue_interesado"
+                    GUID = Begin
+                        0xddd3ae3fc77b1f458234116e99e8739f
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =5555
+                            Top =2607
+                            Width =1605
+                            Height =240
+                            Name ="Texto47"
+                            Caption ="Sigue interesado:"
+                            GUID = Begin
+                                0x6968974230262f43962ac9323ba0b1d8
+                            End
+                        End
+                    End
+                End
+                Begin ListBox
+                    OverlapFlags =87
+                    Left =6468
+                    Top =566
+                    Width =2485
+                    Height =227
+                    TabIndex =5
+                    Name ="curso"
+                    ControlSource ="Curso"
+                    RowSourceType ="Table/Query"
+                    RowSource ="Select [Curso] From [Cursos];"
+                    ColumnWidths ="2040"
+                    GUID = Begin
+                        0x309b3652c825a84e9f3509628175985c
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =93
+                            Left =5782
+                            Top =566
+                            Width =690
+                            Height =240
+                            Name ="Texto51"
+                            Caption ="Curso"
+                            GUID = Begin
+                                0x0fb9bed009e56547a962ecb7e1884192
+                            End
+                        End
+                    End
+                End
+                Begin ListBox
+                    OverlapFlags =85
+                    ColumnCount =2
+                    Left =1846
+                    Top =1927
+                    Width =2005
+                    Height =220
+                    TabIndex =10
+                    Name ="Medio que se enteró"
+                    ControlSource ="Medio que se enteró"
+                    RowSourceType ="Table/Query"
+                    RowSource ="Select [QueMedio],[DescMedio] From [TablaMedios];"
+                    ColumnWidths ="585;1770"
+                    EventProcPrefix ="Medio_que_se_enteró"
+                    GUID = Begin
+                        0x1c740c79a3c31c4fb71e5ae83896fcc7
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Top =1927
+                            Width =1800
+                            Height =240
+                            Name ="Texto53"
+                            Caption ="Medio q se enteró"
+                            GUID = Begin
+                                0x6749e57b27b5c24fad2819013fdf27b9
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =7256
+                    Top =2267
+                    Width =1731
+                    TabIndex =19
+                    Name ="Se Inscribió"
+                    ControlSource ="Se Inscribió"
+                    Format ="Yes/No"
+                    EventProcPrefix ="Se_Inscribió"
+                    GUID = Begin
+                        0x62012252afffc64b9023848e396b4b5f
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =5895
+                            Top =2267
+                            Width =1155
+                            Height =240
+                            Name ="Texto55"
+                            Caption ="Se Inscribió:"
+                            GUID = Begin
+                                0x9352564cdd55374c9d70bfa6108ab612
+                            End
+                        End
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            Height =0
+            BackColor =12632256
+            Name ="PieDelFormulario2"
+            GUID = Begin
+                0x23bc1e26e76ae842b50a9c857d95339c
+            End
+        End
+    End
+End

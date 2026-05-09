@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Supabase en Electron</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #1a1a2e; color: #eee; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { background: #155724; }
+        .error { background: #721c24; }
+        .info { background: #0c5460; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+        pre { background: #333; padding: 10px; overflow: auto; max-height: 300px; }
+    </style>
+</head>
+<body>
+    <h1>Test de Supabase en Electron</h1>
+    
+    <div id="status"></div>
+    
+    <div>
+        <button onclick="testConexion()">1. Probar Conexión</button>
+        <button onclick="testInstrumentos()">2. Cargar Instrumentos</button>
+        <button onclick="testMedios()">3. Cargar Medios</button>
+        <button onclick="testGrupos()">4. Cargar Grupos</button>
+        <button onclick="window.location.href='index.html'">Volver al Inicio</button>
+    </div>
+    
+    <h3>Resultados:</h3>
+    <pre id="resultado"></pre>
+    
+    <script src="supabase-config.js"></script>
+    <script>
+        const statusEl = document.getElementById('status');
+        const resultadoEl = document.getElementById('resultado');
+        
+        function log(msg, tipo = 'info') {
+            const div = document.createElement('div');
+            div.className = 'status ' + tipo;
+            div.textContent = msg;
+            statusEl.appendChild(div);
+            console.log(msg);
+        }
+        
+        function mostrarResultado(data) {
+            resultadoEl.textContent = JSON.stringify(data, null, 2);
+        }
+        
+        // Verificar estado inicial
+        setTimeout(() => {
+            if (typeof require !== 'undefined') {
+                log('✓ require() disponible (Electron)', 'success');
+            } else {
+                log('✗ require() no disponible', 'error');
+            }
+            
+            if (window.isElectron) {
+                log('✓ Ejecutando en Electron', 'success');
+            }
+            
+            if (typeof waitForSupabase === 'function') {
+                log('✓ waitForSupabase disponible', 'success');
+            } else {
+                log('✗ waitForSupabase no disponible', 'error');
+            }
+            
+            if (typeof isSupabaseConnected === 'function' && isSupabaseConnected()) {
+                log('✓ Supabase ya conectado', 'success');
+            }
+        }, 500);
+        
+        async function testConexion() {
+            log('Probando conexión a Supabase...');
+            try {
+                const db = await waitForSupabase(5000);
+                if (db) {
+                    log('✓ Conexión exitosa!', 'success');
+                    
+                    // Probar una consulta simple
+                    const { data, error } = await db.from('instrumentos').select('count');
+                    if (error) {
+                        log('Error en consulta: ' + error.message, 'error');
+                    } else {
+                        log('✓ Consulta exitosa', 'success');
+                    }
+                } else {
+                    log('✗ No se obtuvo cliente de Supabase', 'error');
+                }
+            } catch (e) {
+                log('✗ Error: ' + e.message, 'error');
+            }
+        }
+        
+        async function testInstrumentos() {
+            log('Cargando instrumentos...');
+            try {
+                const db = await waitForSupabase();
+                const { data, error } = await db
+                    .from('instrumentos')
+                    .select('*')
+                    .eq('activo', true)
+                    .order('clave');
+                
+                if (error) {
+                    log('✗ Error: ' + error.message, 'error');
+                    mostrarResultado(error);
+                } else {
+                    log('✓ ' + data.length + ' instrumentos encontrados', 'success');
+                    mostrarResultado(data);
+                }
+            } catch (e) {
+                log('✗ Error: ' + e.message, 'error');
+            }
+        }
+        
+        async function testMedios() {
+            log('Cargando medios de contacto...');
+            try {
+                const db = await waitForSupabase();
+                const { data, error } = await db
+                    .from('medios_contacto')
+                    .select('*')
+                    .eq('activo', true)
+                    .order('clave');
+                
+                if (error) {
+                    log('✗ Error: ' + error.message, 'error');
+                    mostrarResultado(error);
+                } else {
+                    log('✓ ' + data.length + ' medios encontrados', 'success');
+                    mostrarResultado(data);
+                }
+            } catch (e) {
+                log('✗ Error: ' + e.message, 'error');
+            }
+        }
+        
+        async function testGrupos() {
+            log('Cargando grupos...');
+            try {
+                const db = await waitForSupabase();
+                const { data, error } = await db
+                    .from('grupos')
+                    .select('id, clave, cursos(curso)')
+                    .order('clave');
+                
+                if (error) {
+                    log('✗ Error: ' + error.message, 'error');
+                    mostrarResultado(error);
+                } else {
+                    log('✓ ' + data.length + ' grupos encontrados', 'success');
+                    mostrarResultado(data);
+                }
+            } catch (e) {
+                log('✗ Error: ' + e.message, 'error');
+            }
+        }
+    </script>
+</body>
+</html>

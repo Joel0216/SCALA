@@ -1,0 +1,376 @@
+Version =19
+VersionRequired =19
+Checksum =-991999249
+Begin Form
+    AutoResize = NotDefault
+    PopUp = NotDefault
+    Modal = NotDefault
+    DefaultView =0
+    GridX =5
+    GridY =5
+    Width =7937
+    ItemSuffix =14
+    Left =870
+    Top =2010
+    Right =9390
+    Bottom =6900
+    RecSrcDt = Begin
+        0xff51e95422dee140
+    End
+    GUID = Begin
+        0x72b1a96596a3aa458eb7a365c3fef271
+    End
+    NameMap = Begin
+        0x0acc0e5500000000fcd6f8490c2b7c498c444ea815cee17201000000da5629d1 ,
+        0xb849e340080006020088130046005f0061006c0075006d006e006f0073002000 ,
+        0x6400610074006f007300200047007200750070006f0000000000000022714b0a ,
+        0xb1970c4f8cb6ffc4959be4df00000000f20a7fd0b849e3400800060200881300 ,
+        0x47007200750070006f007300000000000000ddb32a78eb42a8478c08b9b9ec3b ,
+        0x2ad20700000022714b0ab1970c4f8cb6ffc4959be4df43006c00610076006500 ,
+        0x000000000000a97f421c74a19d4484d2023b5b4c63f200000000641c85d0b849 ,
+        0xe34000000000000000005400610062006c00610020004d006f00740069007600 ,
+        0x6f00730000000000000079c964805668084382bedeca79a5d3c807000000a97f ,
+        0x421c74a19d4484d2023b5b4c63f243004c0041005600450020004d004f005400 ,
+        0x490056004f000000000000005e29cd634190414282719cff8d2a8c6007000000 ,
+        0xa97f421c74a19d4484d2023b5b4c63f244004500530043005200490050004300 ,
+        0x49004f004e0020004d004f005400490056004f0000000000000056732324a429 ,
+        0x6e4684213f79729b119e01000000cd3228d1b849e34000000000000000004600 ,
+        0x5f0061006c0075006d006e006f00730000000000000098b263f0766ffe47af0e ,
+        0x319e36e192ca0600000056732324a4296e4684213f79729b119e430072006500 ,
+        0x640065006e006300690061006c0000000000000021c7ce1e853b364f9f42dbd3 ,
+        0x1987cc3f0600000056732324a4296e4684213f79729b119e4e006f006d006200 ,
+        0x72006500000000000000000000000000000000000000000000000c0000000200 ,
+        0x00000000000000000000000000000000
+    End
+    OnOpen ="[Event Procedure]"
+    MenuBar ="Barra Main"
+    Begin
+        Begin Rectangle
+            Width =850
+            Height =850
+        End
+        Begin CommandButton
+            TextFontFamily =2
+            Width =1701
+            Height =283
+        End
+        Begin TextBox
+            Width =1701
+            LabelX =-1701
+        End
+        Begin ComboBox
+            Width =1701
+            LabelX =-1701
+        End
+        Begin Subform
+            Width =1701
+            Height =1701
+        End
+        Begin Section
+            CanGrow = NotDefault
+            Height =4648
+            BackColor =16776960
+            Name ="Detalle0"
+            GUID = Begin
+                0xdeecde91262a9a47a5da19ad27f231e8
+            End
+            Begin
+                Begin Label
+                    OverlapFlags =85
+                    TextAlign =2
+                    Left =1927
+                    Top =113
+                    Width =4403
+                    Height =235
+                    Name ="Texto0"
+                    Caption ="FAVOR DE PROPORCIONAR EL NUEVO GRUPO"
+                    GUID = Begin
+                        0xbf6d68ee71a1514fb3201dbca36548b6
+                    End
+                End
+                Begin ComboBox
+                    LimitToList = NotDefault
+                    OverlapFlags =85
+                    ListWidth =1690
+                    Left =3741
+                    Top =1020
+                    Width =1690
+                    ColumnInfo ="\"\";\"\";\"10\";\"20\""
+                    GUID = Begin
+                        0x500e5ab48283c0439097bb09beb8f7e6
+                    End
+                    Name ="NewGrupo"
+                    RowSourceType ="Table/Query"
+                    RowSource ="Select [Clave] From [Grupos];"
+                    ColumnWidths ="1440"
+                    OnNotInList ="M_alumnos.No en lista grupo"
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =2040
+                            Top =1020
+                            Width =795
+                            Height =240
+                            Name ="Texto4"
+                            Caption ="Grupo :"
+                            GUID = Begin
+                                0x90f438627426564a86193a610245c809
+                            End
+                        End
+                    End
+                End
+                Begin Subform
+                    Locked = NotDefault
+                    OverlapFlags =85
+                    Left =113
+                    Top =1700
+                    Width =7665
+                    Height =2280
+                    TabIndex =1
+                    Name ="Datos del Grupo"
+                    SourceObject ="Form.F_alumnos datos Grupo"
+                    LinkChildFields ="Clave"
+                    LinkMasterFields ="newgrupo"
+                    EventProcPrefix ="Datos_del_Grupo"
+                    GUID = Begin
+                        0xb86be2131fa15e43b98c51319feaf70e
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =5669
+                    Top =4081
+                    Width =1125
+                    Height =465
+                    TabIndex =2
+                    ForeColor =255
+                    Name ="B_term_chg_grupo"
+                    Caption ="Terminar"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0xd09602b0a286424eada55585059a1947
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =907
+                    Top =4081
+                    Width =2235
+                    Height =465
+                    TabIndex =3
+                    ForeColor =65535
+                    Name ="B_cancel_mov"
+                    Caption ="Cancela Movimiento"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0xd7b6a2751a5fe940b07d95663ae2187a
+                    End
+                End
+                Begin ComboBox
+                    OverlapFlags =85
+                    ColumnCount =2
+                    ListWidth =4270
+                    Left =3741
+                    Top =1361
+                    Width =3505
+                    TabIndex =4
+                    BoundColumn =1
+                    ColumnInfo ="\"\";\"\";\"\";\"\";\"10\";\"10\""
+                    GUID = Begin
+                        0xf8ca933538daee478a93dc4b5dede6cc
+                    End
+                    Name ="Motivo"
+                    RowSourceType ="Table/Query"
+                    RowSource ="Select [CLAVE MOTIVO],[DESCRIPCION MOTIVO] From [Tabla Motivos];"
+                    ColumnWidths ="825;3195"
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =2040
+                            Top =1361
+                            Width =795
+                            Height =240
+                            Name ="Texto13"
+                            Caption ="Motivo :"
+                            GUID = Begin
+                                0x0e0fcb7d718b7d46a364925f6d478062
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    OverlapFlags =93
+                    Left =2721
+                    Top =567
+                    Width =681
+                    TabIndex =5
+                    BackColor =8421376
+                    Name ="Cred_alumn"
+                    ControlSource ="=Forms!F_alumnos!Credencial"
+                    GUID = Begin
+                        0x37e2e56367c83c419a7a116a2168c8f0
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =93
+                            Left =1133
+                            Top =567
+                            Width =1155
+                            Height =240
+                            BackColor =8421376
+                            ForeColor =65280
+                            Name ="Texto10"
+                            Caption ="Alumno :"
+                            GUID = Begin
+                                0xac6fc3797523364183cd75290bb7b5ef
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    OverlapFlags =93
+                    Left =3515
+                    Top =567
+                    Width =3516
+                    TabIndex =6
+                    BackColor =8421376
+                    Name ="Nom_Alumn"
+                    ControlSource ="=Forms!F_alumnos!Nombre"
+                    GUID = Begin
+                        0xdbe8f5ba18cbd744968f823008f15c79
+                    End
+                End
+                Begin Rectangle
+                    SpecialEffect =1
+                    BackStyle =0
+                    OverlapFlags =247
+                    Left =907
+                    Top =453
+                    Width =6241
+                    Height =454
+                    Name ="Cuadro13"
+                    GUID = Begin
+                        0x7286e3ca75b3a040bc98f0b961034fb5
+                    End
+                End
+            End
+        End
+    End
+End
+CodeBehindForm
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database   'Usar orden de base de datos en comparaciones de cadenas
+Dim db As Database
+Dim T_Alumnos As Recordset, T_Grupos As Recordset
+Dim T_Cambios As Recordset
+                      
+
+Private Sub B_cancel_mov_Click()
+On Error GoTo Err_B_cancel_mov_Click
+
+
+    DoCmd.Close
+
+Exit_B_cancel_mov_Click:
+    Exit Sub
+
+Err_B_cancel_mov_Click:
+    MsgBox Error$
+    Resume Exit_B_cancel_mov_Click
+    
+End Sub
+
+Private Sub B_term_chg_grupo_Click()
+On Error GoTo Err_B_term_chg_grupo_Click
+Dim F_Alumn As Form
+Dim Curso_Ant, Curso_Nvo
+
+    If Not IsNull(NewGrupo) Then
+       Set F_Alumn = Forms!F_Alumnos
+       Set db = CurrentDb()
+
+       Set T_Grupos = db.OpenRecordset("Grupos")
+       T_Grupos.Index = "PrimaryKey"
+
+       ' Da de baja en el grupo anterior
+       T_Grupos.Seek "=", F_Alumn!Grupo
+       If Not T_Grupos.NoMatch Then
+          T_Grupos.Edit
+          T_Grupos!Alumnos = T_Grupos!Alumnos - 1
+          Curso_Ant = T_Grupos!Curso
+          T_Grupos.Update
+          
+          ' Da de alta en el grupo nuevo
+          T_Grupos.Seek "=", NewGrupo
+          If Not T_Grupos.NoMatch Then
+             T_Grupos.Edit
+             T_Grupos!Alumnos = T_Grupos!Alumnos + 1
+             Curso_Nvo = T_Grupos!Curso
+             T_Grupos.Update
+          End If
+
+          ' Se registra en la tabla de histórico de Cambios
+          Set T_Cambios = db.OpenRecordset("Cambios")
+          T_Cambios.AddNew
+          T_Cambios!Fecha = Date
+          T_Cambios!Credencial = F_Alumn!Credencial
+          T_Cambios!dig_ver = F_Alumn!dig_ver
+          T_Cambios![Grupo Anterior] = F_Alumn!Grupo
+          T_Cambios![Grupo Nuevo] = NewGrupo
+          T_Cambios!Motivo = Motivo
+          T_Cambios![Curso Anterior] = Curso_Ant
+          T_Cambios![Curso Nuevo] = Curso_Nvo
+          T_Cambios.Update
+
+          ' Se registra el cambio en el archivo de alumnos
+          Set T_Alumnos = db.OpenRecordset("Alumnos")
+          T_Alumnos.Index = "PrimaryKey"
+          T_Alumnos.Seek "=", F_Alumn!Credencial
+          If Not T_Alumnos.NoMatch Then
+             T_Alumnos.Edit
+             T_Alumnos!Grupo = NewGrupo
+             T_Alumnos.Update
+          End If
+
+          DoCmd.Close
+          DoCmd.GoToControl "Credencial"
+          DoCmd.Requery
+       Else
+          MsgBox "El Grupo seleccionado no existe, Favor de Intentar nuevamente"
+       End If
+    Else
+       MsgBox "No hubo cambio de grupo"
+    End If
+
+Exit_B_term_chg_grupo_Click:
+    Exit Sub
+
+Err_B_term_chg_grupo_Click:
+    MsgBox Error$
+    Resume Exit_B_term_chg_grupo_Click
+    
+End Sub
+
+Private Sub Form_Open(Cancel As Integer)
+Dim db As Database, FLogin As Form, TUser As Recordset, Forma As Form
+   Set db = CurrentDb()
+   Set Forma = Forms![F_Datos Cambio Alumno]
+   Set FLogin = Forms!login
+   Set TUser = db.OpenRecordset("Usuarios")
+   TUser.Index = "PrimaryKey"
+   TUser.Seek "=", FLogin!UserID
+   If Not TUser.NoMatch Then
+      If IsNull(TUser!A_A) Or TUser!A_A <> "M" Then
+         MsgBox "El usuario no tiene privilegios de acceso"
+         DoCmd.CancelEvent
+      End If
+   Else
+      MsgBox "El usuario no tiene clave de acceso registrada"
+      DoCmd.CancelEvent
+   End If
+End Sub

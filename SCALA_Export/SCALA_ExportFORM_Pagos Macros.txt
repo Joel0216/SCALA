@@ -1,0 +1,376 @@
+Version =19
+VersionRequired =19
+Checksum =-2024881069
+Begin Form
+    AllowEditing = NotDefault
+    PopUp = NotDefault
+    Modal = NotDefault
+    AllowDeletions = NotDefault
+    AllowAdditions = NotDefault
+    AllowEdits = NotDefault
+    GridX =5
+    GridY =5
+    Width =4762
+    ItemSuffix =18
+    Left =885
+    Top =1560
+    Right =7170
+    Bottom =6630
+    RecSrcDt = Begin
+        0xeccbfa5422dee140
+    End
+    GUID = Begin
+        0xfe9ee8847ec5fe4fa277aa644f5a476f
+    End
+    NameMap = Begin
+        0x0acc0e55000000007257b1e0f37e6c46b45c93e2d33a7849000000005fbe58d1 ,
+        0xb849e34000000000000000004d006100630072006f007300000000000000ced0 ,
+        0x2538391e5249a614c9a548c1af5b070000007257b1e0f37e6c46b45c93e2d33a ,
+        0x78494e006f006d0062007200650020004d006100630072006f00000000000000 ,
+        0xf477a79209e0ca45be688f5789dae3b1070000007257b1e0f37e6c46b45c93e2 ,
+        0xd33a78494f007000650072006100630069006f006e0000000000000000000000 ,
+        0x0000000000000000000000000c00000002000000000000000000000000000000 ,
+        0x0000
+    End
+    RecordSource ="Macros"
+    Caption ="Macros"
+    Begin
+        Begin Label
+            FontWeight =700
+            BackColor =12632256
+        End
+        Begin Rectangle
+            SpecialEffect =2
+            Width =850
+            Height =850
+        End
+        Begin Line
+            BorderWidth =3
+            Width =1701
+        End
+        Begin CommandButton
+            TextFontFamily =2
+            Width =1701
+            Height =283
+        End
+        Begin OptionButton
+            AutoLabel = NotDefault
+            SpecialEffect =2
+            Width =187
+            Height =187
+        End
+        Begin CheckBox
+            AutoLabel = NotDefault
+            SpecialEffect =2
+            Width =187
+            Height =187
+        End
+        Begin TextBox
+            AutoLabel = NotDefault
+            SpecialEffect =2
+            Width =1701
+            Height =255
+            LabelX =-1701
+        End
+        Begin ListBox
+            AutoLabel = NotDefault
+            SpecialEffect =2
+            Width =1701
+            Height =1417
+            LabelX =-1701
+        End
+        Begin ComboBox
+            AutoLabel = NotDefault
+            SpecialEffect =2
+            Width =1701
+            Height =255
+            LabelX =-1701
+        End
+        Begin FormHeader
+            Height =798
+            BackColor =8421376
+            Name ="EncabezadoDelFormulario1"
+            EventProcPrefix ="EncabezadoDelFormula"
+            GUID = Begin
+                0x45d52d1038a77747a6ca235b4dac5cc8
+            End
+            Begin
+                Begin Label
+                    BackStyle =0
+                    OverlapFlags =93
+                    TextAlign =1
+                    Left =488
+                    Top =153
+                    Width =1110
+                    Height =405
+                    FontSize =14
+                    ForeColor =8355711
+                    Name ="Texto7"
+                    Caption ="Macros"
+                    GUID = Begin
+                        0x92529e16231d254491fb2fc6c2266eb7
+                    End
+                End
+                Begin Label
+                    BackStyle =0
+                    OverlapFlags =215
+                    TextAlign =1
+                    Left =452
+                    Top =113
+                    Width =1110
+                    Height =405
+                    FontSize =14
+                    ForeColor =16777215
+                    Name ="Texto8"
+                    Caption ="Macros"
+                    GUID = Begin
+                        0x71b118a3602f2f47a8bff6ef7a2d1458
+                    End
+                End
+                Begin Label
+                    OverlapFlags =85
+                    Left =2260
+                    Top =558
+                    Width =1020
+                    Height =240
+                    Name ="Texto12"
+                    Caption ="Operacion"
+                    GUID = Begin
+                        0x1cb80d4e7fb3984eb36eccfb1e00a17c
+                    End
+                End
+                Begin TextBox
+                    TabStop = NotDefault
+                    OverlapFlags =85
+                    Left =2381
+                    Top =226
+                    Width =1020
+                    Name ="Nombre Macro"
+                    ControlSource ="Nombre Macro"
+                    StatusBarText ="Nombre del Macro"
+                    EventProcPrefix ="Nombre_Macro"
+                    GUID = Begin
+                        0x8977da39242d0a4fbb815eb4b7fbd72c
+                    End
+                End
+            End
+        End
+        Begin Section
+            Height =255
+            BackColor =8421376
+            Name ="Detalle0"
+            GUID = Begin
+                0x9b3caf1cb251554fbd1748595a0562b0
+            End
+            Begin
+                Begin TextBox
+                    TabStop = NotDefault
+                    SpecialEffect =0
+                    OverlapFlags =85
+                    Left =450
+                    Width =3345
+                    Name ="Operacion"
+                    ControlSource ="Operacion"
+                    StatusBarText ="Operación del Macro"
+                    GUID = Begin
+                        0x95bb7bb11c027f4999e1fd5aff8c41b3
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            Height =1247
+            BackColor =8421376
+            Name ="PieDelFormulario2"
+            GUID = Begin
+                0xabfe74541a735347965be4175a57381d
+            End
+            Begin
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =3288
+                    Top =680
+                    Width =1140
+                    Height =465
+                    Name ="B_Close_PMacro"
+                    Caption ="Aceptar"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0xff931450840ecd44bdee78ecad971c0e
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =226
+                    Top =680
+                    Width =1110
+                    Height =465
+                    TabIndex =1
+                    ForeColor =255
+                    Name ="B_Cancel_Macro"
+                    Caption ="Cancelar"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0x1aa15dc6dce5c24395e7872c88e3b51f
+                    End
+                End
+                Begin Label
+                    OverlapFlags =85
+                    Left =225
+                    Top =120
+                    Width =4320
+                    Height =450
+                    BackColor =8421376
+                    ForeColor =65535
+                    Name ="Texto16"
+                    Caption ="Presione ACEPTAR si es el macro deseado, si no presione CANCELAR"
+                    GUID = Begin
+                        0x67d96ddb70566a4b9e93900ad7eed278
+                    End
+                End
+            End
+        End
+    End
+End
+CodeBehindForm
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database   'Usar orden de base de datos en comparaciones de cadenas
+Dim F_pagos As Form
+Dim T_Oper As Recordset, T_Art As Recordset, T_Mac As Recordset
+Dim db As Database
+
+Private Sub B_Cancel_Macro_Click()
+On Error GoTo Err_B_Cancel_Macro_Click
+
+
+    DoCmd.Close
+
+Exit_B_Cancel_Macro_Click:
+    Exit Sub
+
+Err_B_Cancel_Macro_Click:
+    MsgBox Error$
+    Resume Exit_B_Cancel_Macro_Click
+    
+End Sub
+
+Private Sub B_Close_PMacro_Click()
+On Error GoTo Err_B_Close_PMacro_Click
+Dim TempDesc, TempDG, TempCant, TempMonto, TempIVA, TempOperacion
+Dim TempCred, TempRec, TempGrupo, NomMacro
+   Set F_pagos = Forms!pagos
+   NomMacro = [Nombre Macro] 'F_Pagos![Pagos Operaciones].Form!Clave_Oper
+   TempDesc = F_pagos![Pagos Operaciones].Form!Descuento
+   TempDG = F_pagos!DescuentoGeneral
+   TempCant = F_pagos![Pagos Operaciones].Form!cantidad
+   TempCred = F_pagos![Pagos Operaciones].Form!Credencial
+   TempRec = F_pagos!Numero
+   Set db = CurrentDb()
+   Set T_Mac = db.OpenRecordset("Macros")
+   T_Mac.Index = "Nombre Macro"
+   T_Mac.Seek "=", [Nombre Macro]
+   If Not T_Mac.NoMatch Then
+      If T_Mac![Nombre Macro] = NomMacro And Not T_Mac.EOF Then
+         Set T_Art = db.OpenRecordset("Articulos")
+         T_Art.Index = "PrimaryKey"
+         T_Art.Seek "=", T_Mac!Operacion
+         If Not T_Art.NoMatch Then
+            T_Art.Edit
+            T_Art!Stock = T_Art!Stock - TempCant
+            T_Art.Update
+            TempOperacion = T_Art!Descripcion
+            TempMonto = T_Art!Precio
+            TempIVA = T_Art!Iva
+            TempGrupo = T_Art!Grupo
+         Else
+            MsgBox "No encuentro artículo del Macro"
+         End If
+         Set T_Oper = db.OpenRecordset("Operaciones")
+         'T_Oper.Index = "Recibo"
+         'T_Oper.Seek "=", TempRec
+         'If Not T_Oper.NoMatch Then
+            'T_Oper.Edit
+            F_pagos![Pagos Operaciones].Form!Operacion = TempOperacion
+            F_pagos![Pagos Operaciones].Form!Monto = TempMonto
+            If Not IsNull(TempDesc) Then
+               F_pagos![Pagos Operaciones].Form!neto = (TempMonto * TempCant) * (1 + TempDesc)
+            Else
+               F_pagos![Pagos Operaciones].Form!neto = TempMonto * TempCant
+            End If
+            If Not IsNull(TempDG) Then
+               F_pagos![Pagos Operaciones].Form!neto = F_pagos![Pagos Operaciones].Form!neto * (1 + TempDG)
+            End If
+            If Not IsNull(TempIVA) Then
+               F_pagos![Pagos Operaciones].Form!Iva = F_pagos![Pagos Operaciones].Form!neto - (F_pagos![Pagos Operaciones].Form!neto / (1 + TempIVA))
+            Else
+               F_pagos![Pagos Operaciones].Form!Iva = 0
+            End If
+            'T_Oper.Update
+         'End If
+         T_Mac.MoveNext
+         Do While T_Mac![Nombre Macro] = NomMacro And Not T_Mac.EOF
+            T_Art.Seek "=", T_Mac!Operacion
+            If Not T_Art.NoMatch Then
+               T_Art.Edit
+               T_Art!Stock = T_Art!Stock - TempCant
+               T_Art.Update
+               TempOperacion = T_Art!Descripcion
+               TempMonto = T_Art!Precio
+               TempIVA = T_Art!Iva
+               TempGrupo = T_Art!Grupo
+            Else
+               MsgBox "No encuentro artículo del Macro" & T_Mac!Operacion
+            End If
+            'Set T_Oper = db.OpenRecordset("Operaciones")
+            T_Oper.AddNew
+            T_Oper!Recibo = TempRec
+            T_Oper!Credencial = TempCred
+            T_Oper!Operacion = TempOperacion
+            T_Oper!Monto = TempMonto
+            T_Oper!Descuento = TempDesc
+            T_Oper!general = TempDG
+            T_Oper!Grupo = TempGrupo
+            T_Oper!cantidad = TempCant
+            If Not IsNull(TempDesc) Then
+               T_Oper!neto = (TempMonto * TempCant) * (1 + TempDesc)
+            Else
+               T_Oper!neto = TempMonto * TempCant
+            End If
+            If Not IsNull(TempDG) Then
+               T_Oper!neto = T_Oper!neto * (1 + TempDG)
+            End If
+            If Not IsNull(TempIVA) Then
+               T_Oper!Iva = T_Oper!neto - (T_Oper!neto / (1 + TempIVA))
+            Else
+               T_Oper!Iva = 0
+            End If
+            T_Oper.Update
+            T_Mac.MoveNext
+            If T_Mac.EOF Then
+               Exit Do
+            End If
+         Loop
+      Else
+         MsgBox "Sin Operaciones registradas"
+      End If
+   Else
+      MsgBox "No se localizo el Macro"
+   End If
+
+DoCmd.Close
+DoCmd.GoToControl "Credencial"
+DoCmd.Requery
+DoCmd.GoToRecord , , A_NEWREC
+DoCmd.GoToControl "Credencial"
+
+Exit_B_Close_PMacro_Click:
+    Exit Sub
+
+Err_B_Close_PMacro_Click:
+    MsgBox Error$
+    Resume Exit_B_Close_PMacro_Click
+    
+End Sub

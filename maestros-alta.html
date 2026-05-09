@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alta de Maestros</title>
+    <link rel="stylesheet" href="maestros-alta.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>ALTA DE MAESTROS</h1>
+            <div class="datetime" id="datetime"></div>
+        </header>
+
+        <main>
+            <div class="form-section">
+                <div class="form-row">
+                    <label>Nombre: <span class="required">*</span></label>
+                    <input type="text" id="nombre" class="input-xlarge" placeholder="Nombre completo del maestro">
+                </div>
+
+                <div class="form-row">
+                    <label>Clave:</label>
+                    <input type="text" id="clave" class="input-small" readonly style="background: #e0e0e0;">
+                    <span class="info-text">Se genera automáticamente</span>
+                </div>
+
+                <div class="form-row">
+                    <label>Dirección: <span class="required">*</span></label>
+                    <input type="text" id="direccion1" class="input-xlarge" placeholder="Calle y número">
+                </div>
+
+                <div class="form-row">
+                    <label></label>
+                    <input type="text" id="direccion2" class="input-xlarge" placeholder="Colonia, ciudad">
+                </div>
+
+                <div class="form-row">
+                    <label>Teléfono: <span class="required">*</span></label>
+                    <input type="text" id="telefono" class="input-medium" placeholder="10 dígitos">
+                </div>
+
+                <div class="form-row">
+                    <label>Celular:</label>
+                    <input type="text" id="celular" class="input-medium" placeholder="10 dígitos">
+                </div>
+
+                <div class="form-row">
+                    <label>Email:</label>
+                    <input type="email" id="email" class="input-large" placeholder="correo@ejemplo.com">
+                </div>
+
+                <div class="form-row">
+                    <label>RFC: <span class="required">*</span></label>
+                    <input type="text" id="rfc" class="input-medium" maxlength="13" placeholder="13 caracteres">
+                </div>
+
+
+                <div class="form-row">
+                    <label>Fecha de Ingreso: <span class="required">*</span></label>
+                    <input type="date" id="fechaIngreso" class="input-medium">
+                    <span class="info-text">Se establece automáticamente al guardar</span>
+                </div>
+
+                <div class="form-row">
+                    <label>Observaciones:</label>
+                    <textarea id="observaciones" class="input-textarea" rows="3"
+                        placeholder="Notas adicionales"></textarea>
+                </div>
+
+                <div class="required-note">
+                    <span class="required">*</span> Campos obligatorios
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <button class="action-btn" onclick="guardarMaestro()">Guardar</button>
+            <button class="action-btn" onclick="limpiarFormulario()">Limpiar</button>
+            <button class="btn-cancelar" onclick="cancelarAlta()">Cancelar</button>
+        </footer>
+    </div>
+
+    <script src="supabase-config.js"></script>
+    <script src="utils-inputs.js"></script>
+    <script src="maestros-alta.js"></script>
+</body>
+
+</html>

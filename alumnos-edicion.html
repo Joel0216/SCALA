@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scala - Edición de Datos del Alumno</title>
+    <link rel="stylesheet" href="theme.css">
+    <style>
+        .required { color: var(--danger); font-weight: bold; }
+        .edit-info-banner {
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--accent-lavender);
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: var(--radius-sm);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header class="app-header">
+            <h1>Edición de Datos del Alumno</h1>
+            <div class="datetime" id="datetime"></div>
+        </header>
+
+        <main class="app-main">
+            <div id="infoAlumno" class="edit-info-banner" style="display: none;">
+                <p style="margin: 0; font-weight: 500;">
+                    Editando alumno: <span id="editandoNombre" style="color: var(--accent-primary);"></span>
+                </p>
+            </div>
+
+            <div class="premium-grid grid-cols-2">
+                <!-- Información General -->
+                <div class="premium-card">
+                    <h3>Información General</h3>
+                    <div class="premium-grid grid-cols-2">
+                        <div class="premium-input-group">
+                            <label class="premium-label">Credencial</label>
+                            <input type="text" id="credencial" class="premium-input" readonly style="background: var(--bg-secondary);">
+                        </div>
+                        <div class="premium-input-group">
+                            <label class="premium-label">Dígito</label>
+                            <input type="text" id="digito" class="premium-input" readonly style="background: var(--bg-secondary);">
+                        </div>
+                    </div>
+                    <div class="premium-input-group">
+                        <label class="premium-label">Nombre Completo <span class="required">*</span></label>
+                        <input type="text" id="nombre" class="premium-input" required>
+                    </div>
+                    <div class="premium-grid grid-cols-2">
+                        <div class="premium-input-group">
+                            <label class="premium-label">Fecha Ingreso</label>
+                            <input type="text" id="fechaIngreso" class="premium-input" readonly style="background: var(--bg-secondary);">
+                        </div>
+                        <div class="premium-input-group">
+                            <label class="premium-label">F. de Nacimiento</label>
+                            <input type="date" id="fechaNacimiento" class="premium-input" onchange="calcularEdad()">
+                        </div>
+                    </div>
+                    <div class="premium-grid grid-cols-2">
+                        <div class="premium-input-group">
+                            <label class="premium-label">Edad</label>
+                            <input type="text" id="edad" class="premium-input" readonly style="background: var(--bg-secondary);">
+                        </div>
+                        <div class="premium-input-group" style="justify-content: flex-end; display: flex; align-items: flex-end;">
+                            <label class="premium-label" style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+                                <input type="checkbox" id="reingreso"> Reingreso
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contacto y Ubicación -->
+                <div class="premium-card">
+                    <h3>Contacto y Ubicación</h3>
+                    <div class="premium-grid grid-cols-2">
+                        <div class="premium-input-group">
+                            <label class="premium-label">Celular</label>
+                            <input type="text" id="celular" class="premium-input" maxlength="15" oninput="soloNumeros(this)">
+                        </div>
+                        <div class="premium-input-group">
+                            <label class="premium-label">Teléfono Casa</label>
+                            <input type="text" id="telefono" class="premium-input" maxlength="15" oninput="soloNumeros(this)">
+                        </div>
+                    </div>
+                    <div class="premium-input-group">
+                        <label class="premium-label">Email</label>
+                        <input type="email" id="email" class="premium-input">
+                    </div>
+                    <div class="premium-input-group">
+                        <label class="premium-label">Dirección</label>
+                        <input type="text" id="direccion1" class="premium-input" placeholder="Calle y número">
+                        <input type="text" id="direccion2" class="premium-input" style="margin-top: 10px;" placeholder="Colonia / Referencias">
+                    </div>
+                </div>
+
+                <!-- Familia -->
+                <div class="premium-card">
+                    <h3>Información Familiar</h3>
+                    <div class="premium-grid grid-cols-2">
+                        <div class="premium-input-group">
+                            <label class="premium-label">Nombre del Padre</label>
+                            <input type="text" id="nombrePadre" class="premium-input">
+                        </div>
+                        <div class="premium-input-group">
+                            <label class="premium-label">Celular Padre</label>
+                            <input type="text" id="celularPadre" class="premium-input" maxlength="15" oninput="soloNumeros(this)">
+                        </div>
+                        <div class="premium-input-group">
+                            <label class="premium-label">Nombre de la Madre</label>
+                            <input type="text" id="nombreMadre" class="premium-input">
+                        </div>
+                        <div class="premium-input-group">
+                            <label class="premium-label">Celular Madre</label>
+                            <input type="text" id="celularMadre" class="premium-input" maxlength="15" oninput="soloNumeros(this)">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Académico y Otros -->
+                <div class="premium-card">
+                    <h3>Información Académica</h3>
+                    <div class="premium-grid grid-cols-2">
+                        <div class="premium-input-group">
+                            <label class="premium-label">Instrumento</label>
+                            <div style="display: flex; gap: 5px;">
+                                <input type="hidden" id="instrumento_clave">
+                                <input type="text" id="instrumento_desc" class="premium-input" readonly placeholder="Seleccionar..." onclick="abrirSelectorInstrumento()">
+                                <button type="button" class="premium-btn btn-primary" style="padding: 0 15px;" onclick="abrirSelectorInstrumento()">...</button>
+                            </div>
+                        </div>
+                        <div class="premium-input-group">
+                            <label class="premium-label">Medio de Entero</label>
+                            <select id="medio" class="premium-input">
+                                <option value="">-- Seleccione --</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="premium-grid grid-cols-2">
+                        <div class="premium-input-group">
+                            <label class="premium-label">Beca (%)</label>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <input type="checkbox" id="beca" onchange="togglePorcentaje()">
+                                <input type="text" id="porcentaje" class="premium-input" style="width: 100px;" value="0.00%" oninput="validarPorcentaje(this)" disabled>
+                            </div>
+                        </div>
+                        <div class="premium-input-group">
+                            <label class="premium-label">Comentario</label>
+                            <input type="text" id="comentario" class="premium-input">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="app-footer">
+            <button class="premium-btn btn-danger" onclick="cancelarEdicion()">CANCELAR EDICIÓN</button>
+            <div style="flex-grow: 1;"></div>
+            <button class="premium-btn btn-outline" onclick="buscarParaEditar()">BUSCAR OTRO...</button>
+            <button class="premium-btn btn-save" onclick="guardarEdicion()">GUARDAR CAMBIOS</button>
+        </footer>
+    </div>
+
+    <!-- Modals (Premium) -->
+    <!-- Modal Instrumentos -->
+    <div id="modalSelectorInstrumentos" class="modal premium-modal" style="display: none;">
+        <div class="premium-modal-content" style="max-width: 550px;">
+            <div class="premium-modal-header">
+                <h2>Seleccionar Instrumento</h2>
+                <button class="modal-close" onclick="cerrarSelectorInstrumento()">✕</button>
+            </div>
+            <div class="premium-modal-body" style="padding: 20px;">
+                <div class="premium-grid" style="grid-template-columns: 1fr auto; gap: 10px; margin-bottom: 20px;">
+                    <input type="text" id="inputBuscarInstrumento" class="premium-input" placeholder="Buscar instrumento..." onkeydown="if(event.key==='Enter') buscarInstrumentosModal()">
+                    <button class="premium-btn btn-primary" onclick="buscarInstrumentosModal()">BUSCAR</button>
+                </div>
+                <div class="premium-table-container" style="max-height: 350px;">
+                    <table class="premium-table">
+                        <thead>
+                            <tr>
+                                <th>Clave</th>
+                                <th>Descripción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaInstrumentosModal">
+                            <tr>
+                                <td colspan="2" style="text-align:center; padding: 20px; color: var(--text-muted);">Use el buscador para filtrar instrumentos</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="app-footer" style="padding: 10px 20px; justify-content: flex-end; border-top: 1px solid var(--border-color);">
+                <button class="premium-btn btn-outline" onclick="cerrarSelectorInstrumento()">CANCELAR</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="utils-inputs.js"></script>
+    <script src="common.js"></script>
+    <script src="alumnos.js"></script>
+</body>
+
+</html>

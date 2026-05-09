@@ -1,0 +1,256 @@
+'------------------------------------------------------------------------
+' MODULE:   Utilities
+' PURPOSE:  Miscellaneous routines
+'------------------------------------------------------------------------
+Option Compare Database   'Use database order for string comparisons
+
+' Set up a variable to store whether or not the toolbar was
+' up when PIM.MDB was opened so that we can restore it
+' later if necessary.
+'
+Global gfToolbar As Integer
+
+'------------------------------------------------------------------------
+' FUNCTION      : CloseForm
+'
+' PURPOSE       : A generic routine that will close a given form
+'                 if it is open.
+'------------------------------------------------------------------------
+Function CloseForm(stFrm$) As Integer
+    If (FIsLoaded(stFrm$)) Then
+        DoCmd.Close A_FORM, stFrm$
+    End If
+End Function
+
+'----------------------------------------------------------------------------
+' FUNCTION : ConvertNulls
+'
+' PURPOSE  : Converts the specified variant to a new value if it
+'            is null, otherwise it returns the variant.
+'
+' NOTES    : This routine is used throughout ORDENTRY.MDB.  Use it
+'            in queries to implement Query By Form functionality
+'            (see the query 'CustomersByCriteria' and the form
+'            'CustomerCriteria' for an example).  Use it in Access
+'            Basic Code to assign form fields to local variables without
+'            trapping for errors when the form fields are null.  The
+'            list goes on...
+'----------------------------------------------------------------------------
+Function ConvertNulls(v As Variant, subs As Variant) As Variant
+    If (IsNull(v)) Then
+        ConvertNulls = subs
+    Else
+        ConvertNulls = v
+    End If
+End Function
+
+'--------------------------------------------------------------------
+' FUNCTION: CheckDays
+' PURPOSE:  Return true if there are important days to show and option is set true
+'--------------------------------------------------------------------
+Function CheckDays()
+
+    iOptSetting% = DLookup("ShowDays", "Person", "[ID] = Forms!Global!Logon")
+    If iOptSetting% Then
+        Dim db As Database, ds As Recordset
+        Set db = CurrentDb()
+        Set ds = db.OpenRecordset("ComingImptDays")
+        If ds.EOF Then
+            iRetVal% = False
+        Else
+            iRetVal% = True
+        End If
+    
+        ds.Close
+        db.Close
+    Else
+        iRetVal% = False
+    End If
+
+    CheckDays = iRetVal%
+
+End Function
+
+'--------------------------------------------------------------------
+' FUNCTION: DaysAway
+' PURPOSE:  Return the number of days from today until ImptDate
+'--------------------------------------------------------------------
+Function DaysAway(ImptDate) As Integer
+
+    ' Subtract dates and if result is negative, ImptDate has already gone by this year so
+    ' Add length of current year to negative value to get days until ImptDate
+
+    DayDiff = DatePart("y", ImptDate) - DatePart("y", Date)
+    If DayDiff < 0 Then
+        EndYear = DateSerial(DatePart("yyyy", Date), 12, 31)
+        DayDiff = DayDiff + DatePart("y", EndYear)
+    End If
+
+    DaysAway = DayDiff
+
+End Function
+
+'----------------------------------------------------------------------------
+' FUNCTION : FIsLoaded
+'
+' PURPOSE  : Returns true if a the given Form/Report is currently open.
+'----------------------------------------------------------------------------
+Function FIsLoaded(stFrmName$) As Integer
+
+    ' Scan the open forms...
+
+    For i% = 0 To Forms.Count - 1
+        If (Forms(i%).FormName = stFrmName$) Then
+            FIsLoaded = True
+            Exit Function
+        End If
+    Next i%
+
+    ' Scan the open reports...
+
+    For i% = 0 To Reports.Count - 1
+        If (Reports(i%).FormName = stFrmName$) Then
+            FIsLoaded = True
+            Exit Function
+        End If
+    Next i%
+
+    FIsLoaded = False
+
+End Function
+
+'------------------------------------------------------------------------
+' FUNCTION    : FToolbarWasUp
+'
+' PURPOSE     : Returns True if the toolbar was up when ORDENTRY.MDB
+'               was first started.
+'------------------------------------------------------------------------
+Function FToolbarWasUp() As Integer
+    FToolbarWasUp = gfToolbar
+End Function
+
+'------------------------------------------------------------------------
+' FUNCTION    : HideForm
+'------------------------------------------------------------------------
+Function hideform(stFrm$) As Integer
+    If (FIsLoaded(stFrm)) Then
+        Forms(stFrm).Visible = False
+    End If
+    hideform = True
+End Function
+
+'------------------------------------------------------------------------
+' FUNCTION    : HideToolbar
+'
+' PURPOSE     : Hides the Microsoft Access toolbar.
+'------------------------------------------------------------------------
+Function HideToolbar() As Integer
+    gfToolbar = (wu_GetToolbarHwnd() <> 0)
+    If (gfToolbar) Then
+        SendKeys skVIEWOPTIONS + "{DOWN 3}%{DOWN}{DOWN}{ENTER}", True  'SendKeys to turn off toolbar
+    End If
+End Function
+
+'--------------------------------------------------------------------
+' FUNCTION: Owner
+' PURPOSE:  Return true if appointment owner and attempted editor are the same
+'--------------------------------------------------------------------
+Function Owner() As Integer
+    If DLookup("Logon", "Current") = Forms!Daily!Name Then
+        Owner = True
+    Else
+        Owner = False
+    End If
+End Function
+
+'--------------------------------------------------------------------
+' FUNCTION: RequeryAppts
+' PURPOSE:  Requery the appointment subform
+'--------------------------------------------------------------------
+Function RequeryAppts()
+    
+    'If the daily form is loaded, requery appointment subform
+    If FIsLoaded("Daily") Then
+        DoCmd.SelectObject A_FORM, "Daily", 0
+        'If Not (IsNull(screen.activecontrol.controlname)) Then
+        '    stCurCtl$ = screen.activecontrol.controlname
+        'Else
+        '    stCurCtl$ = ""
+        'End If
+        Select Case stCurCtl$
+            Case "Description", "Note", "Slot"
+            Case Else
+                SendKeys "^+{HOME}"
+        End Select
+        SendKeys "+{F9}"
+    End If
+
+End Function
+
+'--------------------------------------------------------------------
+' FUNCTION: RequeryTasks
+' PURPOSE:  Requery the tasks subform
+'--------------------------------------------------------------------
+Function RequeryTasks()
+    
+    'If the daily form is loaded, requery task subform
+    If FIsLoaded("Daily") Then
+        DoCmd.SelectObject A_FORM, "Daily", 0
+        If Not (IsNull(Screen.ActiveControl.ControlName)) Then
+            stCurCtl$ = Screen.ActiveControl.ControlName
+        Else
+            stCurCtl$ = ""
+        End If
+        Select Case stCurCtl$
+            Case "Priority", "DueDate", "Duration", "Title", "Description"
+            Case Else
+                SendKeys "^+{HOME}"
+                SendKeys "^{TAB}"
+        End Select
+        'DoCmd Requery "ApptSub"
+        SendKeys "+{F9}"
+    End If
+
+End Function
+
+'------------------------------------------------------------------------
+' FUNCTION    : ShowToolbar
+'
+' PURPOSE     : Turns the toolbar back on.
+'------------------------------------------------------------------------
+Function ShowToolbar() As Integer
+    SendKeys skVIEWOPTIONS + "{DOWN 3}%{DOWN}{UP}{ENTER}", True  'SendKeys to turn off toolbar
+End Function
+
+'--------------------------------------------------------------------
+' FUNCTION: Undo
+' PURPOSE:  Undo the current record ignoring errors if they occur
+'           (Namely error that undo is not available.)
+'--------------------------------------------------------------------
+Function Undo()
+On Error Resume Next
+    DoCmd.DoMenuItem A_FORMBAR, A_EDITMENU, A_UNDOFIELD
+End Function
+
+'--------------------------------------------------------------------
+' FUNCTION: CallDoError
+' PURPOSE:  Cover for DoError Sub
+'--------------------------------------------------------------------
+'
+' Purpose: Save the show impt days on startup option setting after it is updated
+'
+Function UpdateOption()
+
+    Dim db As Database, ds As Recordset
+    Set db = CurrentDb()
+    Set ds = db.OpenRecordset("Person")
+    ds.FindFirst "[ID] = " + Forms!Global!Logon
+    If Not (ds.NoMatch) Then
+        ds.Edit
+        ds.ShowDays = Forms!ImptDays!Option
+        ds.Update
+    End If
+    ds.Close
+    db.Close
+
+End Function

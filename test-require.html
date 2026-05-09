@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Require</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #1a1a2e; color: #fff; }
+        .ok { color: #4caf50; }
+        .error { color: #f44336; }
+        pre { background: #333; padding: 10px; overflow: auto; }
+    </style>
+</head>
+<body>
+    <h1>Test de Carga de Supabase</h1>
+    <div id="resultado"></div>
+    <button onclick="window.location.href='index.html'">Volver</button>
+    
+    <script>
+        const res = document.getElementById('resultado');
+        
+        function log(msg, ok = true) {
+            res.innerHTML += `<p class="${ok ? 'ok' : 'error'}">${msg}</p>`;
+            console.log(msg);
+        }
+        
+        // Test 1: Verificar require
+        log('=== TEST DE REQUIRE ===');
+        
+        if (typeof require === 'undefined') {
+            log('ERROR: require no está disponible', false);
+            log('Esto significa que nodeIntegration no está habilitado en Electron', false);
+        } else {
+            log('✓ require está disponible');
+            
+            // Test 2: Intentar cargar el módulo
+            try {
+                log('Intentando cargar @supabase/supabase-js...');
+                const supabaseModule = require('@supabase/supabase-js');
+                log('✓ Módulo cargado correctamente');
+                log('Contenido del módulo: ' + Object.keys(supabaseModule).join(', '));
+                
+                if (supabaseModule.createClient) {
+                    log('✓ createClient encontrado');
+                    
+                    // Test 3: Crear cliente
+                    try {
+                        const url = 'https://vqsduyfkgdqnigzkxazk.supabase.co';
+                        const key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZxc2R1eWZrZ2Rxbmlnemt4YXprIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkwMzIyOTMsImV4cCI6MjA4NDYwODI5M30.l5bZubjb3PIvcFG43JTfoeguldEwwIK7wlnOnl-Ec5o';
+                        
+                        const cliente = supabaseModule.createClient(url, key);
+                        log('✓ Cliente creado');
+                        
+                        // Test 4: Hacer una consulta
+                        cliente.from('instrumentos').select('*').limit(3).then(({ data, error }) => {
+                            if (error) {
+                                log('ERROR en consulta: ' + error.message, false);
+                            } else {
+                                log('✓ Consulta exitosa! ' + (data ? data.length : 0) + ' registros');
+                                if (data && data.length > 0) {
+                                    res.innerHTML += '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+                                }
+                            }
+                        });
+                        
+                    } catch (e) {
+                        log('ERROR creando cliente: ' + e.message, false);
+                    }
+                } else {
+                    log('ERROR: createClient no encontrado en el módulo', false);
+                }
+                
+            } catch (e) {
+                log('ERROR cargando módulo: ' + e.message, false);
+                log('Stack: ' + e.stack, false);
+            }
+        }
+    </script>
+</body>
+</html>

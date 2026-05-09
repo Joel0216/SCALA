@@ -1,0 +1,448 @@
+Version =19
+VersionRequired =19
+Checksum =-1332622235
+Begin Form
+    AllowEditing = NotDefault
+    AllowDeletions = NotDefault
+    AllowAdditions = NotDefault
+    AllowEdits = NotDefault
+    DefaultView =0
+    GridX =5
+    GridY =5
+    Width =7152
+    ItemSuffix =38
+    Left =825
+    Top =270
+    Right =8700
+    Bottom =5700
+    RecSrcDt = Begin
+        0x7ba6e65422dee140
+    End
+    GUID = Begin
+        0xfcd6f8490c2b7c498c444ea815cee172
+    End
+    NameMap = Begin
+        0x0acc0e5500000000000000000000000000000000000000000c00000002000000 ,
+        0x0000000000000000000000000000
+    End
+    RecordSource ="Grupos"
+    Caption ="Datos del Grupo"
+    MenuBar ="Barra Main"
+    Begin
+        Begin Label
+            TextAlign =3
+            FontWeight =700
+            BackColor =12632256
+        End
+        Begin Rectangle
+            SpecialEffect =2
+            Width =850
+            Height =850
+        End
+        Begin OptionButton
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin CheckBox
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin TextBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin ListBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =1417
+            LabelX =-236
+        End
+        Begin ComboBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin FormHeader
+            Height =0
+            BackColor =12632256
+            Name ="EncabezadoDelFormulario1"
+            EventProcPrefix ="EncabezadoDelFormula"
+            GUID = Begin
+                0x224fb32bbc83524dbdc6e9148af8f40f
+            End
+        End
+        Begin Section
+            SpecialEffect =1
+            Height =2154
+            BackColor =8421376
+            Name ="Detalle0"
+            GUID = Begin
+                0x3e5c7089aab0ef4a914a6f5124c8984a
+            End
+            Begin
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =904
+                    Top =113
+                    Width =1245
+                    Name ="Clave"
+                    ControlSource ="Clave"
+                    StatusBarText ="Clave del grupo"
+                    GUID = Begin
+                        0xc5253c7215017041bc64b6b5e653db7c
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =113
+                            Top =113
+                            Width =678
+                            Height =240
+                            BackColor =8421376
+                            Name ="Texto15"
+                            Caption ="Clave:"
+                            GUID = Begin
+                                0xcf6419a352859043bca2cf89a134ded6
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =3058
+                    Top =113
+                    Width =3969
+                    TabIndex =1
+                    Name ="Curso"
+                    ControlSource ="Curso"
+                    StatusBarText ="Curso impartido en el grupo"
+                    GUID = Begin
+                        0x63352f59278b6243899dcb4dd36b4bcd
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =2267
+                            Top =113
+                            Width =678
+                            Height =240
+                            BackColor =8421376
+                            Name ="Texto17"
+                            Caption ="Curso:"
+                            GUID = Begin
+                                0x2147afcdd11d1642833ad1bc5a7e4d9a
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =1130
+                    Top =453
+                    Width =3969
+                    ColumnWidth =3060
+                    TabIndex =2
+                    Name ="Maestro"
+                    ControlSource ="Maestro"
+                    StatusBarText ="Nombre del maestro"
+                    GUID = Begin
+                        0xd1bbd7a3039f7448baf724015a34fb8b
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =113
+                            Top =453
+                            Width =904
+                            Height =240
+                            BackColor =8421376
+                            Name ="Texto19"
+                            Caption ="Maestro:"
+                            GUID = Begin
+                                0xeb35af5b08df4b4cb08cdeab274919f7
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =1131
+                    Top =793
+                    Width =1515
+                    TabIndex =3
+                    Name ="Dia"
+                    ControlSource ="Dia"
+                    StatusBarText ="Dia en que se imparte la clase"
+                    GUID = Begin
+                        0xf2a4247e26ba514ea633f0cda067563e
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =566
+                            Top =793
+                            Width =452
+                            Height =240
+                            BackColor =8421376
+                            Name ="Texto21"
+                            Caption ="Dia:"
+                            GUID = Begin
+                                0x2c360b8981142142966e1eeabbd3ab0d
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =5211
+                    Top =793
+                    Width =645
+                    TabIndex =5
+                    Name ="Hora entrada"
+                    ControlSource ="Hora entrada"
+                    Format ="Short Time"
+                    StatusBarText ="Hora de entrada"
+                    EventProcPrefix ="Hora_entrada"
+                    GUID = Begin
+                        0xa701e73f2bbea940870903aa5effbfd8
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =3855
+                            Top =793
+                            Width =1243
+                            Height =240
+                            BackColor =8421376
+                            Name ="Texto23"
+                            Caption ="Hora entrada:"
+                            GUID = Begin
+                                0x3335715846f5e14fa89325d18336cd10
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =5211
+                    Top =1133
+                    Width =645
+                    TabIndex =6
+                    Name ="Hora salida"
+                    ControlSource ="Hora salida"
+                    Format ="Short Time"
+                    StatusBarText ="Hora de salida"
+                    EventProcPrefix ="Hora_salida"
+                    GUID = Begin
+                        0x6c03a6e2ae0e324eaafc6efff4200aee
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =3968
+                            Top =1133
+                            Width =1130
+                            Height =240
+                            BackColor =8421376
+                            Name ="Texto25"
+                            Caption ="Hora salida:"
+                            GUID = Begin
+                                0xb4da1def898a7c4fbe4b9343e159cd54
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =1131
+                    Top =1133
+                    Width =855
+                    TabIndex =4
+                    Name ="Salon"
+                    ControlSource ="Salon"
+                    StatusBarText ="Salon de clase"
+                    GUID = Begin
+                        0x69c0506c7cc70044a8abeec39cf8ff6f
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =340
+                            Top =1133
+                            Width =678
+                            Height =240
+                            BackColor =8421376
+                            Name ="Texto27"
+                            Caption ="Salon:"
+                            GUID = Begin
+                                0x25930305c40dc84c85fbd3368107b0f3
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =1131
+                    Top =1474
+                    Width =330
+                    TabIndex =7
+                    Name ="Cupo"
+                    ControlSource ="Cupo"
+                    StatusBarText ="Limite maximo de alumnos"
+                    GUID = Begin
+                        0xb1f67427fa9b6e46b1fdc508edd2aa98
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =340
+                            Top =1474
+                            Width =678
+                            Height =240
+                            BackColor =8421376
+                            Name ="Texto29"
+                            Caption ="Cupo:"
+                            GUID = Begin
+                                0xe8380e7a8f28114fa91e7908b76be806
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =2604
+                    Top =1474
+                    Width =330
+                    TabIndex =8
+                    Name ="Alumnos"
+                    ControlSource ="Alumnos"
+                    StatusBarText ="Numero de alumnos en el grupo"
+                    GUID = Begin
+                        0x9a58b13ec708734a9774952d87174cbf
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =1587
+                            Top =1474
+                            Width =904
+                            Height =240
+                            BackColor =8421376
+                            Name ="Texto31"
+                            Caption ="Alumnos:"
+                            GUID = Begin
+                                0xa8a8c82c9d04b747aa037cda0cec3fb6
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =1131
+                    Top =1814
+                    Width =2070
+                    TabIndex =9
+                    Name ="Inicio"
+                    ControlSource ="Inicio"
+                    Format ="General Date"
+                    StatusBarText ="Fecha de inicio del nivel actual"
+                    GUID = Begin
+                        0x99cf2574e23c70409475c37d1a06c680
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =340
+                            Top =1814
+                            Width =678
+                            Height =240
+                            BackColor =8421376
+                            Name ="Texto33"
+                            Caption ="Inicio:"
+                            GUID = Begin
+                                0x4355670b0aa7b4428363e1cab1576d90
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =4872
+                    Top =1474
+                    Width =2280
+                    TabIndex =10
+                    Name ="Leccion"
+                    ControlSource ="Leccion"
+                    GUID = Begin
+                        0x4776b12b51fb9a4983cb9e7d17c6c257
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =3855
+                            Top =1474
+                            Width =904
+                            Height =240
+                            BackColor =8421376
+                            Name ="Texto35"
+                            Caption ="Leccion:"
+                            GUID = Begin
+                                0xc15d4c35e328f44eb39336ed77d4f79a
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =4870
+                    Top =1814
+                    Width =930
+                    TabIndex =11
+                    Name ="FechaLeccion"
+                    ControlSource ="FechaLeccion"
+                    Format ="Short Date"
+                    GUID = Begin
+                        0x7b29e603d388e846a814976083c134a3
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =3401
+                            Top =1814
+                            Width =1356
+                            Height =240
+                            BackColor =8421376
+                            Name ="Texto37"
+                            Caption ="FechaLeccion:"
+                            GUID = Begin
+                                0x0f5c011aa57d03498acd6a9d6f6e2be3
+                            End
+                        End
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            Height =0
+            BackColor =12632256
+            Name ="PieDelFormulario2"
+            GUID = Begin
+                0x802f3f4eae2c68418465cee2ba655187
+            End
+        End
+    End
+End

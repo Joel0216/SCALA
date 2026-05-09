@@ -1,0 +1,107 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Times New Roman', serif;
+    background: white;
+    padding: 20px;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.header {
+    border-top: 3px double #000;
+    border-bottom: 3px double #000;
+    padding: 10px 0;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.header h1 {
+    font-size: 18px;
+    font-weight: bold;
+    text-align: left;
+}
+
+.fecha {
+    font-size: 12px;
+    font-style: italic;
+    margin-top: 5px;
+}
+
+.pagina {
+    position: absolute;
+    right: 0;
+    top: 10px;
+    font-size: 12px;
+}
+
+.tabla-reporte {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+}
+
+.tabla-reporte thead {
+    border-top: 3px double #000;
+    border-bottom: 3px double #000;
+}
+
+.tabla-reporte th {
+    padding: 8px;
+    text-align: left;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.tabla-reporte td {
+    padding: 6px 8px;
+    font-size: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+.tabla-reporte tbody tr:hover {
+    background-color: #f5f5f5;
+}
+
+.footer {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.btn-imprimir,
+.btn-cerrar {
+    padding: 10px 30px;
+    font-size: 14px;
+    font-weight: bold;
+    border: 2px outset #808080;
+    background-color: #c0c0c0;
+    cursor: pointer;
+}
+
+.btn-imprimir:active,
+.btn-cerrar:active {
+    border-style: inset;
+}
+
+@media print {
+    .footer {
+        display: none;
+    }
+    
+    body {
+        padding: 0;
+    }
+    
+    .tabla-reporte tbody tr:hover {
+        background-color: transparent;
+    }
+}

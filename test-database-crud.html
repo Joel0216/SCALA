@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Test CRUD Base de Datos</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        h1 { color: #333; text-align: center; }
+        .card { background: white; padding: 20px; margin: 15px 0; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .card h2 { margin-top: 0; color: #4CAF50; border-bottom: 2px solid #4CAF50; padding-bottom: 10px; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; border: none; border-radius: 4px; font-size: 14px; }
+        .btn-insert { background: #4CAF50; color: white; }
+        .btn-read { background: #2196F3; color: white; }
+        .btn-delete { background: #f44336; color: white; }
+        button:hover { opacity: 0.8; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 4px; }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .info { background: #d1ecf1; color: #0c5460; }
+        pre { background: #f8f8f8; padding: 10px; border-radius: 4px; overflow: auto; max-height: 200px; font-size: 12px; }
+        .result { margin-top: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; font-size: 12px; }
+        th { background: #4CAF50; color: white; }
+        tr:nth-child(even) { background: #f9f9f9; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Test CRUD - Base de Datos Supabase</h1>
+        
+        <div id="conexionStatus" class="status info">Conectando a Supabase...</div>
+
+        <!-- Test Cursos -->
+        <div class="card">
+            <h2>📚 Cursos</h2>
+            <button class="btn-insert" onclick="insertarCurso()">➕ Insertar Curso de Prueba</button>
+            <button class="btn-read" onclick="leerCursos()">📖 Leer Cursos</button>
+            <button class="btn-delete" onclick="eliminarCursoPrueba()">🗑️ Eliminar Curso de Prueba</button>
+            <div id="resultCursos" class="result"></div>
+        </div>
+
+        <!-- Test Maestros -->
+        <div class="card">
+            <h2>👨‍🏫 Maestros</h2>
+            <button class="btn-insert" onclick="insertarMaestro()">➕ Insertar Maestro de Prueba</button>
+            <button class="btn-read" onclick="leerMaestros()">📖 Leer Maestros</button>
+            <button class="btn-delete" onclick="eliminarMaestroPrueba()">🗑️ Eliminar Maestro de Prueba</button>
+            <div id="resultMaestros" class="result"></div>
+        </div>
+
+        <!-- Test Alumnos -->
+        <div class="card">
+            <h2>👨‍🎓 Alumnos</h2>
+            <button class="btn-insert" onclick="insertarAlumno()">➕ Insertar Alumno de Prueba</button>
+            <button class="btn-read" onclick="leerAlumnos()">📖 Leer Alumnos</button>
+            <button class="btn-delete" onclick="eliminarAlumnoPrueba()">🗑️ Eliminar Alumno de Prueba</button>
+            <div id="resultAlumnos" class="result"></div>
+        </div>
+
+        <!-- Test Instrumentos -->
+        <div class="card">
+            <h2>🎸 Instrumentos</h2>
+            <button class="btn-insert" onclick="insertarInstrumento()">➕ Insertar Instrumento de Prueba</button>
+            <button class="btn-read" onclick="leerInstrumentos()">📖 Leer Instrumentos</button>
+            <button class="btn-delete" onclick="eliminarInstrumentoPrueba()">🗑️ Eliminar Instrumento de Prueba</button>
+            <div id="resultInstrumentos" class="result"></div>
+        </div>
+
+        <!-- Test Salones -->
+        <div class="card">
+            <h2>🏫 Salones</h2>
+            <button class="btn-insert" onclick="insertarSalon()">➕ Insertar Salón de Prueba</button>
+            <button class="btn-read" onclick="leerSalones()">📖 Leer Salones</button>
+            <button class="btn-delete" onclick="eliminarSalonPrueba()">🗑️ Eliminar Salón de Prueba</button>
+            <div id="resultSalones" class="result"></div>
+        </div>
+
+        <!-- Test Factores -->
+        <div class="card">
+            <h2>📊 Factores</h2>
+            <button class="btn-read" onclick="leerFactores()">📖 Leer Factores</button>
+            <div id="resultFactores" class="result"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = 'https://vqsduyfkgdqnigzkxazk.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZxc2R1eWZrZ2Rxbmlnemt4YXprIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkwMzIyOTMsImV4cCI6MjA4NDYwODI5M30.l5bZubjb3PIvcFG43JTfoeguldEwwIK7wlnOnl-Ec5o';
+        
+        let db = null;
+
+        function showResult(elementId, message, isError = false) {
+            const el = document.getElementById(elementId);
+            el.innerHTML = `<div class="status ${isError ? 'error' : 'success'}">${message}</div>`;
+        }
+
+        function showTable(elementId, data, columns) {
+            if (!data || data.length === 0) {
+                document.getElementById(elementId).innerHTML = '<p>No hay datos</p>';
+                return;
+            }
+            let html = `<p>✅ ${data.length} registros encontrados</p><table><thead><tr>`;
+            columns.forEach(c => html += `<th>${c}</th>`);
+            html += '</tr></thead><tbody>';
+            data.slice(0, 10).forEach(row => {
+                html += '<tr>';
+                columns.forEach(c => {
+                    let val = row[c];
+                    if (val && typeof val === 'string' && val.length > 30) val = val.substring(0, 30) + '...';
+                    html += `<td>${val !== null && val !== undefined ? val : ''}</td>`;
+                });
+                html += '</tr>';
+            });
+            html += '</tbody></table>';
+            if (data.length > 10) html += `<p><em>Mostrando 10 de ${data.length}</em></p>`;
+            document.getElementById(elementId).innerHTML = html;
+        }
+
+        // Conectar
+        async function conectar() {
+            try {
+                db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                const { data, error } = await db.from('cursos').select('id').limit(1);
+                if (error) throw error;
+                document.getElementById('conexionStatus').innerHTML = '✅ Conectado a Supabase correctamente';
+                document.getElementById('conexionStatus').className = 'status success';
+            } catch (e) {
+                document.getElementById('conexionStatus').innerHTML = '❌ Error: ' + e.message;
+                document.getElementById('conexionStatus').className = 'status error';
+            }
+        }
+
+        // CURSOS
+        async function insertarCurso() {
+            try {
+                const { data, error } = await db.from('cursos').insert([{
+                    curso: 'CURSO DE PRUEBA ' + Date.now(),
+                    descripcion: 'Este es un curso de prueba insertado desde el test',
+                    precio_mensual: 999.99,
+                    activo: true
+                }]).select();
+                if (error) throw error;
+                showResult('resultCursos', '✅ Curso insertado: ' + data[0].curso);
+            } catch (e) {
+                showResult('resultCursos', '❌ Error: ' + e.message, true);
+            }
+        }
+
+        async function leerCursos() {
+            try {
+                const { data, error } = await db.from('cursos').select('*').order('curso').limit(20);
+                if (error) throw error;
+                showTable('resultCursos', data, ['curso', 'descripcion', 'precio_mensual', 'activo']);
+            } catch (e) {
+                showResult('resultCursos', '❌ Error: ' + e.message, true);
+            }
+        }
+
+        async function eliminarCursoPrueba() {
+            try {
+                const { error } = await db.from('cursos').delete().like('curso', 'CURSO DE PRUEBA%');
+                if (error) throw error;
+                showResult('resultCursos', '✅ Cursos de prueba eliminados');
+            } catch (e) {
+                showResult('resultCursos', '❌ Error: ' + e.message, true);
+            }
+        }
+
+        // MAESTROS
+        async function insertarMaestro() {
+            try {
+                const { data, error } = await db.from('maestros').insert([{
+                    nombre: 'MAESTRO PRUEBA ' + Date.now(),
+                    telefono: '999-123-4567',
+                    email: 'prueba@test.com',
+                    status: 'activo'
+                }]).select();
+                if (error) throw error;
+                showResult('resultMaestros', '✅ Maestro insertado: ' + data[0].nombre);
+            } catch (e) {
+                showResult('resultMaestros', '❌ Error: ' + e.message, true);
+            }
+        }
+
+        async function leerMaestros() {
+            try {
+                const { data, error } = await db.from('maestros').select('*').order('nombre').limit(20);
+                if (error) throw error;
+                showTable('resultMaestros', data, ['nombre', 'telefono', 'email', 'status']);
+            } catch (e) {
+                showResult('resultMaestros', '❌ Error: ' + e.message, true);
+            }
+        }
+
+        async function eliminarMaestroPrueba() {
+            try {
+                const { error } = await db.from('maestros').delete().like('nombre', 'MAESTRO PRUEBA%');
+                if (error) throw error;
+                showResult('resultMaestros', '✅ Maestros de prueba eliminados');
+            } catch (e) {
+                showResult('resultMaestros', '❌ Error: ' + e.message, true);
+            }
+        }
+
+        // ALUMNOS
+        async function insertarAlumno() {
+            try {
+                const { data, error } = await db.from('alumnos').insert([{
+                    credencial1: 'TEST',
+                    credencial2: String(Date.now()).slice(-4),
+                    nombre: 'ALUMNO PRUEBA ' + Date.now(),
+                    telefono: '999-111-2222',
+                    status: 'activo'
+                }]).select();
+                if (error) throw error;
+                showResult('resultAlumnos', '✅ Alumno insertado: ' + data[0].nombre);
+            } catch (e) {
+                showResult('resultAlumnos', '❌ Error: ' + e.message, true);
+            }
+        }
+
+        async function leerAlumnos() {
+            try {
+                const { data, error } = await db.from('alumnos').select('*').order('nombre').limit(20);
+                if (error) throw error;
+                showTable('resultAlumnos', data, ['credencial1', 'nombre', 'telefono', 'status']);
+            } catch (e) {
+                showResult('resultAlumnos', '❌ Error: ' + e.message, true);
+            }
+        }
+
+        async function eliminarAlumnoPrueba() {
+            try {
+                const { error } = await db.from('alumnos').delete().like('nombre', 'ALUMNO PRUEBA%');
+                if (error) throw error;
+                showResult('resultAlumnos', '✅ Alumnos de prueba eliminados');
+            } catch (e) {
+                showResult('resultAlumnos', '❌ Error: ' + e.message, true);
+            }
+        }
+
+        // INSTRUMENTOS
+        async function insertarInstrumento() {
+            try {
+                const clave = 'TST' + String(Date.now()).slice(-3);
+                const { data, error } = await db.from('instrumentos').insert([{
+                    clave: clave,
+                    descripcion: 'INSTRUMENTO DE PRUEBA',
+                    activo: true
+                }]).select();
+                if (error) throw error;
+                showResult('resultInstrumentos', '✅ Instrumento insertado: ' + data[0].clave);
+            } catch (e) {
+                showResult('resultInstrumentos', '❌ Error: ' + e.message, true);
+            }
+        }
+
+        async function leerInstrumentos() {
+            try {
+                const { data, error } = await db.from('instrumentos').select('*').order('clave');
+                if (error) throw error;
+                showTable('resultInstrumentos', data, ['clave', 'descripcion', 'activo']);
+            } catch (e) {
+                showResult('resultInstrumentos', '❌ Error: ' + e.message, true);
+            }
+        }
+
+        async function eliminarInstrumentoPrueba() {
+            try {
+                const { error } = await db.from('instrumentos').delete().like('clave', 'TST%');
+                if (error) throw error;
+                showResult('resultInstrumentos', '✅ Instrumentos de prueba eliminados');
+            } catch (e) {
+                showResult('resultInstrumentos', '❌ Error: ' + e.message, true);
+            }
+        }
+
+        // SALONES
+        async function insertarSalon() {
+            try {
+                const num = 'T' + String(Date.now()).slice(-2);
+                const { data, error } = await db.from('salones').insert([{
+                    numero: num,
+                    ubicacion: 'Salón de prueba',
+                    cupo: 10,
+                    activo: true
+                }]).select();
+                if (error) throw error;
+                showResult('resultSalones', '✅ Salón insertado: ' + data[0].numero);
+            } catch (e) {
+                showResult('resultSalones', '❌ Error: ' + e.message, true);
+            }
+        }
+
+        async function leerSalones() {
+            try {
+                const { data, error } = await db.from('salones').select('*').order('numero');
+                if (error) throw error;
+                showTable('resultSalones', data, ['numero', 'ubicacion', 'cupo', 'activo']);
+            } catch (e) {
+                showResult('resultSalones', '❌ Error: ' + e.message, true);
+            }
+        }
+
+        async function eliminarSalonPrueba() {
+            try {
+                const { error } = await db.from('salones').delete().like('numero', 'T%');
+                if (error) throw error;
+                showResult('resultSalones', '✅ Salones de prueba eliminados');
+            } catch (e) {
+                showResult('resultSalones', '❌ Error: ' + e.message, true);
+            }
+        }
+
+        // FACTORES
+        async function leerFactores() {
+            try {
+                const { data, error } = await db.from('factores').select('*, maestros(nombre), cursos(curso)');
+                if (error) throw error;
+                showTable('resultFactores', data, ['factor', 'maestros', 'cursos']);
+            } catch (e) {
+                showResult('resultFactores', '❌ Error: ' + e.message, true);
+            }
+        }
+
+        // Iniciar
+        window.onload = conectar;
+    </script>
+</body>
+</html>

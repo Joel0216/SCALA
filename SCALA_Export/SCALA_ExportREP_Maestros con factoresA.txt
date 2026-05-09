@@ -1,0 +1,499 @@
+Version =19
+VersionRequired =19
+Checksum =-1646645874
+Begin Report
+    LayoutForPrint = NotDefault
+    DateGrouping =1
+    GridY =10
+    Width =8730
+    ItemSuffix =81
+    Left =465
+    Top =30
+    Right =9150
+    Bottom =5250
+    RecSrcDt = Begin
+        0x922097027bfae140
+    End
+    GUID = Begin
+        0x8cc414a0b33bde4b87b01cb9723d2a78
+    End
+    NameMap = Begin
+        0x0acc0e5500000000c20e17553c5935469cea5aa4657b9b3300000000528acdd0 ,
+        0xb849e340000000000000000051005f0046006100630074006f00720000000000 ,
+        0x00004ae4d44b40bdae4787b22cd0888c282707000000c20e17553c5935469cea ,
+        0x5aa4657b9b334e006f006d00620072006500000000000000b1f8c7c5e3c6114b ,
+        0x810335793ebbe8a207000000c20e17553c5935469cea5aa4657b9b3343007500 ,
+        0x720073006f0000000000000069ff64aafa5b044ab4f7e8d9c3d7b65707000000 ,
+        0xc20e17553c5935469cea5aa4657b9b3346006100630074006f00720000000000 ,
+        0x0000000000000000000000000000000000000c00000002000000000000000000 ,
+        0x0000000000000000
+    End
+    RecordSource ="Q_Factor"
+    PrtMip = Begin
+        0x890500006e040000890500006e040000000000001a2200001b01000001000000 ,
+        0x010000006801000000000000a10700000100000000000000
+    End
+    PrtDevMode = Begin
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x010400059c003402036e8007010001009a0b3408640001000700680102000100 ,
+        0x6801010001004134000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000010000000000000001000000 ,
+        0x0200000001000000ffffffff0000000000000000000000000000000044494e55 ,
+        0x22000000340200004a3416950000000000000000000000000000000000000000 ,
+        0x0000000000000000080000000000000010000000050000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x00000000000000000000000000000000
+    End
+    PrtDevNames = Begin
+        0x0800240040000100000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x444f54345f30303200
+    End
+    Begin
+        Begin Label
+            TextFontFamily =18
+            FontSize =10
+            FontWeight =700
+            FontName ="Times New Roman"
+        End
+        Begin Line
+            Width =1701
+        End
+        Begin BoundObjectFrame
+            AutoLabel = NotDefault
+            OldBorderStyle =0
+            Width =4536
+            Height =2835
+            LabelX =-1701
+        End
+        Begin TextBox
+            AutoLabel = NotDefault
+            OldBorderStyle =0
+            TextFontFamily =18
+            Width =1701
+            Height =336
+            LabelX =-1701
+            FontSize =10
+            FontName ="Times New Roman"
+        End
+        Begin ComboBox
+            TextFontFamily =2
+            Width =1701
+            LabelX =-1701
+            FontName ="Arial"
+        End
+        Begin Subform
+            OldBorderStyle =0
+            Width =1701
+            Height =1701
+        End
+        Begin PageBreak
+            Width =283
+        End
+        Begin BreakLevel
+            GroupHeader = NotDefault
+            GroupFooter = NotDefault
+            ControlSource ="Nombre"
+        End
+        Begin BreakLevel
+            ControlSource ="Curso"
+        End
+        Begin FormHeader
+            KeepTogether = NotDefault
+            Height =0
+            Name ="EncabezadoDelInforme3"
+            EventProcPrefix ="EncabezadoDelInforme"
+            GUID = Begin
+                0xdbb741b6bfa8bf4e836a4794455f2d8e
+            End
+        End
+        Begin PageHeader
+            Height =2899
+            Name ="EncabezadoDePágina0"
+            GUID = Begin
+                0xc13b01965596f64a9791a89a35a47288
+            End
+            Begin
+                Begin TextBox
+                    FontItalic = NotDefault
+                    TextAlign =3
+                    Left =6464
+                    Top =566
+                    Width =1920
+                    Height =291
+                    FontWeight =500
+                    Name ="Campo35"
+                    ControlSource ="=Now()"
+                    Format ="Long Date"
+                    GUID = Begin
+                        0x13d3d2eee481b54098d9db9e2769cad4
+                    End
+                End
+                Begin Line
+                    Left =56
+                    Width =8505
+                    Name ="Línea37"
+                    GUID = Begin
+                        0x6be3b34ee8b862459bbc800f910258e2
+                    End
+                End
+                Begin Line
+                    Left =56
+                    Top =56
+                    Width =8505
+                    Name ="Línea38"
+                    GUID = Begin
+                        0xd4b0b1c6286f644b96c508d1280a9bdc
+                    End
+                End
+                Begin Line
+                    Top =964
+                    Width =8505
+                    Name ="Línea55"
+                    GUID = Begin
+                        0x87f6975e2edaf748aa2120dd82a1ba9c
+                    End
+                End
+                Begin Line
+                    Top =1021
+                    Width =8505
+                    Name ="Línea56"
+                    GUID = Begin
+                        0x0695bfed13af484caa04eacf69a16ab7
+                    End
+                End
+                Begin Label
+                    TextAlign =1
+                    TextFontFamily =34
+                    Left =340
+                    Top =1247
+                    Width =6915
+                    Height =615
+                    FontSize =11
+                    FontWeight =500
+                    Name ="Texto65"
+                    Caption ="El presente anexo forma parte íntegra con el contrato de prestación de servicio "
+                        "de fecha ___________________"
+                    FontName ="Arial Narrow"
+                    GUID = Begin
+                        0xa9dc7494e149c04bbf6dcf74eb6903e9
+                    End
+                End
+                Begin Label
+                    TextAlign =2
+                    TextFontFamily =34
+                    Left =1927
+                    Top =113
+                    Width =4761
+                    Height =340
+                    FontSize =14
+                    FontWeight =600
+                    Name ="Texto66"
+                    Caption ="ANEXO   \"A\""
+                    FontName ="Arial"
+                    GUID = Begin
+                        0xf72ac4b707af9341ab006bf7dbf10f85
+                    End
+                End
+                Begin Label
+                    TextAlign =2
+                    TextFontFamily =34
+                    Left =-15
+                    Top =450
+                    Width =3495
+                    Height =255
+                    FontWeight =500
+                    Name ="Texto68"
+                    Caption ="SCALA"
+                    FontName ="Arial Narrow"
+                    GUID = Begin
+                        0xb3decc98446d524a97dff9e0fa6b8262
+                    End
+                End
+                Begin Label
+                    Left =220
+                    Top =1984
+                    Width =8220
+                    Height =915
+                    Name ="Texto74"
+                    Caption ="Dando cumplimiento a la cláusula PRIMERA Y  SEXTA, en ambos casos; se describe a"
+                        " continuación la forma de pago de los honorarios, en acuerdo con la EMPRESA los "
+                        "honorarios se calcularán en base a los factores (cuotas por alumno conforme al c"
+                        "urso) siguiente:"
+                    GUID = Begin
+                        0x46aa7fe5757a364aa17ab30dfd3d418d
+                    End
+                End
+                Begin Label
+                    FontItalic = NotDefault
+                    Left =4922
+                    Top =566
+                    Width =1500
+                    Height =285
+                    FontWeight =500
+                    Name ="Texto78"
+                    Caption ="Mérida, Yuc., a"
+                    GUID = Begin
+                        0xc094bc1131d37a48abdd053af3a586d7
+                    End
+                End
+                Begin Label
+                    TextAlign =2
+                    TextFontFamily =34
+                    Left =585
+                    Top =675
+                    Width =2265
+                    Height =285
+                    FontWeight =500
+                    Name ="Etiqueta80"
+                    Caption ="ACADEMIAS DE MUSICA"
+                    FontName ="Arial Narrow"
+                    GUID = Begin
+                        0x6d0191c34e8fc54b8ba485b9102711d7
+                    End
+                End
+            End
+        End
+        Begin BreakHeader
+            KeepTogether = NotDefault
+            Height =1303
+            Name ="EncabezadoDelGrupo5"
+            GUID = Begin
+                0xa57c804cb287e6479c845ffc8aad48d8
+            End
+            Begin
+                Begin TextBox
+                    SpecialEffect =1
+                    OldBorderStyle =1
+                    TextAlign =2
+                    Left =1133
+                    Top =56
+                    Width =6226
+                    ColumnWidth =3330
+                    FontSize =12
+                    FontWeight =700
+                    Name ="Nombre"
+                    ControlSource ="Nombre"
+                    StatusBarText ="Nombre del maestro"
+                    GUID = Begin
+                        0x652a5ab7a514c446bdd653dcf945f2cd
+                    End
+                End
+                Begin Label
+                    SpecialEffect =1
+                    OldBorderStyle =1
+                    TextAlign =2
+                    Left =2211
+                    Top =510
+                    Width =3969
+                    Height =340
+                    FontSize =12
+                    Name ="Texto44"
+                    Caption ="Listado de Factores"
+                    GUID = Begin
+                        0x9aeaab9ce6b9b5429bccf43467ba9c32
+                    End
+                End
+                Begin Label
+                    Left =1360
+                    Top =963
+                    Width =600
+                    Height =285
+                    Name ="Texto52"
+                    Caption ="Curso"
+                    GUID = Begin
+                        0x44de31c6cfe47e4296e6d1b9f2c74e58
+                    End
+                End
+                Begin Label
+                    Left =5158
+                    Top =963
+                    Width =1260
+                    Height =285
+                    Name ="Texto53"
+                    Caption ="Factor Nuevo"
+                    GUID = Begin
+                        0x9c9f6776d67b0043bb253b783bd66fb7
+                    End
+                End
+            End
+        End
+        Begin Section
+            KeepTogether = NotDefault
+            CanGrow = NotDefault
+            Height =283
+            Name ="Detalle1"
+            GUID = Begin
+                0xfa4521a91cc9e2488e4e3165225896c7
+            End
+            Begin
+                Begin TextBox
+                    Left =1360
+                    Width =2835
+                    Height =227
+                    ColumnWidth =2925
+                    Name ="Curso"
+                    ControlSource ="Curso"
+                    GUID = Begin
+                        0x8947a960e0026b41aed1e84d7c7f7331
+                    End
+                End
+                Begin TextBox
+                    DecimalPlaces =2
+                    Left =5159
+                    Width =1373
+                    Height =227
+                    TabIndex =1
+                    Name ="Factor"
+                    ControlSource ="Factor"
+                    Format ="$#,##0.00;($#,##0.00)"
+                    StatusBarText ="Factor para Calculo de Honorarios"
+                    GUID = Begin
+                        0xe2eb04bc3d97cd42b635f4cc9af495a4
+                    End
+                End
+            End
+        End
+        Begin BreakFooter
+            KeepTogether = NotDefault
+            ForceNewPage =2
+            Height =907
+            Name ="PieDelGrupo6"
+            GUID = Begin
+                0xf3e1ec3179f8d64db24f1dd0a70b609e
+            End
+            Begin
+                Begin Line
+                    Left =623
+                    Top =56
+                    Width =7371
+                    Name ="Línea62"
+                    GUID = Begin
+                        0x51f36abea0acc643a2a03ca9b34617fe
+                    End
+                End
+                Begin Label
+                    TextAlign =2
+                    TextFontFamily =66
+                    Left =1788
+                    Top =120
+                    Width =5052
+                    Height =708
+                    FontSize =12
+                    FontWeight =500
+                    Name ="Texto64"
+                    Caption =" Factores (cuotas de honorarios por alumno) vigentes a partir del 1o. de octubre"
+                        " de 2001"
+                    FontName ="ShelleyVolante BT"
+                    GUID = Begin
+                        0xe4c9b6554c37d448996fce6ae57fdf93
+                    End
+                End
+            End
+        End
+        Begin PageFooter
+            Height =1417
+            Name ="PieDePágina2"
+            GUID = Begin
+                0x75339fcb3110c94faaa7af112081418f
+            End
+            Begin
+                Begin Label
+                    TextFontFamily =34
+                    Left =5385
+                    Top =1077
+                    Width =3225
+                    Height =240
+                    FontSize =8
+                    Name ="Texto58"
+                    Caption ="ACADEMIA DE MUSICA SCALA"
+                    FontName ="Arial"
+                    GUID = Begin
+                        0x743466b953a7854f9fd7d6c8bf7136bf
+                    End
+                End
+                Begin Line
+                    Left =623
+                    Top =1077
+                    Width =2558
+                    Name ="Línea59"
+                    GUID = Begin
+                        0xd427934c556c194f8e4732fc1f9a5f6e
+                    End
+                End
+                Begin Line
+                    Left =5669
+                    Top =1077
+                    Width =2268
+                    Height =12
+                    Name ="Línea61"
+                    GUID = Begin
+                        0x9b708cee5e58dd48976a82f258a55539
+                    End
+                End
+                Begin TextBox
+                    TextFontFamily =34
+                    Left =623
+                    Top =1077
+                    Width =3065
+                    Height =284
+                    FontWeight =700
+                    Name ="Campo76"
+                    ControlSource ="Nombre"
+                    FontName ="Arial"
+                    GUID = Begin
+                        0xa722f1251a297a4fbd74db9b78ff8896
+                    End
+                End
+                Begin Label
+                    TextFontFamily =34
+                    Left =735
+                    Top =120
+                    Width =3120
+                    Height =285
+                    FontSize =9
+                    FontWeight =600
+                    Name ="Texto77"
+                    Caption ="EL PRESTADOR DEL SERVICIO"
+                    FontName ="Arial Narrow"
+                    GUID = Begin
+                        0x1d8f270296b90a4c91891b0321d0f563
+                    End
+                End
+                Begin Label
+                    Left =6179
+                    Top =113
+                    Width =1134
+                    Height =283
+                    Name ="Texto79"
+                    Caption ="La Empresa"
+                    GUID = Begin
+                        0x369b09b57d288240847fa220e7b896ba
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            KeepTogether = NotDefault
+            Height =0
+            Name ="PieDelInforme4"
+            GUID = Begin
+                0x9384e044b7dda444aae350fa7023646c
+            End
+        End
+    End
+End

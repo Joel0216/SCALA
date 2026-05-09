@@ -1,0 +1,149 @@
+/* Alumnos Page Specific Styles */
+/* Most styles are inherited from theme.css */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.datetime {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Modal styles modernization */
+.modal-windows {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(44, 62, 80, 0.7);
+    backdrop-filter: blur(4px);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-busqueda-content {
+    background: var(--white);
+    border-radius: var(--radius-md);
+    width: 90%;
+    max-width: 600px;
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-busqueda-header {
+    background: var(--primary-gradient);
+    color: var(--white);
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.modal-busqueda-body {
+    padding: 25px;
+}
+
+.modal-busqueda-body h2 {
+    font-size: 1rem;
+    margin-bottom: 20px;
+    color: var(--text-dark);
+}
+
+.busqueda-input-row {
+    display: flex;
+    gap: 10px;
+}
+
+.busqueda-input-row input {
+    flex: 1;
+}
+
+/* Results Table in Modal */
+.modal-resultados-body {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 15px;
+}
+
+#tablaResultadosAlumno {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#tablaResultadosAlumno th {
+    text-align: left;
+    padding: 12px;
+    background: var(--bg-light);
+    color: var(--primary);
+    font-weight: 600;
+    border-bottom: 2px solid var(--color-lavender);
+}
+
+#tablaResultadosAlumno td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--color-lavender);
+}
+
+#tablaResultadosAlumno tbody tr:hover {
+    background: rgba(168, 195, 212, 0.1);
+    cursor: pointer;
+}
+
+#tablaResultadosAlumno tbody tr.selected {
+    background: var(--color-pale-pink);
+    border-left: 4px solid var(--primary);
+}
+
+/* Pagination in Modal */
+.paginacion-controles {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid var(--color-lavender);
+}
+
+.btn-pagina {
+    padding: 6px 12px;
+    border: 1px solid var(--color-blueish);
+    background: var(--white);
+    color: var(--primary);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+}
+
+.btn-pagina:hover:not(:disabled) {
+    background: var(--primary);
+    color: var(--white);
+}
+
+.btn-pagina:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Legacy JS compatibility helpers */
+.input-small { width: auto !important; }
+.input-tiny { width: auto !important; }
+.input-medium { width: auto !important; }
+.input-large { width: auto !important; }
+.input-xlarge { width: auto !important; }
+.required { color: #ee5253; }

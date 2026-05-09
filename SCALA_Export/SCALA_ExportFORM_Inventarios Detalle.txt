@@ -1,0 +1,212 @@
+Version =19
+VersionRequired =19
+Checksum =-1325656582
+Begin Form
+    DefaultView =2
+    GridX =5
+    GridY =5
+    Width =4427
+    ItemSuffix =20
+    Left =3735
+    Top =1815
+    Right =8070
+    Bottom =3180
+    RecSrcDt = Begin
+        0xac0f25bfa0c5e140
+    End
+    GUID = Begin
+        0xf1b20939f06efc43b5b6bd970ee38312
+    End
+    NameMap = Begin
+        0x0acc0e5500000000000000000000000000000000000000000c00000002000000 ,
+        0x0000000000000000000000000000
+    End
+    RecordSource ="Movimientos de Inventarios Det"
+    Begin
+        Begin Label
+            TextAlign =3
+            FontWeight =700
+            BackColor =12632256
+        End
+        Begin Rectangle
+            SpecialEffect =2
+            Width =850
+            Height =850
+        End
+        Begin OptionButton
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin CheckBox
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin TextBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin ListBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =1417
+            LabelX =-236
+        End
+        Begin ComboBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin FormHeader
+            Height =0
+            BackColor =12632256
+            Name ="EncabezadoDelFormulario1"
+            EventProcPrefix ="EncabezadoDelFormula"
+            GUID = Begin
+                0xe9601a833ca1ac4796824a423951b779
+            End
+        End
+        Begin Section
+            Height =1020
+            BackColor =12632256
+            Name ="Detalle0"
+            GUID = Begin
+                0x0b9ee77dfc846849a210a3392c1389b1
+            End
+            Begin
+                Begin TextBox
+                    DecimalPlaces =0
+                    OverlapFlags =85
+                    Left =2034
+                    Top =565
+                    Width =1005
+                    ColumnWidth =1830
+                    ColumnOrder =1
+                    TabIndex =1
+                    Name ="cantidad"
+                    ControlSource ="cantidad"
+                    OnLostFocus ="[Event Procedure]"
+                    GUID = Begin
+                        0x6a7611b231f06c4783b55c9fab94f71b
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =1017
+                            Top =565
+                            Width =904
+                            Height =240
+                            Name ="Texto15"
+                            Caption ="cantidad"
+                            GUID = Begin
+                                0x9ff6155b63b7c64a907115fd8d5752ae
+                            End
+                        End
+                    End
+                End
+                Begin ComboBox
+                    LimitToList = NotDefault
+                    OverlapFlags =85
+                    ColumnCount =2
+                    ListWidth =4585
+                    Left =2040
+                    Top =113
+                    Width =1270
+                    ColumnOrder =0
+                    ColumnInfo ="\"\";\"\";\"\";\"\";\"10\";\"40\""
+                    GUID = Begin
+                        0xacec7dc551ca164c85358943ca71ca0d
+                    End
+                    Name ="Clave de Articulo"
+                    ControlSource ="Clave de Articulo"
+                    RowSourceType ="Table/Query"
+                    RowSource ="Select [Clave],[Descripcion] From [Articulos];"
+                    ColumnWidths ="1020;3315"
+                    EventProcPrefix ="Clave_de_Articulo"
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =874
+                            Top =113
+                            Width =930
+                            Height =240
+                            Name ="Texto19"
+                            Caption ="Clave"
+                            GUID = Begin
+                                0x063a3300a2d252449065b8a3817146a5
+                            End
+                        End
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            Height =0
+            BackColor =12632256
+            Name ="PieDelFormulario2"
+            GUID = Begin
+                0x747eacb58b8c2846bcbe5161faf0bea3
+            End
+        End
+    End
+End
+CodeBehindForm
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database   'Usar orden de base de datos en comparaciones de cadenas
+Dim db As Database, T_Art As Recordset, T_Tmov As Recordset, F_prin As Form
+Dim movto, Si_suma
+
+Private Sub Cantidad_LostFocus()
+On Error GoTo Err_Cantidad_LostFocus
+    Set db = CurrentDb()
+    Set T_Tmov = db.OpenRecordset("Claves Movimientos de Inventarios")
+    Set F_prin = Forms!Inventarios
+    movto = F_prin![Tipo de Movimiento]
+    T_Tmov.Index = "PrimaryKey"
+    T_Tmov.Seek "=", movto
+    If Not T_Tmov.NoMatch Then
+       Si_suma = T_Tmov!suma
+    End If
+    Set T_Art = db.OpenRecordset("Articulos")
+    Set F_prin = Forms!Inventarios
+    movto = F_prin![Tipo de Movimiento]
+    T_Art.Index = "PrimaryKey"
+    T_Art.Seek "=", [Clave de Articulo]
+    If Not T_Art.NoMatch Then
+       If Si_suma Then
+          T_Art.Edit
+          T_Art!Stock = T_Art!Stock + cantidad
+          T_Art.Update
+       Else
+          T_Art.Edit
+          T_Art!Stock = T_Art!Stock - cantidad
+          T_Art.Update
+       End If
+    Else
+       MsgBox "No encuentro la clave del artículo"
+    End If
+
+Exit_Cantidad_LostFocus:
+     Exit Sub
+Err_Cantidad_LostFocus:
+     MsgBox Error$
+     Resume Exit_Cantidad_LostFocus
+
+
+End Sub

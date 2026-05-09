@@ -1,0 +1,92 @@
+﻿CHANGES_BAJAS_FACTORES.md
+DOCUMENTACION-CANCELADOS.md
+DOCUMENTACION-COBROS.md
+DROP-MOTIVOS-BAJA.sql
+SCALA_Export/SCALA_ExportFORM_F_Bajas.txt
+SCALA_Export/SCALA_ExportFORM_F_datos baja alumnos.txt
+SCALA_Export/SCALA_ExportFORM_M_CAJA.txt
+SCALA_Export/SCALA_ExportFORM_MesCorte.txt
+"SCALA_Export/SCALA_ExportFORM_Pagos Art\303\255culos Sub.txt"
+SCALA_Export/SCALA_ExportFORM_Pagos Consulta.txt
+SCALA_Export/SCALA_ExportFORM_Pagos Macros.txt
+SCALA_Export/SCALA_ExportFORM_Pagos Operaciones.txt
+SCALA_Export/SCALA_ExportFORM_Pagos Otros datos RFC.txt
+SCALA_Export/SCALA_ExportFORM_Pagos Otros datos alumno.txt
+SCALA_Export/SCALA_ExportFORM_Pagos.txt
+SCALA_Export/SCALA_ExportFORM_Recibos Cancelados.txt
+SCALA_Export/SCALA_ExportMOD_Rutinas_Caja.txt
+SCALA_Export/SCALA_ExportQRY_Alumnos_bajas.sql
+SCALA_Export/SCALA_ExportQRY_BajasCURmtro.sql
+SCALA_Export/SCALA_ExportQRY_BajasQRY1.sql
+SCALA_Export/SCALA_ExportQRY_Bajas_MEDIOS NI.sql
+SCALA_Export/SCALA_ExportQRY_Bajasmotmtro.sql
+SCALA_Export/SCALA_ExportQRY_Nuevos IngBajas.sql
+SCALA_Export/SCALA_ExportQRY_OrdenBajasMotivos.sql
+SCALA_Export/SCALA_ExportQRY_ParaHonorarios.sql
+SCALA_Export/SCALA_ExportQRY_ParaHonorariosbajas.sql
+SCALA_Export/SCALA_ExportQRY_Q_Corte1.sql
+SCALA_Export/SCALA_ExportQRY_Q_Corte2 Num Recibos.sql
+SCALA_Export/SCALA_ExportQRY_Q_Corte2 Sub Cheques.sql
+SCALA_Export/SCALA_ExportQRY_Q_Corte2 Sub Efectivo.sql
+SCALA_Export/SCALA_ExportQRY_Q_Corte2.sql
+SCALA_Export/SCALA_ExportQRY_Q_Corte3.sql
+SCALA_Export/SCALA_ExportQRY_Q_Imp_Recibos_Cancelados.sql
+SCALA_Export/SCALA_ExportQRY_Q_Pagos.sql
+SCALA_Export/SCALA_ExportQRY_Roy_Bajas.sql
+SCALA_Export/SCALA_ExportQRY_Roy_Cam_Bajas.sql
+SCALA_Export/SCALA_ExportQRY_UltPagos.sql
+SCALA_Export/SCALA_ExportQRY_UltPagos2.sql
+SCALA_Export/SCALA_ExportQRY_UltPagos3.sql
+SCALA_Export/SCALA_ExportQRY_alumno_baja_email_xcurso.sql
+SCALA_Export/SCALA_ExportQRY_bajasmotivo.sql
+SCALA_Export/SCALA_ExportREP_Alumnos Bajas por Motivos.txt
+SCALA_Export/SCALA_ExportREP_Alumnos bajas con email por curso.txt
+SCALA_Export/SCALA_ExportREP_Bajas.txt
+SCALA_Export/SCALA_ExportREP_Bajas1.txt
+SCALA_Export/SCALA_ExportREP_Bajas2.txt
+SCALA_Export/SCALA_ExportREP_BajasUltPago.txt
+SCALA_Export/SCALA_ExportREP_Coleg pcurso p Analisis de pagos.txt
+SCALA_Export/SCALA_ExportREP_Corte 1.txt
+SCALA_Export/SCALA_ExportREP_Corte 2 Cheques.txt
+SCALA_Export/SCALA_ExportREP_Corte 2 Efectivo.txt
+SCALA_Export/SCALA_ExportREP_Corte 2 Rec Expedidos.txt
+SCALA_Export/SCALA_ExportREP_Corte 2.txt
+SCALA_Export/SCALA_ExportREP_Corte 3.txt
+SCALA_Export/SCALA_ExportREP_Listado de Bajas.txt
+SCALA_Export/SCALA_ExportREP_Pago de Honorarios.txt
+SCALA_Export/SCALA_ExportREP_Pagos Adelantados.txt
+SCALA_Export/SCALA_ExportREP_PagosSR.txt
+SCALA_Export/SCALA_ExportREP_Recibos Cancelados.txt
+SCALA_Export/SCALA_ExportREP_Resumen de Bajas por mtro y curso.txt
+SCALA_Export/SCALA_ExportREP_TOT BAJAS.txt
+SCALA_Export/SCALA_ExportREP_UltPagoSR.txt
+SCALA_Export/SCALA_ExportREP_UltPagoSR2.txt
+SCALA_Export/SCALA_ExportREP_UltPagoSR3.txt
+SCALA_Export/SCALA_ExportREP_bajas agosta.txt
+SCHEMA-BAJAS-REINGRESOS.sql
+SCHEMA-MOTIVOS-BAJA.sql
+Scala tablas/Bajas.xls
+Scala tablas/Recibos Cancelados.xls
+Scala tablas/TablaHonorarios.xls
+Scala tablas/TablaPagosAdelantados.xls
+alumnos-bajas.css
+alumnos-bajas.html
+alumnos-bajas.js
+caja.css
+caja.html
+caja.js
+cobros.css
+cobros.html
+cobros.js
+consulta-bajas.html
+consulta-bajas.js
+cortes.html
+cortes.js
+listado-bajas.css
+listado-bajas.html
+listado-bajas.js
+pagos-maestros.html
+pagos-maestros.js
+recibos_cancelados.html
+recibos_cancelados.js
+reporte-pagos-maestros-historico.html

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Factores</title>
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="factores.css">
+</head>
+
+<body>
+    <div class="container">
+        <header class="app-header">
+            <h1>Gestión de Factores</h1>
+            <div class="datetime" id="datetime"></div>
+        </header>
+
+        <main class="app-main">
+            <form id="factoresForm">
+                <div class="premium-grid grid-cols-2">
+                    <!-- Configuración del Factor -->
+                    <div class="premium-card">
+                        <h3>Asignación de Factor</h3>
+                        <div class="premium-input-group">
+                            <label class="premium-label">Seleccionar Maestro</label>
+                            <select id="maestro" name="maestro" class="premium-input">
+                                <option value="">-- Seleccione un maestro --</option>
+                            </select>
+                        </div>
+
+                        <div class="premium-input-group">
+                            <label class="premium-label">Curso Asociado</label>
+                            <select id="curso" name="curso" class="premium-input">
+                                <option value="">-- Seleccione un curso --</option>
+                            </select>
+                        </div>
+
+                        <div class="premium-grid grid-cols-2">
+                            <div class="premium-input-group">
+                                <label class="premium-label">Valor del Factor</label>
+                                <input type="number" id="factor" name="factor" class="premium-input" style="text-align: center;" value="0">
+                            </div>
+                            <div class="premium-input-group">
+                                <label class="premium-label">Porcentaje Calculado</label>
+                                <input type="text" id="porcentaje" name="porcentaje" class="premium-input" style="text-align: center; color: var(--primary); font-weight: 700;" value="0.00%" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Detalles del Maestro -->
+                    <div class="maestro-premium-section">
+                        <h3>Generales del Maestro</h3>
+                        <div class="premium-input-group">
+                            <label class="premium-label">Nombre del Maestro</label>
+                            <input type="text" id="nombreMaestro" name="nombreMaestro" class="premium-input" readonly>
+                        </div>
+
+                        <div class="premium-grid grid-cols-2">
+                            <div class="premium-input-group">
+                                <label class="premium-label">Grado</label>
+                                <input type="text" id="grado" name="grado" class="premium-input" readonly>
+                            </div>
+                            <div class="premium-input-group">
+                                <label class="premium-label">Fecha Ingreso</label>
+                                <input type="text" id="fechaIngreso" name="fechaIngreso" class="premium-input" readonly>
+                            </div>
+                        </div>
+
+                        <div class="premium-input-group">
+                            <label class="premium-label">Detalles de Grado / Especialidad</label>
+                            <input type="text" id="detallesGrado" name="detallesGrado" class="premium-input" readonly>
+                        </div>
+
+                        <div class="maestro-nav-premium">
+                            <button type="button" class="btn-nav-teal" onclick="navegarMaestroPrimero()">|--</button>
+                            <button type="button" class="btn-nav-teal" onclick="navegarMaestroAnterior()">--</button>
+                            <input type="text" value="1" class="premium-input" id="inputRegistroMaestro" style="width: 50px; text-align: center; background: rgba(0,0,0,0.2); border: none; color: white;" readonly>
+                            <button type="button" class="btn-nav-teal" onclick="navegarMaestroSiguiente()">++</button>
+                            <button type="button" class="btn-nav-teal" onclick="navegarMaestroUltimo()">++|</button>
+                            <span style="font-size: 0.8rem; margin-left: 10px;">de <span id="totalMaestros">1</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="app-footer" style="position: static; margin-top: 20px; border-radius: var(--radius-md); border-top: none; padding: 20px;">
+                    <div id="btnGroupPrincipal" style="display: flex; gap: 10px; width: 100%;">
+                        <button type="button" class="premium-btn btn-primary" id="nuevoBtn" onclick="activarModoEdicion()">NUEVO FACTOR</button>
+                        <button type="button" class="premium-btn btn-primary" id="buscarBtn" onclick="abrirModalBusqueda()">BUSCAR</button>
+                        <button type="button" class="premium-btn btn-danger" id="borrarBtn" onclick="borrarFactor()" disabled>BORRAR</button>
+                        <div style="flex-grow: 1;"></div>
+                        <button type="button" class="premium-btn btn-danger" id="terminarBtn" onclick="window.location.href='archivos.html'">TERMINAR</button>
+                    </div>
+                    <div id="btnGroupEdicion" style="display: none; width: 100%; justify-content: flex-end;">
+                        <button type="button" class="premium-btn btn-outline" id="cancelarBtn" onclick="cancelarNuevo()">CANCELAR</button>
+                    </div>
+                </div>
+
+                <div class="premium-card" style="margin-top: 20px; border: 1px solid var(--border-color); background: var(--bg-light);">
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 15px;">
+                        <button type="button" class="premium-btn btn-outline" style="padding: 5px 15px;" id="firstBtn" onclick="mostrarFactor(0)">INICIO</button>
+                        <button type="button" class="premium-btn btn-outline" style="padding: 5px 15px;" id="prevBtn" onclick="mostrarFactor(currentIndex - 1)">ANTERIOR</button>
+                        
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="record-info">Factor <span id="currentRecord">1</span> de <span id="totalRecords">0</span></span>
+                            <input type="number" id="inputRegistro" value="1" min="1" class="premium-input" style="width: 70px; text-align: center;">
+                        </div>
+
+                        <button type="button" class="premium-btn btn-outline" style="padding: 5px 15px;" id="nextBtn" onclick="mostrarFactor(currentIndex + 1)">SIGUIENTE</button>
+                        <button type="button" class="premium-btn btn-outline" style="padding: 5px 15px;" id="lastBtn" onclick="mostrarFactor(factores.length - 1)">FINAL</button>
+                    </div>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <!-- Modal de confirmación de borrado (Premium) -->
+    <div id="modalBorrar" class="modal premium-modal" style="display: none;">
+        <div class="premium-modal-content" style="max-width: 500px; margin: 15% auto;">
+            <div class="premium-modal-header" style="background: var(--danger-gradient);">
+                <h2>Confirmar Eliminación</h2>
+            </div>
+            <div class="premium-modal-body" style="padding: 20px;">
+                <p id="mensajeBorrar" style="margin-bottom: 20px; font-weight: 500;">¿Está seguro de que desea borrar este factor?</p>
+                <div class="premium-input-group">
+                    <label class="premium-label">Razón del borrado</label>
+                    <textarea id="razonBorrado" class="premium-input" rows="3" placeholder="Indique el motivo de la eliminación..."></textarea>
+                </div>
+            </div>
+            <div class="app-footer" style="padding: 15px 20px; justify-content: flex-end; gap: 10px; border-top: 1px solid var(--border-color); background: var(--bg-secondary); border-radius: 0 0 var(--radius-lg) var(--radius-lg);">
+                <button onclick="cancelarBorrado()" class="premium-btn btn-outline">CANCELAR</button>
+                <button onclick="confirmarBorrado()" class="premium-btn btn-danger">CONFIRMAR ELIMINACIÓN</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="supabase-config.js"></script>
+    <script src="utils-inputs.js"></script>
+    <script src="factores.js"></script>
+</body>
+
+</html>

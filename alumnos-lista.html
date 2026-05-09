@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scala - Listado de Alumnos</title>
+    <link rel="stylesheet" href="theme.css">
+</head>
+
+<body>
+    <div class="container">
+        <header class="app-header">
+            <h1>Listado de Alumnos</h1>
+            <div class="datetime" id="datetime"></div>
+        </header>
+
+        <main class="app-main">
+            <div class="premium-card">
+                <div style="display: flex; gap: 15px; margin-bottom: 20px; align-items: center;">
+                    <div class="premium-input-group" style="flex: 1; margin: 0;">
+                        <input type="text" id="buscarInput" class="premium-input" placeholder="Buscar por nombre o credencial..." autofocus>
+                    </div>
+                </div>
+
+                <div class="premium-table-container">
+                    <table class="premium-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 40px;"></th>
+                                <th>Credencial</th>
+                                <th>Nombre Completo</th>
+                                <th>Grupo</th>
+                                <th>Fecha Ingreso</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaAlumnos">
+                            <tr>
+                                <td colspan="5" style="text-align: center; padding: 30px; color: var(--text-muted);">
+                                    Cargando listado de alumnos...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Contenedor para la paginación dinámica -->
+                <div id="pg-ui-alumnos" style="margin-top: 20px;"></div>
+                
+                <!-- Legacy/Hidden pagination structure to maintain JS compatibility -->
+                <div class="pagination-nav" style="display: none;">
+                    <button id="btnFirst"></button>
+                    <button id="btnPrev"></button>
+                    <input type="text" id="currentPage" value="1">
+                    <button id="btnNext"></button>
+                    <button id="btnLast"></button>
+                    <span id="regTotal"></span>
+                </div>
+            </div>
+        </main>
+
+        <footer class="app-footer">
+            <div style="flex-grow: 1;"></div>
+            <button class="premium-btn btn-outline" id="btnClose" onclick="window.close()">Cerrar Consulta</button>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="utils-inputs.js"></script>
+    <script src="alumnos-lista.js"></script>
+</body>
+
+</html>

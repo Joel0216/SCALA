@@ -1,0 +1,211 @@
+Version =19
+VersionRequired =19
+Checksum =575118205
+Begin Form
+    AllowFilters = NotDefault
+    PopUp = NotDefault
+    Modal = NotDefault
+    RecordSelectors = NotDefault
+    NavigationButtons = NotDefault
+    DefaultView =0
+    ScrollBars =0
+    ViewsAllowed =1
+    Width =5700
+    ItemSuffix =13
+    Left =1800
+    Top =1830
+    Right =7620
+    Bottom =3765
+    HelpContextId =26
+    OnUnload ="=Login1()"
+    RecSrcDt = Begin
+        0x5130ed871adee140
+    End
+    GUID = Begin
+        0x55ba6c95e9dd7e4e9dead58a05da6b2c
+    End
+    NameMap = Begin
+        0x0acc0e5500000000000000000000000000000000000000000c00000002000000 ,
+        0x0000000000000000000000000000
+    End
+    Caption ="SAA - Clave de Acceso"
+    HelpFile ="pim.hlp"
+    DatasheetFontName ="Helv"
+    Begin
+        Begin Label
+            TextAlign =3
+            Width =15
+            Height =15
+            FontWeight =700
+            BackColor =12632256
+            FontName ="Helv"
+        End
+        Begin TextBox
+            AddColon = NotDefault
+            OldBorderStyle =0
+            LabelAlign =3
+            LabelX =-150
+            FontName ="Helv"
+        End
+        Begin ComboBox
+            AddColon = NotDefault
+            OldBorderStyle =0
+            LabelAlign =3
+            LabelX =-825
+            FontName ="Helv"
+        End
+        Begin FormHeader
+            Height =0
+            BackColor =12632256
+            Name ="EncabezadoDelFormulario0"
+            EventProcPrefix ="EncabezadoDelFormula"
+            GUID = Begin
+                0x9b3a4cb85ca57947a58feea78c4953b8
+            End
+        End
+        Begin Section
+            Height =1560
+            BackColor =12632256
+            Name ="Detalle1"
+            GUID = Begin
+                0xf4790388c60b574a8060a4f86b0a47d1
+            End
+            Begin
+                Begin Rectangle
+                    OldBorderStyle =0
+                    OverlapFlags =93
+                    Left =1974
+                    Top =360
+                    Width =1440
+                    Height =240
+                    BackColor =8421504
+                    Name ="UserNameFrame"
+                    GUID = Begin
+                        0x293ae4d879b90447acd166e9a092a011
+                    End
+                End
+                Begin TextBox
+                    OldBorderStyle =1
+                    OverlapFlags =215
+                    Left =1914
+                    Top =300
+                    Name ="UserID"
+                    StatusBarText ="User name"
+                    GUID = Begin
+                        0x80c434cc4111474b966457cfe00f95aa
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =330
+                            Top =300
+                            Width =1440
+                            Height =240
+                            Name ="LblUserName"
+                            Caption ="Nombre:"
+                            GUID = Begin
+                                0x9756c4d863d8ed4e900cc8e874f84b31
+                            End
+                        End
+                    End
+                End
+                Begin Rectangle
+                    OldBorderStyle =0
+                    OverlapFlags =93
+                    Left =1974
+                    Top =840
+                    Width =1440
+                    Height =240
+                    BackColor =8421504
+                    Name ="PasswordFrame"
+                    GUID = Begin
+                        0x26e0ab7314066540842689bb8cf7fd4f
+                    End
+                End
+                Begin CommandButton
+                    Default = NotDefault
+                    OverlapFlags =85
+                    Left =3936
+                    Top =240
+                    TabIndex =2
+                    Name ="BtnOK"
+                    Caption ="OK"
+                    OnClick ="=login1()"
+                    GUID = Begin
+                        0xdabda044e6c38c4ebf5949da8b23a2cd
+                    End
+                End
+                Begin TextBox
+                    OldBorderStyle =1
+                    OverlapFlags =215
+                    Left =1914
+                    Top =780
+                    TabIndex =1
+                    ForeColor =16777215
+                    Name ="Password"
+                    StatusBarText ="Password"
+                    GUID = Begin
+                        0xb4be8a6ad8343740bbe38108201af126
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =330
+                            Top =780
+                            Width =1440
+                            Height =240
+                            Name ="LblPassword"
+                            Caption ="Clave:"
+                            GUID = Begin
+                                0x21c5d524d170ca448b3ff2b5a5fc0ea7
+                            End
+                        End
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =3911
+                    Top =803
+                    Width =1470
+                    Height =330
+                    TabIndex =3
+                    ForeColor =255
+                    Name ="B_Cancelar"
+                    Caption ="Cancelar"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0x14fd6f54252d9e40a1b7ac5dabbe9af3
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            Height =0
+            BackColor =8421504
+            Name ="PieDelFormulario2"
+            GUID = Begin
+                0xdf550a118bbfb14f8437360a73d188cb
+            End
+        End
+    End
+End
+CodeBehindForm
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+
+Private Sub B_Cancelar_Click()
+On Error GoTo Err_B_Cancelar_Click
+
+
+    DoCmd.Quit
+
+Exit_B_Cancelar_Click:
+    Exit Sub
+
+Err_B_Cancelar_Click:
+    MsgBox Error$
+    Resume Exit_B_Cancelar_Click
+    
+End Sub

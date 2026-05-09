@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maestros</title>
+    <link rel="stylesheet" href="maestros.css">
+</head>
+
+<body>
+    <div class="container">
+        <header class="app-header">
+            <h1>Maestros</h1>
+            <div class="datetime" id="datetime"></div>
+        </header>
+
+        <main class="app-main">
+            <div class="premium-grid grid-cols-2">
+                <!-- Información Principal -->
+                <div class="premium-card">
+                    <h3>Datos del Maestro</h3>
+                    <div class="premium-input-group">
+                        <label class="premium-label">Nombre <span class="required">*</span></label>
+                        <input type="text" id="nombre" class="premium-input" placeholder="Nombre completo del maestro">
+                    </div>
+
+                    <div class="premium-input-group">
+                        <label class="premium-label">Dirección <span class="required">*</span></label>
+                        <input type="text" id="direccion1" class="premium-input" placeholder="Calle y número">
+                    </div>
+
+                    <div class="premium-grid grid-cols-2">
+                        <div class="premium-input-group">
+                            <label class="premium-label">Teléfono <span class="required">*</span></label>
+                            <input type="text" id="telefono" class="premium-input" placeholder="Solo números" maxlength="15">
+                        </div>
+                        <div class="premium-input-group">
+                            <label class="premium-label">Clave</label>
+                            <input type="text" id="clave" class="premium-input" readonly>
+                            <span class="info-text">Se genera automáticamente</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Datos Administrativos -->
+                <div class="premium-card">
+                    <h3>Información Adicional</h3>
+                    <div class="premium-input-group">
+                        <label class="premium-label">Email</label>
+                        <input type="email" id="email" class="premium-input" placeholder="correo@ejemplo.com">
+                    </div>
+
+                    <div class="premium-grid grid-cols-2">
+                        <div class="premium-input-group">
+                            <label class="premium-label">RFC</label>
+                            <input type="text" id="rfc" class="premium-input" maxlength="13" placeholder="Opcional">
+                        </div>
+                        <div class="premium-input-group">
+                            <label class="premium-label">Fecha de Ingreso</label>
+                            <input type="text" id="fechaIngreso" class="premium-input" readonly>
+                            <span class="info-text">Se establece al dar Nuevo</span>
+                        </div>
+                    </div>
+
+                    <div class="premium-input-group">
+                        <label class="premium-label">Forma de Pago</label>
+                        <select id="formaPago" class="premium-input">
+                            <option value="POR ALUMNO">POR ALUMNO</option>
+                            <option value="POR HORA">POR HORA</option>
+                            <option value="SUELDO FIJO">SUELDO FIJO</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="app-footer" style="position: static; margin-top: 20px; border-radius: var(--radius-md); border-top: none; padding: 20px;">
+                <button class="premium-btn btn-primary" id="btnNuevo" onclick="nuevoMaestro()">NUEVO</button>
+                <button class="premium-btn btn-outline" id="btnCancelarNuevo" onclick="cancelarNuevo()" style="display: none;">CANCELAR</button>
+                <button class="premium-btn btn-primary" id="btnEditar" onclick="editarMaestro()" disabled>EDITAR</button>
+                <button class="premium-btn btn-primary" id="btnBuscar" onclick="buscarMaestro()">BUSCAR</button>
+                <button class="premium-btn btn-danger" id="btnBorrar" onclick="borrarMaestro()" disabled>BORRAR</button>
+                <div style="flex-grow: 1;"></div>
+                <button class="premium-btn btn-danger" onclick="terminar()">TERMINAR</button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal de edición (Premium) -->
+    <div id="modalEdicion" class="modal premium-modal" style="display: none;">
+        <div class="premium-modal-content modal-edicion-content">
+            <div class="premium-modal-header">
+                <h2>Editar Maestro</h2>
+            </div>
+            <div class="premium-modal-body">
+                <div class="premium-grid grid-cols-2">
+                    <div class="premium-input-group">
+                        <label class="premium-label">Clave:</label>
+                        <input type="text" id="editClave" class="premium-input" readonly>
+                    </div>
+                    <div class="premium-input-group">
+                        <label class="premium-label">Fecha Ingreso:</label>
+                        <input type="text" id="editFechaIngreso" class="premium-input" disabled>
+                    </div>
+                </div>
+                <div class="premium-input-group">
+                    <label class="premium-label">Nombre:</label>
+                    <input type="text" id="editNombre" class="premium-input">
+                </div>
+                <div class="premium-input-group">
+                    <label class="premium-label">Dirección:</label>
+                    <input type="text" id="editDireccion1" class="premium-input">
+                </div>
+                <input type="hidden" id="editDireccion2">
+
+                <div class="premium-grid grid-cols-2">
+                    <div class="premium-input-group">
+                        <label class="premium-label">Teléfono:</label>
+                        <input type="text" id="editTelefono" class="premium-input">
+                    </div>
+                    <div class="premium-input-group">
+                        <label class="premium-label">Email:</label>
+                        <input type="email" id="editEmail" class="premium-input" placeholder="correo@ejemplo.com">
+                    </div>
+                </div>
+
+                <div class="premium-grid grid-cols-2">
+                    <div class="premium-input-group">
+                        <label class="premium-label">RFC:</label>
+                        <input type="text" id="editRfc" class="premium-input">
+                    </div>
+                    <div class="premium-input-group">
+                        <label class="premium-label">Forma de Pago:</label>
+                        <select id="editFormaPago" class="premium-input">
+                            <option value="POR ALUMNO">POR ALUMNO</option>
+                            <option value="POR HORA">POR HORA</option>
+                            <option value="SUELDO FIJO">SUELDO FIJO</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="premium-input-group" style="display: flex; align-items: center; gap: 10px; padding-top: 15px;">
+                    <input type="checkbox" id="editActivo" style="width:20px; height:20px;">
+                    <label class="premium-label" style="margin:0;">Activo (Aparece en Grupos)</label>
+                </div>
+            </div>
+            <div class="app-footer" style="padding: 15px 20px; justify-content: flex-end; gap: 10px; border-top: 1px solid var(--border-color); background: var(--bg-secondary); border-radius: 0 0 var(--radius-lg) var(--radius-lg);">
+                <button class="premium-btn btn-outline" onclick="cancelarEdicion()">CANCELAR</button>
+                <button class="premium-btn btn-primary" onclick="guardarEdicion()">GUARDAR CAMBIOS</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de confirmación de borrado -->
+    <div id="modalBorrar" class="modal premium-modal" style="display: none;">
+        <div class="premium-modal-content" style="max-width: 500px; margin: 10% auto;">
+            <div class="premium-modal-header" style="background: linear-gradient(135deg, #ff6b6b, #ee5253);">
+                <h2>¿Borrar Maestro?</h2>
+            </div>
+            <div class="premium-modal-body">
+                <p id="mensajeBorrar" style="margin-bottom: 20px;">¿Está seguro de que desea borrar a este maestro?</p>
+                <div class="premium-input-group">
+                    <label class="premium-label">Razón del borrado:</label>
+                    <textarea id="razonBorrado" class="premium-input" rows="3" placeholder="Describa la razón..."></textarea>
+                </div>
+            </div>
+            <div class="app-footer" style="padding: 15px 20px; justify-content: flex-end; gap: 10px; border-top: 1px solid var(--border-color); background: var(--bg-secondary); border-radius: 0 0 var(--radius-lg) var(--radius-lg);">
+                <button class="premium-btn btn-outline" onclick="cancelarBorrado()">CANCELAR</button>
+                <button class="premium-btn btn-danger" onclick="confirmarBorrado()">CONFIRMAR ELIMINACIÓN</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de búsqueda (Premium) -->
+    <div id="modalBusquedaMaestro" class="modal premium-modal" style="display: none;">
+        <div class="premium-modal-content modal-busqueda-content" style="top: 20%; transform: translateX(-50%);">
+            <div class="premium-modal-header">
+                <span>Buscar Maestro</span>
+            </div>
+            <div class="premium-modal-body">
+                <h2>Proporcione el Nombre del Maestro o Inicio del Nombre</h2>
+                <div style="display: flex; gap: 10px; margin-top: 15px;">
+                    <input type="text" id="inputBusquedaMaestro" class="premium-input" placeholder="Nombre del maestro..."
+                        onkeyup="if(event.key==='Enter') ejecutarBusquedaMaestro()">
+                    <button class="premium-btn btn-primary" onclick="ejecutarBusquedaMaestro()">BUSCAR</button>
+                    <button class="premium-btn btn-outline" onclick="cerrarModalBusquedaMaestro()">CANCELAR</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de resultados (Premium) -->
+    <div id="modalResultadosMaestro" class="modal premium-modal" style="display: none;">
+        <div class="premium-modal-content modal-resultados-content" style="top: 15%; transform: translateX(-50%); max-width: 700px;">
+            <div class="premium-modal-header">
+                <span id="tituloResultadosMaestro">Resultados de Búsqueda</span>
+            </div>
+            <div class="premium-modal-body" style="padding: 10px;">
+                <div class="premium-table-container">
+                    <table class="premium-table" id="tablaResultadosMaestro">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Especialidad</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bodyResultadosMaestro"></tbody>
+                    </table>
+                </div>
+                <div class="paginacion-controles" id="paginacionControlesMaestros" style="display: none; background: transparent; border: none; margin-top: 15px;">
+                    <button onclick="irPrimeraPaginaMaestros()" class="premium-btn btn-outline" style="padding: 5px 10px; font-size: 0.8rem;">Primera</button>
+                    <button onclick="irPaginaAnteriorMaestros()" class="premium-btn btn-outline" style="padding: 5px 10px; font-size: 0.8rem;">Anterior</button>
+                    <span id="infoPaginaMaestros" style="font-size: 0.9rem; margin: 0 10px;">Página 1 de 1</span>
+                    <button onclick="irPaginaSiguienteMaestros()" class="premium-btn btn-outline" style="padding: 5px 10px; font-size: 0.8rem;">Siguiente</button>
+                    <button onclick="irUltimaPaginaMaestros()" class="premium-btn btn-outline" style="padding: 5px 10px; font-size: 0.8rem;">Última</button>
+                </div>
+            </div>
+            <div class="app-footer" style="padding: 15px 20px; justify-content: flex-end; border-top: 1px solid var(--border-color); background: var(--bg-secondary); border-radius: 0 0 var(--radius-lg) var(--radius-lg);">
+                <button class="premium-btn btn-outline" onclick="cerrarModalResultadosMaestro()">CERRAR</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="supabase-config.js"></script>
+    <script src="utils-inputs.js"></script>
+    <script src="maestros.js"></script>
+</body>
+
+</html>

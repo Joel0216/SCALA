@@ -1,0 +1,493 @@
+Version =19
+VersionRequired =19
+Checksum =1027567214
+Begin Form
+    PopUp = NotDefault
+    Modal = NotDefault
+    AutoCenter = NotDefault
+    NavigationButtons = NotDefault
+    DefaultView =0
+    ScrollBars =0
+    GridX =5
+    GridY =5
+    Width =9070
+    ItemSuffix =47
+    Left =1140
+    Top =1560
+    Right =10170
+    Bottom =5265
+    RecSrcDt = Begin
+        0x6d241dfdbbcde140
+    End
+    GUID = Begin
+        0xb51487bde7bd9e4fbbe94a6b710b6b20
+    End
+    NameMap = Begin
+        0x0acc0e55000000001a78fe191112fa4d87d6bcabebb09d3d0100000025a789d1 ,
+        0xb849e34008c00202008813005000610067006f002000500072006f0067007200 ,
+        0x61006d0061002000450078002000530075006200000000000000faccabaf05ef ,
+        0x4e46b749c2e4415fd8eb0000000020c2bed0b849e34008c00202008813005200 ,
+        0x65006c006100630069006f006e004500780061006d0065006e00650073000000 ,
+        0x00000000db2a22ecbc33c940833f3bd1b8c7970507000000faccabaf05ef4e46 ,
+        0xb749c2e4415fd8eb43006c006100760065004500780061006d0065006e000000 ,
+        0x000000001145f73b8e693d41b2dcfb6ac1895e0100000000b55ebed0b849e340 ,
+        0x0000000000000000500072006f006700720061006d006100630069006f006e00 ,
+        0x4500780061006d0065006e006500730000000000000093fef309d77b4d4d9584 ,
+        0x8fc757de18d2070000001145f73b8e693d41b2dcfb6ac1895e01460065006300 ,
+        0x680061004500780061006d0065006e000000000000009d5a54f211685f4a999d ,
+        0x8414fe1b9746070000001145f73b8e693d41b2dcfb6ac1895e0148006f007200 ,
+        0x61004500780061006d0065006e00000000000000a50603f65d2329499d1d6408 ,
+        0x251b7855070000001145f73b8e693d41b2dcfb6ac1895e015400690070006f00 ,
+        0x4500780061006d0065006e00000000000000ebad55202e909c44abb3d65bc398 ,
+        0x9b2a070000001145f73b8e693d41b2dcfb6ac1895e01530061006c006f006e00 ,
+        0x4500780061006d0065006e00000000000000d2820d68c43edf4bb0737085aacc ,
+        0x193a070000001145f73b8e693d41b2dcfb6ac1895e014d006100650073007400 ,
+        0x72006f0042006100730065000000000000000000000000000000000000000000 ,
+        0x00000c000000020000000000000000000000000000000000
+    End
+    Caption ="Cáptura de Alumnos/Maestros que presentán examen"
+    OnCurrent ="[Event Procedure]"
+    PrtMip = Begin
+        0x8905000089050000890500008c050000000000006e230000800f000001000000 ,
+        0x010000006801000000000000a10700000100000001000000
+    End
+    PrtDevMode = Begin
+        0x4570736f6e205374796c757320434f4c4f52204553432f502032000000000000 ,
+        0x0004010494004000036e8007010001007f00fe00000001000700680102000100 ,
+        0x6801010000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000002000000 ,
+        0x0200000001000000030000000000000000000000010040004d5355441b034570 ,
+        0x736f6e205374796c757320434f4c4f52204553432f5020320000000000008c00 ,
+        0x0000000000000d01100100000000640000000000
+    End
+    PrtDevNames = Begin
+        0x080011002c00010057494e53504f4f4c004570736f6e205374796c757320434f ,
+        0x4c4f52204553432f502032005c5c444d595345525645525c4570736f6e537479 ,
+        0x00000000000000000000000000000000000000000000000000000000
+    End
+    Begin
+        Begin Label
+            TextAlign =3
+            FontWeight =700
+            BackColor =12632256
+        End
+        Begin Rectangle
+            SpecialEffect =2
+            Width =850
+            Height =850
+        End
+        Begin CommandButton
+            TextFontFamily =2
+            Width =1701
+            Height =283
+        End
+        Begin OptionButton
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin CheckBox
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin OptionGroup
+            Width =1701
+            Height =1701
+        End
+        Begin TextBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin ListBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =1417
+            LabelX =-236
+        End
+        Begin ComboBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin Subform
+            Width =1701
+            Height =1701
+        End
+        Begin FormHeader
+            Height =558
+            BackColor =8421376
+            Name ="EncabezadoDelFormulario1"
+            EventProcPrefix ="EncabezadoDelFormula"
+            GUID = Begin
+                0x3de4f25949a7d241b20a051c7d28ca50
+            End
+            Begin
+                Begin Label
+                    BackStyle =0
+                    OverlapFlags =93
+                    TextAlign =1
+                    Left =488
+                    Top =153
+                    Width =3345
+                    Height =405
+                    FontSize =14
+                    ForeColor =8355711
+                    Name ="Texto12"
+                    Caption ="Relación de Exámenes"
+                    GUID = Begin
+                        0x6a326ee542741c42a9383f83c0f9ecd5
+                    End
+                End
+                Begin Label
+                    BackStyle =0
+                    OverlapFlags =215
+                    TextAlign =1
+                    Left =452
+                    Top =113
+                    Width =3345
+                    Height =405
+                    FontSize =14
+                    ForeColor =16777215
+                    Name ="Texto13"
+                    Caption ="Relación de Exámenes"
+                    GUID = Begin
+                        0x50d0480081325444a0c9decbf3ba2cee
+                    End
+                End
+            End
+        End
+        Begin Section
+            Height =3968
+            BackColor =8421376
+            Name ="Detalle0"
+            GUID = Begin
+                0xcbb0e5bdcd69ea438ddb47942c65b4de
+            End
+            Begin
+                Begin Subform
+                    OverlapFlags =85
+                    Left =113
+                    Top =1143
+                    Width =8838
+                    Height =2151
+                    Name ="Pago Programa Ex Sub"
+                    SourceObject ="Form.Pago Programa Ex Sub"
+                    LinkChildFields ="ClaveExamen"
+                    LinkMasterFields ="ClaveExamen"
+                    EventProcPrefix ="Pago_Programa_Ex_Sub"
+                    GUID = Begin
+                        0x00c14bbd3889c54e976ddbe07d128d5c
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =7256
+                    Top =3401
+                    Width =1125
+                    Height =465
+                    TabIndex =2
+                    ForeColor =255
+                    Name ="B_term_rel_exam"
+                    Caption ="Cerrar"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0x638d28b2142ac746a5c52299ebf63aec
+                    End
+                End
+                Begin ComboBox
+                    ColumnHeads = NotDefault
+                    OverlapFlags =85
+                    ColumnCount =6
+                    ListWidth =6625
+                    Left =1927
+                    Top =113
+                    Width =1930
+                    TabIndex =1
+                    ColumnInfo ="\"\";\"\";\"\";\"dddddd\";\"\";\"hh:nn\";\"\";\"\";\"\";\"\";\"\";\"\";\"10\";\""
+                        "24\""
+                    GUID = Begin
+                        0xb02c04efe41519428bf1e7073bf7408c
+                    End
+                    Name ="ClaveExamen"
+                    RowSourceType ="Table/Query"
+                    RowSource ="Select [ClaveExamen],[FechaExamen],[HoraExamen],[TipoExamen],[SalonExamen],[Maes"
+                        "troBase] From [ProgramacionExamenes];"
+                    ColumnWidths ="1068;1986;482;1442;567;1815"
+                    BeforeUpdate ="[Event Procedure]"
+                    OnExit ="[Procedimiento de evento]"
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =116
+                            Top =113
+                            Width =1695
+                            Height =240
+                            Name ="Texto34"
+                            Caption ="Clave de Examen :"
+                            GUID = Begin
+                                0x1b42eb08640749499d599f1b0851a972
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =6041
+                    Top =113
+                    TabIndex =3
+                    Name ="Fecha_del_examen"
+                    GUID = Begin
+                        0x31d787a21981fb43903f1b407e161ab9
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =4095
+                            Top =113
+                            Width =1710
+                            Height =240
+                            Name ="Texto42"
+                            Caption ="Fecha del examen :"
+                            GUID = Begin
+                                0x8fcbbbc13c22e74f8185d6b05861fece
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =6041
+                    Top =453
+                    TabIndex =4
+                    Name ="Hora_del_examen"
+                    GUID = Begin
+                        0x17fe1d581da1e24b9c85da66f7734b03
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =4095
+                            Top =453
+                            Width =1710
+                            Height =240
+                            Name ="Texto44"
+                            Caption ="Hora de inicio :"
+                            GUID = Begin
+                                0x13b556d33920334da41f55025ab3fd9c
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =6041
+                    Top =793
+                    TabIndex =5
+                    Name ="Tipo_de_examen"
+                    GUID = Begin
+                        0xb1ecc2f3b573634c8334b3ca863cbfac
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =4095
+                            Top =793
+                            Width =1710
+                            Height =240
+                            Name ="Texto46"
+                            Caption ="Tipo de examen :"
+                            GUID = Begin
+                                0xffb025efeaad5b4e8897ac11360955f5
+                            End
+                        End
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            Height =0
+            BackColor =12632256
+            Name ="PieDelFormulario2"
+            GUID = Begin
+                0x12f51f670313e64686cd67db0e3bc1b7
+            End
+        End
+    End
+End
+CodeBehindForm
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database   'Usar orden de base de datos en comparaciones de cadenas
+Dim db As Database
+Dim F_pagos As Form, F_Sub As Form
+Dim T_Prog_Ex As Recordset, T_Examen As Recordset, T_Alumnos As Recordset
+Dim QuinceMin, Ult_Horario, Cred_Busca, Cred_Ok
+
+Private Sub B_term_rel_exam_Click()
+On Error GoTo Err_B_term_rel_exam_Click
+Dim controlsig As Control
+
+    
+
+    DoCmd.Close
+
+    DoCmd.GoToControl "Credencial"
+    'DoCmd.Requery
+    DoCmd.GoToRecord , , A_NEWREC
+    DoCmd.GoToControl "Credencial"
+
+
+Exit_B_term_rel_exam_Click:
+    Exit Sub
+
+Err_B_term_rel_exam_Click:
+    MsgBox Error$
+    Resume Exit_B_term_rel_exam_Click
+    
+End Sub
+
+Private Sub Botón32_Click()
+On Error GoTo Err_Botón32_Click
+
+
+    DoCmd.DoMenuItem A_FORMBAR, A_EDITMENU, 10, , A_MENU_VER20
+
+Exit_Botón32_Click:
+    Exit Sub
+
+Err_Botón32_Click:
+    MsgBox Error$
+    Resume Exit_Botón32_Click
+    
+End Sub
+
+Private Sub ClaveExamen_BeforeUpdate(Cancel As Integer)
+
+    Set F_pagos = Forms!pagos
+    
+    QuinceMin = TimeValue("00:15:00")
+    
+    Set db = CurrentDb()
+    Set T_Examen = db.OpenRecordset("RelacionExamenes")
+    Set T_Prog_Ex = db.OpenRecordset("ProgramacionExamenes")
+    T_Prog_Ex.Index = "PrimaryKey"
+    T_Prog_Ex.Seek "=", ClaveExamen
+    If Not T_Prog_Ex.NoMatch Then
+       Cred_Busca = F_pagos![Pagos Operaciones].Form![Credencial]
+       Ult_Horario = T_Prog_Ex!HoraExamen - QuinceMin
+       Hora_del_examen = T_Prog_Ex!HoraExamen
+       Fecha_del_examen = T_Prog_Ex!FechaExamen
+       Tipo_de_examen = T_Prog_Ex!TipoExamen
+       T_Examen.Index = "ClaveExamen"
+       T_Examen.Seek "=", [ClaveExamen]
+       If Not T_Examen.NoMatch Then
+          Do While (T_Examen![ClaveExamen] = [ClaveExamen]) And Not T_Examen.EOF
+             If Cred_Busca <> 0 And Not IsNull(Cred_Busca) Then
+                If Not IsNull(Cred_Busca) And Cred_Busca <> 0 Then
+                   If T_Examen!Credencial = F_pagos![Pagos Operaciones].Form![Credencial] Then
+                      MsgBox "La Credencial Ya esta Registrada"
+                      DoCmd.CancelEvent
+                   End If
+                End If
+             End If
+             If Ult_Horario < T_Examen![Horario] Then
+                Ult_Horario = T_Examen![Horario]
+             End If
+             T_Examen.MoveNext
+             If T_Examen.EOF Then
+                Exit Do
+             End If
+          Loop
+       End If
+    Else
+       MsgBox "La clave de examen no esta registrada"
+       DoCmd.GoToControl "ClaveExamen"
+       DoCmd.CancelEvent
+    End If
+
+End Sub
+
+Private Sub ClaveExamen_Exit(Cancel As Integer)
+Dim QueNombre
+    [Pago Programa Ex Sub].Enabled = True
+    Set F_pagos = Forms!pagos
+    
+    QuinceMin = TimeValue("00:15:00")
+    
+    Set db = CurrentDb()
+    Set T_Examen = db.OpenRecordset("RelacionExamenes")
+    Set T_Prog_Ex = db.OpenRecordset("ProgramacionExamenes")
+    T_Prog_Ex.Index = "PrimaryKey"
+    T_Prog_Ex.Seek "=", ClaveExamen
+    If Not T_Prog_Ex.NoMatch Then
+       Cred_Busca = F_pagos![Pagos Operaciones].Form![Credencial]
+       Ult_Horario = T_Prog_Ex!HoraExamen - QuinceMin
+       Hora_del_examen = T_Prog_Ex!HoraExamen
+       Fecha_del_examen = T_Prog_Ex!FechaExamen
+       Tipo_de_examen = T_Prog_Ex!TipoExamen
+       T_Examen.Index = "ClaveExamen"
+       T_Examen.Seek "=", [ClaveExamen]
+       If Not T_Examen.NoMatch Then
+          Do While (T_Examen![ClaveExamen] = [ClaveExamen]) And Not T_Examen.EOF
+             If Ult_Horario < T_Examen![Horario] Then
+                Ult_Horario = T_Examen![Horario]
+             End If
+             T_Examen.MoveNext
+             If T_Examen.EOF Then
+                Exit Do
+             End If
+          Loop
+       End If
+    Else
+       MsgBox "Error Indefinido, Favor de Notificar"
+    End If
+    If Not IsNull(Cred_Busca) And Cred_Busca <> 0 Then
+       Set T_Alumnos = db.OpenRecordset("Alumnos")
+       T_Alumnos.Index = "PrimaryKey"
+       T_Alumnos.Seek "=", F_pagos![Pagos Operaciones].Form![Credencial]
+       If Not T_Alumnos.NoMatch Then
+          QueNombre = T_Alumnos!Nombre
+       End If
+    Else
+       QueNombre = "Modifique con el Nombre del Maestro"
+    End If
+    T_Examen.AddNew
+    T_Examen!ClaveExamen = [ClaveExamen]
+    T_Examen!Horario = Ult_Horario + QuinceMin
+    T_Examen!Credencial = F_pagos![Pagos Operaciones].Form![Credencial]
+    T_Examen!Nombre = QueNombre
+    T_Examen!GradoNivel = F_pagos![Pagos Operaciones].Form![Clave_Oper]
+    T_Examen!ReciboPago = F_pagos![Numero]
+    T_Examen!FechaPago = F_pagos![Fecha_Pant]
+    T_Examen!cantidad = F_pagos![Pagos Operaciones].Form![cantidad]
+    T_Examen!neto = F_pagos![Pagos Operaciones].Form![neto]
+    T_Examen!SePresento = Null
+    T_Examen!Aprobo = Null
+    T_Examen![Certificado Num] = Null
+    T_Examen.Update
+    DoCmd.GoToControl "Pago Programa Ex Sub"
+    'DoCmd.Requery
+    DoCmd.GoToRecord , , A_LAST
+    DoCmd.GoToControl "horario"
+    'F_pagos![Pagos Operaciones].Form![Operacion] = ClaveExamen + Space(12 - Len(ClaveExamen)) + F_pagos![Pagos Operaciones].Form![Operacion]
+    F_pagos![Pagos Operaciones].Form![Operacion] = F_pagos![Pagos Operaciones].Form![Operacion]
+End Sub
+
+Private Sub Form_Current()
+    '[Pago Programa Ex Sub].Enabled = False
+End Sub

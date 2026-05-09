@@ -1,0 +1,153 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #008B8B;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    background: #008B8B;
+    border-bottom: 3px solid #000;
+    padding: 15px 20px;
+}
+
+header h1 {
+    color: #fff;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+main {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.table-container {
+    flex: 1;
+    overflow-y: auto;
+    background: white;
+    border: 2px solid #000;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table thead {
+    position: sticky;
+    top: 0;
+    background: #008B8B;
+    z-index: 10;
+}
+
+.data-table th {
+    background: #008B8B;
+    color: white;
+    border: 1px solid #000;
+    padding: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: left;
+}
+
+.data-table td {
+    border: 1px solid #808080;
+    padding: 6px 8px;
+    font-size: 13px;
+    background: white;
+}
+
+.data-table tbody tr:nth-child(even) {
+    background: #e0f0f0;
+}
+
+.data-table tbody tr:hover {
+    background: #b0d0d0;
+    cursor: pointer;
+}
+
+.table-nav {
+    background: #008B8B;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: white;
+    border-top: 2px solid #000;
+}
+
+.table-nav button {
+    padding: 3px 10px;
+    border: 2px outset #fff;
+    background: #c0c0c0;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.nav-input {
+    width: 60px;
+    text-align: center;
+    border: 2px inset #fff;
+    padding: 3px;
+}
+
+footer {
+    background: #008B8B;
+    padding: 10px;
+    display: flex;
+    gap: 10px;
+    border-top: 2px solid #000;
+}
+
+.action-btn {
+    background: linear-gradient(to bottom, #f5f5f5 0%, #d0d0d0 100%);
+    border: 3px outset #fff;
+    padding: 8px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.action-btn:hover {
+    background: linear-gradient(to bottom, #fff 0%, #e0e0e0 100%);
+}
+
+.action-btn:active {
+    border-style: inset;
+}
+
+.exit-btn {
+    background: linear-gradient(to bottom, #f5f5f5 0%, #d0d0d0 100%);
+    border: 3px outset #fff;
+    padding: 8px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #cc0000;
+    cursor: pointer;
+    margin-left: auto;
+}
+
+.exit-btn:hover {
+    background: linear-gradient(to bottom, #fff 0%, #e0e0e0 100%);
+}
+
+.exit-btn:active {
+    border-style: inset;
+}

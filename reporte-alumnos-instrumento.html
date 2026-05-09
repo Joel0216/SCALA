@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte de Alumnos por Instrumento</title>
+    <style>
+        body { font-family: 'MS Sans Serif', Arial, sans-serif; background: #ece9d8; padding: 20px; }
+        .container { background: white; padding: 20px; border: 2px outset #fff; max-width: 900px; margin: auto; }
+        h1 { font-size: 18px; text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; }
+        .instrument-section { margin-top: 20px; }
+        .instrument-title { background: #000080; color: white; padding: 5px 10px; font-weight: bold; }
+        table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 5px; }
+        th, td { border: 1px solid #808080; padding: 5px; text-align: left; }
+        th { background: #dfdfdf; }
+        .no-print { margin-bottom: 20px; }
+        .btn { padding: 5px 15px; border: 2px outset #fff; background: #dfdfdf; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="no-print">
+            <button class="btn" onclick="window.print()">Imprimir</button>
+            <button class="btn" onclick="window.location.href='reportes.html'">Regresar</button>
+        </div>
+        <h1>REPORTE DE ALUMNOS POR INSTRUMENTO</h1>
+        <div id="reportContent">Cargando datos...</div>
+    </div>
+
+    <script src="supabase-config.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const client = window.supabase;
+            if (!client) return;
+
+            try {
+                // Obtener alumnos con sus grupos y cursos (para saber el instrumento)
+                const { data, error } = await client
+                    .from('alumnos')
+                    .select('nombre, status, grupos(clave, cursos(instrumento))')
+                    .eq('status', 'activo')
+                    .order('nombre');
+
+                if (error) throw error;
+
+                // Agrupar por instrumento
+                const grouped = {};
+                data.forEach(al => {
+                    const inst = al.grupos?.cursos?.instrumento || 'SIN INSTRUMENTO';
+                    if (!grouped[inst]) grouped[inst] = [];
+                    grouped[inst].push(al);
+                });
+
+                const content = document.getElementById('reportContent');
+                content.innerHTML = '';
+
+                for (const inst in grouped) {
+                    const section = document.createElement('div');
+                    section.className = 'instrument-section';
+                    section.innerHTML = `
+                        <div class="instrument-title">${inst} (${grouped[inst].length})</div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Alumno</th>
+                                    <th>Grupo</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${grouped[inst].map(al => `
+                                    <tr>
+                                        <td>${al.nombre}</td>
+                                        <td>${al.grupos?.clave || '---'}</td>
+                                        <td>${al.status}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    `;
+                    content.appendChild(section);
+                }
+
+                if (Object.keys(grouped).length === 0) {
+                    content.innerHTML = '<p style="text-align:center;">No hay alumnos activos registrados.</p>';
+                }
+
+            } catch (e) {
+                document.getElementById('reportContent').innerHTML = 'Error: ' + e.message;
+            }
+        });
+    </script>
+</body>
+</html>

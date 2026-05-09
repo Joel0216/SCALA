@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horarios</title>
+    <link rel="stylesheet" href="horarios.css">
+</head>
+
+    <div class="main-container">
+        <header class="app-header">
+            <h1>Horarios / Grupos</h1>
+            <div id="topTitle" class="top-bar-title" style="margin-right: 20px;">TODOS</div>
+        </header>
+
+        <main class="app-main" style="padding: 20px; overflow: hidden; display: flex; flex-direction: column;">
+            <!-- Main Grid Container -->
+            <div class="grid-container">
+                <!-- Grid Header -->
+                <div class="grid-header">
+                    <div></div> <!-- Selector column -->
+                    <div>Día</div>
+                    <div>Hora</div>
+                    <div>Clave</div>
+                    <div>Maestro</div>
+                    <div>Sa.</div>
+                    <div>Cupo</div>
+                    <div>#</div>
+                    <div>Inicio</div>
+                    <div>Lec</div>
+                    <div>F.L.</div>
+                    <div></div> <!-- Spacer -->
+                </div>
+
+                <!-- Grid Body (Scrollable) -->
+                <div class="grid-body" id="gridBody">
+                    <!-- Filas rellenadas dinámicamente -->
+                </div>
+
+                <!-- Footer Pagination Bar -->
+                <div class="pagination-footer">
+                    <span>REGISTRO:</span>
+                    <button type="button" class="premium-btn btn-outline" style="padding: 2px 8px; font-size: 0.8rem;" onclick="irPaginaPrimera()">PRIMERO</button>
+                    <button type="button" class="premium-btn btn-outline" style="padding: 2px 8px; font-size: 0.8rem;" onclick="irPaginaAnterior()">ANTERIOR</button>
+                    <input type="text" id="paginaActualInput" class="premium-input" style="width: 60px; text-align: center; padding: 2px;" value="1" readonly>
+                    <button type="button" class="premium-btn btn-outline" style="padding: 2px 8px; font-size: 0.8rem;" onclick="irPaginaSiguiente()">SIGUIENTE</button>
+                    <button type="button" class="premium-btn btn-outline" style="padding: 2px 8px; font-size: 0.8rem;" onclick="irPaginaUltima()">ÚLTIMO</button>
+                    <span id="infoPaginaCentral" style="margin-left: 20px; font-weight: 600; color: var(--primary);"></span>
+                </div>
+            </div>
+
+            <div class="app-footer" style="position: static; margin-top: 20px; border-radius: var(--radius-md); border-top: none; padding: 15px;">
+                <button class="premium-btn btn-primary" onclick="abrirModalBusqueda()">BUSCAR</button>
+                <div style="flex-grow: 1;"></div>
+                <button class="premium-btn btn-danger" onclick="terminar()">TERMINAR</button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal: Búsqueda de Horarios (Premium) -->
+    <div id="modalBusqueda" class="modal premium-modal" style="display: none;">
+        <div class="premium-modal-content" style="max-width: 750px; margin: 5% auto;">
+            <div class="premium-modal-header">
+                <h2>Búsqueda de Horarios</h2>
+            </div>
+            <div class="premium-modal-body" style="padding: 20px;">
+                <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                    <input type="text" id="inputBusqueda" class="premium-input" placeholder="Clave o maestro..."
+                        onkeydown="if(event.key === 'Enter') buscarHorariosEmergente()">
+                    <button class="premium-btn btn-primary" onclick="buscarHorariosEmergente()">BUSCAR</button>
+                    <button class="premium-btn btn-outline" onclick="limpiarBusquedaEmergente()">LIMPIAR</button>
+                </div>
+                
+                <div class="premium-table-container" style="height: 350px;">
+                    <table class="premium-table">
+                        <thead>
+                            <tr>
+                                <th>Clave</th>
+                                <th>Maestro</th>
+                                <th>Curso</th>
+                                <th>Día</th>
+                                <th>Hora</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bodyBusqueda">
+                            <!-- JS fill -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <footer class="app-footer" style="padding: 15px 20px; border-top: 1px solid var(--border-color); background: var(--bg-secondary); border-radius: 0 0 var(--radius-lg) var(--radius-lg); justify-content: flex-end;">
+                <button onclick="cerrarModalBusqueda()" class="premium-btn btn-outline">CERRAR</button>
+            </footer>
+        </div>
+    </div>
+
+    <script src="supabase-config.js"></script>
+    <script src="utils-inputs.js"></script>
+    <script src="horarios.js"></script>
+</body>
+
+</html>

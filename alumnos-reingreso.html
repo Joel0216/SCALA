@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scala - Reingreso del Alumno</title>
+    <link rel="stylesheet" href="theme.css">
+    <style>
+        .required {
+            color: var(--danger);
+            font-weight: bold;
+        }
+
+        .info-grupo-card {
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--accent-primary);
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: var(--radius-md);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .info-item strong {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-item span {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header class="app-header">
+            <h1>Reingreso del Alumno</h1>
+            <div class="datetime" id="datetime"></div>
+        </header>
+
+        <main class="app-main">
+            <div class="premium-grid grid-cols-2">
+                <!-- Datos del Alumno -->
+                <div class="premium-card">
+                    <h3>Datos del Alumno</h3>
+                    <div class="premium-input-group">
+                        <label class="premium-label">Credencial</label>
+                        <div style="display: flex; gap: 5px; align-items: center;">
+                            <input type="text" id="credencial1" class="premium-input" readonly style="background: var(--bg-secondary); flex: 1;">
+                            <span style="color: var(--text-muted);">–</span>
+                            <input type="text" id="credencial2" class="premium-input" readonly style="background: var(--bg-secondary); flex: 0.5;">
+                        </div>
+                    </div>
+                    <div class="premium-input-group">
+                        <label class="premium-label">Nombre</label>
+                        <input type="text" id="nombre" class="premium-input" readonly style="background: var(--bg-secondary);">
+                    </div>
+                    <div class="premium-input-group">
+                        <label class="premium-label">Último Grupo</label>
+                        <input type="text" id="ultimoGrupo" class="premium-input" readonly style="background: var(--bg-secondary);">
+                        <span id="infoGrupo" class="premium-label" style="font-size: 11px; margin-top: 5px; font-weight: 400;"></span>
+                    </div>
+                </div>
+
+                <!-- Detalles de Reingreso -->
+                <div class="premium-card">
+                    <h3>Atributos del Reingreso</h3>
+                    <div class="premium-input-group">
+                        <label class="premium-label">Nuevo Grupo <span class="required">*</span></label>
+                        <select id="nuevoGrupo" class="premium-input">
+                            <option value="">-- Seleccione nuevo grupo --</option>
+                        </select>
+                    </div>
+                    <div class="premium-input-group">
+                        <label class="premium-label">Beca</label>
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <label class="premium-label" style="margin-bottom: 0; display: flex; align-items: center; gap: 8px;">
+                                <input type="checkbox" id="beca"> Activa
+                            </label>
+                            <div style="display: flex; align-items: center; gap: 5px;">
+                                <span class="premium-label" style="margin: 0;">%:</span>
+                                <input type="number" id="porcentajeBeca" class="premium-input" style="width: 100px;" min="0" max="100" step="0.01" value="0.00" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="premium-input-group">
+                        <label class="premium-label">Observaciones</label>
+                        <textarea id="observaciones" class="premium-input" rows="2" placeholder="Notas adicionales..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Información Detallada del Grupo Seleccionado -->
+            <div id="infoGrupoSeleccionado" class="info-grupo-card" style="display: none;">
+                <h3 style="margin-top: 0; border: none; padding: 0;">Información del Nuevo Grupo</h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <strong>Clave</strong>
+                        <span id="infoGrupoClave"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Curso</strong>
+                        <span id="infoGrupoCurso"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Maestro</strong>
+                        <span id="infoGrupoMaestro"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Día</strong>
+                        <span id="infoGrupoDia"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Horario</strong>
+                        <span id="infoGrupoHorario"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Salón</strong>
+                        <span id="infoGrupoSalon"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Cupo</strong>
+                        <span id="infoGrupoCupo"></span>
+                    </div>
+                    <div class="info-item" style="color: var(--accent-primary);">
+                        <strong>Disponibles</strong>
+                        <span id="infoGrupoDisponibles" style="font-weight: 700;"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="premium-card" style="margin-top: 20px; background: var(--bg-secondary); border: 1px dashed var(--border-color);">
+                <p style="margin: 0; font-size: 13px; color: var(--text-muted);">
+                    <strong>Nota:</strong> Los campos con asterisco (<strong>*</strong>) son obligatorios. El botón de guardar se habilitará cuando se complete la información necesaria.
+                </p>
+            </div>
+        </main>
+
+        <footer class="app-footer">
+            <button class="premium-btn btn-danger" onclick="cancelar()">Cancelar</button>
+            <div style="flex-grow: 1;"></div>
+            <button class="premium-btn btn-save" id="btnGuardar" onclick="guardarReingreso()" disabled>Guardar y Terminar</button>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="utils-inputs.js"></script>
+    <script src="alumnos-reingreso.js"></script>
+</body>
+
+</html>

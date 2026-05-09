@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte de Ganancias por Instrumento</title>
+    <style>
+        body { font-family: 'MS Sans Serif', Arial, sans-serif; background: #ece9d8; padding: 20px; }
+        .container { background: white; padding: 20px; border: 2px outset #fff; max-width: 900px; margin: auto; }
+        h1 { font-size: 18px; text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; }
+        .filter-section { margin-bottom: 20px; background: #dfdfdf; padding: 10px; border: 2px inset #fff; display: flex; gap: 10px; align-items: center; }
+        table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 10px; }
+        th, td { border: 1px solid #808080; padding: 5px; text-align: right; }
+        th { background: #dfdfdf; text-align: center; }
+        td:first-child { text-align: left; }
+        .total-row { font-weight: bold; background: #eee; }
+        .no-print { margin-bottom: 10px; }
+        .btn { padding: 5px 15px; border: 2px outset #fff; background: #dfdfdf; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="no-print">
+            <button class="btn" onclick="window.print()">Imprimir</button>
+            <button class="btn" onclick="window.location.href='reportes.html'">Regresar</button>
+        </div>
+        <h1>REPORTE DE GANANCIAS POR INSTRUMENTO</h1>
+        
+        <div class="filter-section no-print">
+            <label>Mes:</label>
+            <select id="mesSelect">
+                <option value="1">Enero</option><option value="2">Febrero</option><option value="3">Marzo</option>
+                <option value="4">Abril</option><option value="5">Mayo</option><option value="6">Junio</option>
+                <option value="7">Julio</option><option value="8">Agosto</option><option value="9">Septiembre</option>
+                <option value="10">Octubre</option><option value="11">Noviembre</option><option value="12">Diciembre</option>
+            </select>
+            <input type="number" id="anioSelect" value="2026" style="width:60px;">
+            <button class="btn" onclick="cargarReporte()">FILTRAR</button>
+        </div>
+
+        <div id="reportContent">Seleccione un periodo y presione FILTRAR</div>
+    </div>
+
+    <script src="supabase-config.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('mesSelect').value = new Date().getMonth() + 1;
+            document.getElementById('anioSelect').value = new Date().getFullYear();
+        });
+
+        async function cargarReporte() {
+            const client = window.supabase;
+            const mes = document.getElementById('mesSelect').value;
+            const anio = document.getElementById('anioSelect').value;
+            const content = document.getElementById('reportContent');
+            content.innerHTML = 'Cargando...';
+
+            try {
+                // Fecha inicio y fin
+                const ini = `${anio}-${mes.padStart(2, '0')}-01`;
+                const fin = `${anio}-${mes.padStart(2, '0')}-31`; // Simplificado
+
+                // Obtener items de recibos en el periodo
+                const { data, error } = await client
+                    .from('recibo_items')
+                    .select('subtotal, iva, total, operaciones(nombre, instrumento), recibos!inner(fecha)')
+                    .gte('recibos.fecha', ini)
+                    .lte('recibos.fecha', fin);
+
+                if (error) throw error;
+
+                const grouped = {};
+                let granTotal = 0;
+
+                data.forEach(item => {
+                    const inst = item.operaciones?.instrumento || 'OTROS';
+                    if (!grouped[inst]) grouped[inst] = { subtotal: 0, iva: 0, total: 0, count: 0 };
+                    grouped[inst].subtotal += item.subtotal || 0;
+                    grouped[inst].iva += item.iva || 0;
+                    grouped[inst].total += item.total || 0;
+                    grouped[inst].count++;
+                    granTotal += item.total || 0;
+                });
+
+                let html = `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Instrumento / Concepto</th>
+                                <th>Operaciones</th>
+                                <th>Subtotal</th>
+                                <th>IVA</th>
+                                <th>TOTAL</th>
+                                <th>% Participación</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+
+                for (const inst in grouped) {
+                    const g = grouped[inst];
+                    const percent = (g.total / (granTotal || 1) * 100).toFixed(1);
+                    html += `
+                        <tr>
+                            <td>${inst}</td>
+                            <td>${g.count}</td>
+                            <td>$${g.subtotal.toFixed(2)}</td>
+                            <td>$${g.iva.toFixed(2)}</td>
+                            <td>$${g.total.toFixed(2)}</td>
+                            <td>${percent}%</td>
+                        </tr>
+                    `;
+                }
+
+                html += `
+                        <tr class="total-row">
+                            <td colspan="4">GRAN TOTAL</td>
+                            <td>$${granTotal.toFixed(2)}</td>
+                            <td>100%</td>
+                        </tr>
+                    </tbody>
+                </table>`;
+
+                content.innerHTML = html;
+
+            } catch (e) {
+                content.innerHTML = 'Error: ' + e.message;
+            }
+        }
+    </script>
+</body>
+</html>

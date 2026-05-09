@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scala - Menu de Reportes</title>
+    <link rel="stylesheet" href="reportes.css">
+</head>
+<body data-section="Reportes">
+    <div class="container">
+        <header>
+            <div class="header-logo">
+                <img src="Scala logo.png" alt="Scala Logo" id="mainLogo">
+            </div>
+            <div class="header-text">
+                <h1>Scala - Academias de Música</h1>
+                <h2>MENU DE REPORTES</h2>
+            </div>
+            <div class="datetime" id="datetime"></div>
+        </header>
+
+        <main>
+            <div class="content-area">
+                <div class="filters-container" style="display: flex; gap: 15px; margin-bottom: 20px; background: #e0f2f1; padding: 10px; border-radius: 4px; border: 1px solid #b2dfdb;">
+                    <div class="filter-group">
+                        <label for="fechaInicio" style="font-weight: bold; font-size: 0.9em; display: block;">Fecha Inicio:</label>
+                        <input type="date" id="fechaInicio" class="filter-input">
+                    </div>
+                    <div class="filter-group">
+                        <label for="fechaFin" style="font-weight: bold; font-size: 0.9em; display: block;">Fecha Fin:</label>
+                        <input type="date" id="fechaFin" class="filter-input">
+                    </div>
+                </div>
+
+                <div class="selection-label" style="font-weight: bold; color: #dc3545; margin-bottom: 10px;">
+                    ⚠️ SELECCIONE UN RANGO DE FECHAS PARA GENERAR CUALQUIER REPORTE
+                </div>
+                <select id="reporteSelect" size="20" class="reporte-list" style="height: 480px; width: 100%; border-radius: 8px; border: 1.5px solid #b2dfdb; padding: 10px; font-family: 'Poppins', sans-serif; font-size: 0.95em;">
+                    <option value="">-- Seleccione un reporte --</option>
+                    
+                    <optgroup label="1. Alumnos y Matrícula">
+                        <option value="listado_alumnos_1">Listado de Alumnos (Orden por Nombre)</option>
+                        <option value="listado_alumnos_2">Listado de Alumnos (Orden por Credencial)</option>
+                        <option value="listado_alumnos_3">Listado de Alumnos (Por Curso)</option>
+                        <option value="alumnos_ingresos">Alumnos Ingresos (Nuevos/Altas)</option>
+                        <option value="alumnos_por_instrumento">Alumnos Por Instrumento</option>
+                        <option value="alumnos_baja">Alumnos Baja</option>
+                    </optgroup>
+
+                    <optgroup label="2. Control Académico">
+                        <option value="listas_asistencia">Listas de Asistencia</option>
+                        <option value="programacion_examenes">Programación de Exámenes</option>
+                        <option value="alumnos_nivel_superior">Alumnos para Nivel Superior</option>
+                    </optgroup>
+
+                    <optgroup label="3. Cobranza y Finanzas">
+                        <option value="corte_caja_efectivo">Corte de Caja (Solo Efectivo)</option>
+                        <option value="corte_caja_tarjeta">Corte de Caja (Tarjetas/Transferencias)</option>
+                        <option value="corte_caja_total">Corte de Caja (Consolidado)</option>
+                        <option value="analisis_ingresos">Análisis de Ingresos</option>
+                        <option value="deudores">Reporte de Deudores</option>
+                        <option value="pagos_adelantados">Pagos Adelantados</option>
+                    </optgroup>
+
+                    <optgroup label="4. Maestros e Inventarios">
+                        <option value="reporte_mensual_maestros">Reporte Mensual de Maestros</option>
+                        <option value="articulos_vendidos">Artículos Vendidos</option>
+                        <option value="stock_critico">Stock Crítico (< 5 unidades)</option>
+                    </optgroup>
+                </select>
+                <div style="font-size: 0.8em; color: #666; margin-top: 5px; text-align: center;">
+                    Seleccione un reporte. Las fechas se habilitarán si el reporte lo requiere.
+                </div>
+
+                <div class="button-container">
+                    <button class="action-btn" onclick="imprimirReporte()">
+                        Imprime / Exportar PDF
+                    </button>
+                    <button class="action-btn" onclick="exportarCSV()" style="background-color: #27ae60;">
+                        Exportar CSV
+                    </button>
+                    <button class="exit-btn" onclick="window.location.href='index.html'">
+                        TERMINAR
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="supabase-config.js"></script>
+    <script src="session-manager.js"></script>
+    <script src="utils-inputs.js"></script>
+    <script src="reportes.js"></script>
+</body>
+</html>

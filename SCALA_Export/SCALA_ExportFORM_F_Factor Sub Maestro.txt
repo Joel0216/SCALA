@@ -1,0 +1,221 @@
+Version =19
+VersionRequired =19
+Checksum =-729630637
+Begin Form
+    AllowEditing = NotDefault
+    AllowDeletions = NotDefault
+    AllowAdditions = NotDefault
+    AllowEdits = NotDefault
+    DefaultView =0
+    GridX =5
+    GridY =5
+    Width =6009
+    ItemSuffix =22
+    Left =1170
+    Top =525
+    Right =7830
+    Bottom =3600
+    RecSrcDt = Begin
+        0xff51e95422dee140
+    End
+    GUID = Begin
+        0xab82f7d8b029fb408e755b3daf6acdf3
+    End
+    NameMap = Begin
+        0x0acc0e5500000000000000000000000000000000000000000c00000002000000 ,
+        0x0000000000000000000000000000
+    End
+    RecordSource ="Maestros"
+    Caption ="Maestros"
+    MenuBar ="Barra Main"
+    Begin
+        Begin Label
+            TextAlign =3
+            FontWeight =700
+            BackColor =12632256
+        End
+        Begin Rectangle
+            SpecialEffect =2
+            Width =850
+            Height =850
+        End
+        Begin OptionButton
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin CheckBox
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin TextBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin ListBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =1417
+            LabelX =-236
+        End
+        Begin ComboBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin FormHeader
+            Height =0
+            BackColor =12632256
+            Name ="EncabezadoDelFormulario1"
+            EventProcPrefix ="EncabezadoDelFormula"
+            GUID = Begin
+                0x3d7ce9695cd3e848afaf8525706c09fc
+            End
+        End
+        Begin Section
+            Height =1474
+            BackColor =8421376
+            Name ="Detalle0"
+            GUID = Begin
+                0x9b874f606247c54d8c655cc10af01adc
+            End
+            Begin
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =1697
+                    Top =113
+                    Width =3969
+                    ColumnWidth =3330
+                    Name ="Nombre"
+                    ControlSource ="Nombre"
+                    StatusBarText ="Nombre del maestro"
+                    GUID = Begin
+                        0x67ea6641fa5aa747871013c49de7e761
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =793
+                            Top =113
+                            Width =791
+                            Height =240
+                            BackColor =8421376
+                            Name ="Texto15"
+                            Caption ="Nombre:"
+                            GUID = Begin
+                                0xf4b070f243cc1c40a8be7c712d4ee285
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =1698
+                    Top =453
+                    Width =1140
+                    TabIndex =1
+                    Name ="Grado"
+                    ControlSource ="Grado"
+                    StatusBarText ="Grado del maestro"
+                    GUID = Begin
+                        0x949455497418cb41b83aa98028b8c442
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =907
+                            Top =453
+                            Width =678
+                            Height =240
+                            BackColor =8421376
+                            Name ="Texto17"
+                            Caption ="Grado:"
+                            GUID = Begin
+                                0xe374011a12d3a5418e2ce0bb8a441251
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =1808
+                    Top =1133
+                    Width =975
+                    TabIndex =2
+                    Name ="Fecha de ingreso"
+                    ControlSource ="Fecha de ingreso"
+                    Format ="Medium Date"
+                    StatusBarText ="N/C"
+                    EventProcPrefix ="Fecha_de_ingreso"
+                    GUID = Begin
+                        0xd4b19fce8fc8124b86e86451c76e865e
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Top =1133
+                            Width =1695
+                            Height =240
+                            BackColor =8421376
+                            Name ="Texto19"
+                            Caption ="Fecha de ingreso:"
+                            GUID = Begin
+                                0x8f9a1ad38697a14ab177d36b7d0c6ddb
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =1695
+                    Top =793
+                    Width =2280
+                    TabIndex =3
+                    Name ="Detalles Grado"
+                    ControlSource ="Detalles Grado"
+                    StatusBarText ="Detalles Grado"
+                    EventProcPrefix ="Detalles_Grado"
+                    GUID = Begin
+                        0xec10f18efa69a949b7a62e9766947f52
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =113
+                            Top =793
+                            Width =1469
+                            Height =240
+                            BackColor =8421376
+                            Name ="Texto21"
+                            Caption ="Detalles Grado:"
+                            GUID = Begin
+                                0x5a58bfcb08448844abc4b3207a717219
+                            End
+                        End
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            Height =0
+            BackColor =12632256
+            Name ="PieDelFormulario2"
+            GUID = Begin
+                0x20f87e5885e88a4d91bf8b7fb88ba0ef
+            End
+        End
+    End
+End

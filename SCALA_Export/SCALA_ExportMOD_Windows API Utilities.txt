@@ -1,0 +1,410 @@
+'------------------------------------------------------------------------
+'
+' MODULE
+'
+'   Windows API Utilities
+'
+' PURPOSE
+'
+'   Provides routines for manipulating Microsoft Access forms and
+'   windows through the Window API.
+'
+' NOTES
+'
+'   Most of the symbols in this module are prefixed with 'WU_',
+'   in an attempt to avoid naming conflicts with library databases.
+'
+'------------------------------------------------------------------------
+Option Compare Text     ' Non case sensitive compares
+
+'
+' Type WU_RECT.
+'
+Type WU_RECT
+    x1 As Integer
+    y1 As Integer
+    x2 As Integer
+    y2 As Integer
+End Type
+
+'
+' Windows API Declarations.
+'
+Declare Function wu_CheckMenuItem Lib "User32" Alias "CheckMenuItem" (ByVal hMenu%, ByVal idEnableItem%, ByVal uEnable%) As Integer
+Declare Sub wu_DrawMenuBar Lib "User32" Alias "DrawMenuBar" (ByVal hwnd%)
+Declare Function wu_EnableMenuItem Lib "User32" Alias "EnableMenuItem" (ByVal hMenu%, ByVal idEnableItem%, ByVal uEnable%) As Integer
+Declare Function wu_GetActiveWindow Lib "User32" Alias "GetActiveWindow" () As Integer
+Declare Function wu_GetClassName Lib "User32" Alias "GetClassName" (ByVal hwin%, ByVal stBuf$, ByVal cch%) As Integer
+Declare Function wu_GetClientRect Lib "User32" Alias "GetClientRect" (ByVal hwin%, rectangle As WU_RECT) As Integer
+Declare Function wu_GetDC Lib "User32" Alias "GetDC" (ByVal hw%) As Integer
+Declare Function wu_GetDesktopWindow Lib "User32" Alias "GetDesktopWindow" () As Integer
+Declare Function wu_GetDeviceCaps Lib "GDI32" Alias "GetDeviceCaps" (ByVal hDC%, ByVal iCapability%) As Integer
+Declare Function wu_GetFocus Lib "User32" Alias "GetFocus" () As Integer
+Declare Function wu_GetMenu Lib "User32" Alias "GetMenu" (ByVal hwnd%) As Integer
+Declare Function wu_GetMenuState Lib "User32" Alias "GetMenuState" (ByVal hMenu%, ByVal idItem%, ByVal fuFlags%) As Integer
+Declare Function wu_GetParent Lib "User32" Alias "GetParent" (ByVal hwin%) As Integer
+Declare Function wu_GetSubMenu Lib "User32" Alias "GetSubMenu" (ByVal hMenu%, ByVal nPos%) As Integer
+Declare Function wu_GetWindow Lib "User32" Alias "GetWindow" (ByVal hw%, ByVal nRelationship%) As Integer
+Declare Function wu_GetWindowRect Lib "User32" Alias "GetWindowRect" (ByVal hwin%, rectangle As WU_RECT) As Integer
+Declare Function wu_IsZoomed Lib "User32" Alias "IsZoomed" (ByVal hwnd%) As Integer
+Declare Function wu_MoveWindow Lib "User32" Alias "MoveWindow" (ByVal hwin%, ByVal x%, ByVal y%, ByVal dx%, ByVal dy%, ByVal fRepaint%) As Integer
+Declare Function wu_SetFocus Lib "User32" Alias "SetFocus" (ByVal hwin%) As Integer
+Declare Function wu_ShowWindow Lib "User32" Alias "ShowWindow" (ByVal hwnd%, ByVal i%) As Integer
+
+'
+' Constants used in the functions above.
+'
+Const WU_SW_RESTORE = 9
+Const WU_GW_HWNDFIRST = 0
+Const WU_GW_HWNDLAST = 1
+Const WU_GW_HWNDNEXT = 2
+Const WU_GW_HWNDPREV = 3
+Const WU_GW_OWNER = 4
+Const WU_GW_CHILD = 5
+Const WU_LOGPIXELSX = 88
+Const WU_LOGPIXELSY = 90
+
+Const WU_MF_BYCOMMAND = &H0
+Const WU_MF_BYPOSITION = &H400
+Const WU_MF_ENABLED = &H0
+Const WU_MF_GRAYED = &H1
+Const WU_MF_DISABLED = &H2
+Const WU_MF_MENUBREAK = &H40
+Const WU_MF_CHECKED = &H8
+Const WU_MF_UNCHECKED = &H0
+
+'
+' Microsoft Access Window Classes.
+'
+Global Const WU_WC_ACCESS = "OMain"
+Global Const WU_WC_ACCESSDBC = "ODb"
+Global Const WU_WC_ACCESSTBL = "OTable"
+Global Const WU_WC_ACCESSQRY = "OQRY"
+Global Const WU_WC_ACCESSFRM = "OForm"
+Global Const WU_WC_ACCESSRPT = "OReport"
+Global Const WU_WC_ACCESSMAC = "OScript"
+Global Const WU_WC_ACCESSMOD = "OModule"
+Global Const WU_WC_ACCESSFRMPOPUP = "OFormPopup"
+Global Const WU_WC_ACCESSTOOLBAR = "OToolbar"
+Global Const WU_WC_ACCESSMDICLIENT = "MDIClient"
+
+'------------------------------------------------------------------------
+' FUNCTION    : wu_ActiveFormName
+'
+' PURPOSE     : Returns the active form's name.
+'
+' NOTES       : If the form is loaded but not yet visible (e.g. it's
+'               in the OnOpen or initial OnCurrent event, this routine
+'               will return the null string.  This is a handy way of
+'               determining if you're in the initialization stage of
+'               a form (like the initial OnCurrent).
+'------------------------------------------------------------------------
+Function wu_ActiveFormName() As String
+    On Error Resume Next
+
+'    stName$ = Screen.ActiveForm.FormName
+'    If (Err = 0) Then
+'        wu_ActiveFormName = stName$
+'    Else
+'        wu_ActiveFormName = ""
+'    End If
+End Function
+
+'------------------------------------------------------------------------
+' FUNCTION    : wu_CenterDoc
+'
+' PURPOSE     : Centers a Microsoft Access form.
+'------------------------------------------------------------------------
+Function wu_CenterDoc(hwnd%) As Integer
+    Dim r As WU_RECT, rDesk As WU_RECT
+    Dim dx As Integer, dy As Integer, dxDesk As Integer, dyDesk As Integer
+
+'    If (hwnd% = 0) Then hwnd = wu_GetCurrentDoc(True)
+'    hwndDesk% = wu_GetParent(hwnd%)
+'    stClass$ = wu_StWindowClass(hwnd%)
+
+    ' Special case for forms: Move them to 0,0 and do a SizeToFitForm
+
+'    If (stClass$ = WU_WC_ACCESSFRM) Then
+'        DoCmd.MoveSize 0, 0
+'        On Error Resume Next
+'        DoCmd.DoMenuItem A_FORMBAR, 4, 5
+'        On Error GoTo 0
+'    End If
+
+    ' If this is a popup, use the WindowRect of the desktop.  Otherwise,
+    ' use the client rect.
+
+'    f% = wu_GetWindowRect(hwnd%, r)
+'    If (stClass$ = WU_WC_ACCESSFRMPOPUP) Then
+'        f% = wu_GetWindowRect(hwndDesk%, rDesk)
+'    Else
+'        f% = wu_GetClientRect(hwndDesk%, rDesk)
+'    End If
+'    dx% = r.x2 - r.x1
+'    dy% = r.y2 - r.y1
+'    dxDesk% = rDesk.x2 - rDesk.x1
+'    dyDesk% = rDesk.y2 - rDesk.y1
+'    If (wu_StWindowClass(hwnd%) = WU_WC_ACCESSFRMPOPUP) Then
+'        f% = wu_MoveWindow(hwnd%, rDesk.x1 + (dxDesk% - dx%) / 2, rDesk.y1 + (dyDesk% - dy%) / 2, dx%, dy%, True)
+'    Else
+'        f% = wu_MoveWindow(hwnd%, (dxDesk% - dx%) / 2, (dyDesk% - dy%) / 2, dx%, dy%, True)
+'    End If
+'    wu_CenterDoc = f%
+End Function
+
+'------------------------------------------------------------------------
+' FUNCTION    : wu_ConvertTwipsToPixels
+'
+' PURPOSE     : Converts twips to pixels, calling Windows for
+'               the current device's Logical Pixels in the
+'               Horizontal or Vertical direction.
+'
+' ARGUMENTS   : nTwips%     - The number in twips (will be converted)
+'               nDirection% - 0=Horizontal, 1=Vertical.
+'------------------------------------------------------------------------
+Function wu_ConvertTwipsToPixels(nTwips%, nDirection%) As Integer
+    Const nTwipsPerInch = 1440
+
+'    hDC% = wu_GetDC(wu_GetAccessHwnd())
+'    If (nDirection% = 0) Then       'Horizontal
+'        nPixelsPerInch% = wu_GetDeviceCaps(hDC%, WU_LOGPIXELSX)
+'    Else                            'Vertical
+'        nPixelsPerInch% = wu_GetDeviceCaps(hDC%, WU_LOGPIXELSY)
+'    End If
+'    wu_ConvertTwipsToPixels = (nTwips% / nTwipsPerInch%) * nPixelsPerInch%
+End Function
+
+'------------------------------------------------------------------------
+' FUNCTION    : wu_FIsDocument
+'
+' PURPOSE     : Determines whether the given window handle specifies a
+'               valid Access document.
+'------------------------------------------------------------------------
+Function wu_FIsDocument(hwnd As Integer) As Integer
+'    wu_FIsDocument = False
+'    stClass$ = wu_StWindowClass(hwnd%)
+'    If (stClass$ = WU_WC_ACCESSDBC) Then wu_FIsDocument = True
+'    If (stClass$ = WU_WC_ACCESSTBL) Then wu_FIsDocument = True
+'    If (stClass$ = WU_WC_ACCESSQRY) Then wu_FIsDocument = True
+'    If (stClass$ = WU_WC_ACCESSFRM) Then wu_FIsDocument = True
+'    If (stClass$ = WU_WC_ACCESSRPT) Then wu_FIsDocument = True
+'    If (stClass$ = WU_WC_ACCESSMAC) Then wu_FIsDocument = True
+'    If (stClass$ = WU_WC_ACCESSMOD) Then wu_FIsDocument = True
+'    If (stClass$ = WU_WC_ACCESSFRMPOPUP) Then wu_FIsDocument = True
+End Function
+
+'------------------------------------------------------------------------
+' FUNCTION    : wu_FMenuChecked
+'
+' PURPOSE     : Returns True if the specified menu item has a check
+'               mark next to it.
+'
+' ARGUMENTS   : iMenu% - The index of the drop down menu
+'               iItem% - The index of the item on the menu
+'
+'               Both of these arguments are zero based.
+'------------------------------------------------------------------------
+Function wu_FMenuChecked(iMenu%, iItem%) As Integer
+    
+    ' If the current form is Zoomed, account for the system menu.
+
+'    If (wu_IsZoomed(Screen.ActiveForm.hwnd)) Then
+'        iMenu% = iMenu% + 1
+'    End If
+
+'    hMainMenu% = wu_GetMenu(wu_GetAccessHwnd())
+'    hMenu% = wu_GetSubMenu(hMainMenu%, iMenu%)
+'    fuFlags% = WU_MF_BYPOSITION Or WU_MF_CHECKED
+'    wu_FMenuChecked = (wu_GetMenuState(hMenu%, iItem%, fuFlags%) <> 0)
+
+End Function
+
+'------------------------------------------------------------------------
+' FUNCTION    : wu_FMenuEnabled
+'
+' PURPOSE     : Returns True if the specified menu item is enabled.
+'
+' ARGUMENTS   : iMenu% - The index of the drop down menu
+'               iItem% - The index of the item on the menu
+'
+'               Both of these arguments are zero based.
+'------------------------------------------------------------------------
+Function wu_FMenuEnabled(iMenu%, iItem%) As Integer
+    
+    ' If the current form is Zoomed, account for the system menu.
+
+'    If (wu_IsZoomed(Screen.ActiveForm.hwnd)) Then
+'        iMenu% = iMenu% + 1
+'    End If
+'    hMainMenu% = wu_GetMenu(wu_GetAccessHwnd())
+'    hMenu% = wu_GetSubMenu(hMainMenu%, iMenu%)
+'    fuFlags% = WU_MF_BYPOSITION Or WU_MF_GRAYED
+'    wu_FMenuEnabled = (wu_GetMenuState(hMenu%, iItem%, fuFlags%) = 0)
+
+End Function
+
+'------------------------------------------------------------------------
+' FUNCTION    : wu_GetAccessHwnd()
+'
+' PURPOSE     : Returns a handle the the Access window.
+'------------------------------------------------------------------------
+Function wu_GetAccessHwnd() As Integer
+'    hwnd% = wu_GetActiveWindow()
+'    While ((wu_StWindowClass(hwnd%) <> WU_WC_ACCESS) And (hwnd% <> 0))
+'        hwnd% = wu_GetParent(hwnd%)
+'    Wend
+'    wu_GetAccessHwnd = hwnd%
+End Function
+
+'------------------------------------------------------------------------
+' FUNCTION    : wu_GetCurrentDoc
+'
+' PURPOSE     : Retrieves the handle to the active Access document.
+'               If the fPopup flag is specified as TRUE, popup forms
+'               will be included.  If the fPopup flag is FALSE, Access
+'               will be activated first (a side effect).
+'------------------------------------------------------------------------
+Function wu_GetCurrentDoc(fPopup%) As Integer
+'    If (Not fPopup%) Then
+'        hwnd% = wu_GetAccessHwnd()
+'        If (hwnd% <> 0) Then hwnd% = wu_SetFocus(hwnd%)
+'    End If
+'    hwnd% = wu_GetFocus()
+'    While (Not (wu_FIsDocument(hwnd%)) And (hwnd% <> 0))
+'        hwnd% = wu_GetParent(hwnd%)
+'    Wend
+'    wu_GetCurrentDoc = hwnd%
+End Function
+
+'------------------------------------------------------------------------
+' FUNCTION    : wu_GetMDIClientHwnd()
+'
+' PURPOSE     : Returns a handle the the Access MDIClient window.
+'------------------------------------------------------------------------
+Function wu_GetMDIClientHwnd() As Integer
+'    Dim hwnd As Integer
+'    hwnd = wu_GetAccessHwnd()
+'    hwnd = wu_GetWindow(hwnd, WU_GW_CHILD)
+'    While ((wu_StWindowClass(hwnd) <> WU_WC_ACCESSMDICLIENT) And (hwnd <> 0))
+'        hwnd = wu_GetWindow(hwnd, WU_GW_HWNDNEXT)
+'    Wend
+'    wu_GetMDIClientHwnd = hwnd
+End Function
+
+'------------------------------------------------------------------------
+' FUNCTION    : wu_GetScreenSize
+'
+' PURPOSE     : Stores the screen size in r (a rectangle)
+'------------------------------------------------------------------------
+Function wu_GetScreenSize(r As WU_RECT) As Integer
+'    hwnd% = wu_GetDesktopWindow()
+'    f% = wu_GetWindowRect(hwnd%, r)
+'    wu_GetScreenSize = f%
+End Function
+
+'------------------------------------------------------------------------
+' FUNCTION    : wu_GetToolbarHwnd
+'
+' PURPOSE     : Returns the handle of the toolbar if it is open.
+'------------------------------------------------------------------------
+Function wu_GetToolbarHwnd() As Integer
+'    hwnd% = wu_GetAccessHwnd()
+'    hwnd% = wu_GetWindow(hwnd%, WU_GW_CHILD)
+'    While ((wu_StWindowClass(hwnd%) <> WU_WC_ACCESSTOOLBAR) And (hwnd% <> 0))
+'        hwnd% = wu_GetWindow(hwnd%, WU_GW_HWNDNEXT)
+'    Wend
+'    wu_GetToolbarHwnd = hwnd%
+End Function
+
+'------------------------------------------------------------------------
+' FUNCTION    : wu_SetAccessSize
+'
+' PURPOSE     : Sizes the Access window to the specified coordinates.
+'               Coordinates should be given in pixels.
+'------------------------------------------------------------------------
+Function wu_SetAccessSize(x%, y%, dx%, dy%) As Integer
+'    hwnd% = wu_GetAccessHwnd()
+'    If (wu_IsZoomed(hwnd%)) Then
+'        f% = wu_ShowWindow(hwnd%, WU_SW_RESTORE)
+'    End If
+'    f% = wu_MoveWindow(hwnd%, x%, y%, dx%, dy%, True)
+'    wu_SetAccessSize = f%
+End Function
+
+'------------------------------------------------------------------------
+' FUNCTION    : wu_SetMenuChecked
+'
+' PURPOSE     : Sets the checkmark next to a menu item on or off.
+'
+' ARGUMENTS   : iMenu% - The index of the drop down menu
+'               iItem% - The index of the item on the menu
+'                           Both of these arguments are zero based.
+'               fChecked% - True to show the checkmark, false otherwise.
+'------------------------------------------------------------------------
+Function wu_SetMenuChecked(iMenu%, iItem%, fChecked%) As Integer
+
+    ' If the current form is Zoomed, account for the system menu.
+
+'    If (wu_IsZoomed(Screen.ActiveForm.hwnd)) Then
+'        iMenu% = iMenu% + 1
+'    End If
+
+'    hMainMenu% = wu_GetMenu(wu_GetAccessHwnd())
+'    hMenu% = wu_GetSubMenu(hMainMenu%, iMenu%)
+'    If (fChecked%) Then
+'        fuFlags% = WU_MF_BYPOSITION Or WU_MF_CHECKED
+'    Else
+'        fuFlags% = WU_MF_BYPOSITION Or WU_MF_UNCHECKED
+'    End If
+'    f% = wu_CheckMenuItem(hMenu%, iItem%, fuFlags%)
+'    wu_DrawMenuBar wu_GetAccessHwnd()
+'    wu_SetMenuChecked = f%
+
+End Function
+
+'------------------------------------------------------------------------
+' FUNCTION    : wu_SetMenuEnabled
+'
+' PURPOSE     : Enables or disables a menu item.
+'
+' ARGUMENTS   : iMenu% - The index of the drop down menu
+'               iItem% - The index of the item on the menu
+'                           Both of these arguments are zero based.
+'               fEnabled% - True to show the checkmark, false otherwise.
+'------------------------------------------------------------------------
+Function wu_SetMenuEnabled(iMenu%, iItem%, fEnabled%) As Integer
+    ' If the current form is Zoomed, account for the system menu.
+
+'    If (wu_IsZoomed(Screen.ActiveForm.hwnd)) Then
+'        iMenu% = iMenu% + 1
+'    End If
+
+'    hMainMenu% = wu_GetMenu(wu_GetAccessHwnd())
+'    hMenu% = wu_GetSubMenu(hMainMenu%, iMenu%)
+'    If (fEnabled%) Then
+'        fuFlags% = WU_MF_BYPOSITION Or WU_MF_ENABLED
+'    Else
+'        fuFlags% = WU_MF_BYPOSITION Or WU_MF_GRAYED
+'    End If
+'    f% = wu_EnableMenuItem(hMenu%, iItem%, fuFlags%)
+'    wu_DrawMenuBar wu_GetAccessHwnd()
+'    wu_SetMenuEnabled = f%
+
+End Function
+
+'------------------------------------------------------------------------
+' FUNCTION    : wu_StWindowClass
+'
+' PURPOSE     : A simple cover function to the Windows API call.
+'------------------------------------------------------------------------
+Function wu_StWindowClass(hwnd As Integer) As String
+    Const cchMax = 255
+'    Dim stBuff As String * cchMax
+'    cch% = wu_GetClassName(hwnd, stBuff, cchMax)
+'    If (hwnd% = 0) Then
+'        wu_StWindowClass = ""
+'    Else
+'        wu_StWindowClass = (Left$(stBuff, cch%))
+'    End If
+End Function

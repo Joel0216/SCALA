@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAGOS - Sistema Scala</title>
+    <link rel="stylesheet" href="cobros.css">
+</head>
+
+<body data-section="Caja">
+    <div class="container">
+        <header>
+            <h1>PAGOS</h1>
+            <div class="receipt-header">
+                <div class="header-left">
+                    <button id="btnAsignarRecibo" class="btn-action">Asignar Recibo</button>
+                    <div class="field-group">
+                        <label>Recibo :</label>
+                        <input type="text" id="currentReceiptNo" readonly>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="field-group">
+                        <label>Fecha :</label>
+                        <input type="text" id="currentDate" readonly style="width: 100px;">
+                        <input type="text" id="currentTime" readonly style="width: 80px;">
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <!-- Tabla de Operaciones -->
+            <div class="table-container">
+                <table id="operationsTable">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Cred</th>
+                            <th>Operación</th>
+                            <th>Precio Bruto</th>
+                            <th>IVA</th>
+                            <th>Cant:</th>
+                            <th>Desc %</th>
+                            <th>Neto</th>
+                        </tr>
+                    </thead>
+                    <tbody id="operationsBody">
+                        <!-- Rows dynamically added -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="details-section">
+                <!-- Información del Alumno -->
+                <div class="card student-info">
+                    <div id="displayName" class="name-display">SIN ALUMNO SELECCIONADO</div>
+                    <div class="student-grid">
+                        <div class="field-group">
+                            <label>Credencial:</label>
+                            <input type="text" id="studentCred" readonly>
+                        </div>
+                        <div class="field-group">
+                            <label>Ingreso:</label>
+                            <input type="text" id="studentEntryDate" readonly>
+                        </div>
+                        <button id="lookupStudent" class="lupa-btn secondary" disabled
+                            title="Debe asignar un recibo primero">🔍 Buscar Alumno</button>
+                    </div>
+                </div>
+
+                <div class="card operation-detail">
+                    <div id="displayOperation" class="operation-display">SIN OPERACIÓN SELECCIONADA</div>
+                    <div id="opName" class="hidden"></div> <!-- Hidden field for selectRow sync -->
+                    <div class="operation-grid">
+                        <div class="field-group">
+                            <label>Precio:</label>
+                            <input type="text" id="opPrice" readonly value="$0.00">
+                        </div>
+                        <div class="field-group">
+                            <label>IVA:</label>
+                            <input type="text" id="opIva" readonly value="0.00%">
+                        </div>
+                        <button id="lookupOperation" class="lupa-btn secondary" disabled
+                            title="Seleccione un alumno primero">🔍 Buscar Operación</button>
+                    </div>
+                </div>
+
+                <!-- Formas de Pago y Totales -->
+                <div class="payment-section">
+                    <div class="payment-methods card">
+                        <h3>Forma de Pago <span id="selectedPaymentMethod"
+                                style="color: #000080; margin-left: 10px; font-weight: bold; font-size: 14px;"></span>
+                        </h3>
+                        <button id="btnEfectivo" class="payment-btn" disabled
+                            title="Faltan operaciones en el recibo">Efectivo</button>
+                        <button id="btnTarjeta" class="payment-btn" disabled
+                            title="Faltan operaciones en el recibo">Tarjeta</button>
+                        <button id="btnTransferencia" class="payment-btn" disabled
+                            title="Faltan operaciones en el recibo">Transferencia</button>
+                    </div>
+
+                    <div class="totals card">
+                        <div class="field-group total-row">
+                            <label>Subtotal :</label>
+                            <input type="text" id="subtotal" readonly value="$0.00">
+                        </div>
+
+                        <div class="payment-summary">
+                            <!-- EFECTIVO Group -->
+                            <div id="groupEfectivo" class="payment-method-group">
+                                <div class="field-group">
+                                    <label>Efectivo:</label>
+                                    <input type="text" id="payEfectivo" readonly value="$0.00">
+                                </div>
+                                <div class="field-group">
+                                    <label>Monto Recibido:</label>
+                                    <input type="text" id="payAmountReceived" readonly value="$0.00">
+                                </div>
+                                <div class="field-group">
+                                    <label>Cambio:</label>
+                                    <input type="text" id="payChange" readonly value="$0.00">
+                                </div>
+                            </div>
+
+                            <!-- TARJETA Group -->
+                            <div id="groupTarjeta" class="payment-method-group hidden">
+                                <div class="field-group">
+                                    <label>Tarjeta:</label>
+                                    <input type="text" id="payTarjeta" readonly value="$0.00">
+                                </div>
+                                <div class="field-group">
+                                    <label>No. Tarjeta:</label>
+                                    <input type="text" id="payCardNumber" readonly value="">
+                                </div>
+                                <div class="field-group">
+                                    <label>Referencia:</label>
+                                    <input type="text" id="payReference" readonly value="">
+                                </div>
+                                <div class="field-group">
+                                    <label>Banco:</label>
+                                    <input type="text" id="payCardBank" readonly value="">
+                                </div>
+                            </div>
+
+                            <!-- TRANSFERENCIA Group -->
+                            <div id="groupTransferencia" class="payment-method-group hidden">
+                                <div class="field-group">
+                                    <label>Transferencia:</label>
+                                    <input type="text" id="payTransferencia" readonly value="$0.00">
+                                </div>
+                                <div class="field-group">
+                                    <label>Folio:</label>
+                                    <input type="text" id="payTransFolio" readonly value="">
+                                </div>
+                                <div class="field-group">
+                                    <label>Razón Social:</label>
+                                    <input type="text" id="payTransBusinessName" readonly value="">
+                                </div>
+                                <div class="field-group">
+                                    <label>RFC:</label>
+                                    <input type="text" id="payTransRfc" readonly value="">
+                                </div>
+                                <div class="field-group">
+                                    <label>Concepto:</label>
+                                    <input type="text" id="payTransConcept" readonly value="">
+                                </div>
+                            </div>
+
+                            <!-- Common Discount -->
+                            <div class="field-group discount-group" id="rowDiscount">
+                                <label>Descuento:</label>
+                                <div class="discount-values">
+                                    <input type="text" id="payDiscountPercent" readonly value="Ver Det"
+                                        title="Descuentos aplicados por fila">
+                                    <input type="text" id="payDiscount" readonly value="$0.00" title="Monto total descontado">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="field-group reference hidden" style="display:none;">
+                            <label>Referencia :</label>
+                            <input type="text" id="payReferenceOld" readonly>
+                        </div>
+
+                        <div class="field-group total-row big">
+                            <label>Total :</label>
+                            <input type="text" id="grandTotal" readonly value="$0.00">
+                        </div>
+
+                        <button id="btnGuardarImprimir" class="btn-primary" disabled
+                            title="Complete el recibo para continuar" style="margin-top: 15px; width: 100%;">Guardar e
+                            imprimir</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección de Facturación (Reemplaza facturar y RFC) -->
+            <div class="billing-section card">
+                <h3>DATOS PARA FACTURACIÓN</h3>
+                <div class="row">
+                    <div class="field-group flex-2">
+                        <label>RFC (o NIF):</label>
+                        <div class="search-input">
+                            <input type="text" id="billingRfc" readonly>
+                        </div>
+                    </div>
+                    <div class="field-group flex-3">
+                        <label>Nombre/Razón Social:</label>
+                        <input type="text" id="billingName" readonly>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="field-group flex-1">
+                        <label>Domicilio Fiscal:</label>
+                        <input type="text" id="billingAddress" readonly>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="field-group flex-2">
+                        <input type="text" id="billingCfdi" readonly placeholder="G03 - Gastos en general">
+                    </div>
+                    <div class="field-group flex-3">
+                        <label>Correo Electrónico:</label>
+                        <input type="text" id="billingEmail" readonly>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <button id="lookupTransaction" class="lupa-btn"
+                style="height: 40px; width: 60px; font-size: 20px;">🔍</button>
+            <button id="btnCancelar" class="btn-secondary" style="margin-right: 15px;">Cancelar</button>
+            <button id="btnSalir" class="btn-exit">Salir</button>
+        </footer>
+
+        <!-- Área Invisble para Impresión -->
+        <div id="receipt-print-area" class="hidden-print"></div>
+    </div>
+
+    <!-- Modales -->
+
+    <!-- Modal Efectivo -->
+    <div id="modalEfectivo" class="modal">
+        <div class="modal-content cash-modal">
+            <h2>FAVOR DE PROPORCIONAR LA CANTIDAD RECIBIDA</h2>
+            <div class="modal-row">
+                <label>Cantidad a pagar :</label>
+                <input type="text" id="cashAmountToPay" readonly>
+            </div>
+            <div class="modal-row">
+                <label>Monto Recibido :</label>
+                <input type="number" id="cashAmountReceived" step="0.01" min="0">
+            </div>
+            <div class="modal-row">
+                <label>Cambio :</label>
+                <input type="text" id="cashChange" readonly style="background: #2c5282; color: #fff; font-size: 1.5rem; text-align: center;">
+            </div>
+            <div class="modal-actions">
+                <button id="btnFinishCash" class="btn-primary">Guardar</button>
+                <button id="btnCancelCash" class="btn-secondary">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Tarjeta -->
+    <div id="modalTarjeta" class="modal">
+        <div class="modal-content card-modal">
+            <h2>PAGO CON TARJETA</h2>
+            <div class="modal-row">
+                <label>Cantidad a pagar :</label>
+                <input type="text" id="cardAmountToPay" readonly>
+            </div>
+            <div class="modal-row">
+                <label>Banco :</label>
+                <input type="text" id="cardBank" placeholder="Ej: BBVA, Banorte">
+            </div>
+            <div class="modal-row">
+                <label>No. de Tarjeta :</label>
+                <input type="text" id="cardNumber" placeholder="Últimos 4 dígitos">
+            </div>
+            <div class="modal-row">
+                <label>Referencia/Autorización :</label>
+                <input type="text" id="cardAuth">
+            </div>
+            <div class="modal-row">
+                <label>Comprobante (PDF/Img) :</label>
+                <input type="file" id="cardProof" accept="application/pdf,image/*">
+            </div>
+            <div class="modal-actions">
+                <button id="btnFinishCard" class="btn-primary">Guardar</button>
+                <button id="btnCancelCard" class="btn-secondary">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Transferencia -->
+    <div id="modalTransferencia" class="modal">
+        <div class="modal-content transfer-modal">
+            <h2>DATOS DE TRANSFERENCIA</h2>
+            <div class="modal-grid-transfer">
+                <div class="modal-row">
+                    <label>Cantidad a pagar :</label>
+                    <input type="text" id="transAmountToPay" readonly>
+                </div>
+                <div class="modal-row">
+                    <label>Folio :</label>
+                    <input type="text" id="transFolio">
+                </div>
+                <div class="modal-row">
+                    <label>Fecha :</label>
+                    <input type="date" id="transDate">
+                </div>
+                <div class="modal-row">
+                    <label>Lugar :</label>
+                    <input type="text" id="transPlace">
+                </div>
+                <div class="modal-row">
+                    <label>Razón Social :</label>
+                    <input type="text" id="transBusinessName" style="grid-column: span 2;">
+                </div>
+                <div class="modal-row">
+                    <label>RFC :</label>
+                    <input type="text" id="transRfc" maxlength="13">
+                </div>
+                <div class="modal-row">
+                    <label>Monto (Letra) :</label>
+                    <input type="text" id="transAmountLetter">
+                </div>
+                <div class="modal-row">
+                    <label>Concepto :</label>
+                    <textarea id="transConcept" rows="2" style="grid-column: span 2;"></textarea>
+                </div>
+                <div class="modal-row">
+                    <label>Comprobante (PDF) :</label>
+                    <input type="file" id="transProof" accept="application/pdf,image/*">
+                </div>
+            </div>
+            <div class="modal-actions" style="margin-top: 15px;">
+                <button id="btnFinishTrans" class="btn-primary">Guardar</button>
+                <button id="btnCancelTrans" class="btn-secondary">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modales de Búsqueda (Lupas) -->
+    <div id="modalLookup" class="modal">
+        <div class="modal-content lookup-modal" id="lookupModalContent">
+            <div class="modal-title-bar" id="lookupHeader">
+                <span id="lookupTitle">Seleccionar</span>
+                <button class="modal-close" onclick="closeDialog('modalLookup')">X</button>
+            </div>
+
+            <div class="lookup-search-container">
+                <input type="text" id="lookupSearchInput" class="lookup-search-input" placeholder="Buscar...">
+                <button class="lupa-btn" id="btnDoSearch">Buscar</button>
+                <button class="btn-action hidden" id="btnLookupNuevo"
+                    style="margin-left: 5px; height: 32px; padding: 0 15px;">+ Nuevo</button>
+            </div>
+
+            <div class="lookup-table-body-container">
+                <table class="lookup-table">
+                    <thead>
+                        <tr id="lookupTableHeader"></tr>
+                    </thead>
+                    <tbody id="lookupTableBody"></tbody>
+                </table>
+            </div>
+
+            <div class="lookup-pagination">
+                <span>Registro:</span>
+                <button type="button" class="pagination-btn" id="btnPagFirst">|◄</button>
+                <button type="button" class="pagination-btn" id="btnPagPrev">◄</button>
+                <input type="text" id="pagActual" class="pagination-input" value="1" readonly>
+                <button type="button" class="pagination-btn" id="btnPagNext">►</button>
+                <button type="button" class="pagination-btn" id="btnPagLast">►|</button>
+                <span id="pagInfo" class="pagination-info"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Nueva Operación -->
+    <div id="modalNewOperation" class="modal">
+        <div class="modal-content form-modal">
+            <h2>Crear Nueva Operación</h2>
+            <div class="modal-row">
+                <label>Nombre:</label>
+                <input type="text" id="newOpName">
+            </div>
+            <div class="modal-row">
+                <label>Precio:</label>
+                <input type="number" id="newOpPrice" step="0.01" value="0.00">
+            </div>
+            <div class="modal-row">
+                <label>IVA (%):</label>
+                <input type="number" id="newOpIva" step="0.01" value="16.00">
+            </div>
+            <div class="modal-row">
+                <label>Activo:</label>
+                <input type="checkbox" id="newOpActive" checked>
+            </div>
+            <div class="modal-actions">
+                <button id="btnSaveNewOp" class="btn-primary">Guardar</button>
+                <button id="btnCancelNewOp" class="btn-secondary">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Búsqueda de Recibos/Transacciones -->
+    <div id="modalSearchTransaction" class="modal">
+        <div class="modal-content lookup-modal" style="width: 900px; height: 600px;">
+            <div class="modal-title-bar" id="searchTransactionHeader">
+                <span>Búsqueda de Cobros Realizados</span>
+                <button class="modal-close" onclick="closeDialog('modalSearchTransaction')">X</button>
+            </div>
+
+            <div class="lookup-search-container">
+                <input type="text" id="searchTransactionInput" class="lookup-search-input"
+                    placeholder="Folio, Cliente o Fecha...">
+                <button class="lupa-btn" id="btnDoSearchTransaction">Buscar</button>
+            </div>
+
+            <div class="lookup-table-body-container">
+                <table class="lookup-table">
+                    <thead>
+                        <tr>
+                            <th>Folio</th>
+                            <th>Fecha</th>
+                            <th>Cliente</th>
+                            <th>Total</th>
+                            <th>Método</th>
+                            <th>Imprimir</th>
+                            <th>Comprobante</th>
+                            <th>Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody id="searchTransactionBody"></tbody>
+                </table>
+            </div>
+
+            <div class="lookup-pagination" style="display: flex; justify-content: space-between; align-items: center;">
+                <button id="btnOpenCancelledModal" class="btn-secondary" style="background: #718096;">Ver Historial Cancelados</button>
+                <div class="pagination-controls">
+                    <button id="btnSearchPagFirst" class="btn-pagination">««</button>
+                    <button id="btnSearchPagPrev" class="btn-pagination">«</button>
+                    <span id="searchPagInfo" style="margin: 0 15px; font-weight: bold;">Página 1</span>
+                    <button id="btnSearchPagNext" class="btn-pagination">»</button>
+                    <button id="btnSearchPagLast" class="btn-pagination">»»</button>
+                </div>
+                <span id="searchTransactionPagInfo" class="pagination-info">Mostrando últimos registros</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- [Modal removed for separation into standalone module] -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <script src="supabase-config.js"></script>
+    <script src="session-manager.js"></script>
+    <script src="pdf-generator.js"></script>
+    <script src="utils-inputs.js"></script>
+    <script src="cobros.js"></script>
+</body>
+
+</html>

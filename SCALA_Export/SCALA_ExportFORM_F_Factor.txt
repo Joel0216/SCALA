@@ -1,0 +1,485 @@
+Version =19
+VersionRequired =19
+Checksum =-506195617
+Begin Form
+    PopUp = NotDefault
+    DefaultView =0
+    GridX =5
+    GridY =5
+    Width =7029
+    ItemSuffix =37
+    Left =900
+    Top =1560
+    Right =8220
+    Bottom =6525
+    RecSrcDt = Begin
+        0x57965e9f37c5e140
+    End
+    GUID = Begin
+        0x2070222d0fd81b4c954e2d2fd9b1d4bd
+    End
+    NameMap = Begin
+        0x0acc0e550000000011dd3cd9d4e8534e848fe9adae60779e00000000b41e6f88 ,
+        0x704fe340000000000000000050006f007200630065006e00740061006a006500 ,
+        0x7300000000000000ab82f7d8b029fb408e755b3daf6acdf3010000003fe99326 ,
+        0xb249e340e898130042910a3046005f0046006100630074006f00720020005300 ,
+        0x7500620020004d00610065007300740072006f0000000000000071c8bf25e376 ,
+        0x9d45bbb8b9452634aa7e000000007c493c8eb64ce340e898130042910a304d00 ,
+        0x610065007300740072006f0073000000000000004ae4d44b40bdae4787b22cd0 ,
+        0x888c28270700000071c8bf25e3769d45bbb8b9452634aa7e4e006f006d006200 ,
+        0x72006500000000000000fc4bf6af473a0941ac1e5044e902a4630700000011dd ,
+        0x3cd9d4e8534e848fe9adae60779e4d00610065007300740072006f0000000000 ,
+        0x000092b9417ac1f3a749a57d70d581d05c0a0700000011dd3cd9d4e8534e848f ,
+        0xe9adae60779e50006f007200630065006e00740061006a006500000000000000 ,
+        0x69ff64aafa5b044ab4f7e8d9c3d7b6570700000011dd3cd9d4e8534e848fe9ad ,
+        0xae60779e46006100630074006f007200000000000000b1f8c7c5e3c6114b8103 ,
+        0x35793ebbe8a20700000011dd3cd9d4e8534e848fe9adae60779e430075007200 ,
+        0x73006f00000000000000c35e10d7351aee409d6aa227ee615e8f0000000017d2 ,
+        0x1c6b704fe340000000000000000043007500720073006f007300000000000000 ,
+        0x000000000000000000000000000000000c000000020000000000000000000000 ,
+        0x000000000000
+    End
+    RecordSource ="Porcentajes"
+    Caption ="FACTORES"
+    OnOpen ="[Event Procedure]"
+    MenuBar ="Barra Main"
+    Begin
+        Begin Label
+            TextAlign =3
+            FontWeight =700
+            BackColor =12632256
+        End
+        Begin Rectangle
+            SpecialEffect =2
+            Width =850
+            Height =850
+        End
+        Begin CommandButton
+            TextFontFamily =2
+            Width =1701
+            Height =283
+        End
+        Begin OptionButton
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin CheckBox
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin OptionGroup
+            Width =1701
+            Height =1701
+        End
+        Begin TextBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin ListBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =1417
+            LabelX =-236
+        End
+        Begin ComboBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin Subform
+            Width =1701
+            Height =1701
+        End
+        Begin FormHeader
+            Height =558
+            BackColor =12632256
+            Name ="EncabezadoDelFormulario1"
+            EventProcPrefix ="EncabezadoDelFormula"
+            GUID = Begin
+                0xdf7cd7c0a4a54444bdfe4fd371276878
+            End
+            Begin
+                Begin Label
+                    BackStyle =0
+                    OverlapFlags =93
+                    TextAlign =1
+                    Left =488
+                    Top =153
+                    Width =1755
+                    Height =405
+                    FontSize =14
+                    ForeColor =8355711
+                    Name ="Texto12"
+                    Caption ="FACTORES"
+                    GUID = Begin
+                        0x5feb490c94c0194d94e359a67587b725
+                    End
+                End
+                Begin Label
+                    BackStyle =0
+                    OverlapFlags =215
+                    TextAlign =1
+                    Left =452
+                    Top =113
+                    Width =1755
+                    Height =405
+                    FontSize =14
+                    ForeColor =16777215
+                    Name ="Texto13"
+                    Caption ="FACTORES"
+                    GUID = Begin
+                        0x65eb4ff4620f104785ef8125966c9415
+                    End
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    TabStop = NotDefault
+                    OverlapFlags =85
+                    Left =4535
+                    Top =113
+                    Width =2154
+                    Height =227
+                    Name ="Campo34"
+                    ControlSource ="=Now()"
+                    GUID = Begin
+                        0x56262d84755872448959881bcc3a58a9
+                    End
+                End
+            End
+        End
+        Begin Section
+            CanGrow = NotDefault
+            Height =4422
+            BackColor =12632256
+            Name ="Detalle0"
+            GUID = Begin
+                0x88cfe6deb6d1114e8b417e7f920f4287
+            End
+            Begin
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =1582
+                    Top =1133
+                    Width =2268
+                    TabIndex =3
+                    Name ="Porcentaje"
+                    ControlSource ="Porcentaje"
+                    Format ="Percent"
+                    GUID = Begin
+                        0x9a1c10838186054cad4673d0188210cf
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =226
+                            Top =1136
+                            Width =1130
+                            Height =240
+                            Name ="Texto19"
+                            Caption ="Porcentaje:"
+                            GUID = Begin
+                                0xec82683f1e0235419c9eed7c6a9f629e
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    DecimalPlaces =2
+                    OverlapFlags =85
+                    Left =1582
+                    Top =793
+                    Width =1920
+                    TabIndex =2
+                    Name ="Factor"
+                    ControlSource ="Factor"
+                    StatusBarText ="Factor para Calculo de Honorarios"
+                    GUID = Begin
+                        0xafe33ee8cd03ac4ea3b62e8f1ab537e1
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =680
+                            Top =798
+                            Width =678
+                            Height =240
+                            Name ="Texto21"
+                            Caption ="Factor:"
+                            GUID = Begin
+                                0xf35e031709d2ff40add32a82852eac5c
+                            End
+                        End
+                    End
+                End
+                Begin ComboBox
+                    OverlapFlags =85
+                    ListWidth =3070
+                    Left =1619
+                    Top =453
+                    Width =3070
+                    TabIndex =1
+                    ColumnInfo ="\"\";\"\";\"10\";\"60\""
+                    GUID = Begin
+                        0x93ca2b3558eb414fb9dee35c965765c1
+                    End
+                    Name ="Curso"
+                    ControlSource ="Curso"
+                    RowSourceType ="Table/Query"
+                    RowSource ="Select [Curso] From [Cursos];"
+                    ColumnWidths ="2820"
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =453
+                            Top =453
+                            Width =930
+                            Height =240
+                            Name ="Texto25"
+                            Caption ="Curso :"
+                            GUID = Begin
+                                0x88bb6007d1237545b1c6f342a2466c49
+                            End
+                        End
+                    End
+                End
+                Begin ComboBox
+                    OverlapFlags =85
+                    ListWidth =3040
+                    Left =1619
+                    Top =113
+                    Width =3070
+                    ColumnInfo ="\"\";\"\";\"10\";\"110\""
+                    GUID = Begin
+                        0x3fd85af980406148ad0c4634d561b91b
+                    End
+                    Name ="Maestro"
+                    ControlSource ="Maestro"
+                    RowSourceType ="Table/Query"
+                    RowSource ="Select [Nombre] From [Maestros];"
+                    ColumnWidths ="2790"
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =453
+                            Top =113
+                            Width =930
+                            Height =240
+                            Name ="Texto27"
+                            Caption ="Maestro :"
+                            GUID = Begin
+                                0x8e58467a0786ec468b0cd84303dff7a8
+                            End
+                        End
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =5556
+                    Top =3741
+                    Width =1125
+                    Height =570
+                    TabIndex =8
+                    ForeColor =255
+                    Name ="B_term_fact"
+                    Caption ="Terminar"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0x453f26201c1c434383b3b5985511cf6b
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =453
+                    Top =3741
+                    Width =1125
+                    Height =570
+                    TabIndex =5
+                    Name ="B_add_factor"
+                    Caption ="Nuevo"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0x22965459cfe55e42bf92c56bf74d8c03
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =2154
+                    Top =3741
+                    Width =1131
+                    Height =576
+                    TabIndex =6
+                    Name ="B_srch_factor"
+                    Caption ="Buscar X Maestro"
+                    OnClick ="M_Varios Catalogos.Buscar Factor"
+                    GUID = Begin
+                        0x6c08d1057612bb41a4e7711244b7909a
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =3855
+                    Top =3741
+                    Width =1125
+                    Height =570
+                    TabIndex =7
+                    Name ="B_del_factor"
+                    Caption ="Borrar"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0x67a0c40b57aab9418f6006bb47285113
+                    End
+                End
+                Begin Subform
+                    OverlapFlags =85
+                    Left =226
+                    Top =1927
+                    Width =6540
+                    Height =1710
+                    TabIndex =4
+                    Name ="Sub Maestros"
+                    SourceObject ="Form.F_Factor Sub Maestro"
+                    LinkChildFields ="Nombre"
+                    LinkMasterFields ="Maestro"
+                    EventProcPrefix ="Sub_Maestros"
+                    GUID = Begin
+                        0xa116496ebf979440b8791dcf59a17769
+                    End
+                End
+                Begin Label
+                    SpecialEffect =1
+                    OldBorderStyle =1
+                    BorderWidth =3
+                    OverlapFlags =85
+                    TextAlign =2
+                    Left =1133
+                    Top =1474
+                    Width =5103
+                    Height =349
+                    FontSize =10
+                    BackColor =8421504
+                    Name ="Texto36"
+                    Caption ="GENERALES DE MAESTROS"
+                    GUID = Begin
+                        0x3cc0bc13f4f5e64ab23698f3c37a9b37
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            Height =0
+            BackColor =12632256
+            Name ="PieDelFormulario2"
+            GUID = Begin
+                0xc40d957a45ccdf43aa392505a6893233
+            End
+        End
+    End
+End
+CodeBehindForm
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database   'Usar orden de base de datos en comparaciones de cadenas
+
+Private Sub B_add_factor_Click()
+On Error GoTo Err_B_add_factor_Click
+
+
+    DoCmd.GoToRecord , , A_NEWREC
+
+Exit_B_add_factor_Click:
+    Exit Sub
+
+Err_B_add_factor_Click:
+    MsgBox Error$
+    Resume Exit_B_add_factor_Click
+    
+End Sub
+
+Private Sub B_del_factor_Click()
+On Error GoTo Err_B_del_factor_Click
+
+
+    DoCmd.DoMenuItem A_FORMBAR, A_EDITMENU, A_SELECTRECORD_V2, , A_MENU_VER20
+    DoCmd.DoMenuItem A_FORMBAR, A_EDITMENU, A_DELETE_V2, , A_MENU_VER20
+
+Exit_B_del_factor_Click:
+    Exit Sub
+
+Err_B_del_factor_Click:
+    MsgBox Error$
+    Resume Exit_B_del_factor_Click
+    
+End Sub
+
+Private Sub B_term_fact_Click()
+On Error GoTo Err_B_term_fact_Click
+
+
+    DoCmd.Close
+
+Exit_B_term_fact_Click:
+    Exit Sub
+
+Err_B_term_fact_Click:
+    MsgBox Error$
+    Resume Exit_B_term_fact_Click
+    
+End Sub
+
+Private Sub Botón30_Click()
+On Error GoTo Err_Botón30_Click
+
+
+    DoCmd.DoMenuItem A_FORMBAR, A_EDITMENU, 10, , A_MENU_VER20
+
+Exit_Botón30_Click:
+    Exit Sub
+
+Err_Botón30_Click:
+    MsgBox Error$
+    Resume Exit_Botón30_Click
+    
+End Sub
+
+Private Sub Form_Open(Cancel As Integer)
+Dim db As Database, FLogin As Form, TUser As Recordset, Forma As Form
+   Set db = CurrentDb()
+   Set Forma = Forms!F_Factor
+   Set FLogin = Forms!login
+   Set TUser = db.OpenRecordset("Usuarios")
+   TUser.Index = "PrimaryKey"
+   TUser.Seek "=", FLogin!UserID
+   If Not TUser.NoMatch Then
+      If IsNull(TUser!A_F) Or TUser!A_F = "N" Then
+         MsgBox "El usuario no tiene privilegios de acceso"
+         DoCmd.CancelEvent
+      Else
+         If TUser!A_F = "C" Then
+            Forma.AllowEditing = False
+            Forma.DefaultEditing = 3
+            [B_add_factor].Enabled = False
+            [B_del_factor].Enabled = False
+         End If
+      End If
+   Else
+      MsgBox "El usuario no tiene clave de acceso registrada"
+      DoCmd.CancelEvent
+   End If
+
+End Sub

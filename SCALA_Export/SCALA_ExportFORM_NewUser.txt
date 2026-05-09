@@ -1,0 +1,274 @@
+Version =19
+VersionRequired =19
+Checksum =2094419177
+Begin Form
+    AllowFilters = NotDefault
+    PopUp = NotDefault
+    RecordSelectors = NotDefault
+    MaxButton = NotDefault
+    MinButton = NotDefault
+    NavigationButtons = NotDefault
+    DefaultView =0
+    ScrollBars =0
+    ViewsAllowed =1
+    BorderStyle =1
+    Width =5616
+    ItemSuffix =22
+    Left =2010
+    Top =2565
+    Right =7380
+    Bottom =4770
+    HelpContextId =1
+    RecSrcDt = Begin
+        0xe374f55422dee140
+    End
+    GUID = Begin
+        0x5fd3bb34a7c4ba4bb69e6e99e25340b2
+    End
+    NameMap = Begin
+        0x0acc0e5500000000000000000000000000000000000000000c00000002000000 ,
+        0x0000000000000000000000000000
+    End
+    Caption ="SAA - Agregando un nuevo usuario"
+    OnOpen ="[Event Procedure]"
+    HelpFile ="pim.hlp"
+    DatasheetFontName ="Helv"
+    Begin
+        Begin Label
+            TextAlign =3
+            Width =15
+            Height =15
+            FontWeight =700
+            BackColor =12632256
+            FontName ="Helv"
+        End
+        Begin TextBox
+            AddColon = NotDefault
+            OldBorderStyle =0
+            LabelAlign =3
+            LabelX =-150
+            FontName ="Helv"
+        End
+        Begin ComboBox
+            AddColon = NotDefault
+            OldBorderStyle =0
+            LabelAlign =3
+            LabelX =-825
+            FontName ="Helv"
+        End
+        Begin FormHeader
+            Height =0
+            BackColor =12632256
+            Name ="EncabezadoDelFormulario0"
+            EventProcPrefix ="EncabezadoDelFormula"
+            GUID = Begin
+                0xc1531bae8b9f3544aebc45e6b1d3c946
+            End
+        End
+        Begin Section
+            Height =2220
+            BackColor =12632256
+            Name ="Detalle1"
+            GUID = Begin
+                0x7bfaf1564fc44645855be434ef68c668
+            End
+            Begin
+                Begin Rectangle
+                    OldBorderStyle =0
+                    OverlapFlags =93
+                    Left =1920
+                    Top =1635
+                    Width =1440
+                    Height =240
+                    BackColor =8421504
+                    Name ="Box21"
+                    GUID = Begin
+                        0xf2bd71e0c9f52445abccd264760eb44f
+                    End
+                End
+                Begin Rectangle
+                    OldBorderStyle =0
+                    OverlapFlags =93
+                    Left =1932
+                    Top =720
+                    Width =1440
+                    Height =240
+                    BackColor =8421504
+                    Name ="UserNameFrame"
+                    GUID = Begin
+                        0xe824f728f4fe4e4d8e9132e57e1fac6f
+                    End
+                End
+                Begin TextBox
+                    OldBorderStyle =1
+                    OverlapFlags =215
+                    Left =1872
+                    Top =660
+                    Name ="UserID"
+                    StatusBarText ="User name"
+                    GUID = Begin
+                        0x7c9d84ad507bb4458fce87c7e1c3162f
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =288
+                            Top =660
+                            Width =1440
+                            Height =240
+                            Name ="LblUserName"
+                            Caption ="Usuario:"
+                            GUID = Begin
+                                0xde14c0f36442a24b946520f09af9febe
+                            End
+                        End
+                    End
+                End
+                Begin Rectangle
+                    OldBorderStyle =0
+                    OverlapFlags =93
+                    Left =1932
+                    Top =1200
+                    Width =1440
+                    Height =240
+                    BackColor =8421504
+                    Name ="PasswordFrame"
+                    GUID = Begin
+                        0x4e0991822be09b4db947ca4927ef38ad
+                    End
+                End
+                Begin CommandButton
+                    Default = NotDefault
+                    OverlapFlags =85
+                    Left =3900
+                    Top =675
+                    TabIndex =3
+                    Name ="BotonOK"
+                    Caption ="OK"
+                    OnClick ="=NuevoUsuarioOK()"
+                    GUID = Begin
+                        0xc627de00b670bf408dd45466b7f34b2c
+                    End
+                End
+                Begin CommandButton
+                    Cancel = NotDefault
+                    OverlapFlags =85
+                    Left =3915
+                    Top =1500
+                    TabIndex =4
+                    Name ="BtnCancel"
+                    Caption ="Cancel"
+                    OnClick ="=closeForm(\"NewUser\")"
+                    GUID = Begin
+                        0x132cc615f650ed46a46b492c25d66871
+                    End
+                End
+                Begin TextBox
+                    OldBorderStyle =1
+                    OverlapFlags =215
+                    Left =1872
+                    Top =1140
+                    TabIndex =1
+                    ForeColor =16777215
+                    Name ="Password"
+                    StatusBarText ="Password"
+                    GUID = Begin
+                        0x6907421a1b125a4c950953c6e19357aa
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =288
+                            Top =1140
+                            Width =1440
+                            Height =240
+                            Name ="LblPassword"
+                            Caption ="Clave:"
+                            GUID = Begin
+                                0x0986476ecad1e94c850253eee1936ae8
+                            End
+                        End
+                    End
+                End
+                Begin Label
+                    OverlapFlags =85
+                    TextAlign =2
+                    Left =285
+                    Top =105
+                    Width =4896
+                    Height =405
+                    Name ="Text15"
+                    Caption ="Proporcione el nombre y la clave del nuevo usuario"
+                    GUID = Begin
+                        0xd9a91b85fd2e3b43aaa41f2ff95dff0a
+                    End
+                End
+                Begin TextBox
+                    OldBorderStyle =1
+                    OverlapFlags =215
+                    Left =1869
+                    Top =1575
+                    TabIndex =2
+                    ForeColor =16777215
+                    Name ="Password1"
+                    StatusBarText ="Password"
+                    GUID = Begin
+                        0x855bbab249880646b2a75b99d5ac35c1
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =285
+                            Top =1575
+                            Width =1440
+                            Height =240
+                            Name ="Text20"
+                            Caption ="Clave:"
+                            GUID = Begin
+                                0xeb5fb145e5557d4b98a107eb615d8357
+                            End
+                        End
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            Height =0
+            BackColor =8421504
+            Name ="PieDelFormulario2"
+            GUID = Begin
+                0x19e12bbfeedaa143b067d61d197cefe4
+            End
+        End
+    End
+End
+CodeBehindForm
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Private Sub Form_Open(Cancel As Integer)
+Dim db As Database, FLogin As Form, TUser As Recordset, Forma As Form
+   Set db = CurrentDb()
+   Set Forma = Forms!NewUser
+   Set FLogin = Forms!login
+   Set TUser = db.OpenRecordset("Usuarios")
+   TUser.Index = "PrimaryKey"
+   TUser.Seek "=", FLogin!UserID
+   If Not TUser.NoMatch Then
+      If IsNull(TUser!S_UN) Or TUser!S_UN = "N" Then
+         MsgBox "El usuario no tiene privilegios de acceso"
+         DoCmd.CancelEvent
+      Else
+         'wu_CenterDoc(Formulario.CVent)
+         If TUser!S_UN = "C" Then
+            Forma.AllowEditing = False
+            Forma.DefaultEditing = 3
+         End If
+      End If
+   Else
+      MsgBox "El usuario no tiene clave de acceso registrada"
+      DoCmd.CancelEvent
+   End If
+
+End Sub

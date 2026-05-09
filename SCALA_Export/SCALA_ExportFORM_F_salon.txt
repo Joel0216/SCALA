@@ -1,0 +1,422 @@
+Version =19
+VersionRequired =19
+Checksum =1726081804
+Begin Form
+    PopUp = NotDefault
+    Modal = NotDefault
+    AutoCenter = NotDefault
+    DefaultView =0
+    GridX =5
+    GridY =5
+    Width =5102
+    ItemSuffix =28
+    Left =3120
+    Top =1590
+    Right =8505
+    Bottom =4515
+    RecSrcDt = Begin
+        0x0b2fe99f37c5e140
+    End
+    GUID = Begin
+        0xf130f1cf20cdaa44b63f1a6f4746a27d
+    End
+    NameMap = Begin
+        0x0acc0e550000000045c290de76ae5b4290f91ea92332416100000000ba5097d0 ,
+        0xb849e3400000000000000000530061006c006f006e0065007300000000000000 ,
+        0xe085e06826b09e4ea943836d402c9f530700000045c290de76ae5b4290f91ea9 ,
+        0x23324161530061006c006f006e00000000000000c8db4058a02f5c4f82543b3e ,
+        0xc95fc23c0700000045c290de76ae5b4290f91ea9233241617500620069006300 ,
+        0x6100630069006f006e000000000000005f20beb2828b9948acf7cb80e514afe2 ,
+        0x0700000045c290de76ae5b4290f91ea9233241614300750070006f0000000000 ,
+        0x0000b15de3c217f77f44bf4a9ec25a3231730700000045c290de76ae5b4290f9 ,
+        0x1ea92332416149006e0073007400720075006d0065006e0074006f0073000000 ,
+        0x00000000000000000000000000000000000000000c0000000200000000000000 ,
+        0x00000000000000000000
+    End
+    RecordSource ="Salones"
+    Caption ="Salones"
+    OnOpen ="[Event Procedure]"
+    MenuBar ="Barra Main"
+    Begin
+        Begin Label
+            TextAlign =3
+            FontWeight =700
+            BackColor =12632256
+        End
+        Begin Rectangle
+            SpecialEffect =2
+            Width =850
+            Height =850
+        End
+        Begin CommandButton
+            TextFontFamily =2
+            Width =1701
+            Height =283
+        End
+        Begin OptionButton
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin CheckBox
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin TextBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin ListBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =1417
+            LabelX =-236
+        End
+        Begin ComboBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin FormHeader
+            Height =558
+            BackColor =12632256
+            Name ="EncabezadoDelFormulario1"
+            EventProcPrefix ="EncabezadoDelFormula"
+            GUID = Begin
+                0x1354be6afe5a7344808589498b0cbd6b
+            End
+            Begin
+                Begin Label
+                    BackStyle =0
+                    OverlapFlags =93
+                    TextAlign =1
+                    Left =488
+                    Top =153
+                    Width =1215
+                    Height =405
+                    FontSize =14
+                    ForeColor =8355711
+                    Name ="Texto12"
+                    Caption ="Salones"
+                    GUID = Begin
+                        0x3146a11826d0644094d49217858cf559
+                    End
+                End
+                Begin Label
+                    BackStyle =0
+                    OverlapFlags =215
+                    TextAlign =1
+                    Left =452
+                    Top =113
+                    Width =1215
+                    Height =405
+                    FontSize =14
+                    ForeColor =16777215
+                    Name ="Texto13"
+                    Caption ="Salones"
+                    GUID = Begin
+                        0x6be9a6612db7de46a9ca63217f3a3d19
+                    End
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    TabStop = NotDefault
+                    OverlapFlags =85
+                    Left =2834
+                    Top =113
+                    Width =2041
+                    Height =227
+                    Name ="Campo22"
+                    ControlSource ="=Now()"
+                    GUID = Begin
+                        0x2047ec0cb2b8a949b5c5c47eb6fd9583
+                    End
+                End
+            End
+        End
+        Begin Section
+            Height =2381
+            BackColor =12632256
+            Name ="Detalle0"
+            GUID = Begin
+                0xdc927368f156b44e914b7758f9b62165
+            End
+            Begin
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =1700
+                    Top =340
+                    Width =855
+                    Name ="Salon"
+                    ControlSource ="Salon"
+                    GUID = Begin
+                        0xf52837353e87d34697cd230934ca620b
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =793
+                            Top =340
+                            Width =678
+                            Height =240
+                            Name ="Texto15"
+                            Caption ="Salón:"
+                            GUID = Begin
+                                0x9d7dc117c7a63247a1cbd57fca5be2d6
+                            End
+                        End
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =113
+                    Top =1814
+                    Width =1125
+                    Height =465
+                    TabIndex =4
+                    Name ="B_add_salon"
+                    Caption ="Nuevo"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0x326ceb6be6189d409a7aaa9ba2365abf
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =1360
+                    Top =1814
+                    Width =1131
+                    Height =456
+                    TabIndex =5
+                    Name ="B_srch_salón"
+                    Caption ="Buscar"
+                    OnClick ="M_salones.Buscar Salon"
+                    GUID = Begin
+                        0xe7e35a0f2dcb14498823047a859fb6c5
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =2607
+                    Top =1814
+                    Width =1125
+                    Height =465
+                    TabIndex =6
+                    Name ="B_del_salón"
+                    Caption ="Borrar"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0x2eb801a774ee874a999b0d2d9b2d67c1
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =3855
+                    Top =1814
+                    Width =1125
+                    Height =465
+                    TabIndex =7
+                    ForeColor =255
+                    Name ="B_term_salón"
+                    Caption ="Terminar"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0xd800d9eab965064bb6dfee484bd58a55
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =1699
+                    Top =680
+                    Width =3171
+                    TabIndex =1
+                    Name ="Ubicacion"
+                    ControlSource ="ubicacion"
+                    GUID = Begin
+                        0x66d4166e374b3b4bb46b41790312cca7
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =446
+                            Top =680
+                            Width =1050
+                            Height =240
+                            Name ="Texto21"
+                            Caption ="Ubicación :"
+                            GUID = Begin
+                                0x4d1bf1b5d1df214b9fa3b12b04fbda71
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =1700
+                    Top =1020
+                    TabIndex =2
+                    Name ="Cupo"
+                    ControlSource ="Cupo"
+                    GUID = Begin
+                        0xe2033532bf04fe46ba6f54d9525438a6
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =534
+                            Top =1020
+                            Width =930
+                            Height =240
+                            Name ="Texto25"
+                            Caption ="Cupo :"
+                            GUID = Begin
+                                0x2e55d7a62dcbed448c1eae916e964fc2
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =1700
+                    Top =1360
+                    Width =3171
+                    TabIndex =3
+                    Name ="Instrumentos"
+                    ControlSource ="Instrumentos"
+                    GUID = Begin
+                        0xdcc288d6c73b1e428bb09a207fa4d5b2
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =114
+                            Top =1360
+                            Width =1350
+                            Height =240
+                            Name ="Texto27"
+                            Caption ="Instrumentos :"
+                            GUID = Begin
+                                0x3934888869787d49a96048c8931b9537
+                            End
+                        End
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            Height =0
+            BackColor =12632256
+            Name ="PieDelFormulario2"
+            GUID = Begin
+                0xdbb8844c9ac1cc409ce80a2605f4fd3d
+            End
+        End
+    End
+End
+CodeBehindForm
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database   'Usar orden de base de datos en comparaciones de cadenas
+
+Private Sub B_add_salon_Click()
+On Error GoTo Err_B_add_salon_Click
+
+
+    DoCmd.GoToRecord , , A_NEWREC
+
+Exit_B_add_salon_Click:
+    Exit Sub
+
+Err_B_add_salon_Click:
+    MsgBox Error$
+    Resume Exit_B_add_salon_Click
+    
+End Sub
+
+Private Sub B_del_salón_Click()
+On Error GoTo Err_B_del_salón_Click
+
+
+    DoCmd.DoMenuItem A_FORMBAR, A_EDITMENU, A_SELECTRECORD_V2, , A_MENU_VER20
+    DoCmd.DoMenuItem A_FORMBAR, A_EDITMENU, A_DELETE_V2, , A_MENU_VER20
+
+Exit_B_del_salón_Click:
+    Exit Sub
+
+Err_B_del_salón_Click:
+    MsgBox Error$
+    Resume Exit_B_del_salón_Click
+    
+End Sub
+
+Private Sub B_term_salón_Click()
+On Error GoTo Err_B_term_salón_Click
+
+
+    DoCmd.Close
+
+Exit_B_term_salón_Click:
+    Exit Sub
+
+Err_B_term_salón_Click:
+    MsgBox Error$
+    Resume Exit_B_term_salón_Click
+    
+End Sub
+
+Private Sub Botón17_Click()
+On Error GoTo Err_Botón17_Click
+
+
+    DoCmd.DoMenuItem A_FORMBAR, A_EDITMENU, 10, , A_MENU_VER20
+
+Exit_Botón17_Click:
+    Exit Sub
+
+Err_Botón17_Click:
+    MsgBox Error$
+    Resume Exit_Botón17_Click
+    
+End Sub
+
+Private Sub Form_Open(Cancel As Integer)
+Dim db As Database, FLogin As Form, TUser As Recordset, Forma As Form
+   Set db = CurrentDb()
+   Set Forma = Forms!F_Salon
+   Set FLogin = Forms!login
+   Set TUser = db.OpenRecordset("Usuarios")
+   TUser.Index = "PrimaryKey"
+   TUser.Seek "=", FLogin!UserID
+   If Not TUser.NoMatch Then
+      If IsNull(TUser!A_S) Or TUser!A_S = "N" Then
+         MsgBox "El usuario no tiene privilegios de acceso"
+         DoCmd.CancelEvent
+      Else
+         If TUser!A_S = "C" Then
+            Forma.AllowEditing = False
+            Forma.DefaultEditing = 3
+            [B_add_salon].Enabled = False
+            [B_del_salón].Enabled = False
+         End If
+      End If
+   Else
+      MsgBox "El usuario no tiene clave de acceso registrada"
+      DoCmd.CancelEvent
+   End If
+
+End Sub

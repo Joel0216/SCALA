@@ -1,0 +1,299 @@
+Version =19
+VersionRequired =19
+Checksum =1498902982
+Begin Form
+    AutoResize = NotDefault
+    PopUp = NotDefault
+    AutoCenter = NotDefault
+    DefaultView =0
+    GridX =5
+    GridY =5
+    Width =5669
+    ItemSuffix =19
+    Left =885
+    Top =1785
+    Right =7485
+    Bottom =5415
+    RecSrcDt = Begin
+        0x8049799f37c5e140
+    End
+    GUID = Begin
+        0x73ff4a758d54934d8226b7272a40ea6a
+    End
+    NameMap = Begin
+        0x0acc0e5500000000529b3dee689b064abbe7e4d4e452be63000000006143c0d0 ,
+        0xb849e340000000000000000047007200750070006f0073002000410072007400 ,
+        0x6900630075006c006f0073000000000000008c0ed9cefc436c4a9b2977bced89 ,
+        0x247f07000000529b3dee689b064abbe7e4d4e452be6347007200750070006f00 ,
+        0x000000000000000000000000000000000000000000000c000000020000000000 ,
+        0x000000000000000000000000
+    End
+    RecordSource ="Grupos Articulos"
+    Caption ="Grupos de Artículos"
+    OnOpen ="[Event Procedure]"
+    MenuBar ="Barra Main"
+    Begin
+        Begin Label
+            TextAlign =3
+            FontWeight =700
+            BackColor =12632256
+        End
+        Begin Rectangle
+            SpecialEffect =2
+            Width =850
+            Height =850
+        End
+        Begin CommandButton
+            TextFontFamily =2
+            Width =1701
+            Height =283
+        End
+        Begin OptionButton
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin CheckBox
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin TextBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin ListBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =1417
+            LabelX =-236
+        End
+        Begin ComboBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin FormHeader
+            Height =558
+            BackColor =12632256
+            Name ="EncabezadoDelFormulario1"
+            EventProcPrefix ="EncabezadoDelFormula"
+            GUID = Begin
+                0x16686c568907ec4b83ae9c880663707c
+            End
+            Begin
+                Begin Label
+                    BackStyle =0
+                    OverlapFlags =93
+                    TextAlign =1
+                    Left =488
+                    Top =153
+                    Width =2865
+                    Height =405
+                    FontSize =14
+                    ForeColor =8355711
+                    Name ="Texto12"
+                    Caption ="Grupos de Artículos"
+                    GUID = Begin
+                        0x302c4207b005d04bb03d220423039ab7
+                    End
+                End
+                Begin Label
+                    BackStyle =0
+                    OverlapFlags =215
+                    TextAlign =1
+                    Left =452
+                    Top =113
+                    Width =2865
+                    Height =405
+                    FontSize =14
+                    ForeColor =16777215
+                    Name ="Texto13"
+                    Caption ="Grupos de Artículos"
+                    GUID = Begin
+                        0xc2b1cd398e55cd43b61603d619aee271
+                    End
+                End
+            End
+        End
+        Begin Section
+            Height =1247
+            BackColor =12632256
+            Name ="Detalle0"
+            GUID = Begin
+                0x69260c63bfde8546b14ac28b1584a351
+            End
+            Begin
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =1471
+                    Top =113
+                    Width =3405
+                    ColumnWidth =1695
+                    Name ="Grupo"
+                    ControlSource ="Grupo"
+                    GUID = Begin
+                        0xb3b7852fcbd286449d975708898e0b71
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =680
+                            Top =113
+                            Width =678
+                            Height =240
+                            Name ="Texto15"
+                            Caption ="Grupo:"
+                            GUID = Begin
+                                0x232b1ca040c7b544a9e9ca25d446f2b5
+                            End
+                        End
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =3968
+                    Top =566
+                    Width =1125
+                    Height =465
+                    TabIndex =1
+                    ForeColor =255
+                    Name ="B_term_grupo_articulo"
+                    Caption ="Terminar"
+                    OnClick ="[Event Procedure]"
+                    EventProcPrefix ="B_term_grupo_articul"
+                    GUID = Begin
+                        0x28fc68dffe0a914ebdf5b6c929e4e528
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =566
+                    Top =566
+                    Width =1125
+                    Height =465
+                    TabIndex =2
+                    Name ="B_add_grupo_articulo"
+                    Caption ="Nuevo"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0x56090d06b5a39040ad545958f5083be6
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =2267
+                    Top =566
+                    Width =1140
+                    Height =465
+                    TabIndex =3
+                    Name ="B_del_grupo_articulo"
+                    Caption ="Borrar"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0x76e6fd9018891844a0a73990a1fe2283
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            Height =0
+            BackColor =12632256
+            Name ="PieDelFormulario2"
+            GUID = Begin
+                0xc5c5be299bc65749bc5c4e634ec528fb
+            End
+        End
+    End
+End
+CodeBehindForm
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database   'Usar orden de base de datos en comparaciones de cadenas
+
+Private Sub B_add_grupo_articulo_Click()
+On Error GoTo Err_B_add_grupo_articulo_Click
+
+
+    DoCmd.GoToRecord , , A_NEWREC
+
+Exit_B_add_grupo_articulo_Click:
+    Exit Sub
+
+Err_B_add_grupo_articulo_Click:
+    MsgBox Error$
+    Resume Exit_B_add_grupo_articulo_Click
+    
+End Sub
+
+Private Sub B_del_grupo_articulo_Click()
+On Error GoTo Err_B_del_grupo_articulo_Click
+
+
+    DoCmd.DoMenuItem A_FORMBAR, A_EDITMENU, A_SELECTRECORD_V2, , A_MENU_VER20
+    DoCmd.DoMenuItem A_FORMBAR, A_EDITMENU, A_DELETE_V2, , A_MENU_VER20
+
+Exit_B_del_grupo_articulo_Click:
+    Exit Sub
+
+Err_B_del_grupo_articulo_Click:
+    MsgBox Error$
+    Resume Exit_B_del_grupo_articulo_Click
+    
+End Sub
+
+Private Sub B_term_grupo_articul_Click()
+On Error GoTo Err_B_term_grupo_articul_Click
+
+
+    DoCmd.Close
+
+Exit_B_term_grupo_articul_Click:
+    Exit Sub
+
+Err_B_term_grupo_articul_Click:
+    MsgBox Error$
+    Resume Exit_B_term_grupo_articul_Click
+    
+End Sub
+
+Private Sub Form_Open(Cancel As Integer)
+Dim db As Database, FLogin As Form, TUser As Recordset, Forma As Form
+   Set db = CurrentDb()
+   Set Forma = Forms![F_Grupos Articulo]
+   Set FLogin = Forms!login
+   Set TUser = db.OpenRecordset("Usuarios")
+   TUser.Index = "PrimaryKey"
+   TUser.Seek "=", FLogin!UserID
+   If Not TUser.NoMatch Then
+      If IsNull(TUser!A_GA) Or TUser!A_GA = "N" Then
+         MsgBox "El usuario no tiene privilegios de acceso"
+         DoCmd.CancelEvent
+      Else
+         If TUser!A_GA = "C" Then
+            Forma.AllowEditing = False
+            Forma.DefaultEditing = 3
+            [B_del_grupo_articulo].Enabled = False
+            [B_add_grupo_articulo].Enabled = False
+         End If
+      End If
+   Else
+      MsgBox "El usuario no tiene clave de acceso registrada"
+      DoCmd.CancelEvent
+   End If
+
+End Sub

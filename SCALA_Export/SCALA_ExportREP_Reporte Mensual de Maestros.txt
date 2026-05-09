@@ -1,0 +1,1364 @@
+Version =19
+VersionRequired =19
+Checksum =-1196003924
+Begin Report
+    LayoutForPrint = NotDefault
+    GridX =64
+    GridY =64
+    Width =13606
+    ItemSuffix =165
+    Left =390
+    Top =120
+    Right =11535
+    Bottom =7050
+    RecSrcDt = Begin
+        0x40bcd575f033e240
+    End
+    GUID = Begin
+        0xe9e0689590a8c54b930e6b36862763f8
+    End
+    NameMap = Begin
+        0x0acc0e5500000000fd8ae99be18d6c4cb4c4526f1c85c9a200000000435d4231 ,
+        0x774ce340000000000000000051005200650070004d00650073004d0061006500 ,
+        0x7300740072006f00000000000000000000000000000000000000000000000700 ,
+        0x0000fd8ae99be18d6c4cb4c4526f1c85c9a24d00650073002000640065002000 ,
+        0x500072006f006300650073006f00000000000000dbd326710364184da7d3c0f2 ,
+        0x5936316507000000fd8ae99be18d6c4cb4c4526f1c85c9a24d00610065007300 ,
+        0x740072006f00000000000000f73342dc12b3a147a3dd593824486f0f07000000 ,
+        0xfd8ae99be18d6c4cb4c4526f1c85c9a24400690061000000000000001c53cd19 ,
+        0x48acc64cab30f8a9927d462b07000000fd8ae99be18d6c4cb4c4526f1c85c9a2 ,
+        0x4f007200640065006e0000000000000012a7549e359c804ca82838aed9f53d78 ,
+        0x07000000fd8ae99be18d6c4cb4c4526f1c85c9a248006f007200610020006500 ,
+        0x6e007400720061006400610000000000000067936255d8439441abed30fbdb73 ,
+        0xf15307000000fd8ae99be18d6c4cb4c4526f1c85c9a2530061006c006f006e00 ,
+        0x000000000000bfa14471afe63d448e1484a070b1727b07000000fd8ae99be18d ,
+        0x6c4cb4c4526f1c85c9a243007500720073006f00000000000000a480ff672397 ,
+        0x224b88bd6e80c556be5107000000fd8ae99be18d6c4cb4c4526f1c85c9a24c00 ,
+        0x65006300630069006f006e0000000000000027efdf64ea4b6f4f8389f2d97376 ,
+        0xb7e407000000fd8ae99be18d6c4cb4c4526f1c85c9a249006e00690063006900 ,
+        0x6f00000000000000401c828c4224a04291e279d5dc244f0a07000000fd8ae99b ,
+        0xe18d6c4cb4c4526f1c85c9a241006c0075006d006e006f007300000000000000 ,
+        0x000000000000000000000000000000000c000000020000000000000000000000 ,
+        0x000000000000
+    End
+    RecordSource ="QRepMesMaestro"
+    PrtMip = Begin
+        0x550300008c050000550300006801000000000000263500005901000001000000 ,
+        0x010000006501000000000000a10700000100000000000000
+    End
+    PrtDevMode = Begin
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x010400059c00340243ef800502000100ea0a6f08640001000800780002000100 ,
+        0x9000010000004361727461000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000010000000000000001000000 ,
+        0x0200000001000000ffffffff0000000000000000000000000000000044494e55 ,
+        0x2200000034020000825a07f20000000000000000000000000000000000000000 ,
+        0x0000000000000000080000000100000000000100070000000100000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x00000000000000000000000000000000
+    End
+    PrtDevNames = Begin
+        0x0800120021000100000000000000000000000000000000000000000000000000 ,
+        0x00555342303031003031000000000000000000000000000000
+    End
+    Begin
+        Begin Label
+            TextAlign =3
+            TextFontFamily =18
+            FontSize =10
+            FontWeight =700
+            FontName ="Times New Roman"
+        End
+        Begin Rectangle
+            Width =850
+            Height =850
+        End
+        Begin Line
+            Width =1701
+        End
+        Begin BoundObjectFrame
+            OldBorderStyle =0
+            LabelAlign =3
+            Width =4536
+            Height =2835
+            LabelX =-168
+        End
+        Begin TextBox
+            OldBorderStyle =0
+            LabelAlign =3
+            TextFontFamily =18
+            Width =1701
+            Height =285
+            LabelX =-168
+            FontSize =10
+            FontName ="Times New Roman"
+        End
+        Begin PageBreak
+            Width =283
+        End
+        Begin BreakLevel
+            GroupHeader = NotDefault
+            GroupFooter = NotDefault
+            ControlSource ="Maestro"
+        End
+        Begin BreakLevel
+            GroupHeader = NotDefault
+            ControlSource ="Orden"
+        End
+        Begin BreakLevel
+            ControlSource ="Hora entrada"
+        End
+        Begin FormHeader
+            KeepTogether = NotDefault
+            Height =0
+            Name ="EncabezadoDelInforme0"
+            EventProcPrefix ="EncabezadoDelInforme"
+            GUID = Begin
+                0x66e2fb2fa4844c40a8e9b92db6af6a71
+            End
+        End
+        Begin PageHeader
+            Height =1452
+            Name ="EncabezadoDePágina1"
+            GUID = Begin
+                0x94b5f026aeaa4e4a822ddd598dce5edb
+            End
+            Begin
+                Begin Label
+                    OverlapFlags =81
+                    TextAlign =2
+                    Left =3686
+                    Top =284
+                    Width =6237
+                    Height =375
+                    FontSize =14
+                    Name ="Text20"
+                    Caption ="REPORTE MENSUAL DE MAESTROS"
+                    GUID = Begin
+                        0x034e1c51dc13a94e86305208b17ab223
+                    End
+                End
+                Begin Line
+                    OverlapFlags =81
+                    Left =567
+                    Top =57
+                    Width =12474
+                    Name ="Line21"
+                    GUID = Begin
+                        0xe26637bec3337b46a8e1c33e12580392
+                    End
+                End
+                Begin Line
+                    OverlapFlags =81
+                    Left =567
+                    Top =113
+                    Width =12474
+                    Name ="Line22"
+                    GUID = Begin
+                        0x297c878c7967f947b7b0ef06821185eb
+                    End
+                End
+                Begin Line
+                    OverlapFlags =81
+                    Left =567
+                    Top =737
+                    Width =12474
+                    Name ="Line24"
+                    GUID = Begin
+                        0x331f9f98eb6d394e9ad689b84ab71dc9
+                    End
+                End
+                Begin Line
+                    OverlapFlags =81
+                    Left =567
+                    Top =794
+                    Width =12474
+                    Name ="Line23"
+                    GUID = Begin
+                        0x36fc79276a934e458806272c67c0203f
+                    End
+                End
+                Begin Label
+                    OverlapFlags =81
+                    Left =301
+                    Top =851
+                    Width =624
+                    Height =284
+                    Name ="Text29"
+                    Caption ="HORA"
+                    GUID = Begin
+                        0x6d20e857775e9348a0a08fa62a3c9a21
+                    End
+                End
+                Begin Label
+                    OverlapFlags =81
+                    TextAlign =2
+                    Left =1134
+                    Top =851
+                    Width =851
+                    Height =285
+                    Name ="Text30"
+                    Caption ="SALON"
+                    GUID = Begin
+                        0x7f95a18eeb907c458f8ce052445c1447
+                    End
+                End
+                Begin Label
+                    OverlapFlags =81
+                    TextAlign =2
+                    Left =2155
+                    Top =851
+                    Width =3402
+                    Height =284
+                    Name ="Text31"
+                    Caption ="CURSO Y PASO ACTUAL"
+                    GUID = Begin
+                        0xa7a43907e6b9da47913689c9ac725d27
+                    End
+                End
+                Begin Label
+                    OverlapFlags =81
+                    TextAlign =2
+                    Left =5670
+                    Top =851
+                    Width =1134
+                    Height =285
+                    Name ="Text33"
+                    Caption ="Fecha Inicio"
+                    GUID = Begin
+                        0xe4ccac735826ee46abb02800c076dfda
+                    End
+                End
+                Begin Label
+                    OverlapFlags =81
+                    TextAlign =2
+                    Left =6917
+                    Top =851
+                    Width =1134
+                    Height =285
+                    Name ="Text34"
+                    Caption ="Sig. Mes"
+                    GUID = Begin
+                        0x4a65a20329f2eb4ba2db8115a41a852f
+                    End
+                End
+                Begin Label
+                    OverlapFlags =81
+                    TextAlign =2
+                    Left =8165
+                    Top =851
+                    Width =1134
+                    Height =285
+                    Name ="Text35"
+                    Caption ="Unidad"
+                    GUID = Begin
+                        0xf570170b72204c43922cfd66073c78f6
+                    End
+                End
+                Begin Label
+                    OverlapFlags =81
+                    TextAlign =2
+                    Left =9412
+                    Top =851
+                    Width =1134
+                    Height =285
+                    Name ="Text36"
+                    Caption ="Sig. Mes"
+                    GUID = Begin
+                        0x41096681c6b7d24882dc0a974fde8e8f
+                    End
+                End
+                Begin Label
+                    OverlapFlags =81
+                    TextAlign =2
+                    Left =10665
+                    Top =851
+                    Width =1701
+                    Height =285
+                    Name ="Text37"
+                    Caption ="NO. DE ALUMNOS"
+                    GUID = Begin
+                        0xb22b0dc34f65ca47a219235156a68c33
+                    End
+                End
+                Begin Label
+                    OverlapFlags =81
+                    TextAlign =2
+                    Left =12474
+                    Top =851
+                    Width =1021
+                    Height =284
+                    Name ="Text38"
+                    Caption ="BAJAS"
+                    GUID = Begin
+                        0x54b53d1ffd6be0409c72cd2c4806fe97
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =81
+                    Left =1247
+                    Top =170
+                    Width =2268
+                    Height =284
+                    Name ="Field39"
+                    ControlSource ="Mes de Proceso"
+                    GUID = Begin
+                        0x49dbb6b3d7162342a96d10584297066a
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =81
+                            TextAlign =1
+                            Left =284
+                            Top =170
+                            Width =907
+                            Height =285
+                            Name ="Text40"
+                            Caption ="MES DE :"
+                            GUID = Begin
+                                0xd1baf82d94f1e148b93248baaaa0a7f3
+                            End
+                        End
+                    End
+                End
+                Begin Label
+                    OverlapFlags =83
+                    TextAlign =2
+                    Left =5812
+                    Top =1134
+                    Width =851
+                    Height =285
+                    Name ="Text41"
+                    Caption ="del Paso"
+                    GUID = Begin
+                        0xf5f4d2b6aa28b84195d62bc97efb80b7
+                    End
+                End
+                Begin Label
+                    OverlapFlags =83
+                    TextAlign =2
+                    Left =6804
+                    Top =1134
+                    Width =1361
+                    Height =285
+                    Name ="Text43"
+                    Caption ="Cambian al paso"
+                    GUID = Begin
+                        0x48ee13a42a488849925a2754d4f1a48b
+                    End
+                End
+                Begin Label
+                    OverlapFlags =83
+                    TextAlign =2
+                    Left =8307
+                    Top =1134
+                    Width =851
+                    Height =285
+                    Name ="Text44"
+                    Caption ="Actual"
+                    GUID = Begin
+                        0x41264dc81b220e44a773fa481480063a
+                    End
+                End
+                Begin Label
+                    OverlapFlags =83
+                    TextAlign =2
+                    Left =9412
+                    Top =1134
+                    Width =1134
+                    Height =285
+                    Name ="Text46"
+                    Caption ="Cambia Unid."
+                    GUID = Begin
+                        0xa3b2b46309f7d74791d646a5f45471d9
+                    End
+                End
+                Begin Label
+                    OverlapFlags =83
+                    TextAlign =2
+                    Left =10660
+                    Top =1134
+                    Width =851
+                    Height =285
+                    Name ="Text48"
+                    Caption ="En Lista"
+                    GUID = Begin
+                        0xbd8dbbf62267e34daa4c2a9198be1385
+                    End
+                End
+                Begin Label
+                    OverlapFlags =83
+                    Left =11567
+                    Top =1134
+                    Width =766
+                    Height =285
+                    Name ="Text50"
+                    Caption ="Reales"
+                    GUID = Begin
+                        0x74138f08ada8aa4088f59df15fe67d39
+                    End
+                End
+            End
+        End
+        Begin BreakHeader
+            KeepTogether = NotDefault
+            Height =285
+            Name ="EncabezadoDelGrupo2"
+            GUID = Begin
+                0x76c242aa04c61e4781dd46987870c5b2
+            End
+            Begin
+                Begin TextBox
+                    FontUnderline = NotDefault
+                    OverlapFlags =81
+                    Left =1416
+                    Width =4536
+                    ColumnWidth =3060
+                    FontWeight =700
+                    Name ="Maestro"
+                    ControlSource ="Maestro"
+                    StatusBarText ="Nombre del maestro"
+                    GUID = Begin
+                        0x7b9fa567b54eca4996f86f626ae05647
+                    End
+                    Begin
+                        Begin Label
+                            FontUnderline = NotDefault
+                            OverlapFlags =81
+                            TextAlign =1
+                            Left =168
+                            Width =1134
+                            Height =285
+                            Name ="Text5"
+                            Caption ="MAESTRO"
+                            GUID = Begin
+                                0x7c6b4000e33c6e4ea1d386b87448e1eb
+                            End
+                        End
+                    End
+                End
+            End
+        End
+        Begin BreakHeader
+            KeepTogether = NotDefault
+            Height =301
+            BreakLevel =1
+            Name ="EncabezadoDelGrupo3"
+            GUID = Begin
+                0x7a4bcaa5a0bb4147985a7b5a2ca10a4e
+            End
+            Begin
+                Begin TextBox
+                    OverlapFlags =81
+                    Left =1134
+                    Width =2268
+                    Name ="Dia"
+                    ControlSource ="Dia"
+                    StatusBarText ="Dia en que se imparte la clase"
+                    GUID = Begin
+                        0xffac21ed737b7a43948248d351455d17
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =81
+                            TextAlign =1
+                            Left =284
+                            Width =567
+                            Height =285
+                            Name ="Text7"
+                            Caption ="DIA :"
+                            GUID = Begin
+                                0x4ec132bac50961469437b76e4b877a71
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =81
+                    Width =0
+                    Height =0
+                    TabIndex =1
+                    Name ="Field162"
+                    ControlSource ="Orden"
+                    GUID = Begin
+                        0x01a4199ce9a640448ee84bcf835da754
+                    End
+                End
+            End
+        End
+        Begin Section
+            KeepTogether = NotDefault
+            Height =345
+            Name ="Detalle4"
+            GUID = Begin
+                0x53bf26ec9211894aa51184394260d471
+            End
+            Begin
+                Begin TextBox
+                    OverlapFlags =81
+                    Left =284
+                    Top =57
+                    Width =567
+                    Height =227
+                    Name ="Hora entrada"
+                    ControlSource ="Hora entrada"
+                    Format ="Short Time"
+                    StatusBarText ="Hora de entrada"
+                    EventProcPrefix ="Hora_entrada"
+                    GUID = Begin
+                        0x574e8a7b89dcdb49a304737d80c09f94
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =81
+                    TextAlign =2
+                    Left =1134
+                    Top =57
+                    Width =851
+                    Height =227
+                    TabIndex =1
+                    Name ="Salon"
+                    ControlSource ="Salon"
+                    StatusBarText ="Salon de clase"
+                    GUID = Begin
+                        0xbb739ecc22636749b3afe479cde1eef9
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =81
+                    Left =2155
+                    Top =57
+                    Width =3402
+                    Height =227
+                    TabIndex =2
+                    Name ="Curso"
+                    ControlSource ="Curso"
+                    StatusBarText ="Curso impartido en el grupo"
+                    GUID = Begin
+                        0x27b9cbf825293b47957d88fb7cf3668b
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =81
+                    TextAlign =2
+                    Left =8165
+                    Top =57
+                    Width =1134
+                    Height =227
+                    TabIndex =3
+                    Name ="Leccion"
+                    ControlSource ="Leccion"
+                    GUID = Begin
+                        0xce3fc714ea42d3488bfd88a8110c6d18
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =81
+                    Left =5670
+                    Top =57
+                    Width =1134
+                    Height =227
+                    TabIndex =4
+                    Name ="Inicio"
+                    ControlSource ="Inicio"
+                    Format ="Short Date"
+                    StatusBarText ="Fecha de inicio del nivel actual"
+                    GUID = Begin
+                        0x31a9ddd5d893fa40915300f34a61c4ee
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =81
+                    TextAlign =2
+                    Left =10660
+                    Top =57
+                    Width =851
+                    Height =227
+                    TabIndex =5
+                    Name ="Alumnos"
+                    ControlSource ="Alumnos"
+                    StatusBarText ="Numero de alumnos en el grupo"
+                    DefaultValue ="\"0\""
+                    GUID = Begin
+                        0x1b82f2f12ecfeb488d3fc7752b30523e
+                    End
+                End
+                Begin Line
+                    OverlapFlags =83
+                    Left =284
+                    Top =284
+                    Width =13154
+                    Name ="Line90"
+                    GUID = Begin
+                        0x5b59d2cb3acb18459aa4fb1606e1f776
+                    End
+                End
+                Begin Line
+                    OverlapFlags =83
+                    Left =13438
+                    Top =57
+                    Width =0
+                    Height =227
+                    Name ="Line91"
+                    GUID = Begin
+                        0x4dcdb6709fa408438f81a42efb7924b5
+                    End
+                End
+                Begin Line
+                    OverlapFlags =83
+                    Left =284
+                    Top =57
+                    Width =0
+                    Height =227
+                    Name ="Line92"
+                    GUID = Begin
+                        0xb749cabe8d89bb488e83c152dd238139
+                    End
+                End
+                Begin Line
+                    OverlapFlags =83
+                    Left =1021
+                    Top =57
+                    Width =0
+                    Height =227
+                    Name ="Line93"
+                    GUID = Begin
+                        0x06771ac63971d240922fc53650d2ed1d
+                    End
+                End
+                Begin Line
+                    OverlapFlags =83
+                    Left =2041
+                    Top =57
+                    Width =0
+                    Height =227
+                    Name ="Line94"
+                    GUID = Begin
+                        0x490642a908315e40bf7cad644367dedd
+                    End
+                End
+                Begin Line
+                    OverlapFlags =83
+                    Left =5613
+                    Top =57
+                    Width =0
+                    Height =227
+                    Name ="Line95"
+                    GUID = Begin
+                        0x252b5078a0a1a64e8cea616ec124fd6a
+                    End
+                End
+                Begin Line
+                    OverlapFlags =83
+                    Left =6917
+                    Top =57
+                    Width =0
+                    Height =227
+                    Name ="Line96"
+                    GUID = Begin
+                        0x0066ea150f9ae04e8043673578e1fc02
+                    End
+                End
+                Begin Line
+                    OverlapFlags =83
+                    Left =8051
+                    Top =57
+                    Width =0
+                    Height =227
+                    Name ="Line97"
+                    GUID = Begin
+                        0xe7251c34492fd44e9a8b96b3875302d0
+                    End
+                End
+                Begin Line
+                    OverlapFlags =83
+                    Left =9356
+                    Top =57
+                    Width =0
+                    Height =227
+                    Name ="Line98"
+                    GUID = Begin
+                        0xe4e94582540fab4fb598aa6028750bb2
+                    End
+                End
+                Begin Line
+                    OverlapFlags =83
+                    Left =10603
+                    Top =57
+                    Width =0
+                    Height =227
+                    Name ="Line99"
+                    GUID = Begin
+                        0x9e5ca5e3ee2e874aab5c070782a5c3ce
+                    End
+                End
+                Begin Line
+                    OverlapFlags =83
+                    Left =11567
+                    Top =57
+                    Width =0
+                    Height =227
+                    Name ="Line100"
+                    GUID = Begin
+                        0x23531f3ea699324e895c4fb3aac2338c
+                    End
+                End
+                Begin Line
+                    OverlapFlags =83
+                    Left =12474
+                    Top =57
+                    Width =0
+                    Height =227
+                    Name ="Line101"
+                    GUID = Begin
+                        0x018a49f02a6b214ab453660eab4b7674
+                    End
+                End
+                Begin Line
+                    OverlapFlags =83
+                    Left =284
+                    Top =57
+                    Width =13154
+                    Name ="Line102"
+                    GUID = Begin
+                        0xe91e1b0505e2e548ac1edbc7e1cd6173
+                    End
+                End
+            End
+        End
+        Begin BreakFooter
+            KeepTogether = NotDefault
+            Height =5368
+            Name ="PieDelGrupo5"
+            GUID = Begin
+                0xef69d8d299a3284cafadbdaa6cfe4b53
+            End
+            Begin
+                Begin Label
+                    OverlapFlags =81
+                    TextAlign =1
+                    Left =284
+                    Top =57
+                    Width =5940
+                    Height =285
+                    FontSize =8
+                    Name ="Text53"
+                    Caption ="RELACION DE ALUMNOS QUE NO APARECEN EN SU LISTA :"
+                    GUID = Begin
+                        0xc1885e7392c2e74085f8517b827684c0
+                    End
+                End
+                Begin PageBreak
+                    Top =5252
+                    Name ="PageBreak87"
+                    GUID = Begin
+                        0x1338b2539e5b0a46b75bfc63a67c770b
+                    End
+                End
+                Begin Rectangle
+                    OverlapFlags =211
+                    Left =284
+                    Top =284
+                    Width =6237
+                    Height =1701
+                    Name ="Box103"
+                    GUID = Begin
+                        0x2881b790c3c0e8448dac5efed253f881
+                    End
+                End
+                Begin Line
+                    OverlapFlags =83
+                    Left =284
+                    Top =567
+                    Width =6237
+                    Name ="Line104"
+                    GUID = Begin
+                        0x437533174f75c548b410bbe62d4f8bf2
+                    End
+                End
+                Begin Line
+                    OverlapFlags =83
+                    Left =284
+                    Top =851
+                    Width =6237
+                    Name ="Line105"
+                    GUID = Begin
+                        0xad61b094d00f90498ae9b61a70be1287
+                    End
+                End
+                Begin Line
+                    OverlapFlags =83
+                    Left =284
+                    Top =1134
+                    Width =6237
+                    Name ="Line106"
+                    GUID = Begin
+                        0xc0a4648c5e07054393929612fb631345
+                    End
+                End
+                Begin Line
+                    OverlapFlags =83
+                    Left =284
+                    Top =1418
+                    Width =6237
+                    Name ="Line107"
+                    GUID = Begin
+                        0xdab6bce68b7a4446b803825b0de74318
+                    End
+                End
+                Begin Line
+                    OverlapFlags =83
+                    Left =284
+                    Top =1701
+                    Width =6237
+                    Name ="Line108"
+                    GUID = Begin
+                        0xe93b5e0dd4cdd84d895f730dfa1cd3c9
+                    End
+                End
+                Begin Line
+                    OverlapFlags =83
+                    Left =284
+                    Top =1985
+                    Width =6237
+                    Name ="Line109"
+                    GUID = Begin
+                        0x9f867bb0c163d4439195137ce1f5db8a
+                    End
+                End
+                Begin Line
+                    OverlapFlags =83
+                    Left =4253
+                    Top =284
+                    Width =0
+                    Height =1701
+                    Name ="Line114"
+                    GUID = Begin
+                        0x22504ee69adc2243b594ebb63cf8b27b
+                    End
+                End
+                Begin Line
+                    OverlapFlags =83
+                    Left =5387
+                    Top =284
+                    Width =0
+                    Height =1701
+                    Name ="Line115"
+                    GUID = Begin
+                        0xe858d30135ec454398b449487cc32b5f
+                    End
+                End
+                Begin Label
+                    OverlapFlags =211
+                    Left =1701
+                    Top =313
+                    Width =851
+                    Height =227
+                    Name ="Text116"
+                    Caption ="Nombre"
+                    GUID = Begin
+                        0x250e37cfbf38fb40bface63008bc7bd7
+                    End
+                End
+                Begin Label
+                    OverlapFlags =211
+                    Left =4309
+                    Top =313
+                    Width =964
+                    Height =227
+                    Name ="Text117"
+                    Caption ="Credencial"
+                    GUID = Begin
+                        0xe3f03d7f79406c43b235d328855e8220
+                    End
+                End
+                Begin Label
+                    OverlapFlags =211
+                    Left =5613
+                    Top =313
+                    Width =624
+                    Height =227
+                    Name ="Text118"
+                    Caption ="Grupo"
+                    GUID = Begin
+                        0x259476b35606f24ca1235dc7ce0a9b35
+                    End
+                End
+                Begin Rectangle
+                    OverlapFlags =81
+                    Left =284
+                    Top =2268
+                    Width =6237
+                    Height =1701
+                    Name ="Box122"
+                    GUID = Begin
+                        0x8e1257300c52e94a8ba0f9242cfe7e70
+                    End
+                End
+                Begin Line
+                    OverlapFlags =83
+                    Left =284
+                    Top =2552
+                    Width =6237
+                    Name ="Line124"
+                    GUID = Begin
+                        0x00036bc728f066459d00c9b2bf18b8a7
+                    End
+                End
+                Begin Line
+                    OverlapFlags =83
+                    Left =284
+                    Top =2835
+                    Width =6237
+                    Name ="Line125"
+                    GUID = Begin
+                        0x8ed52b7568f8d94ab6ed1b65165530bc
+                    End
+                End
+                Begin Line
+                    OverlapFlags =83
+                    Left =284
+                    Top =3118
+                    Width =6237
+                    Name ="Line126"
+                    GUID = Begin
+                        0xe8af566161137f48968584b0be0ba346
+                    End
+                End
+                Begin Line
+                    OverlapFlags =83
+                    Left =284
+                    Top =3402
+                    Width =6237
+                    Name ="Line127"
+                    GUID = Begin
+                        0x1233c7d55567954c9440809e076ecc8b
+                    End
+                End
+                Begin Line
+                    OverlapFlags =83
+                    Left =284
+                    Top =3686
+                    Width =6237
+                    Name ="Line128"
+                    GUID = Begin
+                        0x4c37faf8ef621242a44d65291c076e14
+                    End
+                End
+                Begin Line
+                    OverlapFlags =83
+                    Left =1418
+                    Top =2268
+                    Width =0
+                    Height =1701
+                    Name ="Line129"
+                    GUID = Begin
+                        0x6c953b65d3511545bdda89a09b2ea760
+                    End
+                End
+                Begin Line
+                    OverlapFlags =83
+                    Left =2835
+                    Top =2268
+                    Width =0
+                    Height =1701
+                    Name ="Line130"
+                    GUID = Begin
+                        0x4bea8dbbe3d9454f89c2fdd93a5bde43
+                    End
+                End
+                Begin Line
+                    OverlapFlags =83
+                    Left =4253
+                    Top =2268
+                    Width =0
+                    Height =1701
+                    Name ="Line131"
+                    GUID = Begin
+                        0xaee00c04e6045a4db9098115e19c0954
+                    End
+                End
+                Begin Label
+                    OverlapFlags =211
+                    Left =567
+                    Top =2297
+                    Width =567
+                    Height =227
+                    Name ="Text132"
+                    Caption ="Salón"
+                    GUID = Begin
+                        0x4c1d00524f41534392f8d32d9025a193
+                    End
+                End
+                Begin Label
+                    OverlapFlags =211
+                    Left =1814
+                    Top =2297
+                    Width =737
+                    Height =227
+                    Name ="Text133"
+                    Caption ="Modelo"
+                    GUID = Begin
+                        0xe002ce22b0b58043ad8b0c59b7b5193d
+                    End
+                End
+                Begin Label
+                    OverlapFlags =211
+                    Left =3289
+                    Top =2297
+                    Width =567
+                    Height =227
+                    Name ="Text134"
+                    Caption ="Serie"
+                    GUID = Begin
+                        0xd218bc11cc88ca48a29c345f33b5cc6d
+                    End
+                End
+                Begin Label
+                    OverlapFlags =211
+                    Left =4536
+                    Top =2297
+                    Width =1588
+                    Height =227
+                    Name ="Text135"
+                    Caption ="Falla que reporta"
+                    GUID = Begin
+                        0xed64552e588d8541aacab504ef34657c
+                    End
+                End
+                Begin Label
+                    OverlapFlags =81
+                    TextAlign =1
+                    Left =284
+                    Top =2008
+                    Width =4536
+                    Height =227
+                    FontSize =8
+                    Name ="Text136"
+                    Caption ="REPORTE DE FALLAS DE INSTRUMENTOS"
+                    GUID = Begin
+                        0xd78ce48fa304cf47af93c9ac7dec3c18
+                    End
+                End
+                Begin Label
+                    OverlapFlags =81
+                    TextAlign =1
+                    Left =6691
+                    Top =57
+                    Width =6804
+                    Height =285
+                    FontSize =8
+                    Name ="Text137"
+                    Caption ="RELACION DE BAJAS Y/O ALUMNOS QUE YA NO DEBEN APARECER EN SU LISTA"
+                    GUID = Begin
+                        0x44d01f1ff90cbb4ca5dfa8239087639e
+                    End
+                End
+                Begin Rectangle
+                    OverlapFlags =211
+                    Left =6691
+                    Top =284
+                    Width =6804
+                    Height =1701
+                    Name ="Box138"
+                    GUID = Begin
+                        0xea04e66569f78b43ba90b09fcbb25310
+                    End
+                End
+                Begin Label
+                    OverlapFlags =81
+                    TextAlign =1
+                    Left =6705
+                    Top =2010
+                    Width =2835
+                    Height =227
+                    Name ="Text139"
+                    Caption ="OBSERVACIONES :"
+                    GUID = Begin
+                        0x30b8775efe6cf9488d0e31bef6175aef
+                    End
+                End
+                Begin Rectangle
+                    OverlapFlags =81
+                    Left =6691
+                    Top =2268
+                    Width =6804
+                    Height =1701
+                    Name ="Box140"
+                    GUID = Begin
+                        0x4ab002dc2145644b82895e99e1caa506
+                    End
+                End
+                Begin Line
+                    OverlapFlags =83
+                    Left =6691
+                    Top =567
+                    Width =6804
+                    Name ="Line141"
+                    GUID = Begin
+                        0x52a8953965d5244fb8e90108ae5d6bcc
+                    End
+                End
+                Begin Line
+                    OverlapFlags =83
+                    Left =6691
+                    Top =851
+                    Width =6804
+                    Name ="Line142"
+                    GUID = Begin
+                        0xcb2da1d4f155bc42ad87cee05c414915
+                    End
+                End
+                Begin Line
+                    OverlapFlags =83
+                    Left =6691
+                    Top =1134
+                    Width =6804
+                    Name ="Line143"
+                    GUID = Begin
+                        0x078a250901c3d24daf0e587850517d8c
+                    End
+                End
+                Begin Line
+                    OverlapFlags =83
+                    Left =6691
+                    Top =1418
+                    Width =6804
+                    Name ="Line144"
+                    GUID = Begin
+                        0x3f6b33463aff2241a3f81cbd008eff28
+                    End
+                End
+                Begin Line
+                    OverlapFlags =83
+                    Left =6691
+                    Top =1701
+                    Width =6804
+                    Name ="Line145"
+                    GUID = Begin
+                        0xd7ff58f2a1c4fd4f968a22ad8081a1a7
+                    End
+                End
+                Begin Line
+                    OverlapFlags =83
+                    Left =9072
+                    Top =284
+                    Width =0
+                    Height =1701
+                    Name ="Line146"
+                    GUID = Begin
+                        0x194389c07846464c8e36270c706bc9e1
+                    End
+                End
+                Begin Line
+                    OverlapFlags =83
+                    Left =10206
+                    Top =284
+                    Width =0
+                    Height =1701
+                    Name ="Line147"
+                    GUID = Begin
+                        0xe34e2374600a794f860f71fbce87c785
+                    End
+                End
+                Begin Line
+                    OverlapFlags =83
+                    Left =11340
+                    Top =284
+                    Width =0
+                    Height =1701
+                    Name ="Line149"
+                    GUID = Begin
+                        0x24e3449f31c83942951ed5b63e3e11e0
+                    End
+                End
+                Begin Label
+                    OverlapFlags =211
+                    Left =7371
+                    Top =313
+                    Width =851
+                    Height =227
+                    Name ="Text150"
+                    Caption ="Nombre"
+                    GUID = Begin
+                        0x3f0ada9529188245a66afe00234cd65a
+                    End
+                End
+                Begin Label
+                    OverlapFlags =211
+                    Left =9129
+                    Top =313
+                    Width =964
+                    Height =227
+                    Name ="Text151"
+                    Caption ="Credencial"
+                    GUID = Begin
+                        0x992fc901239c77439755f86f7104190e
+                    End
+                End
+                Begin Label
+                    OverlapFlags =211
+                    Left =10433
+                    Top =313
+                    Width =680
+                    Height =227
+                    Name ="Text152"
+                    Caption ="Grupo"
+                    GUID = Begin
+                        0x3dff6fcfbcc92f44a42e214863154b3a
+                    End
+                End
+                Begin Label
+                    OverlapFlags =211
+                    Left =12020
+                    Top =313
+                    Width =737
+                    Height =227
+                    Name ="Text153"
+                    Caption ="Motivo"
+                    GUID = Begin
+                        0x7517b1b40cc4464da578ca053a6cf188
+                    End
+                End
+                Begin Line
+                    OverlapFlags =81
+                    Left =283
+                    Top =4606
+                    Width =2835
+                    Name ="Line154"
+                    GUID = Begin
+                        0xedef22ba28b13443883dfaef709a9abc
+                    End
+                End
+                Begin Line
+                    OverlapFlags =81
+                    Left =3685
+                    Top =4606
+                    Width =2835
+                    Name ="Line155"
+                    GUID = Begin
+                        0x4a3fd563add00b44945a4b51e326a292
+                    End
+                End
+                Begin Line
+                    OverlapFlags =81
+                    Left =7087
+                    Top =4606
+                    Width =2835
+                    Name ="Line156"
+                    GUID = Begin
+                        0xf908d34c8d069a48b0bdf1db6bb68f15
+                    End
+                End
+                Begin Line
+                    OverlapFlags =81
+                    Left =10489
+                    Top =4606
+                    Width =2835
+                    Name ="Line157"
+                    GUID = Begin
+                        0xddba87d4e592b2458002fcfc77b7dacc
+                    End
+                End
+                Begin Label
+                    OverlapFlags =81
+                    TextAlign =2
+                    Left =283
+                    Top =4662
+                    Width =2835
+                    Height =285
+                    Name ="Text158"
+                    Caption ="Firma del Maestro"
+                    GUID = Begin
+                        0x83141ac6fca1944e9685e2532dc166fb
+                    End
+                End
+                Begin Label
+                    OverlapFlags =81
+                    TextAlign =2
+                    Left =3685
+                    Top =4662
+                    Width =2835
+                    Height =285
+                    Name ="Text159"
+                    Caption ="Vo. Bo. del Coordinador"
+                    GUID = Begin
+                        0xa2a67c6cca899f4b95d6724109cbea47
+                    End
+                End
+                Begin Label
+                    OverlapFlags =81
+                    TextAlign =2
+                    Left =7087
+                    Top =4662
+                    Width =2835
+                    Height =284
+                    Name ="Text160"
+                    Caption ="Administración"
+                    GUID = Begin
+                        0x53222121e2597e429b6643457830d03c
+                    End
+                End
+                Begin Label
+                    OverlapFlags =81
+                    TextAlign =2
+                    Left =10489
+                    Top =4662
+                    Width =2835
+                    Height =285
+                    Name ="Text161"
+                    Caption ="Captura/Aplicación"
+                    GUID = Begin
+                        0xd02b9a8fd534c44e81983a137dd3310a
+                    End
+                End
+                Begin Label
+                    OverlapFlags =81
+                    TextAlign =2
+                    TextFontFamily =34
+                    Left =892
+                    Top =4980
+                    Width =11760
+                    Height =285
+                    FontWeight =600
+                    Name ="Texto164"
+                    Caption ="Maestro: Favor de entregar este reporte a mas tardar el día 21 de cada mes, junt"
+                        "o con su recibo de honorarios.  Gracias por su colaboración."
+                    FontName ="Arial Narrow"
+                    GUID = Begin
+                        0x1eb971b536cd904ab080a6c1a52e2d7a
+                    End
+                End
+            End
+        End
+        Begin PageFooter
+            Height =0
+            Name ="PieDePágina6"
+            GUID = Begin
+                0x6249bb94d11e564d9390a957f3cd78a5
+            End
+        End
+        Begin FormFooter
+            KeepTogether = NotDefault
+            Height =0
+            Name ="PieDelInforme7"
+            GUID = Begin
+                0xb51b6b771970204c82a616a9b3d39458
+            End
+        End
+    End
+End

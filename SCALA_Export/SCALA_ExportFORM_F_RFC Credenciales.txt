@@ -1,0 +1,199 @@
+Version =19
+VersionRequired =19
+Checksum =-1602794181
+Begin Form
+    AutoCenter = NotDefault
+    AllowDesignChanges = NotDefault
+    TabularFamily =0
+    PictureAlignment =2
+    DatasheetGridlinesBehavior =3
+    GridY =10
+    Width =1870
+    DatasheetFontHeight =10
+    ItemSuffix =4
+    Left =660
+    Right =8115
+    Bottom =3750
+    DatasheetGridlinesColor =12632256
+    RecSrcDt = Begin
+        0x672bb91643cae140
+    End
+    GUID = Begin
+        0xca9ea7744ddb8d49b96b164751c0d888
+    End
+    NameMap = Begin
+        0x0acc0e5500000000000000000000000000000000000000000c00000002000000 ,
+        0x0000000000000000000000000000
+    End
+    RecordSource ="RFC Credenciales"
+    Caption ="RFC Credenciales"
+    DatasheetFontName ="Arial"
+    Begin
+        Begin Label
+            BackStyle =0
+            BackColor =-2147483633
+            ForeColor =-2147483630
+        End
+        Begin Rectangle
+            SpecialEffect =3
+            BackStyle =0
+            Width =850
+            Height =850
+        End
+        Begin Line
+            SpecialEffect =3
+            Width =1701
+        End
+        Begin Image
+            BackStyle =0
+            OldBorderStyle =0
+            PictureAlignment =2
+            Width =1701
+            Height =1701
+        End
+        Begin CommandButton
+            Width =1701
+            Height =283
+            FontSize =8
+            FontWeight =400
+            FontName ="MS Sans Serif"
+        End
+        Begin OptionButton
+            SpecialEffect =2
+            LabelX =230
+            LabelY =-30
+        End
+        Begin CheckBox
+            SpecialEffect =2
+            LabelX =230
+            LabelY =-30
+        End
+        Begin OptionGroup
+            SpecialEffect =3
+            Width =1701
+            Height =1701
+        End
+        Begin BoundObjectFrame
+            SpecialEffect =2
+            OldBorderStyle =0
+            BackStyle =0
+            Width =4536
+            Height =2835
+            LabelX =-1701
+        End
+        Begin TextBox
+            FELineBreak = NotDefault
+            SpecialEffect =2
+            Width =1701
+            LabelX =-1701
+            BackColor =-2147483643
+            ForeColor =-2147483640
+        End
+        Begin ListBox
+            SpecialEffect =2
+            Width =1701
+            Height =1417
+            LabelX =-1701
+            BackColor =-2147483643
+            ForeColor =-2147483640
+        End
+        Begin ComboBox
+            SpecialEffect =2
+            Width =1701
+            LabelX =-1701
+            BackColor =-2147483643
+            ForeColor =-2147483640
+        End
+        Begin Subform
+            SpecialEffect =2
+            Width =1701
+            Height =1701
+        End
+        Begin UnboundObjectFrame
+            SpecialEffect =2
+            OldBorderStyle =1
+            Width =4536
+            Height =2835
+        End
+        Begin ToggleButton
+            Width =283
+            Height =283
+            FontSize =8
+            FontWeight =400
+            FontName ="MS Sans Serif"
+        End
+        Begin Tab
+            BackStyle =0
+            Width =5103
+            Height =3402
+        End
+        Begin FormHeader
+            Height =737
+            BackColor =-2147483633
+            Name ="EncabezadoDelFormulario"
+            GUID = Begin
+                0x3fc2b506396b0b45a888a8659a2ea1b7
+            End
+            Begin
+                Begin Label
+                    OverlapFlags =85
+                    TextAlign =3
+                    Left =226
+                    Top =453
+                    Width =900
+                    Height =240
+                    Name ="Credencial_Etiqueta"
+                    Caption ="Credencial"
+                    Tag ="DetachedLabel"
+                    GUID = Begin
+                        0x2cc8709c46da6c4b9c3742b6c931a194
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =113
+                    Top =113
+                    Width =1560
+                    Height =270
+                    ColumnWidth =1560
+                    Name ="RFC"
+                    ControlSource ="RFC"
+                    GUID = Begin
+                        0xc6af73b81eef5e4fb43416dcc54aff88
+                    End
+                End
+            End
+        End
+        Begin Section
+            Height =312
+            BackColor =-2147483633
+            Name ="Detalle"
+            GUID = Begin
+                0x39bcf018143c124c97226d1b286dc540
+            End
+            Begin
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =227
+                    Top =57
+                    Width =900
+                    Height =255
+                    ColumnWidth =900
+                    Name ="Credencial"
+                    ControlSource ="Credencial"
+                    GUID = Begin
+                        0xcaa5be2ac7eee446aa11a8ec0eadaf2d
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            Height =0
+            BackColor =-2147483633
+            Name ="PieDelFormulario"
+            GUID = Begin
+                0x06abcb5327e1fb4085d754128bf2ee8e
+            End
+        End
+    End
+End

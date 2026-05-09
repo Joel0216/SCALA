@@ -1,0 +1,434 @@
+Version =19
+VersionRequired =19
+Checksum =-1228672855
+Begin Form
+    AllowAdditions = NotDefault
+    DefaultView =2
+    GridX =5
+    GridY =5
+    Width =4088
+    ItemSuffix =40
+    Left =1695
+    Top =2565
+    Right =10515
+    Bottom =4455
+    RecSrcDt = Begin
+        0x6720f8541adee140
+    End
+    GUID = Begin
+        0x1a78fe191112fa4d87d6bcabebb09d3d
+    End
+    NameMap = Begin
+        0x0acc0e5500000000faccabaf05ef4e46b749c2e4415fd8eb0000000020c2bed0 ,
+        0xb849e3400000000000000000520065006c006100630069006f006e0045007800 ,
+        0x61006d0065006e0065007300000000000000db2a22ecbc33c940833f3bd1b8c7 ,
+        0x970507000000faccabaf05ef4e46b749c2e4415fd8eb43006c00610076006500 ,
+        0x4500780061006d0065006e00000000000000ab45bb55f08696458c575d696ea7 ,
+        0x069b07000000faccabaf05ef4e46b749c2e4415fd8eb48006f00720061007200 ,
+        0x69006f00000000000000139c50b805e1fe488f02f787f29464e507000000facc ,
+        0xabaf05ef4e46b749c2e4415fd8eb4e006f006d00620072006500000000000000 ,
+        0xdaa66fa3613bc44d94186f2500787a4707000000faccabaf05ef4e46b749c2e4 ,
+        0x415fd8eb47007200610064006f004e006900760065006c00000000000000204f ,
+        0x53735f7d9c42b7ca2ce971045dfe07000000faccabaf05ef4e46b749c2e4415f ,
+        0xd8eb520065006300690062006f005000610067006f0000000000000053b3cf06 ,
+        0xfd60f445bfca6c553e43d36c07000000faccabaf05ef4e46b749c2e4415fd8eb ,
+        0x460065006300680061005000610067006f00000000000000dae4e89f8f331c45 ,
+        0x9c9c1e67aedb74ca07000000faccabaf05ef4e46b749c2e4415fd8eb63006100 ,
+        0x6e007400690064006100640000000000000043fab6bb5f09234c80edf35a9329 ,
+        0xe1a707000000faccabaf05ef4e46b749c2e4415fd8eb6e00650074006f000000 ,
+        0x000000009b4a2baf622aef4dad5eabb460b6245807000000faccabaf05ef4e46 ,
+        0xb749c2e4415fd8eb430072006500640065006e006300690061006c0000000000 ,
+        0x0000ca7c715feb45b84fa03ff7832efcbc3f00000000f20a7fd0b849e3400000 ,
+        0x00000000000041006c0075006d006e006f0073000000000000009c4543d42707 ,
+        0x8840983dad81919545b707000000ca7c715feb45b84fa03ff7832efcbc3f6400 ,
+        0x690067005f00760065007200000000000000c08b025cf3a59f42b0b910e4ce28 ,
+        0x40d707000000ca7c715feb45b84fa03ff7832efcbc3f47007200750070006f00 ,
+        0x00000000000097bcf0eb6b313f4a816403394b03cebd07000000ca7c715feb45 ,
+        0xb84fa03ff7832efcbc3f47007200610064006f00000000000000000000000000 ,
+        0x000000000000000000000c000000020000000000000000000000000000000000
+    End
+    RecordSource ="RelacionExamenes"
+    Begin
+        Begin Label
+            TextAlign =3
+            FontWeight =700
+            BackColor =12632256
+        End
+        Begin Rectangle
+            SpecialEffect =2
+            Width =850
+            Height =850
+        End
+        Begin OptionButton
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin CheckBox
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin TextBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin ListBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =1417
+            LabelX =-236
+        End
+        Begin ComboBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin FormHeader
+            Height =680
+            BackColor =12632256
+            Name ="EncabezadoDelFormulario1"
+            EventProcPrefix ="EncabezadoDelFormula"
+            GUID = Begin
+                0x79b7f6b61bf6b64b963f4975d8136227
+            End
+            Begin
+                Begin TextBox
+                    Visible = NotDefault
+                    OverlapFlags =85
+                    Left =1133
+                    Top =113
+                    Name ="ClaveExamen"
+                    ControlSource ="ClaveExamen"
+                    GUID = Begin
+                        0x02408f52abd4c545ae0d78a8b57cf389
+                    End
+                    Begin
+                        Begin Label
+                            Visible = NotDefault
+                            OverlapFlags =85
+                            Top =113
+                            Width =930
+                            Height =240
+                            Name ="Texto37"
+                            Caption ="Clave :"
+                            GUID = Begin
+                                0x10c253dd37a7654d877c8d3a074d6d1a
+                            End
+                        End
+                    End
+                End
+            End
+        End
+        Begin Section
+            Height =4195
+            BackColor =12632256
+            Name ="Detalle0"
+            GUID = Begin
+                0xb79c5616f8117c43a64e83b10c7d3583
+            End
+            Begin
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =1695
+                    Top =113
+                    Width =645
+                    ColumnWidth =585
+                    Name ="Horario"
+                    ControlSource ="Horario"
+                    Format ="Short Time"
+                    StatusBarText ="Hora en que presentará el examen el alumno/maestro"
+                    GUID = Begin
+                        0x61a5b1f45198724ebf949851f8d98419
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =791
+                            Top =113
+                            Width =791
+                            Height =240
+                            Name ="Texto13"
+                            Caption ="Hora"
+                            GUID = Begin
+                                0xf60fdaba69e54545aaf165a8ae25e973
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =1695
+                    Top =1017
+                    Width =2280
+                    ColumnWidth =3615
+                    TabIndex =2
+                    Name ="Nombre"
+                    ControlSource ="Nombre"
+                    StatusBarText ="Nombre del Alumnos/Maestro que presenta el examen"
+                    GUID = Begin
+                        0x2862592863fde84995c82861b76d3b43
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =791
+                            Top =1017
+                            Width =791
+                            Height =240
+                            Name ="Texto17"
+                            Caption ="Nombre:"
+                            GUID = Begin
+                                0x0bc2fb209d668b41b5ed998cd0a98bf7
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    TabStop = NotDefault
+                    OverlapFlags =85
+                    Left =1695
+                    Top =1469
+                    Width =780
+                    ColumnWidth =540
+                    TabIndex =3
+                    Name ="GradoNivel"
+                    ControlSource ="GradoNivel"
+                    StatusBarText ="Grado o Nivel que presenta"
+                    GUID = Begin
+                        0x265e60deb00b11478498991d031518dc
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =452
+                            Top =1469
+                            Width =1130
+                            Height =240
+                            Name ="Texto19"
+                            Caption ="G/N"
+                            GUID = Begin
+                                0xbbf8a8dda8fd2243ab534e7d033170d7
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    TabStop = NotDefault
+                    OverlapFlags =85
+                    Left =1695
+                    Top =1921
+                    Width =1005
+                    ColumnWidth =840
+                    TabIndex =4
+                    Name ="ReciboPago"
+                    ControlSource ="ReciboPago"
+                    StatusBarText ="Recibo con el cual pago su derecho de examen"
+                    GUID = Begin
+                        0x1e7a3cefd20bba4393bc92a87083fb7b
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =339
+                            Top =1921
+                            Width =1243
+                            Height =240
+                            Name ="Texto21"
+                            Caption ="Recibo"
+                            GUID = Begin
+                                0x612fc3e9bcf98043be5bcd916ed0046a
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    TabStop = NotDefault
+                    OverlapFlags =85
+                    Left =1695
+                    Top =2373
+                    Width =2070
+                    ColumnWidth =1035
+                    TabIndex =5
+                    Name ="FechaPago"
+                    ControlSource ="FechaPago"
+                    Format ="General Date"
+                    StatusBarText ="Fecha del Recibo"
+                    GUID = Begin
+                        0x4595fc7d1c171d479d8033f6e36ff30f
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =452
+                            Top =2373
+                            Width =1130
+                            Height =240
+                            Name ="Texto23"
+                            Caption ="Fecha"
+                            GUID = Begin
+                                0x6ddd4c5443018943a602d3d2aeecc932
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    TabStop = NotDefault
+                    DecimalPlaces =0
+                    OverlapFlags =85
+                    Left =1695
+                    Top =2825
+                    Width =555
+                    ColumnWidth =495
+                    TabIndex =6
+                    Name ="cantidad"
+                    ControlSource ="cantidad"
+                    StatusBarText ="Numero de examenes pagados"
+                    GUID = Begin
+                        0xa328a3bc9a9d6446b8d40fec20312f38
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =678
+                            Top =2825
+                            Width =904
+                            Height =240
+                            Name ="Texto25"
+                            Caption ="cant."
+                            GUID = Begin
+                                0xffc5eba05f29584881a0b22f6f67e06a
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    TabStop = NotDefault
+                    OverlapFlags =85
+                    Left =1695
+                    Top =3277
+                    Width =1920
+                    ColumnWidth =705
+                    TabIndex =7
+                    Name ="neto"
+                    ControlSource ="neto"
+                    StatusBarText ="Cantidad Pagada"
+                    GUID = Begin
+                        0x058ef7f1992f8c40a08afcbb73f28271
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =1017
+                            Top =3277
+                            Width =565
+                            Height =240
+                            Name ="Texto27"
+                            Caption ="neto:"
+                            GUID = Begin
+                                0x2fef3a88c76efe46b5ba90fbca2fb242
+                            End
+                        End
+                    End
+                End
+                Begin ComboBox
+                    OverlapFlags =85
+                    ColumnCount =5
+                    ListWidth =6625
+                    Left =1700
+                    Top =566
+                    Width =1015
+                    ColumnWidth =780
+                    TabIndex =1
+                    ColumnInfo ="\"\";\"\";\"\";\"\";\"\";\"\";\"\";\"\";\"\";\"\";\"4\";\"4\""
+                    GUID = Begin
+                        0x65c7899e40371744a91bdbdac4c2af12
+                    End
+                    Name ="Credencial"
+                    ControlSource ="Credencial"
+                    RowSourceType ="Table/Query"
+                    RowSource ="Select [Credencial],[dig_ver],[Nombre],[Grupo],[Grado] From [Alumnos];"
+                    ColumnWidths ="585;255;3405;1125;1005"
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =534
+                            Top =566
+                            Width =930
+                            Height =240
+                            Name ="Texto35"
+                            Caption ="Cred"
+                            GUID = Begin
+                                0xed9df3547def564d98d1f36aa1fb9066
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    Visible = NotDefault
+                    ColumnHidden = NotDefault
+                    TabStop = NotDefault
+                    OverlapFlags =85
+                    Left =1699
+                    Top =3741
+                    ColumnWidth =0
+                    TabIndex =8
+                    Name ="Campo38"
+                    ControlSource ="ClaveExamen"
+                    GUID = Begin
+                        0x380aac9bd5a64849a370ac0da9d78f43
+                    End
+                    Begin
+                        Begin Label
+                            Visible = NotDefault
+                            OverlapFlags =85
+                            Left =566
+                            Top =3741
+                            Width =930
+                            Height =240
+                            Name ="Texto39"
+                            Caption ="Clave :"
+                            GUID = Begin
+                                0x334659f6263ea544902e187e18bc80e1
+                            End
+                        End
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            Height =0
+            BackColor =12632256
+            Name ="PieDelFormulario2"
+            GUID = Begin
+                0x9f45eda23a826640b76e0b5b931dd101
+            End
+        End
+    End
+End
+CodeBehindForm
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database   'Usar orden de base de datos en comparaciones de cadenas
+Dim db As Database, T_Examen As Recordset, T_Alumnos As Recordset, T_Prog_Ex As Recordset
+Dim F_pagos As Form
+Dim Ult_Horario

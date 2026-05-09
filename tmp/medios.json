@@ -1,0 +1,90 @@
+[
+  {
+    "QueMedio": "ANUN",
+    "DescMedio": "ANUNCIO EXTERIOR"
+  },
+  {
+    "QueMedio": "BLIV",
+    "DescMedio": "BECA LIVERPOOL"
+  },
+  {
+    "QueMedio": "BOTR",
+    "DescMedio": "BECA OTROS"
+  },
+  {
+    "QueMedio": "BPH",
+    "DescMedio": "BECA PALACIO DE HIERRO"
+  },
+  {
+    "QueMedio": "BSEA",
+    "DescMedio": "BECA SEARS"
+  },
+  {
+    "QueMedio": "BSYR",
+    "DescMedio": "BECA SALINAS Y ROCHA"
+  },
+  {
+    "QueMedio": "CONC",
+    "DescMedio": "POR CONCIERTO"
+  },
+  {
+    "QueMedio": "DIR",
+    "DescMedio": "DIRECTORIO"
+  },
+  {
+    "QueMedio": "DY",
+    "DescMedio": "DIARIO DE YUCATAN"
+  },
+  {
+    "QueMedio": "EVE",
+    "DescMedio": "EVENTO"
+  },
+  {
+    "QueMedio": "FACE",
+    "DescMedio": "FACEBOOK"
+  },
+  {
+    "QueMedio": "FOLL",
+    "DescMedio": "POR FOLLETO"
+  },
+  {
+    "QueMedio": "INT",
+    "DescMedio": "INTERNET"
+  },
+  {
+    "QueMedio": "PERI",
+    "DescMedio": "PERIODICO"
+  },
+  {
+    "QueMedio": "POST",
+    "DescMedio": "POSTER"
+  },
+  {
+    "QueMedio": "PROM",
+    "DescMedio": "POR PROMOCION"
+  },
+  {
+    "QueMedio": "RADI",
+    "DescMedio": "RADIO"
+  },
+  {
+    "QueMedio": "REC",
+    "DescMedio": "RECOMENDACION"
+  },
+  {
+    "QueMedio": "REI",
+    "DescMedio": "REINSCRIPCION"
+  },
+  {
+    "QueMedio": "REVI",
+    "DescMedio": "REVISTA LOCAL"
+  },
+  {
+    "QueMedio": "T.V.",
+    "DescMedio": "TELEVISION"
+  },
+  {
+    "QueMedio": "VOLA",
+    "DescMedio": "VOLANTE"
+  }
+]

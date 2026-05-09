@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alta de Artículos</title>
+    <link rel="stylesheet" href="articulos-new.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>ALTA DE ARTÍCULOS</h1>
+            <div class="datetime" id="datetime"></div>
+        </header>
+
+        <main>
+            <div class="form-section">
+                <div class="form-row">
+                    <label>Clave: <span class="required">*</span></label>
+                    <input type="text" id="clave" class="input-medium" placeholder="Ej: ABC2013, EN1">
+                    <span class="info-text">Código único alfanumérico</span>
+                </div>
+
+                <div class="form-row">
+                    <label>Descripción: <span class="required">*</span></label>
+                    <input type="text" id="descripcion" class="input-xlarge" placeholder="Descripción del artículo">
+                </div>
+
+                <div class="form-row">
+                    <label>Grupo: <span class="required">*</span></label>
+                    <select id="grupo" class="input-large">
+                        <option value="">-- Seleccione un grupo --</option>
+                    </select>
+                    <span class="info-text">Categoría del artículo</span>
+                </div>
+
+                <div class="form-row">
+                    <label>Precio: <span class="required">*</span></label>
+                    <input type="number" id="precio" class="input-medium" step="0.01" min="0" placeholder="0.00">
+                    <span class="info-text">Precio unitario</span>
+                </div>
+
+                <div class="form-row">
+                    <label>IVA:</label>
+                    <input type="number" id="iva" class="input-small" step="0.01" min="0" value="0.16" readonly style="background: #e0e0e0;">
+                    <span class="info-text">16% (fijo)</span>
+                </div>
+
+                <div class="form-row">
+                    <label>Stock Inicial:</label>
+                    <input type="number" id="stock" class="input-medium" min="0" value="0" placeholder="0">
+                    <span class="info-text">Existencia inicial</span>
+                </div>
+
+                <div class="form-row">
+                    <label>Stock Mínimo:</label>
+                    <input type="number" id="stockMinimo" class="input-medium" min="0" value="0" placeholder="0">
+                    <span class="info-text">Alerta de reorden</span>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button class="btn-guardar" onclick="guardarArticulo()">
+                    <span>💾</span> Guardar
+                </button>
+                <button class="btn-limpiar" onclick="limpiarFormulario()">
+                    <span>🗑️</span> Limpiar
+                </button>
+                <button class="btn-cancelar" onclick="cancelarAlta()">
+                    <span>❌</span> Cancelar
+                </button>
+            </div>
+
+            <div class="info-box">
+                <p><strong>Campos obligatorios:</strong> Clave, Descripción, Grupo, Precio</p>
+                <p><strong>Nota:</strong> La clave debe ser única y puede contener letras y números (Ej: ABC2013, EN1, M001)</p>
+            </div>
+        </main>
+    </div>
+
+    <script src="supabase-config.js"></script>
+    <script src="utils-inputs.js"></script>
+    <script src="articulos-new.js"></script>
+</body>
+</html>

@@ -1,0 +1,3 @@
+SELECT DISTINCTROW Count(Cursos.Curso) AS CountOfCurso
+FROM Cursos
+WITH OWNERACCESS OPTION;

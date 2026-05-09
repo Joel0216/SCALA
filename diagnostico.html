@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Diagnóstico del Sistema</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #1a1a2e; color: #eee; }
+        .card { background: #16213e; padding: 15px; margin: 10px 0; border-radius: 8px; }
+        .success { color: #4caf50; }
+        .error { color: #f44336; }
+        .warning { color: #ff9800; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; background: #0f3460; color: white; border: none; border-radius: 5px; }
+        button:hover { background: #1a4a7a; }
+        pre { background: #0f0f23; padding: 10px; overflow: auto; max-height: 200px; font-size: 12px; }
+        h2 { color: #e94560; margin-top: 0; }
+    </style>
+</head>
+<body>
+    <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
+        <img src="Scala logo.png" alt="Scala Logo" id="mainLogo" style="height: 80px; object-fit: contain;">
+        <h1>🔧 Diagnóstico del Sistema SCALA</h1>
+    </div>
+    
+    <div class="card">
+        <h2>1. Estado del Entorno</h2>
+        <div id="entorno"></div>
+    </div>
+    
+    <div class="card">
+        <h2>2. Conexión a Supabase</h2>
+        <div id="conexion"></div>
+        <button onclick="probarConexion()">Probar Conexión</button>
+    </div>
+    
+    <div class="card">
+        <h2>3. Datos en Tablas</h2>
+        <div id="tablas"></div>
+        <button onclick="verificarTablas()">Verificar Tablas</button>
+    </div>
+    
+    <div class="card">
+        <h2>4. Prueba de Botones</h2>
+        <button onclick="pruebaBoton('Botón 1')">Botón 1</button>
+        <button onclick="pruebaBoton('Botón 2')">Botón 2</button>
+        <button onclick="pruebaBoton('Botón 3')">Botón 3</button>
+        <div id="botones"></div>
+    </div>
+    
+    <div class="card">
+        <h2>5. Prueba de Alert/Confirm</h2>
+        <button onclick="pruebaAlert()">Probar Alert</button>
+        <button onclick="pruebaConfirm()">Probar Confirm</button>
+        <p>Después de cerrar el diálogo, intenta escribir aquí:</p>
+        <input type="text" id="inputPrueba" placeholder="Escribe algo aquí..." style="padding: 10px; width: 300px;">
+    </div>
+    
+    <div class="card">
+        <button onclick="window.location.href='index.html'" style="background: #e94560;">Volver al Inicio</button>
+    </div>
+
+    <script src="supabase-config.js"></script>
+    <script src="utils-inputs.js"></script>
+    <script>
+        const entornoEl = document.getElementById('entorno');
+        const conexionEl = document.getElementById('conexion');
+        const tablasEl = document.getElementById('tablas');
+        const botonesEl = document.getElementById('botones');
+        
+        // Verificar entorno al cargar
+        window.addEventListener('load', () => {
+            let html = '';
+            
+            // Verificar require
+            if (typeof require !== 'undefined') {
+                html += '<p class="success">✓ require() disponible (Electron)</p>';
+            } else {
+                html += '<p class="error">✗ require() NO disponible</p>';
+            }
+            
+            // Verificar funciones de Supabase
+            if (typeof waitForSupabase === 'function') {
+                html += '<p class="success">✓ waitForSupabase() disponible</p>';
+            } else {
+                html += '<p class="error">✗ waitForSupabase() NO disponible</p>';
+            }
+            
+            if (typeof getSupabase === 'function') {
+                html += '<p class="success">✓ getSupabase() disponible</p>';
+            } else {
+                html += '<p class="error">✗ getSupabase() NO disponible</p>';
+            }
+            
+            if (typeof isSupabaseConnected === 'function') {
+                const conectado = isSupabaseConnected();
+                if (conectado) {
+                    html += '<p class="success">✓ Supabase conectado</p>';
+                } else {
+                    html += '<p class="warning">⚠ Supabase no conectado aún</p>';
+                }
+            }
+            
+            if (typeof habilitarInputs === 'function') {
+                html += '<p class="success">✓ habilitarInputs() disponible</p>';
+            } else {
+                html += '<p class="error">✗ habilitarInputs() NO disponible</p>';
+            }
+            
+            entornoEl.innerHTML = html;
+        });
+        
+        async function probarConexion() {
+            conexionEl.innerHTML = '<p>Probando conexión...</p>';
+            
+            try {
+                const db = await waitForSupabase(5000);
+                if (db) {
+                    conexionEl.innerHTML = '<p class="success">✓ Conexión exitosa a Supabase</p>';
+                    
+                    // Probar una consulta
+                    const { data, error } = await db.from('instrumentos').select('count');
+                    if (error) {
+                        conexionEl.innerHTML += '<p class="error">✗ Error en consulta: ' + error.message + '</p>';
+                    } else {
+                        conexionEl.innerHTML += '<p class="success">✓ Consulta exitosa</p>';
+                    }
+                } else {
+                    conexionEl.innerHTML = '<p class="error">✗ No se obtuvo cliente</p>';
+                }
+            } catch (e) {
+                conexionEl.innerHTML = '<p class="error">✗ Error: ' + e.message + '</p>';
+            }
+        }
+        
+        async function verificarTablas() {
+            tablasEl.innerHTML = '<p>Verificando tablas...</p>';
+            
+            try {
+                const db = await waitForSupabase(5000);
+                if (!db) {
+                    tablasEl.innerHTML = '<p class="error">No hay conexión</p>';
+                    return;
+                }
+                
+                let html = '';
+                
+                // Verificar instrumentos
+                const { data: inst, error: e1 } = await db.from('instrumentos').select('*').limit(5);
+                html += `<p><strong>Instrumentos:</strong> ${e1 ? 'Error: ' + e1.message : inst.length + ' registros'}</p>`;
+                if (inst && inst.length > 0) {
+                    html += '<pre>' + JSON.stringify(inst, null, 2) + '</pre>';
+                }
+                
+                // Verificar medios_contacto
+                const { data: medios, error: e2 } = await db.from('medios_contacto').select('*').limit(5);
+                html += `<p><strong>Medios Contacto:</strong> ${e2 ? 'Error: ' + e2.message : medios.length + ' registros'}</p>`;
+                if (medios && medios.length > 0) {
+                    html += '<pre>' + JSON.stringify(medios, null, 2) + '</pre>';
+                }
+                
+                // Verificar grupos
+                const { data: grupos, error: e3 } = await db.from('grupos').select('*').limit(5);
+                html += `<p><strong>Grupos:</strong> ${e3 ? 'Error: ' + e3.message : grupos.length + ' registros'}</p>`;
+                if (grupos && grupos.length > 0) {
+                    html += '<pre>' + JSON.stringify(grupos, null, 2) + '</pre>';
+                }
+                
+                // Verificar maestros
+                const { data: maestros, error: e4 } = await db.from('maestros').select('*').limit(5);
+                html += `<p><strong>Maestros:</strong> ${e4 ? 'Error: ' + e4.message : maestros.length + ' registros'}</p>`;
+                
+                // Verificar cursos
+                const { data: cursos, error: e5 } = await db.from('cursos').select('*').limit(5);
+                html += `<p><strong>Cursos:</strong> ${e5 ? 'Error: ' + e5.message : cursos.length + ' registros'}</p>`;
+                
+                tablasEl.innerHTML = html;
+            } catch (e) {
+                tablasEl.innerHTML = '<p class="error">Error: ' + e.message + '</p>';
+            }
+        }
+        
+        function pruebaBoton(nombre) {
+            botonesEl.innerHTML = '<p class="success">✓ ' + nombre + ' funcionó correctamente - ' + new Date().toLocaleTimeString() + '</p>';
+        }
+        
+        async function pruebaAlert() {
+            await mostrarAlerta('Este es un mensaje de prueba con el nuevo sistema de diálogos');
+            document.getElementById('inputPrueba').focus();
+        }
+        
+        async function pruebaConfirm() {
+            const resultado = await mostrarConfirm('¿Puedes ver este mensaje?');
+            botonesEl.innerHTML = '<p>Resultado del confirm: ' + (resultado ? 'Sí' : 'No') + '</p>';
+            document.getElementById('inputPrueba').focus();
+        }
+    </script>
+</body>
+</html>

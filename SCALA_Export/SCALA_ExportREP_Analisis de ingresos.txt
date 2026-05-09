@@ -1,0 +1,979 @@
+Version =19
+VersionRequired =19
+Checksum =-1427559737
+Begin Report
+    LayoutForPrint = NotDefault
+    DateGrouping =1
+    GridY =10
+    Width =17012
+    ItemSuffix =128
+    Left =825
+    Top =300
+    Right =9060
+    Bottom =4980
+    RecSrcDt = Begin
+        0x8fc081455e06e240
+    End
+    GUID = Begin
+        0x00b5a836403fa44a8d3e7605ed9b71e2
+    End
+    NameMap = Begin
+        0x0acc0e55000000008147b2cf068f3c4595991a23a23b9b0400000000cf0624d2 ,
+        0xb849e34000000000000000005400610062006c0061005f0052006f0079006100 ,
+        0x6c0074006900650073000000000000005e3b3ae35761574381b1910591db0420 ,
+        0x070000008147b2cf068f3c4595991a23a23b9b0443007500720073006f000000 ,
+        0x0000000009f29b15e1c91d46a8208b5a001ec7ed070000008147b2cf068f3c45 ,
+        0x95991a23a23b9b044d0065007300200041006e0074006500720069006f007200 ,
+        0x0000000000002f29feda1159474fa61b1e6749442eaf070000008147b2cf068f ,
+        0x3c4595991a23a23b9b044e007500650076006f00200049006e00670072006500 ,
+        0x73006f000000000000004423148ba9e6d8408c5cfa5bc21f5f9f070000008147 ,
+        0xb2cf068f3c4595991a23a23b9b045200650069006e0067007200650073006f00 ,
+        0x00000000000085512b98e2b6ca4780cd3c2370b8249f070000008147b2cf068f ,
+        0x3c4595991a23a23b9b04420061006a00610073000000000000004eea8c6993e6 ,
+        0xec408bb133705613ebfe070000008147b2cf068f3c4595991a23a23b9b044600 ,
+        0x69006e0020006400650020004d00650073000000000000006482f338e4fbba44 ,
+        0xafc8b443f37d28e4070000008147b2cf068f3c4595991a23a23b9b0443006f00 ,
+        0x6c006500670069006100740075007200610020004d0065006e00730075006100 ,
+        0x6c00000000000000bc9767173c347242a5cc056691673be60600000000b5a836 ,
+        0x403fa44a8d3e7605ed9b71e2460069006e0020006400650020004d0065007300 ,
+        0x00000000000005f73a4fde6b004e9b1f7f0806161b840600000000b5a836403f ,
+        0xa44a8d3e7605ed9b71e243006f006c0065006700690061007400750072006100 ,
+        0x20004d0065006e007300750061006c00000000000000caa56804f67bba4fabbe ,
+        0xbb18fa2f93b20600000000b5a836403fa44a8d3e7605ed9b71e24e0075006500 ,
+        0x76006f00200049006e0067007200650073006f0000000000000075ebce5032ae ,
+        0xd749bc07dcb5788224890600000000b5a836403fa44a8d3e7605ed9b71e25200 ,
+        0x650069006e0067007200650073006f0000000000000046fc44d1dc8f6644bf00 ,
+        0xa538a3a208860600000000b5a836403fa44a8d3e7605ed9b71e24d0065007300 ,
+        0x200041006e0074006500720069006f007200000000000000f48a7d421ab51d43 ,
+        0xa1f3ef5122d4e8720600000000b5a836403fa44a8d3e7605ed9b71e242006100 ,
+        0x6a006100730000000000000061c5e1a707cfd1469e01741ff4f3933f07000000 ,
+        0x8147b2cf068f3c4595991a23a23b9b0454006f00740061006c00200064006500 ,
+        0x200043006f006c00650067006900610074007500720061007300000000000000 ,
+        0x000000000000000000000000000000000c000000020000000000000000000000 ,
+        0x000000000000
+    End
+    RecordSource ="Tabla_Royalties"
+    OnOpen ="=Gen_Royalties()"
+    PrtMip = Begin
+        0xa505000089050000370200008905000000000000744200005701000001000000 ,
+        0x010000006801000000000000a10700000100000000000000
+    End
+    PrtDevMode = Begin
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x010400059c00340243ef800501000100ea0a6f08640001000800780001000100 ,
+        0x9000010001004361727461000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000010000000000000001000000 ,
+        0x0200000001000000ffffffff0000000000000000000000000000000044494e55 ,
+        0x220000003402000014eea7dc0000000000000000000000000000000000000000 ,
+        0x0000000000000000070000000100000000000000010000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x00000000000000000000000000000000
+    End
+    PrtDevNames = Begin
+        0x080012001f00010000000000000000000000000000000000000000000000004c ,
+        0x5054313a003a00000000000000000000000000000000
+    End
+    Begin
+        Begin Label
+            TextFontFamily =18
+            FontSize =10
+            FontWeight =700
+            FontName ="Times New Roman"
+        End
+        Begin Rectangle
+            Width =850
+            Height =850
+        End
+        Begin Line
+            Width =1701
+        End
+        Begin BoundObjectFrame
+            AutoLabel = NotDefault
+            OldBorderStyle =0
+            Width =4536
+            Height =2835
+            LabelX =-1701
+        End
+        Begin TextBox
+            AutoLabel = NotDefault
+            OldBorderStyle =0
+            TextFontFamily =18
+            Width =1701
+            Height =336
+            LabelX =-1701
+            FontSize =10
+            FontName ="Times New Roman"
+        End
+        Begin BreakLevel
+            ControlSource ="Curso"
+        End
+        Begin FormHeader
+            KeepTogether = NotDefault
+            Height =984
+            Name ="EncabezadoDelInforme3"
+            EventProcPrefix ="EncabezadoDelInforme"
+            GUID = Begin
+                0x7d5ac698ba628641925d5d1d8ff4af3b
+            End
+            Begin
+                Begin Label
+                    OverlapFlags =81
+                    TextAlign =2
+                    Top =112
+                    Width =12969
+                    Height =480
+                    FontSize =16
+                    Name ="Texto61"
+                    Caption ="Analisis por curso"
+                    GUID = Begin
+                        0x2643d23710e1d44887b047bf51d7d912
+                    End
+                End
+                Begin TextBox
+                    FontItalic = NotDefault
+                    OverlapFlags =81
+                    TextAlign =1
+                    Top =648
+                    Width =2880
+                    Name ="Campo62"
+                    ControlSource ="=Now()"
+                    Format ="Medium Date"
+                    GUID = Begin
+                        0x55a02a64b4828b4691fc334354efafd8
+                    End
+                End
+                Begin Line
+                    OverlapFlags =81
+                    Top =56
+                    Width =13041
+                    Name ="Línea64"
+                    GUID = Begin
+                        0x6e3211bf82cacf4cbafafa1ecac37750
+                    End
+                End
+                Begin Line
+                    OverlapFlags =83
+                    Top =112
+                    Width =13041
+                    Name ="Línea65"
+                    GUID = Begin
+                        0x3250048638123a49816ec474d1418336
+                    End
+                End
+                Begin TextBox
+                    FontItalic = NotDefault
+                    OverlapFlags =81
+                    TextAlign =3
+                    Left =11565
+                    Top =623
+                    Width =1440
+                    TabIndex =1
+                    Name ="Campo63"
+                    ControlSource ="=Page"
+                    GUID = Begin
+                        0x31c0f3f3eb9ae445ac59567e11adb66f
+                    End
+                End
+            End
+        End
+        Begin PageHeader
+            Height =963
+            Name ="EncabezadoDePágina0"
+            GUID = Begin
+                0x4ad4d8b21dc9af48b3177da8ffad0c99
+            End
+            Begin
+                Begin Label
+                    OverlapFlags =81
+                    Left =566
+                    Top =170
+                    Width =660
+                    Height =285
+                    Name ="Texto5"
+                    Caption ="Curso"
+                    GUID = Begin
+                        0xaab867f660c32a46922f093ee84545b9
+                    End
+                End
+                Begin Label
+                    OldBorderStyle =1
+                    BorderWidth =1
+                    OverlapFlags =81
+                    Left =2664
+                    Top =56
+                    Width =806
+                    Height =794
+                    FontSize =9
+                    FontWeight =600
+                    Name ="Texto12"
+                    Caption ="Mes Anterior"
+                    GUID = Begin
+                        0xfec449ee46615c4db9de3cf8da71a66f
+                    End
+                End
+                Begin Label
+                    OldBorderStyle =1
+                    BorderWidth =1
+                    OverlapFlags =83
+                    Left =3458
+                    Top =56
+                    Width =701
+                    Height =794
+                    Name ="Texto17"
+                    Caption ="Nuevo Ingreso"
+                    GUID = Begin
+                        0x32e0c670f7a6024cbad8cd7e33fcf7f2
+                    End
+                End
+                Begin Label
+                    OldBorderStyle =1
+                    BorderWidth =1
+                    OverlapFlags =211
+                    Left =4138
+                    Top =56
+                    Width =671
+                    Height =794
+                    Name ="Texto27"
+                    Caption ="Bajas"
+                    GUID = Begin
+                        0xb6cb9b65fa8e61409e39680e7c78fbb8
+                    End
+                End
+                Begin Label
+                    OldBorderStyle =1
+                    BorderWidth =1
+                    OverlapFlags =83
+                    Left =4818
+                    Top =56
+                    Width =806
+                    Height =794
+                    Name ="Texto42"
+                    Caption ="Fin de Mes"
+                    GUID = Begin
+                        0x0e88d3868e586546af00ccd7bd45c8df
+                    End
+                End
+                Begin Label
+                    OldBorderStyle =1
+                    BorderWidth =1
+                    OverlapFlags =81
+                    Left =6406
+                    Top =113
+                    Width =791
+                    Height =749
+                    Name ="Texto47"
+                    Caption ="Alumnos Becados"
+                    GUID = Begin
+                        0x4a62e64878e07f49b2b39c9ee566dcc1
+                    End
+                End
+                Begin Label
+                    OldBorderStyle =1
+                    BorderWidth =1
+                    OverlapFlags =81
+                    Left =12590
+                    Top =113
+                    Width =971
+                    Height =749
+                    Name ="Texto52"
+                    Caption ="Colegiatura Mensual"
+                    GUID = Begin
+                        0xf7675b0f1d08c44da0e3397b8c1f0a75
+                    End
+                End
+                Begin Label
+                    OldBorderStyle =1
+                    BorderWidth =1
+                    OverlapFlags =81
+                    Left =14517
+                    Top =385
+                    Width =1406
+                    Height =464
+                    Name ="Texto57"
+                    Caption ="Total Cobrado"
+                    GUID = Begin
+                        0x1edb771a2aef284cbae24c779d57a893
+                    End
+                End
+                Begin Line
+                    OverlapFlags =83
+                    Top =56
+                    Width =13041
+                    Name ="Línea66"
+                    GUID = Begin
+                        0x5bd39d6067f54d4bb6943a2758044024
+                    End
+                End
+                Begin Line
+                    OverlapFlags =81
+                    Width =13041
+                    Name ="Línea67"
+                    GUID = Begin
+                        0x7fdcac8977e0a743b0ba36dc5738530c
+                    End
+                End
+                Begin Label
+                    OldBorderStyle =1
+                    OverlapFlags =83
+                    TextAlign =2
+                    Left =13554
+                    Top =113
+                    Width =960
+                    Height =330
+                    Name ="Texto75"
+                    Caption ="Totales"
+                    GUID = Begin
+                        0x0bbafe5abed39d47a3188d0fad0032e9
+                    End
+                End
+                Begin Label
+                    OldBorderStyle =1
+                    BorderWidth =1
+                    OverlapFlags =83
+                    Left =13554
+                    Top =453
+                    Width =956
+                    Height =404
+                    Name ="Texto84"
+                    Caption ="Del mes"
+                    GUID = Begin
+                        0x9b39fd729d20374bbb1ca9f6c73a3cca
+                    End
+                End
+                Begin Label
+                    OverlapFlags =83
+                    Left =15935
+                    Top =396
+                    Width =1020
+                    Height =397
+                    Name ="Texto87"
+                    Caption ="Diferencia"
+                    GUID = Begin
+                        0xec7c7f6bda49a645bd27608872b1f81d
+                    End
+                End
+                Begin Label
+                    OverlapFlags =83
+                    Left =11683
+                    Top =113
+                    Width =908
+                    Height =740
+                    Name ="Texto88"
+                    Caption ="Alumnos Deudores"
+                    GUID = Begin
+                        0xae461e5c71651e449ccf7aa658e85aaa
+                    End
+                End
+                Begin Label
+                    OverlapFlags =81
+                    TextAlign =2
+                    Left =5668
+                    Top =120
+                    Width =690
+                    Height =735
+                    BorderColor =1
+                    Name ="Texto91"
+                    Caption ="Con Pago Normal"
+                    GUID = Begin
+                        0x7196744b43a5d6458c74c5bb356e7f63
+                    End
+                End
+                Begin Label
+                    OverlapFlags =83
+                    Left =7200
+                    Top =566
+                    Width =734
+                    Height =280
+                    Name ="Texto94"
+                    Caption ="c/ 5%D "
+                    GUID = Begin
+                        0x854d59c8c2ef5641943baaa57c06504f
+                    End
+                End
+                Begin Label
+                    OverlapFlags =83
+                    Left =7937
+                    Top =566
+                    Width =765
+                    Height =285
+                    Name ="Texto98"
+                    Caption ="c/10%D"
+                    GUID = Begin
+                        0x77898795370220488ee204be542cf845
+                    End
+                End
+                Begin Label
+                    OverlapFlags =81
+                    Left =8730
+                    Top =566
+                    Width =615
+                    Height =285
+                    Name ="Texto103"
+                    Caption ="25%d"
+                    GUID = Begin
+                        0x6b3b1f9779d72c4ea6acef18f81c72ee
+                    End
+                End
+                Begin Label
+                    OverlapFlags =81
+                    TextAlign =2
+                    Left =7256
+                    Top =226
+                    Width =2155
+                    Height =284
+                    Name ="Texto115"
+                    Caption ="Pago con descto."
+                    GUID = Begin
+                        0xb6ff9da59897c640acd3f0982dff32f1
+                    End
+                End
+                Begin Label
+                    OverlapFlags =81
+                    Left =9354
+                    Top =566
+                    Width =737
+                    Height =284
+                    Name ="Texto117"
+                    Caption ="90%D"
+                    GUID = Begin
+                        0x79fd39ef144c1f4f8b3ccfeacce85304
+                    End
+                End
+                Begin Rectangle
+                    OverlapFlags =83
+                    Left =10091
+                    Top =566
+                    Width =737
+                    Height =284
+                    Name ="Cuadro122"
+                    GUID = Begin
+                        0xe4615aab6fd92444b24bee4ccaa139bc
+                    End
+                End
+                Begin Rectangle
+                    OverlapFlags =83
+                    Left =10828
+                    Top =563
+                    Height =287
+                    Name ="Cuadro123"
+                    GUID = Begin
+                        0x2218084bfdc17344829dfdbcde713421
+                    End
+                End
+            End
+        End
+        Begin Section
+            KeepTogether = NotDefault
+            Height =343
+            Name ="Detalle1"
+            GUID = Begin
+                0x6144d003a74cf74cbc389e78a7ba107d
+            End
+            Begin
+                Begin TextBox
+                    OldBorderStyle =1
+                    BorderWidth =1
+                    OverlapFlags =81
+                    Width =2836
+                    Height =284
+                    Name ="Curso"
+                    ControlSource ="Curso"
+                    GUID = Begin
+                        0xd731b83aaf5ac644a230f07b956b01d8
+                    End
+                End
+                Begin TextBox
+                    OldBorderStyle =1
+                    BorderWidth =1
+                    OverlapFlags =243
+                    TextAlign =3
+                    Left =2664
+                    Width =806
+                    Height =284
+                    TabIndex =1
+                    Name ="Mes Anterior"
+                    ControlSource ="Mes Anterior"
+                    EventProcPrefix ="Mes_Anterior"
+                    GUID = Begin
+                        0x46fc44d1dc8f6644bf00a538a3a20886
+                    End
+                End
+                Begin TextBox
+                    Visible = NotDefault
+                    OldBorderStyle =1
+                    BorderWidth =1
+                    TextAlign =3
+                    Left =2834
+                    Width =626
+                    Height =284
+                    TabIndex =2
+                    Name ="Nuevo Ingreso"
+                    ControlSource ="Nuevo Ingreso"
+                    EventProcPrefix ="Nuevo_Ingreso"
+                    GUID = Begin
+                        0xcaa56804f67bba4fabbebb18fa2f93b2
+                    End
+                End
+                Begin TextBox
+                    Visible = NotDefault
+                    OldBorderStyle =1
+                    BorderWidth =1
+                    OverlapFlags =243
+                    TextAlign =3
+                    Left =2777
+                    Width =731
+                    Height =284
+                    TabIndex =3
+                    Name ="Reingreso"
+                    ControlSource ="Reingreso"
+                    GUID = Begin
+                        0x75ebce5032aed749bc07dcb578822489
+                    End
+                End
+                Begin TextBox
+                    OldBorderStyle =1
+                    BorderWidth =1
+                    OverlapFlags =81
+                    TextAlign =3
+                    Left =4081
+                    Top =4
+                    Width =671
+                    Height =284
+                    TabIndex =4
+                    Name ="Bajas"
+                    ControlSource ="Bajas"
+                    GUID = Begin
+                        0xf48a7d421ab51d43a1f3ef5122d4e872
+                    End
+                End
+                Begin TextBox
+                    OldBorderStyle =1
+                    BorderWidth =1
+                    OverlapFlags =81
+                    TextAlign =3
+                    Left =4818
+                    Top =4
+                    Width =746
+                    Height =284
+                    TabIndex =5
+                    Name ="Fin de Mes"
+                    ControlSource ="Fin de Mes"
+                    EventProcPrefix ="Fin_de_Mes"
+                    GUID = Begin
+                        0xbc9767173c347242a5cc056691673be6
+                    End
+                End
+                Begin TextBox
+                    OldBorderStyle =1
+                    BorderWidth =1
+                    OverlapFlags =81
+                    TextAlign =3
+                    Left =12590
+                    Top =4
+                    Width =911
+                    Height =284
+                    TabIndex =6
+                    Name ="Colegiatura Mensual"
+                    ControlSource ="Colegiatura Mensual"
+                    EventProcPrefix ="Colegiatura_Mensual"
+                    GUID = Begin
+                        0x05f73a4fde6b004e9b1f7f0806161b84
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =81
+                    Left =13553
+                    Width =974
+                    Height =287
+                    TabIndex =7
+                    Name ="Total fin de mes"
+                    ControlSource ="=[Fin de Mes]*[Colegiatura Mensual]"
+                    Format ="General Number"
+                    EventProcPrefix ="Total_fin_de_mes"
+                    GUID = Begin
+                        0x248bd5b843144543ab0031d5b995fe12
+                    End
+                End
+                Begin Rectangle
+                    OverlapFlags =81
+                    Left =5612
+                    Top =4
+                    Width =680
+                    Height =286
+                    Name ="Cuadro92"
+                    GUID = Begin
+                        0x0a37fc4590eacd44ac7e7c540b70859b
+                    End
+                End
+                Begin Rectangle
+                    OverlapFlags =81
+                    Left =6349
+                    Top =4
+                    Width =790
+                    Height =287
+                    Name ="Cuadro93"
+                    GUID = Begin
+                        0x22fe8d4b5c86b54ba8016f1b5bc7e020
+                    End
+                End
+                Begin Rectangle
+                    OverlapFlags =83
+                    Left =7143
+                    Top =4
+                    Width =740
+                    Height =283
+                    Name ="Cuadro99"
+                    GUID = Begin
+                        0x25d70b92fd173145ab2f51b809680885
+                    End
+                End
+                Begin Rectangle
+                    OverlapFlags =211
+                    Left =7880
+                    Top =4
+                    Width =748
+                    Height =283
+                    Name ="Cuadro101"
+                    GUID = Begin
+                        0x24ba4f90167d794fb2c709f9412f5642
+                    End
+                End
+                Begin Rectangle
+                    OverlapFlags =211
+                    Left =8617
+                    Width =726
+                    Height =287
+                    Name ="Cuadro102"
+                    GUID = Begin
+                        0x12c4c01f3e00ad4896d5973a458e64ed
+                    End
+                End
+                Begin Rectangle
+                    OverlapFlags =81
+                    Left =11678
+                    Width =856
+                    Height =287
+                    Name ="Cuadro104"
+                    GUID = Begin
+                        0x3f9d98147572b342838e5522232e7309
+                    End
+                End
+                Begin Rectangle
+                    OverlapFlags =81
+                    Left =14631
+                    Top =4
+                    Width =1304
+                    Height =286
+                    Name ="Cuadro105"
+                    GUID = Begin
+                        0x1cb33c637de58e4c87162e247b37426e
+                    End
+                End
+                Begin Rectangle
+                    OverlapFlags =81
+                    Left =15992
+                    Width =1020
+                    Height =287
+                    Name ="Cuadro106"
+                    GUID = Begin
+                        0x3cf4c0b7113c454da41ecbcbbbf35bfc
+                    End
+                End
+                Begin TextBox
+                    OldBorderStyle =1
+                    OverlapFlags =243
+                    Left =3514
+                    Top =-4
+                    Width =586
+                    Height =287
+                    TabIndex =8
+                    Name ="NuevoI"
+                    ControlSource ="=[Nuevo Ingreso]+[Reingreso]"
+                    GUID = Begin
+                        0xead061a286b1d746bf13c18d7d7c6cbc
+                    End
+                End
+                Begin Rectangle
+                    OverlapFlags =81
+                    Left =9354
+                    Width =737
+                    Height =283
+                    Name ="Cuadro118"
+                    GUID = Begin
+                        0x59e8766fe3b4274d83a53cc0220e15af
+                    End
+                End
+                Begin Rectangle
+                    OverlapFlags =83
+                    Left =10091
+                    Width =737
+                    Height =283
+                    Name ="Cuadro124"
+                    GUID = Begin
+                        0xc565a73f4176b44a98a985e2cc1edadf
+                    End
+                End
+                Begin Rectangle
+                    OverlapFlags =83
+                    Left =10885
+                    Width =797
+                    Height =283
+                    Name ="Cuadro125"
+                    GUID = Begin
+                        0x488b0d8b24080e408c6a3931925974d3
+                    End
+                End
+            End
+        End
+        Begin PageFooter
+            Height =0
+            Name ="PieDePágina2"
+            GUID = Begin
+                0xd43ed5d16043ac42a7c333c540881533
+            End
+        End
+        Begin FormFooter
+            KeepTogether = NotDefault
+            Height =453
+            Name ="PieDelInforme4"
+            GUID = Begin
+                0xa50b26664ae633478de3278c06f56e52
+            End
+            Begin
+                Begin TextBox
+                    OldBorderStyle =1
+                    BorderWidth =1
+                    OverlapFlags =81
+                    Left =2607
+                    Width =851
+                    FontWeight =700
+                    Name ="SumaTotal_Mes Anterior"
+                    ControlSource ="=Sum([Mes Anterior])"
+                    EventProcPrefix ="SumaTotal_Mes_Anteri"
+                    GUID = Begin
+                        0x28734db2326cfa4fb449af969730e5ad
+                    End
+                End
+                Begin TextBox
+                    OldBorderStyle =1
+                    BorderWidth =1
+                    OverlapFlags =83
+                    Left =3458
+                    Width =641
+                    Height =351
+                    FontWeight =700
+                    TabIndex =1
+                    Name ="SumaTotal_Nuevo Ingreso"
+                    ControlSource ="=Sum([Nuevo Ingreso]+[Reingreso])"
+                    EventProcPrefix ="SumaTotal_Nuevo_Ingr"
+                    GUID = Begin
+                        0xeb0e4b320c551b4cbb1234b32dc3219c
+                    End
+                End
+                Begin TextBox
+                    Visible = NotDefault
+                    OldBorderStyle =1
+                    BorderWidth =1
+                    Left =1757
+                    Width =686
+                    Height =351
+                    FontWeight =700
+                    TabIndex =2
+                    Name ="SumaTotal_Reingreso"
+                    ControlSource ="=Sum([Reingreso])"
+                    GUID = Begin
+                        0x55c61503bcf92b458e68088254194827
+                    End
+                End
+                Begin TextBox
+                    OldBorderStyle =1
+                    BorderWidth =1
+                    OverlapFlags =243
+                    Left =4081
+                    Width =671
+                    Height =351
+                    FontWeight =700
+                    TabIndex =3
+                    Name ="SumaTotal_Bajas"
+                    ControlSource ="=Sum([Bajas])"
+                    GUID = Begin
+                        0x05c112cc13077d43bbfbb8c200bd6af7
+                    End
+                End
+                Begin TextBox
+                    OldBorderStyle =1
+                    BorderWidth =1
+                    OverlapFlags =81
+                    Left =4818
+                    Width =731
+                    Height =351
+                    FontWeight =700
+                    TabIndex =4
+                    Name ="SumaTotal_Fin de Mes"
+                    ControlSource ="=Sum([Fin de Mes])"
+                    EventProcPrefix ="SumaTotal_Fin_de_Mes"
+                    GUID = Begin
+                        0xc9f238ef5513ec41a876927cb6f79466
+                    End
+                End
+                Begin TextBox
+                    OldBorderStyle =1
+                    BorderWidth =1
+                    OverlapFlags =81
+                    Left =12646
+                    Width =911
+                    FontWeight =700
+                    TabIndex =5
+                    Name ="SumaTotal_Colegiatura Mensual"
+                    ControlSource ="=Sum([Colegiatura Mensual])"
+                    EventProcPrefix ="SumaTotal_Colegiatur"
+                    GUID = Begin
+                        0x46e8984ce84b974d806d632229ac7b79
+                    End
+                End
+                Begin TextBox
+                    OldBorderStyle =1
+                    BorderWidth =1
+                    OverlapFlags =81
+                    Left =13609
+                    Width =1016
+                    FontWeight =700
+                    TabIndex =6
+                    Name ="SumaTotal_Total de Colegiaturas"
+                    ControlSource ="=Sum([Total de Colegiaturas])"
+                    Format ="$#,##0.00;($#,##0.00)"
+                    EventProcPrefix ="SumaTotal_Total_de_C"
+                    GUID = Begin
+                        0x5fa91e6ff94aa744bc9f7cc35d90f37e
+                    End
+                End
+                Begin Rectangle
+                    OverlapFlags =81
+                    Left =14687
+                    Top =4
+                    Width =1247
+                    Height =340
+                    Name ="Cuadro107"
+                    GUID = Begin
+                        0xc6be6bf4fd53c24aabd454ceb7673ca8
+                    End
+                End
+                Begin Rectangle
+                    OverlapFlags =81
+                    Left =16047
+                    Width =964
+                    Height =347
+                    Name ="Cuadro108"
+                    GUID = Begin
+                        0x2b2936325fd69044a24acffe565fa130
+                    End
+                End
+                Begin Rectangle
+                    OverlapFlags =81
+                    Left =5612
+                    Width =683
+                    Height =340
+                    Name ="Cuadro109"
+                    GUID = Begin
+                        0x1b7377842866b84fa6e421119b64f209
+                    End
+                End
+                Begin Rectangle
+                    OverlapFlags =81
+                    Left =6406
+                    Width =752
+                    Height =351
+                    Name ="Cuadro110"
+                    GUID = Begin
+                        0xa014fd13bf1c0340a9d445f614182b8f
+                    End
+                End
+                Begin Rectangle
+                    OverlapFlags =211
+                    Left =7143
+                    Width =737
+                    Height =344
+                    Name ="Cuadro111"
+                    GUID = Begin
+                        0x6b1a9cbb2c71ed45a636fc61bb9f9406
+                    End
+                End
+                Begin Rectangle
+                    OverlapFlags =83
+                    Left =7880
+                    Top =4
+                    Width =737
+                    Height =340
+                    Name ="Cuadro112"
+                    GUID = Begin
+                        0xc80f6e6400eb2d4d886876c35ad965c6
+                    End
+                End
+                Begin Rectangle
+                    OverlapFlags =83
+                    Left =8616
+                    Width =737
+                    Height =340
+                    Name ="Cuadro113"
+                    GUID = Begin
+                        0x252ccb2427505641aa9f4e8d08b38c4a
+                    End
+                End
+                Begin Rectangle
+                    OverlapFlags =81
+                    Left =11734
+                    Width =844
+                    Height =340
+                    Name ="Cuadro114"
+                    GUID = Begin
+                        0xc226be70812298459427a4b87f4d6030
+                    End
+                End
+                Begin Rectangle
+                    OverlapFlags =83
+                    Left =9354
+                    Top =-4
+                    Width =790
+                    Height =344
+                    Name ="Cuadro119"
+                    GUID = Begin
+                        0x3be52292430ca642840c9a245f3d1315
+                    End
+                End
+                Begin Rectangle
+                    OverlapFlags =81
+                    Left =10148
+                    Width =737
+                    Height =344
+                    Name ="Cuadro126"
+                    GUID = Begin
+                        0xd018eed447a2e04c8d0b165c2bf35fd5
+                    End
+                End
+                Begin Rectangle
+                    OverlapFlags =83
+                    Left =10885
+                    Height =340
+                    Name ="Cuadro127"
+                    GUID = Begin
+                        0xdaddf0c7a04f584da2ea79160946fe56
+                    End
+                End
+            End
+        End
+    End
+End

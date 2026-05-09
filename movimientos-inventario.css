@@ -1,0 +1,148 @@
+/* Inventario Page Specific Styles */
+/* Most styles are inherited from theme.css */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.datetime {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Modal styles modernization */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(44, 62, 80, 0.7);
+    backdrop-filter: blur(4px);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: var(--white);
+    border-radius: var(--radius-md);
+    width: 90%;
+    max-width: 700px;
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-header {
+    background: var(--primary-gradient);
+    color: var(--white);
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: var(--white);
+    border-bottom: none;
+    padding: 0;
+}
+
+.btn-cerrar-modal {
+    background: transparent;
+    border: none;
+    color: var(--white);
+    font-size: 1.2rem;
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+.btn-cerrar-modal:hover {
+    opacity: 1;
+}
+
+.modal-tipos-content {
+    max-width: 800px;
+}
+
+.form-nuevo-tipo {
+    padding: 20px;
+    background: var(--bg-light);
+    border-bottom: 1px solid var(--color-lavender);
+}
+
+.grid-tipo-form {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.lista-tipos {
+    padding: 20px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/* Small versions of buttons for management */
+.btn-edit, .btn-delete {
+    padding: 5px 10px;
+    font-size: 0.8rem;
+}
+
+/* Search table in modal */
+.simple-table-container table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.simple-table-container th {
+    background: var(--color-blueish);
+    color: var(--white);
+    padding: 10px;
+    font-size: 0.85rem;
+}
+
+.simple-table-container td {
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--color-lavender);
+    font-size: 0.85rem;
+}
+
+.simple-table-container tr:hover {
+    background: rgba(115, 143, 189, 0.1);
+    cursor: pointer;
+}
+
+/* Helper for total section */
+.td-total-label {
+    font-weight: 600;
+    background: var(--bg-light);
+}
+
+.td-total-value {
+    font-weight: 700;
+    background: var(--bg-light);
+}
+
+.required { color: #ee5253; }
+
+/* Grid specific fixes */
+.tipo-container {
+    display: flex;
+    gap: 5px;
+}/* Scroll horizontal para tablas */
+.premium-table-container {
+    overflow-x: auto;
+}
+

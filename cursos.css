@@ -1,0 +1,33 @@
+/* Cursos Premium Styles */
+@import url('theme.css');
+
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.btn-add-tipo {
+    background: var(--primary-gradient);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.btn-add-tipo:hover {
+    transform: scale(1.05);
+}
+
+/* Modal management specialized styles */
+.modal-edicion-content {
+    max-width: 700px;
+    margin: 2% auto;
+}

@@ -1,0 +1,30 @@
+-- ==============================================================================
+-- DATOS INICIALES PARA MOTIVOS (Exportado de Tabla Motivos.xls)
+-- ==============================================================================
+
+INSERT INTO public.motivos (clave, descripcion) VALUES
+('CACI', 'CAMBIO DE CIUDAD'),
+('CADO', 'CAMBIO DE DOMICILIO'),
+('CAIN', 'CAMBIO DE INSTRUMENTO'),
+('CAPA', 'CASTIGO DE LOS PAPAS'),
+('CDMT', 'CAMBIO DE MTRO. FUSION'),
+('FALL', 'FALLECIO EL ALUMNO'),
+('FALTA', 'FALTA DE TIEMPO'),
+('FAPA', 'FALTA DE PAGO Y ASISTENCIA'),
+('GRAD', 'POR GRADUACION'),
+('HOES', 'HORARIO DE LA ESCUELA'),
+('LECUE', 'LE CUESTA MUCHO TRABAJO'),
+('MC', 'MALAS CALIFICACIONES'),
+('NGCL', 'NO LE GUSTO LA CLASE'),
+('NGHO', 'POR NO GUSTARLE EL HORARIO'),
+('NHQT', 'NO HAY QUIEN LO TRAIGA'),
+('NOTI', 'NO TIENE INSTRUMENTO.'),
+('NQES', 'NO QUIERE ESTUDIAR'),
+('OT', 'OTROS  (SIN CONOCIMIENTO DE MOTIVO)'),
+('OTAC', 'PREFIRIO OTRA ACTIVIDAD'),
+('PCMT', 'PROBLEMAS CON EL MAESTRO'),
+('PREC', 'PROBLEMAS ECONOMICOS'),
+('SALUD', 'PROBLEMAS DE SALUD'),
+('TRAB', 'HORARIO DE TRABAJO'),
+('VACA', 'VACACIONES')
+ON CONFLICT (clave) DO UPDATE SET descripcion = EXCLUDED.descripcion;

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salones</title>
+    <link rel="stylesheet" href="theme.css">
+</head>
+
+    <div class="main-container">
+        <header class="app-header">
+            <h1>Gestión de Salones</h1>
+        </header>
+
+        <main class="app-main">
+            <div class="premium-grid grid-cols-2">
+                <!-- Información General -->
+                <div class="premium-card">
+                    <h3>Detalles del Salón</h3>
+                    <div class="premium-grid grid-cols-2">
+                        <div class="premium-input-group">
+                            <label class="premium-label">Número de Salón</label>
+                            <input type="number" id="numero" class="premium-input" readonly placeholder="Ej. 1">
+                        </div>
+                        <div class="premium-input-group">
+                            <label class="premium-label">Cupo Máximo</label>
+                            <input type="number" id="cupo" class="premium-input" readonly value="0">
+                        </div>
+                    </div>
+                    <div class="premium-input-group">
+                        <label class="premium-label">Ubicación / Descripción</label>
+                        <input type="text" id="ubicacion" class="premium-input" readonly placeholder="Ubicación física del salón">
+                    </div>
+                </div>
+
+                <!-- Instrumentos Asignados -->
+                <div class="premium-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h3 style="margin-bottom: 0;">Instrumentos Asignados</h3>
+                        <button type="button" class="btn-add-inline" id="btnAgregarInst" style="display: none;" onclick="abrirBusquedaInstrumento()">+ Agregar</button>
+                    </div>
+                    
+                    <div class="premium-table-container" style="max-height: 250px;">
+                        <table class="premium-table" id="tablaInstrumentos">
+                            <thead>
+                                <tr>
+                                    <th>Clave</th>
+                                    <th>Descripción</th>
+                                    <th style="text-align: center;">Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr id="rowVaciaInst">
+                                    <td colspan="3" style="text-align: center; padding: 20px; color: var(--text-muted);">Sin instrumentos asignados.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="app-footer" style="padding: 20px; gap: 10px; justify-content: flex-end; border-top: 1px solid var(--border-color); border-radius: 0 0 var(--radius-lg) var(--radius-lg);">
+                <div id="btnGroupPrincipal" style="display: flex; gap: 10px; width: 100%;">
+                    <button class="premium-btn btn-primary" onclick="nuevo()">NUEVO</button>
+                    <button class="premium-btn btn-primary" onclick="abrirModalBusquedaSalones()">BUSCAR</button>
+                    <button class="premium-btn btn-primary" onclick="editar()" id="btnEditar" disabled>EDITAR</button>
+                    <button class="premium-btn btn-danger" onclick="borrar()" id="btnBorrar" disabled>BORRAR</button>
+                    <div style="flex-grow: 1;"></div>
+                    <button class="premium-btn btn-danger" onclick="terminar()">TERMINAR</button>
+                </div>
+                <div id="btnGroupEdicion" style="display: none; gap: 10px; width: 100%; justify-content: flex-end;">
+                    <button class="premium-btn btn-outline" onclick="cancelar()">CANCELAR</button>
+                    <button class="premium-btn btn-primary" onclick="guardar()">GUARDAR CAMBIOS</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal 1: Buscar Salones (Premium) -->
+    <div id="modalBusquedaSalones" class="modal premium-modal" style="display: none;">
+        <div class="premium-modal-content" style="max-width: 600px; margin: 5% auto;">
+            <div class="premium-modal-header">
+                <h2>Buscar Salón</h2>
+            </div>
+            <div class="premium-modal-body" style="padding: 20px;">
+                <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                    <input type="text" id="inputBuscarSalones" class="premium-input" placeholder="Buscar por número o ubicación..."
+                        onkeydown="if(event.key === 'Enter') buscarSalonesEmergente()">
+                    <button class="premium-btn btn-primary" onclick="buscarSalonesEmergente()">Buscar</button>
+                </div>
+                <div class="premium-table-container" style="height: 350px;">
+                    <table class="premium-table">
+                        <thead>
+                            <tr>
+                                <th>N°</th>
+                                <th>Ubicación</th>
+                                <th>Cupo</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bodyBusquedaSalones"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="app-footer" style="padding: 15px 20px; justify-content: flex-end; border-top: 1px solid var(--border-color); background: var(--bg-secondary); border-radius: 0 0 var(--radius-lg) var(--radius-lg);">
+                <button onclick="cerrarBusquedaSalones()" class="premium-btn btn-outline">CERRAR</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2: Agregar Instrumento (Premium) -->
+    <div id="modalBusquedaInstrumento" class="modal premium-modal" style="display: none;">
+        <div class="premium-modal-content" style="max-width: 600px; margin: 5% auto;">
+            <div class="premium-modal-header" style="background: var(--primary-gradient);">
+                <h2>Seleccionar Instrumento</h2>
+            </div>
+            <div class="premium-modal-body" style="padding: 20px;">
+                <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                    <input type="text" id="inputBuscarInstrumento" class="premium-input" placeholder="Buscar instrumento..."
+                        onkeydown="if(event.key === 'Enter') buscarInstrumentosEmergente()">
+                    <button class="premium-btn btn-primary" onclick="buscarInstrumentosEmergente()">Buscar</button>
+                </div>
+                <div class="premium-table-container" style="height: 350px;">
+                    <table class="premium-table">
+                        <thead>
+                            <tr>
+                                <th>Clave</th>
+                                <th>Descripción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bodyBusquedaInstrumento"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="app-footer" style="padding: 15px 20px; justify-content: flex-end; border-top: 1px solid var(--border-color); background: var(--bg-secondary); border-radius: 0 0 var(--radius-lg) var(--radius-lg);">
+                <button onclick="cerrarBusquedaInstrumento()" class="premium-btn btn-outline">CANCELAR</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="supabase-config.js"></script>
+    <script src="utils-inputs.js"></script>
+    <script src="salones.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Otros Catálogos</title>
+    <link rel="stylesheet" href="otros-catalogos.css">
+</head>
+<body data-section="Archivos">
+    <div class="main-container">
+        <header class="app-header">
+            <h1>Scala - Academias de Música</h1>
+            <div class="datetime" id="datetime"></div>
+        </header>
+
+        <main class="app-main">
+            <div class="menu-card">
+                <div class="logo-container">
+                    <img src="Scala logo.png" alt="Scala Logo" class="logo-display" id="mainLogo">
+                </div>
+
+                <h2 style="font-size: 1.25rem; color: var(--text-main); margin-bottom: 30px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;">
+                    Menú de Catálogos Auxiliares
+                </h2>
+
+                <div class="catalog-grid">
+                    <button class="premium-menu-btn" id="motivosBtn">
+                        MOTIVOS
+                        <span>Conceptos de baja</span>
+                    </button>
+                    <button class="premium-menu-btn" id="instrumentosBtn">
+                        INSTRUMENTOS
+                        <span>Equipamiento y clases</span>
+                    </button>
+                    <button class="premium-menu-btn" id="mediosBtn">
+                        MEDIOS
+                        <span>Canales de difusión</span>
+                    </button>
+                    <button class="premium-menu-btn" id="salonesBtn">
+                        SALONES
+                        <span>Aulas e instalaciones</span>
+                    </button>
+                </div>
+
+                <div style="margin-top: 40px; border-top: 1px solid var(--border-color); padding-top: 30px;">
+                    <button class="premium-btn btn-danger" style="padding: 12px 40px; font-size: 1rem;" id="terminarBtn">TERMINAR MENÚ</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="supabase-config.js"></script>
+    <script src="session-manager.js"></script>
+    <script src="utils-inputs.js"></script>
+    <script src="otros-catalogos.js"></script>
+</body>
+
+</html>

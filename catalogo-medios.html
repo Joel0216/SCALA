@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scala - Catálogo de Medios</title>
+    <link rel="stylesheet" href="theme.css">
+    <style>
+        .catalog-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        .form-container {
+            max-width: 850px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header class="app-header">
+            <h1>Catálogo de Medios</h1>
+            <div class="datetime" id="datetime"></div>
+        </header>
+
+        <main class="app-main">
+            <div class="form-container">
+                <div class="premium-card">
+                    <div class="catalog-header">
+                        <h3 style="margin: 0;">Canales de Difusión</h3>
+                        <span class="premium-label" style="margin: 0; color: var(--text-muted); font-size: 11px;">Medios de Contacto</span>
+                    </div>
+
+                    <div class="premium-input-group">
+                        <label class="premium-label">Clave Medio</label>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <input type="text" id="claveMedio" class="premium-input" maxlength="15" readonly style="background: var(--bg-secondary); flex: 1;" placeholder="Automático">
+                        </div>
+                        <p style="font-size: 11px; color: var(--text-muted); margin-top: 5px;">Se genera automáticamente a partir de la descripción.</p>
+                    </div>
+
+                    <div class="premium-input-group">
+                        <label class="premium-label">Descripción del Medio</label>
+                        <input type="text" id="descripcionMedio" class="premium-input" maxlength="150" disabled placeholder="Ej: Redes Sociales, Volantes, Recomendación...">
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 30px;">
+                        <div id="slot1">
+                            <button id="btnNuevo" class="premium-btn btn-primary" style="width: 100%;">NUEVO</button>
+                            <button id="btnGuardar" class="premium-btn btn-primary" style="display:none; width: 100%;">GUARDAR</button>
+                        </div>
+                        <div id="slot2">
+                            <button id="btnCancelarNuevo" class="premium-btn btn-danger" style="display:none; width: 100%;">CANCELAR</button>
+                        </div>
+                        <button id="btnBuscar" class="premium-btn btn-outline" style="border: 1.5px solid #3498db; color: #3498db; background: white; width: 100%;">BUSCAR</button>
+                        <button id="btnBorrar" class="premium-btn btn-danger" disabled style="width: 100%;">BORRAR</button>
+                        <button id="btnTerminar" class="premium-btn btn-danger" style="width: 100%;">TERMINAR</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="app-footer">
+            <div style="flex-grow: 1;"></div>
+        </footer>
+    </div>
+
+    <!-- Modal de confirmación (Premium) -->
+    <div id="modalBorrar" class="modal premium-modal" style="display: none;">
+        <div class="premium-modal-content" style="max-width: 450px;">
+            <div class="premium-modal-header">
+                <h2>Confirmar Eliminación</h2>
+                <button class="modal-close" onclick="cancelarBorrado()">✕</button>
+            </div>
+            <div class="premium-modal-body" style="padding: 20px;">
+                <p id="mensajeBorrar" style="margin: 0; line-height: 1.5; color: var(--text-main);">¿Está seguro de que desea eliminar este medio de contacto permanentemente?</p>
+            </div>
+            <footer class="app-footer" style="padding: 15px 20px; border-top: 1px solid var(--border-color); background: var(--bg-secondary); border-radius: 0 0 var(--radius-lg) var(--radius-lg); justify-content: flex-end; gap: 10px;">
+                <button class="premium-btn btn-outline" onclick="cancelarBorrado()">CANCELAR</button>
+                <button class="premium-btn btn-danger" onclick="confirmarBorrado()">ELIMINAR AHORA</button>
+            </footer>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="utils-inputs.js"></script>
+    <script src="catalogo-medios.js"></script>
+</body>
+
+</html>

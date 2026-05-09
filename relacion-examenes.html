@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relación de Exámenes</title>
+    <link rel="stylesheet" href="relacion-examenes.css">
+</head>
+
+    <div class="main-container">
+        <header class="app-header">
+            <h1>Relación de Exámenes</h1>
+            <div class="datetime" id="datetime"></div>
+        </header>
+
+        <main class="app-main">
+            <div class="premium-grid grid-cols-2">
+                <!-- PANEL: DATOS DEL EXAMEN -->
+                <div class="premium-card">
+                    <h3>Detalles del Examen Seleccionado</h3>
+                    <div class="premium-grid grid-cols-2">
+                        <div class="premium-input-group">
+                            <label class="premium-label">Clave de examen</label>
+                            <input type="text" id="claveExamen" class="premium-input" readonly placeholder="No seleccionado">
+                        </div>
+                    </div>
+                    <div class="premium-grid grid-cols-2">
+                        <div class="premium-input-group">
+                            <label class="premium-label">Fecha</label>
+                            <input type="text" id="fechaExamen" class="premium-input" readonly>
+                        </div>
+                        <div class="premium-input-group">
+                            <label class="premium-label">Hora</label>
+                            <input type="text" id="horaExamen" class="premium-input" readonly>
+                        </div>
+                    </div>
+                    <div class="premium-input-group">
+                        <label class="premium-label">Salón de examen</label>
+                        <input type="text" id="salonExamen" class="premium-input" readonly>
+                    </div>
+                    <div class="premium-input-group">
+                        <label class="premium-label">Grupo examinado</label>
+                        <input type="text" id="grupoExamen" class="premium-input" readonly>
+                    </div>
+                </div>
+
+                <!-- PANEL: PERSONAL ASIGNADO -->
+                <div class="premium-card">
+                    <h3>Personal Académico Asignado</h3>
+                    <div class="premium-input-group">
+                        <label class="premium-label">Maestro Base</label>
+                        <input type="text" id="maestroBase" class="premium-input" readonly>
+                    </div>
+                    <div class="premium-input-group">
+                        <label class="premium-label">Examinador 1</label>
+                        <input type="text" id="examinador1" class="premium-input" readonly>
+                    </div>
+                    <div class="premium-input-group">
+                        <label class="premium-label">Examinador 2</label>
+                        <input type="text" id="examinador2" class="premium-input" readonly>
+                    </div>
+                    
+                    <div style="margin-top: 20px; padding: 15px; background: var(--bg-light); border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                        <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin: 0;">
+                            Consulte el listado de alumnos vinculados a este examen en la sección inferior. 
+                            Use el botón <strong>BUSCAR</strong> para navegar entre las programaciones existentes.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN DE ALUMNOS -->
+            <div class="alumnos-section-premium">
+                <div class="table-header-premium">Alumnos relacionados que presentan examen</div>
+                <div class="premium-table-container">
+                    <table class="premium-table" id="tablaAlumnos">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">Sel.</th>
+                                <th>Maestro Calificador</th>
+                                <th style="width: 120px;">Cred. Mtro</th>
+                                <th style="width: 80px;">Hora</th>
+                                <th style="width: 100px;">Cred. Alum</th>
+                                <th class="col-name">Nombre Alumno</th>
+                                <th style="text-align: center;">Pres.</th>
+                                <th style="text-align: center;">Aprobó</th>
+                                <th style="text-align: center;">Calif.</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bodyAlumnos">
+                            <tr>
+                                <td colspan="9" style="text-align:center; color: var(--text-muted); padding: 30px;">
+                                    Favor de seleccionar una programación mediante el buscador para visualizar los alumnos.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- CONTROLES Y NAVEGACIÓN -->
+            <div class="app-footer" style="position: static; margin-top: 20px; border-radius: var(--radius-md); border-top: none; padding: 20px;">
+                <div id="btnGroupPrincipal" style="display: flex; gap: 10px; width: 100%; align-items: center;">
+                    <button id="btnBuscar" class="premium-btn btn-primary">Buscar Examen</button>
+                    
+                    <div class="nav-container" style="margin-left: auto; display: flex; align-items: center; gap: 10px; background: var(--bg-light); padding: 5px 15px; border-radius: var(--radius-lg); border: 1px solid var(--border-color);">
+                        <span style="font-size: 0.85rem; font-weight: 600;">Reg. <span id="registroActual">0</span> / <span id="totalRegistros">0</span></span>
+                        <div style="display: flex; gap: 4px;">
+                            <button id="btnPrimero" class="premium-btn btn-outline" style="padding: 2px 8px;">|--</button>
+                            <button id="btnAnterior" class="premium-btn btn-outline" style="padding: 2px 8px;">--</button>
+                            <input type="number" id="inputRegistro" value="1" min="1" class="premium-input" style="width: 55px; padding: 3px; text-align: center; border: none; background: transparent;">
+                            <button id="btnSiguiente" class="premium-btn btn-outline" style="padding: 2px 8px;">++</button>
+                            <button id="btnUltimo" class="premium-btn btn-outline" style="padding: 2px 8px;">++|</button>
+                        </div>
+                    </div>
+                    
+                    <button id="btnTerminar" class="premium-btn btn-danger" onclick="window.location.href='examenes-menu.html'">TERMINAR</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal de búsqueda de exámenes (Premium) -->
+    <div id="modalBuscadorExamenes" class="modal premium-modal" style="display:none;">
+        <div class="premium-modal-content" style="max-width:750px; margin: 5% auto;">
+            <div class="premium-modal-header">
+                <h2>Búsqueda de Programación</h2>
+            </div>
+            <div class="premium-modal-body" style="padding: 20px;">
+                <input type="text" id="inputBusquedaExamen" placeholder="Filtrar por clave, grupo o tipo..." class="premium-input"
+                    oninput="filtrarExamenes(this.value)" style="margin-bottom: 15px;">
+                <div class="premium-table-container" style="height: 350px;">
+                    <table class="premium-table">
+                        <thead>
+                            <tr>
+                                <th>Clave</th>
+                                <th>Fecha</th>
+                                <th>Grupo</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bodyResultados" style="cursor: pointer;"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="app-footer" style="padding: 15px 20px; justify-content: flex-end; border: none;">
+                <button onclick="document.getElementById('modalBuscadorExamenes').style.display='none'" class="premium-btn btn-outline">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="supabase-config.js"></script>
+    <script src="utils-inputs.js"></script>
+    <script src="relacion-examenes.js"></script>
+</body>
+
+</html>

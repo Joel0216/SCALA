@@ -1,0 +1,357 @@
+Version =19
+VersionRequired =19
+Checksum =-1492971033
+Begin Form
+    PopUp = NotDefault
+    Modal = NotDefault
+    AutoCenter = NotDefault
+    DefaultView =0
+    GridX =5
+    GridY =5
+    Width =7256
+    ItemSuffix =22
+    Left =2040
+    Top =1755
+    Right =9585
+    Bottom =4215
+    RecSrcDt = Begin
+        0x52dc8f9f37c5e140
+    End
+    GUID = Begin
+        0x97a0eccedba82640a0f42c5e1b394eff
+    End
+    NameMap = Begin
+        0x0acc0e5500000000bb3f7c33ed24f642968a81713908306500000000110187d0 ,
+        0xb849e34000000000000000007400610062006c00610069006e00730074007200 ,
+        0x75006d0065006e0074006f0000000000000008429c6bf04e0e46b5d113b9c2cd ,
+        0x8dc207000000bb3f7c33ed24f642968a81713908306551007500650049006e00 ,
+        0x73007400720075006d0065006e0074006f0000000000000028e53ca2ecb48649 ,
+        0xb84be44971ab60af07000000bb3f7c33ed24f642968a81713908306544006500 ,
+        0x73006300720069007000630069006f006e0049006e0073007400000000000000 ,
+        0x000000000000000000000000000000000c000000020000000000000000000000 ,
+        0x000000000000
+    End
+    RecordSource ="tablainstrumento"
+    Caption ="Catálogo de Instrumentos"
+    OnOpen ="[Event Procedure]"
+    MenuBar ="Barra Main"
+    Begin
+        Begin Label
+            TextAlign =3
+            FontWeight =700
+            BackColor =12632256
+        End
+        Begin Rectangle
+            SpecialEffect =2
+            Width =850
+            Height =850
+        End
+        Begin CommandButton
+            TextFontFamily =2
+            Width =1701
+            Height =283
+        End
+        Begin OptionButton
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin CheckBox
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin TextBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin ListBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =1417
+            LabelX =-236
+        End
+        Begin ComboBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin FormHeader
+            Height =558
+            BackColor =12632256
+            Name ="EncabezadoDelFormulario1"
+            EventProcPrefix ="EncabezadoDelFormula"
+            GUID = Begin
+                0x7dafd5fabc5b1d47b94914e11d5455aa
+            End
+            Begin
+                Begin Label
+                    BackStyle =0
+                    OverlapFlags =93
+                    TextAlign =1
+                    Left =488
+                    Top =153
+                    Width =3645
+                    Height =405
+                    FontSize =14
+                    ForeColor =8355711
+                    Name ="Texto12"
+                    Caption ="Catálogo de Instrumentos"
+                    GUID = Begin
+                        0x8a24edc4632f0d4ba0e7b64b7469d390
+                    End
+                End
+                Begin Label
+                    BackStyle =0
+                    OverlapFlags =215
+                    TextAlign =1
+                    Left =452
+                    Top =113
+                    Width =3645
+                    Height =405
+                    FontSize =14
+                    ForeColor =16777215
+                    Name ="Texto13"
+                    Caption ="Catálogo de Instrumentos"
+                    GUID = Begin
+                        0xc2a0996e8e726045915224b3f180887f
+                    End
+                End
+            End
+        End
+        Begin Section
+            Height =1927
+            BackColor =12632256
+            Name ="Detalle0"
+            GUID = Begin
+                0xf5517e63fe119f46baddcded1fee41ed
+            End
+            Begin
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =1921
+                    Top =113
+                    Width =855
+                    Name ="QueInstrumento"
+                    ControlSource ="QueInstrumento"
+                    StatusBarText ="Clave del Instrumento"
+                    GUID = Begin
+                        0x58fc9e3498a5e249a2af3f17dc9cbc95
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =339
+                            Top =113
+                            Width =1469
+                            Height =240
+                            Name ="Texto15"
+                            Caption ="Instrumento :"
+                            GUID = Begin
+                                0xb2c29e05de507a4393ad626c1ab92599
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =1921
+                    Top =565
+                    Width =3180
+                    TabIndex =1
+                    Name ="DescripcionInst"
+                    ControlSource ="DescripcionInst"
+                    StatusBarText ="Descripcion del Instrumento"
+                    GUID = Begin
+                        0xb0ba47435ee60541bb614b4fe17e85db
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =339
+                            Top =565
+                            Width =1469
+                            Height =240
+                            Name ="Texto17"
+                            Caption ="Descripción :"
+                            GUID = Begin
+                                0x020c261d57fc8a4ca99d54ed63ee0205
+                            End
+                        End
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =5669
+                    Top =1133
+                    Width =1125
+                    Height =555
+                    TabIndex =2
+                    ForeColor =255
+                    Name ="B_term_instrum"
+                    Caption ="Terminar captura"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0x8cae0c00a053994c8e450408cb9696f8
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =566
+                    Top =1133
+                    Width =1125
+                    Height =555
+                    TabIndex =3
+                    Name ="B_add_instrum"
+                    Caption ="Nuevo"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0xc89c312a8385cc44904b7298a16cf20b
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =3968
+                    Top =1133
+                    Width =1140
+                    Height =555
+                    TabIndex =4
+                    Name ="B_del_instrum"
+                    Caption ="Borrar"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0x3548440a6b04e34cba110f31742ed4a1
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =2267
+                    Top =1133
+                    Width =1131
+                    Height =561
+                    TabIndex =5
+                    Name ="B_srch_instrum"
+                    Caption ="Buscar"
+                    OnClick ="M_Varios Catalogos.Buscar Instrumento"
+                    GUID = Begin
+                        0xea96224536f8e044a5e5ea2f3a10f450
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            Height =0
+            BackColor =12632256
+            Name ="PieDelFormulario2"
+            GUID = Begin
+                0x9459d99ed07fb4488e04ca4ec0e96d4f
+            End
+        End
+    End
+End
+CodeBehindForm
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database   'Usar orden de base de datos en comparaciones de cadenas
+
+Private Sub B_add_instrum_Click()
+On Error GoTo Err_B_add_instrum_Click
+
+
+    DoCmd.GoToRecord , , A_NEWREC
+
+Exit_B_add_instrum_Click:
+    Exit Sub
+
+Err_B_add_instrum_Click:
+    MsgBox Error$
+    Resume Exit_B_add_instrum_Click
+    
+End Sub
+
+Private Sub B_del_instrum_Click()
+On Error GoTo Err_B_del_instrum_Click
+
+
+    DoCmd.DoMenuItem A_FORMBAR, A_EDITMENU, A_SELECTRECORD_V2, , A_MENU_VER20
+    DoCmd.DoMenuItem A_FORMBAR, A_EDITMENU, A_DELETE_V2, , A_MENU_VER20
+
+Exit_B_del_instrum_Click:
+    Exit Sub
+
+Err_B_del_instrum_Click:
+    MsgBox Error$
+    Resume Exit_B_del_instrum_Click
+    
+End Sub
+
+Private Sub B_term_instrum_Click()
+On Error GoTo Err_B_term_instrum_Click
+
+
+    DoCmd.Close
+
+Exit_B_term_instrum_Click:
+    Exit Sub
+
+Err_B_term_instrum_Click:
+    MsgBox Error$
+    Resume Exit_B_term_instrum_Click
+    
+End Sub
+
+Private Sub Botón21_Click()
+On Error GoTo Err_Botón21_Click
+
+
+    DoCmd.DoMenuItem A_FORMBAR, A_EDITMENU, 10, , A_MENU_VER20
+
+Exit_Botón21_Click:
+    Exit Sub
+
+Err_Botón21_Click:
+    MsgBox Error$
+    Resume Exit_Botón21_Click
+    
+End Sub
+
+Private Sub Form_Open(Cancel As Integer)
+Dim db As Database, FLogin As Form, TUser As Recordset, Forma As Form
+   Set db = CurrentDb()
+   Set Forma = Forms!F_Instrumento
+   Set FLogin = Forms!login
+   Set TUser = db.OpenRecordset("Usuarios")
+   TUser.Index = "PrimaryKey"
+   TUser.Seek "=", FLogin!UserID
+   If Not TUser.NoMatch Then
+      If IsNull(TUser!A_I) Or TUser!A_I = "N" Then
+         MsgBox "El usuario no tiene privilegios de acceso"
+         DoCmd.CancelEvent
+      Else
+         If TUser!A_I = "C" Then
+            Forma.AllowEditing = False
+            Forma.DefaultEditing = 3
+            [B_add_instrum].Enabled = False
+            [B_del_instrum].Enabled = False
+         End If
+      End If
+   Else
+      MsgBox "El usuario no tiene clave de acceso registrada"
+      DoCmd.CancelEvent
+   End If
+
+End Sub

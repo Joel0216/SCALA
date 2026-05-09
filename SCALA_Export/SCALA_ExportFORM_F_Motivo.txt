@@ -1,0 +1,358 @@
+Version =19
+VersionRequired =19
+Checksum =472360561
+Begin Form
+    PopUp = NotDefault
+    Modal = NotDefault
+    AutoCenter = NotDefault
+    DefaultView =0
+    GridX =5
+    GridY =5
+    Width =7256
+    ItemSuffix =22
+    Left =2040
+    Top =1710
+    Right =9585
+    Bottom =4290
+    RecSrcDt = Begin
+        0x1840bd9f37c5e140
+    End
+    GUID = Begin
+        0x61b3faf7e5871e499776db09231a8e51
+    End
+    NameMap = Begin
+        0x0acc0e5500000000a97f421c74a19d4484d2023b5b4c63f200000000641c85d0 ,
+        0xb849e34000000000000000005400610062006c00610020004d006f0074006900 ,
+        0x76006f00730000000000000079c964805668084382bedeca79a5d3c807000000 ,
+        0xa97f421c74a19d4484d2023b5b4c63f243004c0041005600450020004d004f00 ,
+        0x5400490056004f000000000000005e29cd634190414282719cff8d2a8c600700 ,
+        0x0000a97f421c74a19d4484d2023b5b4c63f24400450053004300520049005000 ,
+        0x430049004f004e0020004d004f005400490056004f0000000000000000000000 ,
+        0x0000000000000000000000000c00000002000000000000000000000000000000 ,
+        0x0000
+    End
+    RecordSource ="Tabla Motivos"
+    Caption ="Catálogo de Motivos"
+    OnOpen ="[Event Procedure]"
+    Begin
+        Begin Label
+            TextAlign =3
+            FontWeight =700
+            BackColor =12632256
+        End
+        Begin Rectangle
+            SpecialEffect =2
+            Width =850
+            Height =850
+        End
+        Begin CommandButton
+            TextFontFamily =2
+            Width =1701
+            Height =283
+        End
+        Begin OptionButton
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin CheckBox
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin TextBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin ListBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =1417
+            LabelX =-236
+        End
+        Begin ComboBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin FormHeader
+            Height =558
+            BackColor =12632256
+            Name ="EncabezadoDelFormulario1"
+            EventProcPrefix ="EncabezadoDelFormula"
+            GUID = Begin
+                0x4bbd8eac5937f947abbeffe76653792b
+            End
+            Begin
+                Begin Label
+                    BackStyle =0
+                    OverlapFlags =93
+                    TextAlign =1
+                    Left =488
+                    Top =153
+                    Width =2925
+                    Height =405
+                    FontSize =14
+                    ForeColor =8355711
+                    Name ="Texto12"
+                    Caption ="Catálogo de Motivos"
+                    GUID = Begin
+                        0xff16dbb6a5878342a61e81fcab03d50c
+                    End
+                End
+                Begin Label
+                    BackStyle =0
+                    OverlapFlags =215
+                    TextAlign =1
+                    Left =452
+                    Top =113
+                    Width =2925
+                    Height =405
+                    FontSize =14
+                    ForeColor =16777215
+                    Name ="Texto13"
+                    Caption ="Catálogo de Motivos"
+                    GUID = Begin
+                        0x83191a784d0d024ea5de1c2bb525c495
+                    End
+                End
+            End
+        End
+        Begin Section
+            Height =2040
+            BackColor =12632256
+            Name ="Detalle0"
+            GUID = Begin
+                0xc01153d02150a24ea8ac4a05fe5cf470
+            End
+            Begin
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =2599
+                    Top =113
+                    Width =855
+                    Name ="CLAVE MOTIVO"
+                    ControlSource ="CLAVE MOTIVO"
+                    StatusBarText ="llave de buscqueda"
+                    EventProcPrefix ="CLAVE_MOTIVO"
+                    GUID = Begin
+                        0x626d6efa2baca9478e63acb0e29796ba
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =904
+                            Top =113
+                            Width =1582
+                            Height =240
+                            Name ="Texto15"
+                            Caption ="CLAVE MOTIVO:"
+                            GUID = Begin
+                                0x551a9bfeed33f54583e557f523513bb0
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =2599
+                    Top =565
+                    Width =3969
+                    TabIndex =1
+                    Name ="DESCRIPCION MOTIVO"
+                    ControlSource ="DESCRIPCION MOTIVO"
+                    StatusBarText ="Descripcion de la clave del motivo"
+                    EventProcPrefix ="DESCRIPCION_MOTIVO"
+                    GUID = Begin
+                        0xc42b20649f277a4e86a1ebca372b4f52
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =226
+                            Top =565
+                            Width =2260
+                            Height =240
+                            Name ="Texto17"
+                            Caption ="DESCRIPCION MOTIVO:"
+                            GUID = Begin
+                                0x1e45142ed1ccd64bab48667efcbb9042
+                            End
+                        End
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =566
+                    Top =1133
+                    Width =1125
+                    Height =555
+                    TabIndex =2
+                    Name ="B_add_motivo"
+                    Caption ="Nuevo"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0xd0b51dd62508de4e9a62f46f6c8e8a10
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =2267
+                    Top =1133
+                    Width =1131
+                    Height =561
+                    TabIndex =3
+                    Name ="B_srch_motivo"
+                    Caption ="Buscar"
+                    OnClick ="M_Varios Catalogos.Buscar Motivo"
+                    GUID = Begin
+                        0x84a235541ee6264eab25a35d1cf566a1
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =3968
+                    Top =1133
+                    Width =1125
+                    Height =555
+                    TabIndex =4
+                    Name ="B_del_motivo"
+                    Caption ="Borrar"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0x9b84cd6fe7c29c4fa3ea485d16e2b90f
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =5669
+                    Top =1133
+                    Width =1125
+                    Height =555
+                    TabIndex =5
+                    ForeColor =255
+                    Name ="B_term_motivo"
+                    Caption ="Terminar Captura"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0xddc543f3d5cde54dade91a8bb4a8e7ec
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            Height =0
+            BackColor =12632256
+            Name ="PieDelFormulario2"
+            GUID = Begin
+                0xcc7d40c64522de4f8f5787691fdc4725
+            End
+        End
+    End
+End
+CodeBehindForm
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database   'Usar orden de base de datos en comparaciones de cadenas
+
+Private Sub B_add_motivo_Click()
+On Error GoTo Err_B_add_motivo_Click
+
+
+    DoCmd.GoToRecord , , A_NEWREC
+
+Exit_B_add_motivo_Click:
+    Exit Sub
+
+Err_B_add_motivo_Click:
+    MsgBox Error$
+    Resume Exit_B_add_motivo_Click
+    
+End Sub
+
+Private Sub B_del_motivo_Click()
+On Error GoTo Err_B_del_motivo_Click
+
+
+    DoCmd.DoMenuItem A_FORMBAR, A_EDITMENU, A_SELECTRECORD_V2, , A_MENU_VER20
+    DoCmd.DoMenuItem A_FORMBAR, A_EDITMENU, A_DELETE_V2, , A_MENU_VER20
+
+Exit_B_del_motivo_Click:
+    Exit Sub
+
+Err_B_del_motivo_Click:
+    MsgBox Error$
+    Resume Exit_B_del_motivo_Click
+    
+End Sub
+
+Private Sub B_term_motivo_Click()
+On Error GoTo Err_B_term_motivo_Click
+
+
+    DoCmd.Close
+
+Exit_B_term_motivo_Click:
+    Exit Sub
+
+Err_B_term_motivo_Click:
+    MsgBox Error$
+    Resume Exit_B_term_motivo_Click
+    
+End Sub
+
+Private Sub Botón19_Click()
+On Error GoTo Err_Botón19_Click
+
+
+    DoCmd.DoMenuItem A_FORMBAR, A_EDITMENU, 10, , A_MENU_VER20
+
+Exit_Botón19_Click:
+    Exit Sub
+
+Err_Botón19_Click:
+    MsgBox Error$
+    Resume Exit_Botón19_Click
+    
+End Sub
+
+Private Sub Form_Open(Cancel As Integer)
+Dim db As Database, FLogin As Form, TUser As Recordset, Forma As Form
+   Set db = CurrentDb()
+   Set Forma = Forms!F_Motivo
+   Set FLogin = Forms!login
+   Set TUser = db.OpenRecordset("Usuarios")
+   TUser.Index = "PrimaryKey"
+   TUser.Seek "=", FLogin!UserID
+   If Not TUser.NoMatch Then
+      If IsNull(TUser!A_MOT) Or TUser!A_MOT = "N" Then
+         MsgBox "El usuario no tiene privilegios de acceso"
+         DoCmd.CancelEvent
+      Else
+         If TUser!A_MOT = "C" Then
+            Forma.AllowEditing = False
+            Forma.DefaultEditing = 3
+            [B_add_motivo].Enabled = False
+            [B_del_motivo].Enabled = False
+         End If
+      End If
+   Else
+      MsgBox "El usuario no tiene clave de acceso registrada"
+      DoCmd.CancelEvent
+   End If
+
+End Sub

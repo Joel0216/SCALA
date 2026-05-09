@@ -1,0 +1,3 @@
+SELECT DISTINCTROW [Recibos Cancelados].Numero, [Recibos Cancelados].Fecha, [Recibos Cancelados].Hora, [Recibos Cancelados].Monto, [Recibos Cancelados].Pago, [Operaciones Canceladas].IVA, [Operaciones Canceladas].Operacion, [Operaciones Canceladas].Credencial, [Operaciones Canceladas].Cantidad, [Operaciones Canceladas].Neto, [Recibos Cancelados].FacturacionNombre, [Recibos Cancelados].Facturaciondirec1, [Recibos Cancelados].Facturaciondirec2, [Recibos Cancelados].FacturacionRFC, [Recibos Cancelados].DescuentoGeneral, [Operaciones Canceladas].Descuento
+FROM [Recibos Cancelados] INNER JOIN [Operaciones Canceladas] ON [Recibos Cancelados].Numero=[Operaciones Canceladas].Recibo
+WHERE ((([Recibos Cancelados].Numero)=Forms![Recibos Cancelados]!Numero));

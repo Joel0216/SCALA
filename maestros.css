@@ -1,0 +1,40 @@
+/* Maestros Premium Styles */
+@import url('theme.css');
+
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.required {
+    color: #e53e3e;
+    margin-left: 2px;
+}
+
+.info-text {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-top: 4px;
+    display: block;
+}
+
+/* Modal styles overrides for specific Maestro needs */
+.modal-edicion-content {
+    max-width: 700px;
+    margin: 2% auto;
+}
+
+.form-row-edit {
+    margin-bottom: 20px;
+}
+
+/* Tablet / Desktop optimizations */
+@media (min-width: 768px) {
+    .maestro-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+}

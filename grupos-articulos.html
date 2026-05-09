@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grupos de Artículos</title>
+    <link rel="stylesheet" href="grupos-articulos.css">
+    <style>
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-container">
+        <header class="app-header">
+            <h1>Grupos de Artículos</h1>
+            <div class="datetime" id="datetime"></div>
+        </header>
+
+        <main class="app-main">
+            <div class="premium-card">
+                <h3>Datos del Grupo</h3>
+                <form id="gruposArticulosForm" onsubmit="event.preventDefault();">
+                    <input type="hidden" id="grupoId">
+                    <div class="premium-input-group">
+                        <label class="premium-label">Nombre del Grupo</label>
+                        <input type="text" id="nombre" placeholder="Ingrese el nombre del grupo..." readonly class="premium-input">
+                    </div>
+                </form>
+            </div>
+
+            <!-- CONTROLES DE ACCIÓN -->
+            <div class="app-footer" style="position: static; margin-top: 20px; border-radius: var(--radius-md); border-top: none; padding: 20px;">
+                <div id="btnGroupPrincipal" style="display: flex; gap: 10px; width: 100%; align-items: center;">
+                    <button type="button" class="premium-btn btn-primary" id="btnNuevo" onclick="iniciarNuevo()">NUEVO</button>
+                    <button type="button" class="premium-btn btn-primary hidden" id="btnGuardar" onclick="guardarNuevo()">GUARDAR</button>
+                    <button type="button" class="premium-btn btn-outline hidden" id="btnCancelar" onclick="cancelarNuevo()">CANCELAR</button>
+                    <button type="button" class="premium-btn btn-primary" id="btnBuscar" onclick="abrirModalBusqueda()">BUSCAR</button>
+                    <button type="button" class="premium-btn btn-danger" id="btnBorrar" onclick="borrarGrupo()" disabled>BORRAR</button>
+                    
+                    <div style="margin-left: auto;">
+                        <button type="button" class="premium-btn btn-danger" onclick="window.location.href='archivos.html'">TERMINAR</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL: Búsqueda de Grupos (Premium) -->
+    <div id="searchModal" class="modal premium-modal" style="display: none;">
+        <div class="premium-modal-content" style="max-width: 650px; margin: 5% auto;">
+            <div class="premium-modal-header">
+                <h2>Listado de Grupos de Artículos</h2>
+            </div>
+            <div class="premium-modal-body" style="padding: 20px;">
+                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                    <input type="text" id="searchInput" placeholder="Nombre del grupo..." class="premium-input"
+                        onkeyup="if(event.key==='Enter') buscarGrupos()">
+                    <button class="premium-btn btn-primary" onclick="buscarGrupos()">BUSCAR</button>
+                </div>
+
+                <div class="premium-table-container" style="height: 480px; overflow-y: auto;">
+                    <table class="premium-table" id="tablaResultados">
+                        <thead>
+                            <tr>
+                                <th>Nombre del Grupo</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bodyResultados"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <footer class="app-footer" style="padding: 15px 20px; border-top: 1px solid var(--border-color); background: var(--bg-secondary); border-radius: 0 0 var(--radius-lg) var(--radius-lg); align-items: center;">
+                <div class="nav-container" style="display: flex; align-items: center; gap: 8px; background: var(--bg-light); padding: 5px 12px; border-radius: var(--radius-lg); border: 1px solid var(--border-color);">
+                    <span style="font-size: 0.8rem; font-weight: 600;" id="infoPaginaCentral">Reg. 0</span>
+                    <div style="display: flex; gap: 3px;">
+                        <button class="premium-btn btn-outline" style="padding: 1px 6px;" onclick="irPaginaPrimera()">|--</button>
+                        <button class="premium-btn btn-outline" style="padding: 1px 6px;" onclick="irPaginaAnterior()">--</button>
+                        <input type="text" id="paginaActualInput" value="1" readonly style="width: 35px; text-align: center; border: none; background: transparent; font-size: 0.85rem; font-weight: 700;">
+                        <button class="premium-btn btn-outline" style="padding: 1px 6px;" onclick="irPaginaSiguiente()">++</button>
+                        <button class="premium-btn btn-outline" style="padding: 1px 6px;" onclick="irPaginaUltima()">++|</button>
+                    </div>
+                </div>
+                <div style="margin-left: auto;">
+                    <button onclick="cerrarModalBusqueda()" class="premium-btn btn-outline">CERRAR</button>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script src="supabase-config.js"></script>
+    <script src="utils-inputs.js"></script>
+    <script src="grupos-articulos.js"></script>
+
+    <script src="supabase-config.js"></script>
+    <script src="utils-inputs.js"></script>
+    <script src="grupos-articulos.js"></script>
+</body>
+
+</html>

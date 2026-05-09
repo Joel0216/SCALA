@@ -1,0 +1,119 @@
+Option Compare Database   'Usar orden de base de datos en comparaciones de cadenas
+    
+    Dim F_pagos As Form, T_Rec_Can As Recordset, T_Oper_can As Recordset
+    Dim T_Rec As Recordset, T_Oper As Recordset, x
+    Dim db As Database
+    
+
+Function bloquear()
+On Error GoTo BloquearEH
+DoCmd.OpenForm "Login1"
+
+Exit Function
+BloquearEH:
+ 'Call LogError("Bloquear", Err)
+ MsgBox "Ha ocurrido un error numero " + Str$(Err) + "  " + Error$(Err) + " en el procedimiento Bloquear", 48, "Mensaje del sistema"
+Exit Function
+
+End Function
+
+Function BorrarUsuario()
+On Error GoTo BorrarUsuarioEH
+Dim BorrarUsuarioPassword
+BorrarUsuarioPassword = InputBox("Proporcione la clave de este procedimiento", "Mensaje del sistema")
+If BorrarUsuarioPassword = "Delete Old User" Then
+   DoCmd.OpenForm "BorrarUsuario", A_NORMAL, , , , A_NORMAL
+Else
+   Exit Function
+End If
+   Exit Function
+BorrarUsuarioEH:
+ 'Call LogError("BorrarUsuario", Err)
+MsgBox "Ha ocurrido un error numero " + Str$(Err) + "  " + Error$(Err) + " en el procedimiento BorrarUsuario", 48, "Mensaje del sistema"
+Exit Function
+
+
+End Function
+
+Function Copiar_oper()
+On Error GoTo Err_Copiar_oper
+    Dim i, Cred, Cred1
+    x = " "
+    Do While x <> "S" And x <> "N"
+       x = InputBox("Desea correr el proceso de copia de operaciones ? Teclee <S/N>")
+    Loop
+    If x = "N" Then
+       Exit Function
+    End If
+    Set db = CurrentDb()
+    Set T_Oper = db.OpenRecordset("Operaciones Canceladas1")
+    Set T_Oper_can = db.OpenRecordset("Operaciones Canceladas")
+    DoCmd.Echo False, "Copiando Operaciones Canceladas"
+    
+    T_Oper.MoveFirst
+    Do Until T_Oper.EOF
+       DoCmd.Echo True, "Procesando Operacion Cancelada: " + Str$(T_Oper!ID)
+       If Not IsNull(T_Oper!Operacion) Then
+          Cred = T_Oper!Operacion
+          i = 1
+          Do Until Mid(Cred, i, 1) = " "
+             i = i + 1
+          Loop
+          i = i + 1
+          If IsNumeric(Mid(Cred, i, 1)) Then
+             j = i
+             Do While IsNumeric(Mid(Cred, j, 1))
+                j = j + 1
+             Loop
+             Cred1 = Mid(Cred, i, j - i)
+          Else
+             Cred1 = 0
+          End If
+       Else
+          Cred1 = 0
+       End If
+
+       T_Oper_can.AddNew
+       T_Oper_can!Credencial = Cred1
+       T_Oper_can!Operacion = T_Oper!Operacion
+       T_Oper_can!Monto = T_Oper!Monto
+       T_Oper_can!Recibo = T_Oper!Recibo
+       T_Oper_can!Grupo = T_Oper!Grupo
+       T_Oper_can!Iva = T_Oper!Iva
+       T_Oper_can!cantidad = T_Oper!cantidad
+       T_Oper_can!Descuento = T_Oper!Descuento
+       T_Oper_can!general = T_Oper!general
+       T_Oper_can!neto = T_Oper!neto
+       T_Oper_can.Update
+       T_Oper.Delete
+       T_Oper.MoveNext
+
+    Loop
+    MsgBox "Fin de la Copia de las Operaciones"
+Exit_Copiar_oper:
+    Exit Function
+
+Err_Copiar_oper:
+    MsgBox Error$
+    Resume Exit_Copiar_oper
+End Function
+
+Function UsuarioNuevo()
+
+On Error GoTo UsuarioNuevoEH
+
+Dim NuevoUsuarioPassword
+NuevoUsuarioPassword = InputBox("Proporcione la clave de este procedimiento", "Mensaje del sistema")
+If NuevoUsuarioPassword = "New User Auto" Then
+   DoCmd.OpenForm "NewUser", A_NORMAL, , , , A_NORMAL
+Else
+   Exit Function
+End If
+Exit Function
+UsuarioNuevoEH:
+ 'Call LogError("UsuarioNuevo", Err)
+ MsgBox "Ha ocurrido un error numero " + Str$(Err) + ", " + Error$(Err) + " en el procedimiento UsuarioNuevo", 48, "Mensaje del sistema"
+ Exit Function
+Exit Function
+
+End Function

@@ -1,0 +1,3 @@
+SELECT DISTINCTROW Prospectos.Nombre, Prospectos.Apellidos, Prospectos.NúmDeTeléf, Prospectos.Atendió, Prospectos.Curso, Prospectos.Edad, Prospectos.[Día Preferible 1], Prospectos.[Hora prerente 1], Prospectos.[Día Preferible 2], Prospectos.[Hora preferente 2], Prospectos.[Medio que se enteró], Prospectos.[Fecha de atención], Prospectos.[Sigue interesado], Prospectos.[Se Inscribió]
+FROM Prospectos
+ORDER BY Prospectos.Curso, Prospectos.Edad, Prospectos.[Día Preferible 1], Prospectos.[Hora prerente 1], Prospectos.[Medio que se enteró], Prospectos.[Fecha de atención], Prospectos.[Sigue interesado], Prospectos.[Se Inscribió];

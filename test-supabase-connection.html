@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Conexión Supabase</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f0f0f0; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; }
+        h1 { color: #333; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 4px; }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .info { background: #d1ecf1; color: #0c5460; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; background: #4CAF50; color: white; border: none; border-radius: 4px; }
+        button:hover { background: #45a049; }
+        pre { background: #f4f4f4; padding: 10px; overflow: auto; max-height: 300px; }
+        table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background: #4CAF50; color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔌 Test de Conexión a Supabase</h1>
+        
+        <div id="statusConexion" class="status info">Cargando...</div>
+        
+        <h2>Acciones de Prueba</h2>
+        <button onclick="testConexion()">🔄 Probar Conexión</button>
+        <button onclick="cargarCursos()">📚 Cargar Cursos</button>
+        <button onclick="cargarMaestros()">👨‍🏫 Cargar Maestros</button>
+        <button onclick="cargarAlumnos()">👨‍🎓 Cargar Alumnos</button>
+        <button onclick="cargarFactores()">📊 Cargar Factores</button>
+        
+        <h2>Resultados</h2>
+        <div id="resultados"></div>
+        
+        <h2>Log de Consola</h2>
+        <pre id="consoleLog"></pre>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // Configuración
+        const SUPABASE_URL = 'https://vqsduyfkgdqnigzkxazk.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZxc2R1eWZrZ2Rxbmlnemt4YXprIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkwMzIyOTMsImV4cCI6MjA4NDYwODI5M30.l5bZubjb3PIvcFG43JTfoeguldEwwIK7wlnOnl-Ec5o';
+        
+        let cliente = null;
+        const logEl = document.getElementById('consoleLog');
+        
+        function log(msg) {
+            const time = new Date().toLocaleTimeString();
+            logEl.innerHTML += `[${time}] ${msg}\n`;
+            logEl.scrollTop = logEl.scrollHeight;
+            console.log(msg);
+        }
+        
+        function setStatus(msg, type) {
+            const el = document.getElementById('statusConexion');
+            el.textContent = msg;
+            el.className = 'status ' + type;
+        }
+        
+        function showResults(title, data) {
+            const el = document.getElementById('resultados');
+            if (!data || data.length === 0) {
+                el.innerHTML = `<p><strong>${title}:</strong> No hay datos (tabla vacía o no existe)</p>`;
+                return;
+            }
+            
+            let html = `<h3>${title} (${data.length} registros)</h3><table><thead><tr>`;
+            const keys = Object.keys(data[0]).slice(0, 5);
+            keys.forEach(k => html += `<th>${k}</th>`);
+            html += '</tr></thead><tbody>';
+            
+            data.slice(0, 10).forEach(row => {
+                html += '<tr>';
+                keys.forEach(k => {
+                    let val = row[k];
+                    if (val && typeof val === 'string' && val.length > 30) {
+                        val = val.substring(0, 30) + '...';
+                    }
+                    html += `<td>${val || ''}</td>`;
+                });
+                html += '</tr>';
+            });
+            
+            html += '</tbody></table>';
+            if (data.length > 10) {
+                html += `<p><em>Mostrando 10 de ${data.length} registros</em></p>`;
+            }
+            el.innerHTML = html;
+        }
+        
+        async function testConexion() {
+            log('Iniciando test de conexión...');
+            setStatus('Probando conexión...', 'info');
+            
+            try {
+                // Verificar que la librería esté cargada
+                if (typeof window.supabase === 'undefined') {
+                    throw new Error('Librería Supabase no cargada. Verifique su conexión a internet.');
+                }
+                
+                log('Librería Supabase cargada ✓');
+                log('Creando cliente...');
+                
+                cliente = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                
+                log('Cliente creado ✓');
+                log('Probando query a tabla cursos...');
+                
+                const { data, error } = await cliente
+                    .from('cursos')
+                    .select('id, curso')
+                    .limit(3);
+                
+                if (error) {
+                    throw error;
+                }
+                
+                const count = data ? data.length : 0;
+                setStatus(`✅ Conexión exitosa! Se encontraron ${count} cursos.`, 'success');
+                log(`✅ Conexión exitosa! ${count} cursos encontrados.`);
+                
+                if (data && data.length > 0) {
+                    log('Ejemplo: ' + data[0].curso);
+                }
+                
+            } catch (error) {
+                setStatus(`❌ Error: ${error.message}`, 'error');
+                log(`❌ Error: ${error.message}`);
+                
+                if (error.message.includes('relation') || error.message.includes('does not exist')) {
+                    log('');
+                    log('⚠️ LAS TABLAS NO EXISTEN EN SUPABASE');
+                    log('Solución: Ejecute SCALA_FULL_SCHEMA.sql en Supabase SQL Editor');
+                }
+                if (error.message.includes('permission') || error.message.includes('denied') || error.code === '42501') {
+                    log('');
+                    log('⚠️ PROBLEMA DE PERMISOS (RLS)');
+                    log('Solución: Ejecute DESHABILITAR-RLS.sql en Supabase SQL Editor');
+                }
+                if (error.message.includes('Failed to fetch') || error.message.includes('network')) {
+                    log('');
+                    log('⚠️ ERROR DE RED');
+                    log('Verifique su conexión a internet');
+                }
+            }
+        }
+        
+        async function cargarCursos() {
+            if (!cliente) {
+                log('Primero pruebe la conexión...');
+                await testConexion();
+            }
+            if (!cliente) return;
+            
+            try {
+                log('Cargando cursos...');
+                const { data, error } = await cliente.from('cursos').select('*').order('curso').limit(50);
+                if (error) throw error;
+                showResults('Cursos', data);
+                log(`✅ ${data ? data.length : 0} cursos cargados`);
+            } catch (e) {
+                log(`❌ Error: ${e.message}`);
+                showResults('Cursos', null);
+            }
+        }
+        
+        async function cargarMaestros() {
+            if (!cliente) {
+                log('Primero pruebe la conexión...');
+                await testConexion();
+            }
+            if (!cliente) return;
+            
+            try {
+                log('Cargando maestros...');
+                const { data, error } = await cliente.from('maestros').select('*').order('nombre').limit(50);
+                if (error) throw error;
+                showResults('Maestros', data);
+                log(`✅ ${data ? data.length : 0} maestros cargados`);
+            } catch (e) {
+                log(`❌ Error: ${e.message}`);
+                showResults('Maestros', null);
+            }
+        }
+        
+        async function cargarAlumnos() {
+            if (!cliente) {
+                log('Primero pruebe la conexión...');
+                await testConexion();
+            }
+            if (!cliente) return;
+            
+            try {
+                log('Cargando alumnos...');
+                const { data, error } = await cliente.from('alumnos').select('*').order('nombre').limit(50);
+                if (error) throw error;
+                showResults('Alumnos', data);
+                log(`✅ ${data ? data.length : 0} alumnos cargados`);
+            } catch (e) {
+                log(`❌ Error: ${e.message}`);
+                showResults('Alumnos', null);
+            }
+        }
+        
+        async function cargarFactores() {
+            if (!cliente) {
+                log('Primero pruebe la conexión...');
+                await testConexion();
+            }
+            if (!cliente) return;
+            
+            try {
+                log('Cargando factores...');
+                const { data, error } = await cliente.from('factores').select('*').limit(50);
+                if (error) throw error;
+                showResults('Factores', data);
+                log(`✅ ${data ? data.length : 0} factores cargados`);
+            } catch (e) {
+                log(`❌ Error: ${e.message}`);
+                showResults('Factores', null);
+            }
+        }
+        
+        // Auto-test al cargar
+        window.onload = function() {
+            log('Página cargada');
+            log('URL Supabase: ' + SUPABASE_URL);
+            setStatus('Listo para probar. Haga clic en "Probar Conexión"', 'info');
+        };
+    </script>
+</body>
+</html>

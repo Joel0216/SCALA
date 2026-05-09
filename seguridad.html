@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scala - Gestión de Seguridad</title>
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="seguridad.css">
+    <style>
+        :root {
+            --bg-deep: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --accent-primary: #818cf8;
+            --accent-success: #34d399;
+            --accent-danger: #fb7185;
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            background: radial-gradient(circle at top right, #1e1b4b, #0f172a);
+            font-family: 'Outfit', sans-serif;
+            color: #f8fafc;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .tabs { 
+            display: flex; 
+            gap: 15px; 
+            margin-bottom: 30px; 
+            background: rgba(0,0,0,0.2);
+            padding: 10px;
+            border-radius: 16px;
+            width: fit-content;
+        }
+
+        .tab { 
+            padding: 12px 24px; 
+            cursor: pointer; 
+            color: #94a3b8; 
+            border-radius: 12px; 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 500;
+        }
+
+        .tab:hover { color: white; background: rgba(255,255,255,0.05); }
+        .tab.active { background: var(--accent-primary); color: white; box-shadow: 0 10px 20px -5px rgba(129, 140, 248, 0.4); }
+        
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: slideUp 0.5s ease-out; }
+        
+        .security-card { 
+            background: var(--card-bg); 
+            backdrop-filter: blur(20px);
+            padding: 30px; 
+            border-radius: 24px; 
+            border: 1px solid var(--glass-border); 
+            margin-bottom: 25px; 
+            box-shadow: 0 20px 40px -15px rgba(0,0,0,0.3);
+        }
+
+        .matrix-table { width: 100%; border-collapse: separate; border-spacing: 0 8px; margin-top: 10px; }
+        .matrix-table th, .matrix-table td { padding: 16px; text-align: center; }
+        .matrix-table th { color: #94a3b8; font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
+        .matrix-table tbody tr { background: rgba(255,255,255,0.03); transition: transform 0.2s; }
+        .matrix-table tbody tr:hover { transform: scale(1.005); background: rgba(255,255,255,0.05); }
+        .matrix-table td:first-child { border-radius: 12px 0 0 12px; }
+        .matrix-table td:last-child { border-radius: 0 12px 12px 0; }
+        
+        .perm-select { 
+            background: #0f172a; 
+            color: white; 
+            border: 1px solid var(--glass-border); 
+            padding: 8px 12px; 
+            border-radius: 10px; 
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .perm-select:focus { border-color: var(--accent-primary); }
+
+        .badge-superadmin { background: #f59e0b; color: white; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; }
+        .badge-admin { background: #818cf8; color: white; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; }
+        .badge-jefe { background: #34d399; color: white; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; }
+        .badge-empleado { background: #94a3b8; color: white; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; }
+
+        .logo-preview { width: 100px; height: 100px; border: 2px dashed var(--glass-border); display: flex; align-items: center; justify-content: center; margin-bottom: 10px; overflow: hidden; border-radius: 12px; }
+        .logo-preview img { width: 100%; height: 100%; object-fit: contain; }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body data-section="Seguridad">
+    <div class="container">
+        <header class="app-header" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 40px;">
+            <div style="flex: 1;">
+                <h1>Scala - <span id="orgNameHeader">Seguridad</span></h1>
+                <div id="userRank" style="color: var(--accent-primary); font-size: 0.9rem; margin-top: 5px;"></div>
+            </div>
+            <div style="flex: 1; text-align: center;">
+                <img src="Scala_logo.png" alt="Scala Logo" id="mainLogo" style="height: 60px; object-fit: contain;">
+            </div>
+            <div style="flex: 1; text-align: right;">
+                <div class="datetime" id="datetime" style="font-size: 0.9rem;"></div>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <div class="tabs" id="securityTabs">
+                <div class="tab active" data-tab="tab-usuarios">Usuarios</div>
+                <div class="tab" data-tab="tab-restricciones">Restricciones</div>
+                <div id="tabOrgBtn" class="tab" data-tab="tab-organizaciones" style="display: none;">Organizaciones</div>
+            </div>
+
+            <!-- TAB: USUARIOS -->
+            <div id="tab-usuarios" class="tab-content active">
+                <div class="security-card">
+                    <h3>Gestión de Usuarios</h3>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                        <input type="text" id="buscarUsuario" class="premium-input" placeholder="Buscar por nombre o ID..." style="width: 300px;">
+                        <button class="premium-btn btn-save" onclick="abrirModalUsuario()">NUEVO USUARIO</button>
+                    </div>
+                    <div class="premium-table-container">
+                        <table class="premium-table">
+                            <thead>
+                                <tr>
+                                    <th>Usuario</th>
+                                    <th>Nombre</th>
+                                    <th>Rol</th>
+                                    <th>Organización</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodyUsuarios">
+                                <tr><td colspan="5" style="text-align:center;">Cargando...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB: RESTRICCIONES -->
+            <div id="tab-restricciones" class="tab-content">
+                <div class="security-card">
+                    <h3>Matriz de Restricciones (NMC)</h3>
+                    <p style="font-size: 0.85rem; color: #ccc; margin-bottom: 15px;">
+                        <strong>N</strong>: Sin Acceso | <strong>M</strong>: Modificación | <strong>C</strong>: Solo Consulta
+                    </p>
+                    <div style="margin-bottom: 15px;">
+                        <label>Seleccionar Usuario:</label>
+                        <select id="selectUsuarioRestriccion" class="premium-input" onchange="cargarRestriccionesUsuario()" style="width: 300px; display: inline-block; margin-left: 10px;">
+                            <option value="">-- Elija un usuario --</option>
+                        </select>
+                    </div>
+                    <div id="containerRestricciones" style="display: none;">
+                        <table class="matrix-table">
+                            <thead>
+                                <tr>
+                                    <th>Sección</th>
+                                    <th>Permiso</th>
+                                    <th>Descripción</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodyRestricciones">
+                                <!-- Dinámico -->
+                            </tbody>
+                        </table>
+                        <div style="margin-top: 20px; text-align: right;">
+                            <button class="premium-btn btn-save" onclick="guardarRestricciones()">GUARDAR PERMISOS</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB: ORGANIZACIONES (SuperAdmin Only) -->
+            <div id="tab-organizaciones" class="tab-content">
+                <div class="security-card">
+                    <h3>Gestión de Organizaciones</h3>
+                    <div style="text-align: right; margin-bottom: 15px;">
+                        <button class="premium-btn btn-save" onclick="abrirModalOrg()">NUEVA ORGANIZACIÓN</button>
+                    </div>
+                    <div class="premium-table-container">
+                        <table class="premium-table">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>ID</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodyOrganizaciones">
+                                <!-- Dinámico -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="app-footer">
+            <button class="premium-btn btn-outline" onclick="window.location.href='index.html'">TERMINAR</button>
+        </footer>
+    </div>
+
+    <!-- MODAL: USUARIO -->
+    <div id="modalUsuario" class="modal premium-modal" style="display: none;">
+        <div class="premium-modal-content">
+            <div class="premium-modal-header">
+                <h2 id="modalUserTitle">Nuevo Usuario</h2>
+                <button onclick="cerrarModalUsuario()" class="modal-close">✕</button>
+            </div>
+            <div class="premium-modal-body">
+                <div class="premium-input-group">
+                    <label>ID Usuario / Username</label>
+                    <input type="text" id="u_userid" class="premium-input" placeholder="ej. JPool2026">
+                </div>
+                <div class="premium-input-group">
+                    <label>Nombre Completo</label>
+                    <input type="text" id="u_nombre" class="premium-input" placeholder="ej. Joel Pool">
+                </div>
+                <div class="premium-input-group">
+                    <label>Correo Electrónico</label>
+                    <input type="email" id="u_email" class="premium-input" placeholder="ej. joel@mail.com">
+                </div>
+                <div class="premium-input-group">
+                    <label>Contraseña</label>
+                    <input type="password" id="u_pass" class="premium-input" placeholder="••••••••">
+                </div>
+                <div class="premium-input-group">
+                    <label>Rol</label>
+                    <select id="u_rol" class="premium-input">
+                        <option value="Empleado">Empleado</option>
+                        <option value="Jefe">Jefe</option>
+                        <option value="Admin">Administrador</option>
+                    </select>
+                </div>
+                <div id="divSelectOrg" class="premium-input-group" style="display: none;">
+                    <label>Organización</label>
+                    <select id="u_org" class="premium-input">
+                        <!-- Dinámico -->
+                    </select>
+                </div>
+            </div>
+            <div class="premium-modal-footer" style="text-align: right; padding: 20px;">
+                <button class="premium-btn btn-outline" onclick="cerrarModalUsuario()">CANCELAR</button>
+                <button class="premium-btn btn-save" onclick="guardarUsuario()">CREAR USUARIO</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: ORGANIZACIÓN -->
+    <div id="modalOrg" class="modal premium-modal" style="display: none;">
+        <div class="premium-modal-content">
+            <div class="premium-modal-header">
+                <h2>Nueva Organización</h2>
+                <button onclick="cerrarModalOrg()" class="modal-close">✕</button>
+            </div>
+            <div class="premium-modal-body">
+                <div class="premium-input-group">
+                    <label>Nombre de la Organización</label>
+                    <input type="text" id="o_nombre" class="premium-input" placeholder="ej. Academia Mozart">
+                </div>
+                <div class="premium-input-group">
+                    <label>Logo (Imagen)</label>
+                    <input type="file" id="o_logoFile" accept="image/*" onchange="previewLogo(this)" class="premium-input">
+                    <div class="logo-preview" id="previewContainer">
+                        <span style="color:#666">Vista previa</span>
+                    </div>
+                </div>
+            </div>
+            <div class="premium-modal-footer" style="text-align: right; padding: 20px;">
+                <button class="premium-btn btn-outline" onclick="cerrarModalOrg()">CANCELAR</button>
+                <button class="premium-btn btn-save" onclick="crearOrganizacion()">CREAR ORGANIZACIÓN</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="supabase-config.js"></script>
+    <script src="session-manager.js"></script>
+    <script src="utils-inputs.js"></script>
+    <script src="seguridad.js"></script>
+</body>
+</html>

@@ -1,0 +1,424 @@
+Version =19
+VersionRequired =19
+Checksum =803387870
+Begin Form
+    AllowEditing = NotDefault
+    AllowDeletions = NotDefault
+    AllowAdditions = NotDefault
+    OrderByOn = NotDefault
+    AllowEdits = NotDefault
+    DefaultView =2
+    GridX =5
+    GridY =5
+    Width =5669
+    RowHeight =240
+    ItemSuffix =34
+    Left =735
+    Top =5445
+    Right =6810
+    Bottom =6060
+    Filter ="((Q_colegiaturas.Colegiaturas.Mes=\"ENERO\"))"
+    RecSrcDt = Begin
+        0x71b9c0d0bbcde140
+    End
+    GUID = Begin
+        0x3bfe63c82b358449b1f8051c2946232d
+    End
+    NameMap = Begin
+        0x0acc0e5500000000dcabd84ad157fd45892ebb5a988ff3560000000039027c80 ,
+        0x6e4ce340000000000000000051005f0063006f006c0065006700690061007400 ,
+        0x7500720061007300000000000000c1e8dabc660b414aa316e7e076d243fe0700 ,
+        0x0000dcabd84ad157fd45892ebb5a988ff35643006f006c006500670069006100 ,
+        0x740075007200610073002e0041006c0075006d006e006f004900440000000000 ,
+        0x0000f85aaca9e9056a42ac1375b2604e508407000000dcabd84ad157fd45892e ,
+        0xbb5a988ff35643006f006c006500670069006100740075007200610073002e00 ,
+        0x4100f1006f00500000000000000083f449340eeb864094c36b1d0a82021e0700 ,
+        0x0000dcabd84ad157fd45892ebb5a988ff35643006f006c006500670069006100 ,
+        0x740075007200610073002e004d00650073000000000000001b7407148c359843 ,
+        0xb7a56fa0a1926a4507000000dcabd84ad157fd45892ebb5a988ff35644006500 ,
+        0x73006300750065006e0074006f00000000000000564a3071048dee49808ddc4e ,
+        0xf1f589cd07000000dcabd84ad157fd45892ebb5a988ff3565000720065006300 ,
+        0x69006f000000000000007532ad044be89c45bc6d4c1eab96f76b07000000dcab ,
+        0xd84ad157fd45892ebb5a988ff356520065006300690062006f00000000000000 ,
+        0x19ccebc239b9f14a941b940642976c1e07000000dcabd84ad157fd45892ebb5a ,
+        0x988ff35646006500630068006100000000000000cd86bf2e967fdc4a874c07e1 ,
+        0x40cd2a3407000000dcabd84ad157fd45892ebb5a988ff3564700720075007000 ,
+        0x6f00000000000000b534a760eec17f48b47d4afce625e8ed07000000dcabd84a ,
+        0xd157fd45892ebb5a988ff35643007500720073006f0000000000000000000000 ,
+        0x0000000000000000000000000c00000002000000000000000000000000000000 ,
+        0x0000
+    End
+    RecordSource ="Q_colegiaturas"
+    MenuBar ="Barra Main"
+    Begin
+        Begin Label
+            TextAlign =3
+            FontWeight =700
+            BackColor =12632256
+        End
+        Begin Rectangle
+            SpecialEffect =2
+            Width =850
+            Height =850
+        End
+        Begin Line
+            Width =1701
+        End
+        Begin CommandButton
+            Width =1701
+            Height =283
+            FontSize =8
+            FontWeight =400
+            ForeColor =-2147483630
+            FontName ="Tahoma"
+        End
+        Begin OptionButton
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin CheckBox
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin TextBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin ListBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =1417
+            LabelX =-236
+        End
+        Begin ComboBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin FormHeader
+            Height =0
+            BackColor =12632256
+            Name ="EncabezadoDelFormulario1"
+            EventProcPrefix ="EncabezadoDelFormula"
+            GUID = Begin
+                0x444464a9d8bfd348a5aba285e8c39823
+            End
+        End
+        Begin Section
+            Height =4319
+            BackColor =8421376
+            Name ="Detalle0"
+            GUID = Begin
+                0x664ee030b6252e4d87c97330e91982fa
+            End
+            Begin
+                Begin TextBox
+                    Visible = NotDefault
+                    Enabled = NotDefault
+                    ColumnHidden = NotDefault
+                    OverlapFlags =85
+                    Left =2486
+                    Top =113
+                    Width =1920
+                    ColumnWidth =0
+                    Name ="Credencial"
+                    ControlSource ="Colegiaturas.AlumnoID"
+                    StatusBarText ="Credencial del alumno"
+                    GUID = Begin
+                        0x124adfa6434f004fb89242bf9955e341
+                    End
+                    Begin
+                        Begin Label
+                            Visible = NotDefault
+                            OverlapFlags =85
+                            Left =226
+                            Top =113
+                            Width =2147
+                            Height =240
+                            BackColor =8421376
+                            Name ="Texto13"
+                            Caption ="Colegiaturas.AlumnoID:"
+                            GUID = Begin
+                                0xa901bd728b49de4d805a342955f2d9d4
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =2486
+                    Top =565
+                    Width =555
+                    ColumnWidth =600
+                    TabIndex =1
+                    Name ="Colegiaturas.AñoP"
+                    ControlSource ="Colegiaturas.AñoP"
+                    StatusBarText ="Gurada el año de la colegiatura"
+                    EventProcPrefix ="Colegiaturas_AñoP"
+                    GUID = Begin
+                        0x56f3d0a70175224f8a409ab2970bcde1
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =678
+                            Top =565
+                            Width =1695
+                            Height =240
+                            BackColor =8421376
+                            Name ="Texto15"
+                            Caption ="Año"
+                            GUID = Begin
+                                0xb94b44a450b7b74b9461c0f06ded8018
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =2486
+                    Top =1017
+                    Width =2280
+                    ColumnWidth =960
+                    TabIndex =2
+                    Name ="Colegiaturas.Mes"
+                    ControlSource ="Colegiaturas.Mes"
+                    StatusBarText ="Mes que paga"
+                    EventProcPrefix ="Colegiaturas_Mes"
+                    GUID = Begin
+                        0xb602f6eb827d5948b7d190d5c4de62b6
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =678
+                            Top =1017
+                            Width =1695
+                            Height =240
+                            BackColor =8421376
+                            Name ="Texto17"
+                            Caption ="Mes"
+                            GUID = Begin
+                                0xd5004c23c511b240a9e0f10f246088c4
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =2486
+                    Top =1469
+                    Width =2268
+                    ColumnWidth =1065
+                    TabIndex =3
+                    Name ="Descuento"
+                    ControlSource ="Descuento"
+                    Format ="Percent"
+                    StatusBarText ="Descuento total de la colegiatura"
+                    GUID = Begin
+                        0xf2efed34724c8b4a956a7e66355ce070
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =1243
+                            Top =1469
+                            Width =1130
+                            Height =240
+                            BackColor =8421376
+                            Name ="Texto19"
+                            Caption ="Descuento:"
+                            GUID = Begin
+                                0xbcf9cd4bd7302c42b1f72e5acd80831d
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =2486
+                    Top =1921
+                    Width =1920
+                    ColumnWidth =825
+                    TabIndex =4
+                    Name ="Precio"
+                    ControlSource ="Precio"
+                    Format ="$#,##0.00;($#,##0.00)"
+                    StatusBarText ="Precio de la colegiatura"
+                    GUID = Begin
+                        0x8ba68941170d3a46b36c548a36cdcea0
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =1695
+                            Top =1921
+                            Width =678
+                            Height =240
+                            BackColor =8421376
+                            Name ="Texto21"
+                            Caption ="Precio:"
+                            GUID = Begin
+                                0x1e2de4dde3cb844ca49c632c68dfd538
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =2486
+                    Top =2373
+                    Width =1920
+                    ColumnWidth =720
+                    TabIndex =5
+                    Name ="Recibo"
+                    ControlSource ="Recibo"
+                    StatusBarText ="Recibo en que se paga la colegiatura"
+                    GUID = Begin
+                        0xa1c697286ef3f64da646e413696af42c
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =1582
+                            Top =2373
+                            Width =791
+                            Height =240
+                            BackColor =8421376
+                            Name ="Texto23"
+                            Caption ="Recibo:"
+                            GUID = Begin
+                                0x09631681e0356f4aa660311b2136d79c
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =2526
+                    Top =2721
+                    ColumnWidth =1005
+                    TabIndex =6
+                    Name ="fecha"
+                    ControlSource ="Fecha"
+                    GUID = Begin
+                        0x262b32ad93eece4392199fbce3fce3a2
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =1360
+                            Top =2721
+                            Width =930
+                            Height =240
+                            BackColor =8421376
+                            Name ="Texto27"
+                            Caption ="Fecha :"
+                            GUID = Begin
+                                0x603ab4561731d6439703fd1b9308e14e
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =2526
+                    Top =3061
+                    ColumnWidth =2670
+                    TabIndex =7
+                    Name ="Grupo"
+                    ControlSource ="Grupo"
+                    GUID = Begin
+                        0x57cdb8fcd041ae4c83a43fafe40d8a3e
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =1360
+                            Top =3061
+                            Width =930
+                            Height =240
+                            BackColor =8421376
+                            Name ="Texto29"
+                            Caption ="Grupo :"
+                            GUID = Begin
+                                0xdc34801c86ef5e4d89941b2f2b76d85c
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =2494
+                    Top =3514
+                    ColumnWidth =1590
+                    TabIndex =8
+                    Name ="Curso"
+                    ControlSource ="Curso"
+                    GUID = Begin
+                        0x86e57bd9d23fa14dbd1b726a3a3c214d
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =1328
+                            Top =3514
+                            Width =930
+                            Height =240
+                            BackColor =8421376
+                            Name ="Texto31"
+                            Caption ="Curso :"
+                            GUID = Begin
+                                0xe882883ca1bb5a4c960c9478981e0e21
+                            End
+                        End
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            Height =0
+            BackColor =12632256
+            Name ="PieDelFormulario2"
+            GUID = Begin
+                0x4f85b7c3531a8744a6e9cb752535946a
+            End
+        End
+    End
+End
+CodeBehindForm
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database
+
+Private Sub eliminar_Click()
+On Error GoTo Err_eliminar_Click
+
+
+    DoCmd.DoMenuItem acFormBar, acEditMenu, 8, , acMenuVer70
+    DoCmd.DoMenuItem acFormBar, acEditMenu, 6, , acMenuVer70
+
+Exit_eliminar_Click:
+    Exit Sub
+
+Err_eliminar_Click:
+    MsgBox Err.Description
+    Resume Exit_eliminar_Click
+    
+End Sub

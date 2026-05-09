@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scala - Catálogo de Instrumentos</title>
+    <link rel="stylesheet" href="theme.css">
+    <style>
+        .catalog-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        .form-container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header class="app-header">
+            <h1>Catálogo de Instrumentos</h1>
+            <div class="datetime" id="datetime"></div>
+        </header>
+
+        <main class="app-main">
+            <div class="form-container">
+                <div class="premium-card">
+                    <div class="catalog-header">
+                        <h3 style="margin: 0;">Equipamiento y Clases</h3>
+                        <span class="premium-label" style="margin: 0; color: var(--text-muted); font-size: 11px;">Maestro de Instrumentos</span>
+                    </div>
+
+                    <div class="premium-grid grid-cols-2">
+                        <div class="premium-input-group">
+                            <label class="premium-label">Instrumento (Clave)</label>
+                            <input type="text" id="claveInstrumento" class="premium-input" maxlength="10" placeholder="Ej: PNO, GTR...">
+                        </div>
+                        <div class="premium-input-group">
+                            <label class="premium-label">Descripción</label>
+                            <input type="text" id="descripcionInstrumento" class="premium-input" maxlength="100" placeholder="Nombre del instrumento">
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap;">
+                        <button id="btnNuevo" class="premium-btn btn-primary" style="flex: 1;">NUEVO</button>
+                        <button id="btnGuardar" class="premium-btn btn-save" style="display:none; flex: 1;">GUARDAR</button>
+                        <button id="btnCancelarNuevo" class="premium-btn btn-danger" style="display:none; flex: 1;">CANCELAR</button>
+                        
+                        <button id="btnBuscar" class="premium-btn btn-outline" style="flex: 1;">BUSCAR</button>
+                        <button id="btnBorrar" class="premium-btn btn-danger" disabled style="flex: 1;">BORRAR</button>
+                        <button id="btnTerminar" class="premium-btn btn-danger" style="flex: 1;">TERMINAR</button>
+                    </div>
+
+                    <!-- Paginación anterior eliminada por ser obsoleta con la nueva búsqueda -->
+                </div>
+            </div>
+        </main>
+
+        <footer class="app-footer">
+            <div style="flex-grow: 1;"></div>
+        </footer>
+    </div>
+
+    <!-- Modals (Premium) -->
+    <!-- Modal Busca Clave -->
+    <div id="modalBusqueda" class="modal premium-modal" style="display: none;">
+        <div class="premium-modal-content" style="max-width: 450px;">
+            <div class="premium-modal-header">
+                <h2>Criterio de Búsqueda</h2>
+                <button class="modal-close" onclick="document.getElementById('modalBusqueda').style.display='none'">✕</button>
+            </div>
+            <div class="premium-modal-body" style="padding: 20px;">
+                <div class="premium-input-group">
+                    <label class="premium-label">Instrumento o Descripción</label>
+                    <input type="text" id="inputBusqueda" class="premium-input" placeholder="Ingrese nombre o clave...">
+                </div>
+            </div>
+            <footer class="app-footer" style="padding: 15px 20px; border-top: 1px solid var(--border-color); background: var(--bg-secondary); border-radius: 0 0 var(--radius-lg) var(--radius-lg); justify-content: flex-end; gap: 10px;">
+                <button id="btnCancelarBusqueda" class="premium-btn btn-outline">CANCELAR</button>
+                <button id="btnAceptarBusqueda" class="premium-btn btn-primary">BUSCAR</button>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Modal Lista Resultados -->
+    <div id="modalLista" class="modal premium-modal" style="display: none;">
+        <div class="premium-modal-content" style="max-width: 650px;">
+            <div class="premium-modal-header">
+                <h2>Resultados de Búsqueda</h2>
+                <button class="modal-close" onclick="document.getElementById('modalLista').style.display='none'">✕</button>
+            </div>
+            <div class="premium-modal-body" style="padding: 20px;">
+                <div class="premium-table-container" style="max-height: 350px;">
+                    <table class="premium-table" id="tablaResultados">
+                        <thead>
+                            <tr>
+                                <th>Clave</th>
+                                <th>Descripción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bodyResultados"></tbody>
+                    </table>
+                </div>
+            </div>
+            <footer class="app-footer" style="padding: 15px 20px; border-top: 1px solid var(--border-color); background: var(--bg-secondary); border-radius: 0 0 var(--radius-lg) var(--radius-lg); justify-content: flex-end; gap: 10px;">
+                <button id="btnCancelarLista" class="premium-btn btn-outline">CANCELAR</button>
+                <button id="btnSeleccionar" class="premium-btn btn-primary" disabled>SELECCIONAR</button>
+            </footer>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="utils-inputs.js"></script>
+    <script src="catalogo-instrumentos.js"></script>
+</body>
+
+</html>

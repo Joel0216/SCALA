@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCALA - Recibos Cancelados</title>
+    <!-- We reuse the core styles and specific access-style rules -->
+    <link rel="stylesheet" href="cobros.css?v=2">
+    <style>
+        /* Standalone page adjustments */
+        body {
+            background-color: #f0f3f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .standalone-container {
+            width: 1000px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .cancelled-access-form {
+            width: 100% !important;
+            height: auto !important;
+            min-height: 750px;
+        }
+
+        .page-header {
+            background: #008B8B;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid #000;
+        }
+
+        .page-header h1 {
+            margin: 0;
+            font-size: 1.2rem;
+            border: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="standalone-container">
+        <!-- Optional Page Header -->
+        <div class="page-header">
+            <h1>SISTEMA DE GESTIÓN SCALA - ACADEMIA DE MÚSICA</h1>
+            <div id="datetime"></div>
+        </div>
+
+        <!-- The Main Access Form -->
+        <div class="cancelled-access-form" id="cancelledFormContent">
+            <div class="modal-title-bar" id="cancelledHeader" style="cursor: default;">
+                <span>RECIBOS CANCELADOS (AUDITORÍA)</span>
+                <span style="font-size: 0.8rem; margin-left: auto; margin-right: 15px;">Módulo Independiente</span>
+            </div>
+
+            <!-- Top Header (Access style) -->
+            <div class="access-form-header">
+                <div class="row-flex">
+                    <div class="field-group-access">
+                        <label>Credencial :</label>
+                        <div class="search-with-lupa">
+                            <input type="text" id="cancelledCredInput" placeholder="Buscar Alumno...">
+                            <button class="lupa-btn-access" id="btnLookupCancelledStudent">🔍</button>
+                        </div>
+                    </div>
+                    <div class="field-group-access">
+                        <label>Folios Disponibles:</label>
+                        <select id="cancelledFolioSelect" style="border: 2px inset #808080; background: #fff; padding: 4px; font-size: 14px; min-width: 180px;">
+                            <option value="">-- Seleccionar --</option>
+                        </select>
+                    </div>
+                    <div class="field-group-access" style="flex: 2; justify-content: flex-end;">
+                        <label>FOLIO #:</label>
+                        <input type="text" id="cancelledReceiptFolio" readonly style="width: 80px; text-align: center; font-weight: bold; background: #ffff80;">
+                        <label style="margin-left: 10px;">Fecha Emisión :</label>
+                        <input type="text" id="cancelledDate" readonly style="width: 150px; text-align: center;">
+                        <input type="text" id="cancelledTime" readonly style="width: 100px; text-align: center;">
+                    </div>
+                </div>
+                <div class="row-flex" style="margin-top: 5px;">
+                     <div class="field-group-access" style="flex: 1;">
+                        <label>MOTIVO CANCELADO:</label>
+                        <input type="text" id="cancelledReason" readonly style="width: 100%; font-style: italic; color: red;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Items Table -->
+            <div class="access-table-container">
+                <table class="access-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 10%;">Cred.</th>
+                            <th style="width: 40%;">Operación / Concepto</th>
+                            <th style="width: 12%;">Lista (Neto)</th>
+                            <th style="width: 8%;">Cantidad</th>
+                            <th style="width: 10%;">D.G. (%)</th>
+                            <th style="width: 20%;">Forma de Pago</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cancelledItemsBody">
+                        <!-- Dynamic items -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Bottom Section (Forma de Pago, Totales, Facturado A) -->
+            <div class="access-form-bottom">
+                <div class="access-payment-method">
+                    <fieldset>
+                        <legend>Forma de Pago (Original)</legend>
+                        <div class="payment-method-indicator" id="indEfectivo">Efectivo</div>
+                        <div class="payment-method-indicator" id="indTarjeta">Tarjeta / Cheque</div>
+                        <div class="payment-method-indicator" id="indTransferencia">Transferencia</div>
+                        <div class="payment-method-indicator" id="indAmbos">Ambos</div>
+                    </fieldset>
+                    <div style="margin-top: 20px; text-align: center;">
+                         <img src="Scala logo.png" alt="Scala" style="height: 60px; opacity: 0.5;">
+                    </div>
+                </div>
+
+                <div class="access-totals-billing">
+                    <div class="access-totals-grid">
+                        <div class="access-total-row">
+                            <label>Descuento Global :</label>
+                            <input type="text" id="cancelledTotalDiscountPercent" readonly value="0.00%">
+                            <label>Subtotal :</label>
+                            <input type="text" id="cancelledSubtotal" readonly value="$0.00">
+                        </div>
+                        <div class="access-total-row">
+                            <label>Efectivo Recibido :</label>
+                            <input type="text" id="cancelledPayCash" readonly value="$0.00">
+                            <label>IVA (16%) :</label>
+                            <input type="text" id="cancelledIva" readonly value="$0.00">
+                        </div>
+                        <div class="access-total-row">
+                            <label>Tarjeta / Transf :</label>
+                            <input type="text" id="cancelledPayCard" readonly value="$0.00">
+                            <label>Total NETO :</label>
+                            <input type="text" id="cancelledTotal" readonly value="$0.00" style="background-color: #ffff00; font-weight: bold; color: #000;">
+                        </div>
+                        <div class="access-total-row">
+                            <label>Referencia / Aut :</label>
+                            <input type="text" id="cancelledReference" readonly style="flex: 3;">
+                        </div>
+                    </div>
+
+                    <div class="access-billing-info">
+                        <label>DATOS DE FACTURACIÓN (AUDITORÍA) :</label>
+                        <input type="text" id="cancelledBillingName" readonly placeholder="Nombre del Cliente">
+                        <textarea id="cancelledBillingAddress" readonly rows="3" placeholder="Dirección Fiscal"></textarea>
+                        <input type="text" id="cancelledBillingRfc" readonly placeholder="RFC" style="width: 200px;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="access-form-actions">
+                <button class="access-btn" id="btnSearchCancelled">BUSCAR ALUMNO</button>
+                <button class="access-btn" id="btnPrintCancelled" disabled>IMPRESIÓN RECIBO CANCELADO</button>
+                <button class="access-btn-exit" onclick="terminar()">TERMINAR</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reusing Student Lookup Modal (Generic) -->
+    <div id="modalLookupStudentCancelled" class="modal">
+        <div class="modal-content lookup-modal" style="width: 700px; height: 500px;">
+            <div class="modal-title-bar">
+                <span>SELECCIONAR ALUMNO CON CANCELACIONES</span>
+                <button class="modal-close" onclick="closeDialog('modalLookupStudentCancelled')">X</button>
+            </div>
+            <div class="lookup-search-container">
+                <input type="text" id="lookupStudentInput" class="lookup-search-input" placeholder="Nombre o Credencial...">
+                <button class="lupa-btn-access" onclick="searchStudentsWithCancelled()">🔍</button>
+            </div>
+            <div class="lookup-table-body-container" style="flex: 1;">
+                <table class="lookup-table">
+                    <thead>
+                        <tr>
+                            <th>Credencial</th>
+                            <th>Nombre</th>
+                            <th>No. Cancelaciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lookupStudentBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Print Area -->
+    <div id="receipt-print-area"></div>
+
+    <!-- Scripts -->
+    <script src="supabase-config.js"></script>
+    <script src="utils-inputs.js"></script>
+    <script src="recibos_cancelados.js?v=2"></script>
+</body>
+
+</html>

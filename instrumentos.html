@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instrumentos</title>
+    <link rel="stylesheet" href="instrumentos.css">
+</head>
+
+<body>
+    <div class="main-container">
+        <div class="header-bar">
+            <span>INSTRUMENTOS</span>
+            <div class="close-btn" onclick="terminar()">X</div>
+        </div>
+
+        <div class="form-area">
+            <div class="form-row">
+                <div class="form-label">Instrumento (Clave):</div>
+                <input type="text" id="clave" class="form-input" readonly placeholder="Se autogenerará...">
+            </div>
+            <div class="form-row">
+                <div class="form-label">Descripción:</div>
+                <input type="text" id="descripcion" class="form-input" readonly oninput="generarClave()">
+            </div>
+        </div>
+
+        <!-- Botones Principales -->
+        <div class="buttons-area" id="btnGroupPrincipal">
+            <button class="btn" onclick="nuevo()">Nuevo</button>
+            <button class="btn" onclick="abrirModalBusqueda()">Buscar</button>
+            <button class="btn" onclick="borrar()" id="btnBorrar" disabled>Borrar</button>
+            <button class="btn btn-red" onclick="terminar()">Terminar</button>
+        </div>
+
+        <!-- Botones Edición -->
+        <div class="buttons-area" id="btnGroupEdicion" style="display: none;">
+            <button class="btn" onclick="guardar()">Guardar</button>
+            <button class="btn" onclick="cancelar()">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- Modal de Búsqueda -->
+    <div class="modal-overlay" id="modalBusqueda">
+        <div class="modal-content">
+            <div class="modal-header">
+                Buscar Instrumento
+                <div class="close-btn" onclick="cerrarModalBusqueda()">X</div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-search-bar">
+                    <input type="text" id="inputBusqueda" placeholder="Buscar por Clave o Descripción..."
+                        onkeydown="if(event.key === 'Enter') buscarDatosEmergente()">
+                    <button onclick="buscarDatosEmergente()">Buscar</button>
+                </div>
+                <div class="modal-grid-container">
+                    <table class="modal-table">
+                        <thead>
+                            <tr>
+                                <th>Clave</th>
+                                <th>Descripción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bodyBusqueda">
+                            <!-- JS fill -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="supabase-config.js"></script>
+    <script src="utils-inputs.js"></script>
+    <script src="instrumentos.js"></script>
+</body>
+
+</html>

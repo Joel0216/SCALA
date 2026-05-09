@@ -1,0 +1,625 @@
+Version =19
+VersionRequired =19
+Checksum =-127304130
+Begin Form
+    PopUp = NotDefault
+    Modal = NotDefault
+    AutoCenter = NotDefault
+    DefaultView =0
+    GridX =5
+    GridY =5
+    Width =7937
+    ItemSuffix =44
+    Left =1695
+    Top =1560
+    Right =9915
+    Bottom =6255
+    RecSrcDt = Begin
+        0x7c54fd9f37c5e140
+    End
+    GUID = Begin
+        0x515608dfebdac34b98e7422ca3b3a258
+    End
+    NameMap = Begin
+        0x0acc0e5500000000edaf700a80d6d84da6e35fd6672669150000000062c7e2d0 ,
+        0xb849e34000000000000000004d006f00760069006d00690065006e0074006f00 ,
+        0x7300200064006500200049006e00760065006e0074006100720069006f007300 ,
+        0x000000000000f1b20939f06efc43b5b6bd970ee3831201000000503d70d1b849 ,
+        0xe34038e32702bb9f2a0349006e00760065006e0074006100720069006f007300 ,
+        0x200044006500740061006c006c0065000000000000007fb90b094a835f44bc00 ,
+        0xd65e19727cbb0000000062c7e2d0b849e34038e32702bb9f2a034d006f007600 ,
+        0x69006d00690065006e0074006f007300200064006500200049006e0076006500 ,
+        0x6e0074006100720069006f0073002000440065007400000000000000758de256 ,
+        0xb9b1e5448123b9404e15b49d070000007fb90b094a835f44bc00d65e19727cbb ,
+        0x4e0075006d00650072006f0020006400650020004d006f00760069006d006900 ,
+        0x65006e0074006f00000000000000ed8fab6f0de6914f9a972cd49ca90f570700 ,
+        0x0000edaf700a80d6d84da6e35fd6672669154e0075006d00650072006f002000 ,
+        0x6400650020004d006f00760069006d00690065006e0074006f00000000000000 ,
+        0x7539c593e834354ab5ed90c9401a2bfe07000000edaf700a80d6d84da6e35fd6 ,
+        0x672669155400690070006f0020006400650020004d006f00760069006d006900 ,
+        0x65006e0074006f00000000000000805bb13d813a7b4dbf295c4da33e1c760000 ,
+        0x000062c7e2d0b849e340000000000000000043006c0061007600650073002000 ,
+        0x4d006f00760069006d00690065006e0074006f00730020006400650020004900 ,
+        0x6e00760065006e0074006100720069006f0073000000000000007c1a5f5d1b73 ,
+        0x284ea318e07f1892398307000000805bb13d813a7b4dbf295c4da33e1c764300 ,
+        0x6c0061007600650020006400650020006d006f00760069006d00690065006e00 ,
+        0x74006f000000000000009b86bd0f1fa2f842918ab39a5069bc4d07000000805b ,
+        0xb13d813a7b4dbf295c4da33e1c76440065007300630072006900700063006900 ,
+        0x6f006e002000640065006c0020004d006f00760069006d00690065006e007400 ,
+        0x6f000000000000004a57eb7c26685241aff03583783b67a207000000edaf700a ,
+        0x80d6d84da6e35fd6672669154600650063006800610020006400650020004d00 ,
+        0x6f00760069006d00690065006e0074006f00000000000000fa640ff2a120c847 ,
+        0xa0e3b1ff3e867f0d06000000515608dfebdac34b98e7422ca3b3a25849006e00 ,
+        0x760065006e0074006100720069006f007300200044006500740061006c006c00 ,
+        0x65000000000000002657f9fff80c2545a1452417cf97846501000000bca070d1 ,
+        0xb849e3404c9513005d50033049006e00760065006e0074006100720069006f00 ,
+        0x730020004400610074006f00730020004100720074006900630075006c006f00 ,
+        0x000000000000158a3c338aba204e864840a50002beaf000000008de930d1b849 ,
+        0xe3404c9513005d5003304100720074006900630075006c006f00730000000000 ,
+        0x0000da4098ee2340d34f9cf5e4fe6d08002207000000158a3c338aba204e8648 ,
+        0x40a50002beaf43006c0061007600650000000000000000000000000000000000 ,
+        0x0000000000000c000000020000000000000000000000000000000000
+    End
+    RecordSource ="Movimientos de Inventarios"
+    Caption ="Movimientos de Inventarios"
+    OnOpen ="[Event Procedure]"
+    MenuBar ="Barra Main"
+    Begin
+        Begin Label
+            TextAlign =3
+            FontWeight =700
+            BackColor =12632256
+        End
+        Begin Rectangle
+            SpecialEffect =2
+            Width =850
+            Height =850
+        End
+        Begin CommandButton
+            TextFontFamily =2
+            Width =1701
+            Height =283
+        End
+        Begin OptionButton
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin CheckBox
+            AddColon = NotDefault
+            SpecialEffect =2
+            LabelAlign =3
+            Width =187
+            Height =187
+            LabelX =-236
+        End
+        Begin TextBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin ListBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =1417
+            LabelX =-236
+        End
+        Begin ComboBox
+            SpecialEffect =2
+            LabelAlign =3
+            Width =1701
+            Height =255
+            LabelX =-236
+        End
+        Begin Subform
+            Width =1701
+            Height =1701
+        End
+        Begin FormHeader
+            Height =558
+            BackColor =12632256
+            Name ="EncabezadoDelFormulario1"
+            EventProcPrefix ="EncabezadoDelFormula"
+            GUID = Begin
+                0x897215e22bc8894f991c1d89c2288b74
+            End
+            Begin
+                Begin Label
+                    BackStyle =0
+                    OverlapFlags =93
+                    TextAlign =1
+                    Left =488
+                    Top =153
+                    Width =3900
+                    Height =405
+                    FontSize =14
+                    ForeColor =8355711
+                    Name ="Texto12"
+                    Caption ="Movimientos de Inventarios"
+                    GUID = Begin
+                        0x5f1952fd7e755e418879e5d76c976a6d
+                    End
+                End
+                Begin Label
+                    BackStyle =0
+                    OverlapFlags =215
+                    TextAlign =1
+                    Left =452
+                    Top =113
+                    Width =3900
+                    Height =405
+                    FontSize =14
+                    ForeColor =16777215
+                    Name ="Texto13"
+                    Caption ="Movimientos de Inventarios"
+                    GUID = Begin
+                        0xd6f7b8d8e856534fb7b5a749a0ffe291
+                    End
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    OverlapFlags =85
+                    Left =5329
+                    Top =113
+                    Width =2151
+                    Name ="Campo33"
+                    ControlSource ="=Date()"
+                    GUID = Begin
+                        0x1f3d58c3acc9a042a8cee37c65652060
+                    End
+                End
+            End
+        End
+        Begin Section
+            CanGrow = NotDefault
+            Height =4988
+            BackColor =12632256
+            Name ="Detalle0"
+            GUID = Begin
+                0x60a1ff42623aee4a87f85f11d8d464ea
+            End
+            Begin
+                Begin TextBox
+                    DecimalPlaces =0
+                    OverlapFlags =85
+                    Left =2373
+                    Top =113
+                    Width =1005
+                    Name ="Numero de Movimiento"
+                    ControlSource ="Numero de Movimiento"
+                    EventProcPrefix ="Numero_de_Movimiento"
+                    GUID = Begin
+                        0x5872302b5d604a45ac2c6ac9acfd88a3
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =113
+                            Top =113
+                            Width =2147
+                            Height =240
+                            Name ="Texto15"
+                            Caption ="Numero de Movimiento:"
+                            GUID = Begin
+                                0x90ce4b4a490f48488c2a4aabc56589c5
+                            End
+                        End
+                    End
+                End
+                Begin ComboBox
+                    OverlapFlags =85
+                    ColumnCount =2
+                    ListWidth =5560
+                    Left =2398
+                    Top =453
+                    Width =895
+                    TabIndex =2
+                    ColumnInfo ="\"\";\"\";\"\";\"\";\"10\";\"4\""
+                    GUID = Begin
+                        0xe14eb2a674ca004da72384a4526c762d
+                    End
+                    Name ="Tipo de Movimiento"
+                    ControlSource ="Tipo de Movimiento"
+                    RowSourceType ="Table/Query"
+                    RowSource ="Select [Clave de movimiento],[Descripcion del Movimiento] From [Claves Movimient"
+                        "os de Inventarios];"
+                    ColumnWidths ="1440;3870"
+                    EventProcPrefix ="Tipo_de_Movimiento"
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =340
+                            Top =453
+                            Width =1935
+                            Height =240
+                            Name ="Texto26"
+                            Caption ="Tipo de Movimiento :"
+                            GUID = Begin
+                                0x9a12eba01c87104db080447f1855b251
+                            End
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    Left =5775
+                    Top =113
+                    TabIndex =1
+                    Name ="Fecha de Movimiento"
+                    ControlSource ="Fecha de Movimiento"
+                    Format ="Short Date"
+                    EventProcPrefix ="Fecha_de_Movimiento"
+                    GUID = Begin
+                        0xb154535a4f4c1e448ac6ce0831fda736
+                    End
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =3514
+                            Top =113
+                            Width =2025
+                            Height =240
+                            Name ="Texto28"
+                            Caption ="Fecha del movimiento :"
+                            GUID = Begin
+                                0x733bfcc995037b479e0f22ec80563e43
+                            End
+                        End
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =6236
+                    Top =4308
+                    Width =1125
+                    Height =570
+                    TabIndex =4
+                    ForeColor =255
+                    Name ="B_term_Inventarios"
+                    Caption ="Terminar"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0xc88f0b0a0ed17045925e17c0534a4bdc
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =793
+                    Top =4308
+                    Width =1131
+                    Height =576
+                    TabIndex =6
+                    Name ="B_Srch_Movto"
+                    Caption ="Buscar"
+                    OnClick ="M_Varios Catalogos.Buscar Movimiento de Inventario"
+                    GUID = Begin
+                        0x61b1eb81011cf54a82086afd7db96cd1
+                    End
+                End
+                Begin TextBox
+                    Visible = NotDefault
+                    OverlapFlags =85
+                    Left =7135
+                    Top =453
+                    Width =336
+                    TabIndex =7
+                    Name ="Enlace Clave"
+                    ControlSource ="=[Inventarios Detalle].Form![Clave de Articulo]"
+                    EventProcPrefix ="Enlace_Clave"
+                    GUID = Begin
+                        0x7f9a86966621214380a77eefd510d106
+                    End
+                End
+                Begin Subform
+                    OverlapFlags =85
+                    Left =1700
+                    Top =907
+                    Width =4545
+                    Height =1590
+                    TabIndex =3
+                    Name ="Inventarios Detalle"
+                    SourceObject ="Form.Inventarios Detalle"
+                    LinkChildFields ="Numero de Movimiento"
+                    LinkMasterFields ="Numero de Movimiento"
+                    EventProcPrefix ="Inventarios_Detalle"
+                    GUID = Begin
+                        0xfa640ff2a120c847a0e3b1ff3e867f0d
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =2154
+                    Top =4308
+                    Width =1140
+                    Height =570
+                    TabIndex =5
+                    Name ="B_add_Movto"
+                    Caption ="Nuevo"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0x02d21c3d363df24c9a3fcb4ab7b61870
+                    End
+                End
+                Begin Subform
+                    Locked = NotDefault
+                    OverlapFlags =85
+                    Left =340
+                    Top =2607
+                    Width =7260
+                    Height =1545
+                    TabIndex =8
+                    Name ="Articulos"
+                    SourceObject ="Form.Inventarios Datos Articulo"
+                    LinkChildFields ="Clave"
+                    LinkMasterFields ="Enlace Clave"
+                    GUID = Begin
+                        0xba3a92bf4284fc4e91b51bbf543248a9
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =3515
+                    Top =4308
+                    Width =1131
+                    Height =576
+                    TabIndex =9
+                    Name ="B_del_Movto"
+                    Caption ="Borra Todo"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0xb29b399d0bd4fe42ad49e55ecb63c57a
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =4875
+                    Top =4308
+                    Width =1146
+                    Height =576
+                    TabIndex =10
+                    Name ="B_Del_Oper"
+                    Caption ="Borra Operación"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0x4ff6a4f63f5cf141b258bf040bf7c3c3
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            Height =0
+            BackColor =12632256
+            Name ="PieDelFormulario2"
+            GUID = Begin
+                0xa2470435dd68f54aa3ae94326e50535e
+            End
+        End
+    End
+End
+CodeBehindForm
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database   'Usar orden de base de datos en comparaciones de cadenas
+Dim db As Database, T_Art As Recordset, T_Tmov As Recordset, T_Inv As Recordset
+Dim T_Hdr As Recordset
+Dim movto, Si_suma
+
+Private Sub B_add_Movto_Click()
+On Error GoTo Err_B_add_Movto_Click
+
+
+    DoCmd.GoToRecord , , A_NEWREC
+    DoCmd.GoToControl "Numero de Movimiento"
+
+Exit_B_add_Movto_Click:
+    Exit Sub
+
+Err_B_add_Movto_Click:
+    MsgBox Error$
+    Resume Exit_B_add_Movto_Click
+    
+End Sub
+
+Private Sub B_del_Movto_Click()
+On Error GoTo Err_Del_Movto
+    x = InputBox("Seguro que desea borrar este movimiento ? <S/N> ")
+    If x = "S" Then
+       Set db = CurrentDb()
+       Set T_Hdr = db.OpenRecordset("Movimientos de Inventarios")
+       Set T_Inv = db.OpenRecordset("Movimientos de Inventarios Det")
+       Set T_Tmov = db.OpenRecordset("Claves Movimientos de Inventarios")
+       movto = [Tipo de Movimiento]
+       T_Tmov.Index = "PrimaryKey"
+       T_Tmov.Seek "=", movto
+       If Not T_Tmov.NoMatch Then
+          Si_suma = T_Tmov!suma
+       End If
+       Set T_Art = db.OpenRecordset("Articulos")
+       T_Inv.Index = "Numero de Movimiento"
+       T_Inv.Seek "=", [Numero de Movimiento]
+       If Not T_Inv.NoMatch Then
+          Do While T_Inv![Numero de Movimiento] = [Numero de Movimiento]
+             T_Art.Index = "PrimaryKey"
+             T_Art.Seek "=", T_Inv![Clave de Articulo]
+             If Not T_Art.NoMatch Then
+                If Si_suma Then
+                   T_Art.Edit
+                   T_Art!Stock = T_Art!Stock - T_Inv!cantidad
+                   T_Art.Update
+                Else
+                   T_Art.Edit
+                   T_Art!Stock = T_Art!Stock + T_Inv!cantidad
+                   T_Art.Update
+                End If
+             Else
+                 MsgBox "No encuentro la clave"
+             End If
+             T_Inv.Delete
+             T_Inv.MoveNext
+          Loop
+       End If
+       T_Hdr.Index = "PrimaryKey"
+       T_Hdr.Seek "=", [Numero de Movimiento]
+       If Not T_Hdr.NoMatch Then
+          T_Hdr.Delete
+       End If
+       Beep
+       MsgBox "Movimiento de Inventario Cancelado"
+       DoCmd.GoToControl "Numero de Movimiento"
+       DoCmd.Requery
+    End If
+
+Exit_Del_Movto:
+     Exit Sub
+Err_Del_Movto:
+     MsgBox Error$
+     Resume Exit_Del_Movto
+End Sub
+
+Private Sub B_Del_Oper_Click()
+On Error GoTo Err_Del_Oper
+    x = InputBox("Seguro que desea borrar la operación señalada ? <S/N>")
+    If x = "S" Then
+       Set db = CurrentDb()
+       Set T_Inv = db.OpenRecordset("Movimientos de Inventarios Det")
+       Set T_Tmov = db.OpenRecordset("Claves Movimientos de Inventarios")
+       movto = [Tipo de Movimiento]
+       T_Tmov.Index = "PrimaryKey"
+       T_Tmov.Seek "=", movto
+       If Not T_Tmov.NoMatch Then
+          Si_suma = T_Tmov!suma
+       End If
+       Set T_Art = db.OpenRecordset("Articulos")
+       T_Inv.Index = "Numero de Movimiento"
+       T_Inv.Seek "=", [Numero de Movimiento]
+       If Not T_Inv.NoMatch Then
+          Do While T_Inv![Numero de Movimiento] = [Numero de Movimiento]
+             If T_Inv![Clave de Articulo] = [Enlace Clave] Then
+                T_Art.Index = "PrimaryKey"
+                T_Art.Seek "=", T_Inv![Clave de Articulo]
+                If Not T_Art.NoMatch Then
+                   If Si_suma Then
+                      T_Art.Edit
+                      T_Art!Stock = T_Art!Stock - T_Inv!cantidad
+                      T_Art.Update
+                   Else
+                      T_Art.Edit
+                      T_Art!Stock = T_Art!Stock + T_Inv!cantidad
+                      T_Art.Update
+                   End If
+                End If
+                T_Inv.Delete
+                Exit Do
+             End If
+             T_Inv.MoveNext
+          Loop
+       End If
+       Beep
+       MsgBox "Operación de Inventario Cancelado"
+       DoCmd.GoToControl "Inventarios Detalle"
+       DoCmd.Requery
+    End If
+
+Exit_Del_Oper:
+     Exit Sub
+Err_Del_Oper:
+     MsgBox Error$
+     Resume Exit_Del_Oper
+
+End Sub
+
+Private Sub B_term_Inventarios_Click()
+On Error GoTo Err_B_term_Inventarios_Click
+
+
+    DoCmd.Close
+
+Exit_B_term_Inventarios_Click:
+    Exit Sub
+
+Err_B_term_Inventarios_Click:
+    MsgBox Error$
+    Resume Exit_B_term_Inventarios_Click
+    
+End Sub
+
+Private Sub Botón35_Click()
+On Error GoTo Err_Botón35_Click
+
+
+    DoCmd.DoMenuItem A_FORMBAR, A_EDITMENU, 10, , A_MENU_VER20
+
+Exit_Botón35_Click:
+    Exit Sub
+
+Err_Botón35_Click:
+    MsgBox Error$
+    Resume Exit_Botón35_Click
+    
+End Sub
+
+Private Sub Botón42_Click()
+On Error GoTo Err_Botón42_Click
+
+
+    DoCmd.DoMenuItem A_FORMBAR, A_EDITMENU, 10, , A_MENU_VER20
+
+Exit_Botón42_Click:
+    Exit Sub
+
+Err_Botón42_Click:
+    MsgBox Error$
+    Resume Exit_Botón42_Click
+    
+End Sub
+
+Private Sub Botón43_Click()
+On Error GoTo Err_Botón43_Click
+
+
+    DoCmd.DoMenuItem A_FORMBAR, A_EDITMENU, 10, , A_MENU_VER20
+
+Exit_Botón43_Click:
+    Exit Sub
+
+Err_Botón43_Click:
+    MsgBox Error$
+    Resume Exit_Botón43_Click
+    
+End Sub
+
+Private Sub Form_Open(Cancel As Integer)
+Dim db As Database, FLogin As Form, TUser As Recordset, Forma As Form
+   Set db = CurrentDb()
+   Set Forma = Forms!Inventarios
+   Set FLogin = Forms!login
+   Set TUser = db.OpenRecordset("Usuarios")
+   TUser.Index = "PrimaryKey"
+   TUser.Seek "=", FLogin!UserID
+   If Not TUser.NoMatch Then
+      If IsNull(TUser!A_MI) Or TUser!A_MI = "N" Then
+         MsgBox "El usuario no tiene privilegios de acceso"
+         DoCmd.CancelEvent
+      Else
+         If TUser!A_MI = "C" Then
+            Forma.AllowEditing = False
+            Forma.DefaultEditing = 3
+            [B_add_Movto].Enabled = False
+            [B_del_Movto].Enabled = False
+            [B_Del_Oper].Enabled = False
+         End If
+      End If
+   Else
+      MsgBox "El usuario no tiene clave de acceso registrada"
+      DoCmd.CancelEvent
+   End If
+
+End Sub
