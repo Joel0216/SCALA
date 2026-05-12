@@ -69,8 +69,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         });
         
-        // Trigger initial state
+    // Trigger initial state
+    if (reporteSelect) {
         reporteSelect.dispatchEvent(new Event('change'));
+    }
+
+    // Aplicar protección de seguridad
+    if (typeof SessionManager !== 'undefined') {
+        SessionManager.protectPage('Reportes');
     }
 });
 

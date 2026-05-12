@@ -25,4 +25,12 @@ function actualizarFechaHora() {
 setInterval(actualizarFechaHora, 1000);
 
 // Inicializar
-actualizarFechaHora();
+document.addEventListener('DOMContentLoaded', () => {
+    actualizarFechaHora();
+    
+    // Aplicar protección de seguridad
+    if (typeof SessionManager !== 'undefined') {
+        const section = document.body.getAttribute('data-section') || 'Exámenes';
+        SessionManager.protectPage(section);
+    }
+});

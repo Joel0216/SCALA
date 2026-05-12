@@ -26,6 +26,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Configurar event listeners
     setupEventListeners();
 
+    // Aplicar protección de seguridad
+    if (typeof SessionManager !== 'undefined') {
+        const section = document.body.getAttribute('data-section') || 'Caja';
+        SessionManager.protectPage(section);
+    }
+
     console.log('Inicialización de caja completa');
 });
 

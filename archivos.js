@@ -19,5 +19,13 @@ function updateDateTime() {
 }
 
 // Initialize
-updateDateTime();
-setInterval(updateDateTime, 1000);
+document.addEventListener('DOMContentLoaded', () => {
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
+    
+    // Aplicar protección de seguridad
+    if (typeof SessionManager !== 'undefined') {
+        const section = document.body.getAttribute('data-section') || 'Archivos';
+        SessionManager.protectPage(section);
+    }
+});

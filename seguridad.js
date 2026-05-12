@@ -42,6 +42,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('divAcademiaStatic').style.display = 'block';
         document.getElementById('viewAcademia').value = currentUser.org_nombre || 'Sede Principal';
     }
+
+    // Aplicar protección de seguridad
+    if (typeof SessionManager !== 'undefined') {
+        SessionManager.protectPage('Seguridad');
+    }
 });
 
 function setupUI() {
@@ -419,9 +424,13 @@ async function guardarRestricciones() {
     const selects = document.querySelectorAll('.perm-select-mini');
     const batch = [];
 
+    const user = g_usuarios.find(u => u.id === userId);
+    const orgId = user ? user.organizacion_id : null;
+
     selects.forEach(sel => {
         batch.push({
             usuario_id: userId,
+            organizacion_id: orgId, // Guardar la organización del usuario restringido
             seccion: sel.getAttribute('data-section'),
             permiso: sel.value
         });
@@ -429,7 +438,7 @@ async function guardarRestricciones() {
 
     try {
         // Upsert masivo (requiere unique constraint en usuario_id, seccion)
-        const { error } = await SessionManager.applyIsolation(db.from('permisos_seguridad').upsert(batch, { onConflict: 'usuario_id, seccion' }));
+        const { error } = await db.from('permisos_seguridad').upsert(batch, { onConflict: 'usuario_id, seccion' });
         
         if (error) throw error;
         alert('Permisos actualizados correctamente');

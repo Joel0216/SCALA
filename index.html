@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="theme.css">
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body data-section="Menu Principal">
     <div class="container">
         <!-- Header -->
         <header class="app-header" style="display: flex; flex-direction: column; align-items: center; padding: 20px 40px; background: var(--primary-gradient);">
@@ -25,12 +25,12 @@
         <main>
             <div class="menu-grid">
                 <!-- Archivos Button -->
-                <button class="menu-btn top-left" onclick="window.location.href='archivos.html'">
+                <button class="menu-btn top-left" data-section="ARCHIVOS" onclick="window.location.href='archivos.html'">
                     ARCHIVOS
                 </button>
 
                 <!-- Reportes Button -->
-                <button class="menu-btn top-right" onclick="window.location.href='reportes.html'">
+                <button class="menu-btn top-right" data-section="REPORTES" onclick="window.location.href='reportes.html'">
                     REPORTES
                 </button>
 
@@ -40,13 +40,13 @@
                 </div>
 
                 <!-- Seguridad Button -->
-                <button class="menu-btn middle-left" onclick="window.location.href='seguridad.html'">
+                <button class="menu-btn middle-left" data-section="SEGURIDAD" onclick="window.location.href='seguridad.html'">
                     SEGURIDAD
                 </button>
 
 
                 <!-- Caja Button -->
-                <button class="menu-btn bottom-center" onclick="window.location.href='caja.html'">
+                <button class="menu-btn bottom-center" data-section="CAJA" onclick="window.location.href='caja.html'">
                     CAJA
                 </button>
             </div>
@@ -86,6 +86,11 @@
             if (welcomeEl) welcomeEl.textContent = `Hola, ${user.nombre}`;
             
             // SessionManager.loadBranding() se ejecuta automáticamente por session-manager.js
+            
+            // Aplicar protección de seguridad (ocultar botones de módulos sin acceso)
+            if (typeof SessionManager !== 'undefined') {
+                SessionManager.protectPage('Menu Principal');
+            }
         });
     </script>
 </body>

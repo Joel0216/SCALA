@@ -211,9 +211,17 @@ window.confirmar = mostrarConfirm;
 window.preguntar = mostrarPrompt;
 window.alerta = mostrarAlerta;
 
-// Función para habilitar inputs (por si acaso)
+// Función para habilitar inputs (SOLO si no estamos en modo solo consulta)
 function habilitarInputs() {
+    // Si el SessionManager indica que estamos en modo Solo Consulta, NO habilitar nada
+    if (typeof SessionManager !== 'undefined' && SessionManager.isReadOnly) {
+        return;
+    }
+
     document.querySelectorAll('input:not([readonly]), select, textarea:not([readonly]), button').forEach(el => {
+        // No habilitar botones que el SessionManager ha ocultado explícitamente
+        if (el.style.display === 'none') return;
+        
         el.disabled = false;
         el.style.pointerEvents = 'auto';
     });
