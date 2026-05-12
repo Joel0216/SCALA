@@ -53,7 +53,7 @@ async function cargarDatos(pagina = 1) {
         const to = from + g_rowsPorPagina - 1;
 
         const term = document.getElementById('buscarInput')?.value.trim() || '';
-        let query = client.from('alumnos').select('*', { count: 'exact' }).eq('activo', true);
+        let query = SessionManager.applyIsolation(client.from('alumnos').select('*', { count: 'exact' })).eq('activo', true);
 
         if (term) {
             if (/^\d+$/.test(term)) {

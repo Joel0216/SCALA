@@ -117,8 +117,8 @@ function syncFiltersUI() {
 }
 
 async function fetchReceiptsByRange(startDate, endDate) {
-    const q = db
-        .from('recibos')
+    const q = SessionManager.applyIsolation(db
+        .from('recibos'))
         .select('*')
         .gte('fecha', startDate)
         .lte('fecha', endDate)
@@ -131,8 +131,8 @@ async function fetchReceiptsByRange(startDate, endDate) {
 
 async function fetchDetailsByReceiptIds(ids) {
     if (!ids.length) return [];
-    const { data, error } = await db
-        .from('recibos_detalle')
+    const { data, error } = await SessionManager.applyIsolation(db
+        .from('recibos_detalle'))
         .select('*')
         .in('recibo_id', ids)
         .order('created_at', { ascending: true });
@@ -377,7 +377,7 @@ async function generar() {
 
 async function fetchDatesWithOperations() {
     try {
-        const { data, error } = await db.from('recibos').select('fecha');
+        const { data, error } = await SessionManager.applyIsolation(db.from('recibos')).select('fecha');
         if (error) throw error;
         datesWithOperations = new Set(data.map(r => r.fecha));
     } catch (e) {

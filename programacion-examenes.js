@@ -68,11 +68,11 @@ async function cargarCatalogos() {
     if (!supabase) return;
     try {
         // Cargar maestros
-        const { data: maestros } = await supabase.from('maestros').select('id, nombre, clave').eq('activo', true).order('nombre');
+        const { data: maestros } = await SessionManager.applyIsolation(supabase.from('maestros').select('id, nombre, clave')).eq('activo', true).order('nombre');
         g_maestros = maestros || [];
 
         // Cargar Salones
-        const { data: salones, error: errorSalones } = await supabase.from('salones').select('numero').order('numero');
+        const { data: salones, error: errorSalones } = await SessionManager.applyIsolation(supabase.from('salones').select('numero')).order('numero');
         if (!errorSalones && salonSelect) {
             salonSelect.innerHTML = '<option value="">Seleccione...</option>';
             salones.forEach(s => {
@@ -84,7 +84,7 @@ async function cargarCatalogos() {
         }
 
         // Cargar grupos con join a cursos y maestros
-        const { data: grupos } = await supabase.from('grupos').select('id, clave, maestro_id, maestros(id,nombre,clave), cursos(curso)').order('clave');
+        const { data: grupos } = await SessionManager.applyIsolation(supabase.from('grupos').select('id, clave, maestro_id, maestros(id,nombre,clave), cursos(curso)')).order('clave');
         g_grupos = grupos || [];
 
     } catch (error) {
@@ -97,13 +97,11 @@ async function cargarCatalogos() {
 async function cargarExamenes() {
     if (!supabase) return;
     try {
-        const { data: dataMaestros } = await supabase.from('maestros').select('id, nombre, clave');
+        const { data: dataMaestros } = await SessionManager.applyIsolation(supabase.from('maestros').select('id, nombre, clave'));
         const mapMaestros = {};
         if (dataMaestros) dataMaestros.forEach(m => mapMaestros[m.id] = { nombre: m.nombre, clave: m.clave });
 
-        const { data, error } = await supabase
-            .from('programacion_examenes')
-            .select('id, clave_examen, fecha, hora, salon_id, maestro_base_id, examinador1_id, examinador2_id, grupo_id, clave_acceso, monto, grupos(id,clave,cursos(curso))')
+        const { data, error } = await SessionManager.applyIsolation(supabase.from('programacion_examenes').select('id, clave_examen, fecha, hora, salon_id, maestro_base_id, examinador1_id, examinador2_id, grupo_id, clave_acceso, monto, grupos(id,clave,cursos(curso))'))
             .order('clave_examen');
         if (error) throw error;
 
@@ -211,7 +209,7 @@ async function nuevoExamen() {
         claveInput.value = 'Generando...';
         try {
             if (supabase) {
-                const { data } = await supabase.from('programacion_examenes').select('clave_examen').order('clave_examen', { ascending: false }).limit(1);
+                const { data } = await SessionManager.applyIsolation(supabase.from('programacion_examenes').select('clave_examen')).order('clave_examen', { ascending: false }).limit(1);
                 let nextNum = 1;
                 if (data && data.length > 0) {
                     const match = data[0].clave_examen.match(/EX-(\d+)/);
@@ -265,7 +263,7 @@ async function guardarExamen() {
     // Buscar IDs de maestros si solo tenemos nombre
     const buscarMaestroId = async (nombre) => {
         if (!nombre || !supabase) return null;
-        const { data } = await supabase.from('maestros').select('id').eq('nombre', nombre).limit(1);
+        const { data } = await SessionManager.applyIsolation(supabase.from('maestros')).select('id').eq('nombre', nombre).limit(1);
         return data && data[0] ? data[0].id : null;
     };
 
@@ -287,15 +285,16 @@ async function guardarExamen() {
     };
 
     try {
-        const { data: existente } = await supabase.from('programacion_examenes').select('id, clave_acceso').eq('clave_examen', clave).limit(1);
+        const { data: existente } = await SessionManager.applyIsolation(supabase.from('programacion_examenes').select('id, clave_acceso')).eq('clave_examen', clave).limit(1);
         if (existente && existente.length > 0) {
             // Actualizar (no cambiar clave_acceso si ya existe)
-            const { error } = await supabase.from('programacion_examenes').update(examenData).eq('clave_examen', clave);
+            const { error } = await SessionManager.applyIsolation(supabase.from('programacion_examenes').update(examenData)).eq('clave_examen', clave);
             if (error) throw error;
             alert('✅ Examen actualizado correctamente');
         } else {
             // Insertar con clave de acceso nueva
             examenData.clave_acceso = generarClaveAcceso();
+            examenData.organizacion_id = SessionManager.getCurrentUser()?.organizacion_id;
             const { data: newExam, error } = await supabase.from('programacion_examenes').insert([examenData]).select();
             if (error) throw error;
             
@@ -303,8 +302,8 @@ async function guardarExamen() {
 
             // VINCULAR ALUMNOS DEL GRUPO AUTOMÁTICAMENTE
             if (grupoId) {
-                const { data: alumnosGrupo } = await supabase
-                    .from('alumno_grupos')
+                const { data: alumnosGrupo } = await SessionManager.applyIsolation(supabase
+                    .from('alumno_grupos'))
                     .select('alumno_id')
                     .eq('grupo_clave', grupoInput.value) // Usar grupo_clave que es la columna real en la DB
                     .or('estado.eq.Activo,estado.eq.activo');
@@ -313,7 +312,8 @@ async function guardarExamen() {
                     const insertData = alumnosGrupo.map(a => ({
                         examen_id: examId,
                         alumno_id: a.alumno_id,
-                        pagado: false
+                        pagado: false,
+                        organizacion_id: SessionManager.getCurrentUser()?.organizacion_id
                     }));
                     await supabase.from('examen_alumnos').insert(insertData);
                     console.log(`✓ Vinculados ${alumnosGrupo.length} alumnos al examen`);
@@ -338,7 +338,7 @@ async function borrarExamen() {
     if (!confirm(`¿Está seguro de eliminar el examen ${ex.clave_examen}? Esta acción borrará también el registro de los alumnos.`)) return;
 
     try {
-        const { error } = await supabase.from('programacion_examenes').delete().eq('id', ex.id);
+        const { error } = await SessionManager.applyIsolation(supabase.from('programacion_examenes').delete()).eq('id', ex.id);
         if (error) throw error;
         alert('Examen eliminado correctamente');
         await cargarExamenes();
@@ -519,7 +519,7 @@ document.getElementById('btnBorrar')?.addEventListener('click', async () => {
     if (!clave) return;
     if (await mostrarConfirm('¿Eliminar este examen y toda su programación?')) {
         try {
-            const { error } = await supabase.from('programacion_examenes').delete().eq('clave_examen', clave);
+            const { error } = await SessionManager.applyIsolation(supabase.from('programacion_examenes').delete()).eq('clave_examen', clave);
             if (error) throw error;
             await mostrarAlerta('Eliminado correctamente');
             await cargarExamenes();

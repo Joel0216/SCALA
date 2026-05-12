@@ -51,8 +51,8 @@ async function cargarCatalogos() {
     try {
         const client = await window.waitForSupabase(30000);
         const [{ data: cursos }, { data: maestros }] = await Promise.all([
-            client.from('cursos').select('id, curso, nombre, clave, grado').order('curso'),
-            client.from('maestros').select('id, nombre').order('nombre')
+            SessionManager.applyIsolation(client.from('cursos').select('id, curso, nombre, clave, grado')).order('curso'),
+            SessionManager.applyIsolation(client.from('maestros').select('id, nombre')).order('nombre')
         ]);
 
         g_cursos = cursos || [];
@@ -85,7 +85,7 @@ async function cargarDatos(pagina = 1) {
         const gradoFiltro = params.get('grado');
 
         const term = document.getElementById('mainSearch')?.value.trim() || '';
-        let query = client.from('grupos').select('*', { count: 'exact' });
+        let query = SessionManager.applyIsolation(client.from('grupos').select('*', { count: 'exact' }));
 
         if (gradoFiltro) {
             query = query.eq('grado', gradoFiltro);

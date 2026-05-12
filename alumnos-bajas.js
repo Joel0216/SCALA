@@ -67,7 +67,7 @@ async function cargarGrupos() {
     if (!db) return;
 
     try {
-        var result = await db.from('grupos').select('id, clave, curso_id, cursos(curso)').order('clave');
+        var result = await SessionManager.applyIsolation(db.from('grupos').select('id, clave, curso_id, cursos(curso)')).order('clave');
         if (result.error) {
             console.error('Error cargando grupos:', result.error);
             return;
@@ -95,7 +95,7 @@ async function cargarGrupos() {
 
 async function cargarMotivos() {
     try {
-        const { data, error } = await SessionManager.applyIsolation(db.from('motivos_baja')).select('*').eq('activo', true).order('clave');
+        const { data, error } = await SessionManager.applyIsolation(db.from('motivos_baja').select('*')).eq('activo', true).order('clave');
         if (error) {
             console.error('Error cargando motivos:', error);
             // Usar datos por defecto
@@ -341,7 +341,7 @@ async function cargarTablaReingreso(alumnoId) {
         }
 
         for (const g of data) {
-            const { data: gData } = await SessionManager.applyIsolation(db.from('grupos')).select('cupo, alumnos_inscritos').eq('clave', g.grupo_clave).single();
+            const { data: gData } = await SessionManager.applyIsolation(db.from('grupos').select('cupo, alumnos_inscritos')).eq('clave', g.grupo_clave).single();
             let isFull = false;
             if (gData && (gData.alumnos_inscritos || 0) >= (gData.cupo || 0)) {
                 isFull = true;
@@ -503,7 +503,7 @@ async function confirmarReingresoAvanzado() {
 
         if (!agId) {
             // Verificar si ya existe un registro para este alumno y grupo (evitar duplicado)
-            const { data: existAg } = await db.from('alumno_grupos')
+            const { data: existAg } = await SessionManager.applyIsolation(db.from('alumno_grupos'))
                 .select('id')
                 .eq('alumno_id', alumnoSeleccionado.id)
                 .eq('grupo_clave', nuevoGrupoClave)
@@ -514,14 +514,14 @@ async function confirmarReingresoAvanzado() {
 
         if (agId) {
             // Actualizar registro existente (Cambio de INSERT a UPDATE)
-            const { error } = await db.from('alumno_grupos').update({
+            const { error } = await SessionManager.applyIsolation(db.from('alumno_grupos').update({
                 estado: 'Activo',
                 fecha_baja: null,
                 motivo_baja: null,
                 observaciones_baja: null,
                 fecha_inscripcion: fechaHoy,
                 observaciones_reingreso: observaciones || 'REINGRESO ACTUALIZADO'
-            }).eq('id', agId);
+            })).eq('id', agId);
 
             if (error) throw error;
         }
@@ -533,20 +533,21 @@ async function confirmarReingresoAvanzado() {
                 estado: 'Activo',
                 credencial_vinculada: alumnoSeleccionado.credencial,
                 fecha_inscripcion: fechaHoy,
-                observaciones_reingreso: 'REINGRESO NUEVO: ' + observaciones
+                observaciones_reingreso: 'REINGRESO NUEVO: ' + observaciones,
+                organizacion_id: SessionManager.getCurrentUser()?.organizacion_id
             }]);
 
             if (error) throw error;
         }
 
         // 3. Actualizar estado global del alumno
-        const { error: errorAl } = await db.from('alumnos').update({
+        const { error: errorAl } = await SessionManager.applyIsolation(db.from('alumnos').update({
             activo: true,
             reingreso: true,
             grupo_clave: grupoFinal.grupo_clave || grupoFinal.clave,
             fecha_baja: null,
             motivo_baja_id: null
-        }).eq('id', alumnoSeleccionado.id);
+        })).eq('id', alumnoSeleccionado.id);
 
         if (errorAl) {
             console.error('Error al actualizar alumno (PATCH):', errorAl);
@@ -554,21 +555,21 @@ async function confirmarReingresoAvanzado() {
         }
 
         // 4. Actualizar contador del grupo
-        const { count } = await db.from('alumno_grupos')
+        const { count } = await SessionManager.applyIsolation(db.from('alumno_grupos'))
             .select('*', { count: 'exact', head: true })
             .eq('grupo_clave', grupoFinal.grupo_clave)
             .eq('estado', 'Activo');
             
         if (count !== null) {
-            await db.from('grupos').update({
+            await SessionManager.applyIsolation(db.from('grupos').update({
                 alumnos_inscritos: count
-            }).eq('clave', grupoFinal.grupo_clave);
+            })).eq('clave', grupoFinal.grupo_clave);
         }
 
         // 5. Lógica de Beca 100% (Exámenes y Pagos)
         if (alumnoSeleccionado.porcentaje_beca === 100) {
             console.log('Aplicando beneficios de beca 100% a exámenes...');
-            await db.from('programacion_examenes')
+            await SessionManager.applyIsolation(db.from('programacion_examenes'))
                 .update({ 
                     pagado: true, 
                     monto: 0 
@@ -636,8 +637,8 @@ async function cargarHistorialPagos(alumnoId) {
     tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;">Cargando historial...</td></tr>';
 
     try {
-        const { data, error } = await db
-            .from('recibos_detalle')
+        const { data, error } = await SessionManager.applyIsolation(db
+            .from('recibos_detalle'))
             .select(`
                 monto,
                 descuento,
@@ -715,7 +716,7 @@ async function cargarHistorialExamenes(alumnoId) {
     
     try {
         // Consultar programaciones 
-        let query = db.from('programacion_examenes')
+        let query = SessionManager.applyIsolation(db.from('programacion_examenes'))
             .select('*, maestros!maestro_base_id(nombre)')
             .eq('alumno_id', alumnoId);
         
@@ -723,7 +724,7 @@ async function cargarHistorialExamenes(alumnoId) {
         if (err) throw err;
 
         // Obtener resultados previos
-        const { data: results } = await db.from('resultados_examen').select('*').eq('alumno_id', alumnoId);
+        const { data: results } = await SessionManager.applyIsolation(db.from('resultados_examen').select('*')).eq('alumno_id', alumnoId);
         
         tbody.innerHTML = '';
         if ((!progs || progs.length === 0) && (!results || results.length === 0)) {

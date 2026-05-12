@@ -165,12 +165,17 @@ async function guardar() {
     try {
         if (!g_salonActual) {
             // NUEVO
-            const { data: verif } = await client.from('salones').select('numero').eq('numero', numero).single();
+            const { data: verif } = await SessionManager.applyIsolation(client.from('salones').select('numero')).eq('numero', numero).single();
             if (verif) {
                 return await mostrarAlerta(`El salón número ${numero} ya existe.`);
             }
 
-            const { error: insertErr } = await client.from('salones').insert([{ numero, ubicacion, cupo }]);
+            const { error: insertErr } = await client.from('salones').insert([{ 
+                numero, 
+                ubicacion, 
+                cupo,
+                organizacion_id: SessionManager.getCurrentUser()?.organizacion_id
+            }]);
             if (insertErr) throw insertErr;
         } else {
             // EDICIÓN
@@ -247,7 +252,7 @@ window.buscarSalonesEmergente = async function () {
     tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">Buscando...</td></tr>';
 
     try {
-        let query = client.from('salones').select('*');
+        let query = SessionManager.applyIsolation(client.from('salones').select('*'));
         if (term) {
             // Intenta buscar por numero si es un numero, sino por ubicacion
             if (!isNaN(parseInt(term))) {
@@ -289,7 +294,7 @@ window.cargarSalon = async function (numero) {
     if (!client) return;
 
     try {
-        const { data: salon, error: esalon } = await client.from('salones').select('*').eq('numero', numero).single();
+        const { data: salon, error: esalon } = await SessionManager.applyIsolation(client.from('salones').select('*')).eq('numero', numero).single();
         if (esalon) throw esalon;
 
         // Cargar instrumentos
@@ -344,7 +349,7 @@ window.buscarInstrumentosEmergente = async function () {
     tbody.innerHTML = '<tr><td colspan="2" style="text-align:center;">Buscando...</td></tr>';
 
     try {
-        let query = client.from('instrumentos').select('*').eq('activo', true);
+        let query = SessionManager.applyIsolation(client.from('instrumentos').select('*')).eq('activo', true);
         if (term) query = query.or(`clave.ilike.%${term}%,descripcion.ilike.%${term}%`);
 
         const { data, error } = await query.order('descripcion').limit(50);

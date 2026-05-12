@@ -61,7 +61,7 @@ async function cargarCursos() {
     if (!db) return;
     try {
         // Eliminar límite - traer TODOS los cursos (117+)
-        const { data, error } = await db.from('cursos').select('*').order('curso').range(0, 1000);
+        const { data, error } = await SessionManager.applyIsolation(db.from('cursos').select('*')).order('curso').range(0, 1000);
         if (error) {
             console.error('Error cargando cursos:', error);
         } else {
@@ -242,6 +242,7 @@ async function guardarNuevoCurso() {
         costo: parseFloat(costo) || 0,
         clave: clave.toUpperCase(),
         iva: 0.16,
+        organizacion_id: SessionManager.getCurrentUser()?.organizacion_id
     };
     try {
         const { error } = await db.from('cursos').insert([datos]);
@@ -329,7 +330,7 @@ async function guardarEdicion() {
     };
 
     try {
-        const { error } = await db.from('cursos').update(datos).eq('id', cursoSeleccionado.id);
+        const { error } = await SessionManager.applyIsolation(db.from('cursos').update(datos)).eq('id', cursoSeleccionado.id);
         if (error) throw error;
 
         await mostrarAlerta(`Curso actualizado\n\nCurso: ${datos.curso}\nClave: ${datos.clave}`);
@@ -372,7 +373,7 @@ async function confirmarBorrado() {
         return;
     }
     try {
-        const { error } = await db.from('cursos').delete().eq('id', cursoSeleccionado.id);
+        const { error } = await SessionManager.applyIsolation(db.from('cursos').delete()).eq('id', cursoSeleccionado.id);
         if (error) throw error;
         await mostrarAlerta('Curso eliminado correctamente');
         document.getElementById('modalBorrar').style.display = 'none';
@@ -439,7 +440,7 @@ async function cargarResultadosBusquedaCurso() {
     }
 
     try {
-        let query = db.from('cursos').select('*').order('curso').range(desde, desde + limite - 1);
+        let query = SessionManager.applyIsolation(db.from('cursos').select('*')).order('curso').range(desde, desde + limite - 1);
         if (termino) query = query.or(`clave.ilike.%${termino}%,curso.ilike.%${termino}%`);
 
         const result = await query;

@@ -42,13 +42,14 @@ const SessionManager = {
         if (user.rol === 'SuperAdmin') return 'M'; // SuperAdmin tiene acceso total
 
         const p = user.permisos.find(item => item.seccion.toLowerCase() === seccion.toLowerCase());
-        return p ? p.permiso : 'N'; // Por defecto N si no existe el registro
+        // IMPORTANTE: Cambiamos de 'N' a 'M' por defecto para usuarios nuevos sin matriz de permisos definida
+        return p ? p.permiso : 'M'; 
     },
 
     /**
      * Bloquea el acceso a la página si el permiso es 'N'
      */
-    protectPage: function(seccion) {
+    protectPage: async function(seccion) {
         if (!this.isLoggedIn()) {
             window.location.href = 'login.html';
             return;
@@ -56,7 +57,11 @@ const SessionManager = {
 
         const p = this.getPermission(seccion);
         if (p === 'N') {
-            alert('Acceso Denegado: No tiene permisos para esta sección.');
+            if (typeof mostrarAlerta !== 'undefined') {
+                await mostrarAlerta('Acceso Denegado: No tiene permisos para esta sección.');
+            } else {
+                alert('Acceso Denegado: No tiene permisos para esta sección.');
+            }
             window.location.href = 'index.html';
             return;
         }

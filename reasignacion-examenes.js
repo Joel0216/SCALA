@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 async function cargarCatalogos() {
     if (!supabase) return;
     // Cargar salones para el modal de reasignación
-    const { data: salones } = await supabase.from('salones').select('numero').order('numero');
+    const { data: salones } = await SessionManager.applyIsolation(supabase.from('salones')).select('numero').order('numero');
     const nuevoSalonSel = document.getElementById('nuevoSalon');
     if (nuevoSalonSel && salones) {
         nuevoSalonSel.innerHTML = '<option value="">— Sin cambio —</option>';
@@ -51,12 +51,12 @@ async function cargarCatalogos() {
 async function cargarExamenes() {
     if (!supabase) return;
     try {
-        const { data: dataMaestros } = await supabase.from('maestros').select('id, nombre');
+        const { data: dataMaestros } = await SessionManager.applyIsolation(supabase.from('maestros')).select('id, nombre');
         const mapMaestros = {};
         if (dataMaestros) dataMaestros.forEach(m => mapMaestros[m.id] = m.nombre);
 
-        const { data, error } = await supabase
-            .from('programacion_examenes')
+        const { data, error } = await SessionManager.applyIsolation(supabase
+            .from('programacion_examenes'))
             .select('id, clave_examen, fecha, hora, salon_id, maestro_base_id, examinador1_id, examinador2_id, grupo_id, grupos(clave, cursos(curso))')
             .order('clave_examen');
         if (error) throw error;
@@ -220,8 +220,8 @@ document.getElementById('btnConfirmarReasignacion')?.addEventListener('click', a
         if (nuevaHora) updateData.hora = nuevaHora;
         if (nuevoSalon) updateData.salon_id = nuevoSalon;
 
-        const { error } = await supabase
-            .from('programacion_examenes')
+        const { error } = await SessionManager.applyIsolation(supabase
+            .from('programacion_examenes'))
             .update(updateData)
             .eq('clave_examen', examenSeleccionado.clave);
         if (error) throw error;

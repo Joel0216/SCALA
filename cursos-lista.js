@@ -53,7 +53,7 @@ async function cargarDatos(pagina = 1) {
         const to = from + g_rowsPorPagina - 1;
 
         const term = document.getElementById('buscarInput')?.value.trim() || '';
-        let query = client.from('cursos').select('*', { count: 'exact' });
+        let query = SessionManager.applyIsolation(client.from('cursos').select('*', { count: 'exact' }));
 
         if (term) {
             query = query.or(`clave.ilike.%${term}%,curso.ilike.%${term}%,grado.ilike.%${term}%`);

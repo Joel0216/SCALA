@@ -102,9 +102,9 @@ const G = id => document.getElementById(id);
 
 // ── Catálogos ─────────────────────────────────────────────────────────
 async function cargarTiposMovimiento() {
-    const { data, error } = await db
+    const { data, error } = await SessionManager.applyIsolation(db
         .from('tipos_movimiento')
-        .select('clave, descripcion, afecta_inventario')
+        .select('clave, descripcion, afecta_inventario'))
         .eq('activo', true)
         .order('clave');
     if (error) throw error;
@@ -123,9 +123,9 @@ async function cargarTiposMovimiento() {
 
 async function cargarArticulos() {
     // Intentar buscar tanto iva como iva_porcentaje por robustez
-    const { data, error } = await db
+    const { data, error } = await SessionManager.applyIsolation(db
         .from('articulos')
-        .select('id, clave, descripcion, precio, stock, iva')
+        .select('id, clave, descripcion, precio, stock, iva'))
         .order('clave');
     if (error) throw error;
 
@@ -331,9 +331,9 @@ async function mostrarNumeroSiguiente() {
     if (el) el.value = '...';
     if (!db) return;
     try {
-        const { data } = await db
+        const { data } = await SessionManager.applyIsolation(db
             .from('movimientos_inventario')
-            .select('numero')
+            .select('numero'))
             .order('numero', { ascending: false })
             .limit(1);
         if (el) el.value = (data && data.length) ? data[0].numero + 1 : 1;
@@ -585,6 +585,7 @@ async function guardarMovimiento() {
         const numMov = parseInt(G('numeroMovimiento')?.value) || 1;
 
         // INSERT múltiple en tabla única
+        const orgId = SessionManager.getCurrentUser()?.organizacion_id;
         const filas = detallesTemporal.map(d => ({
             numero: numMov,
             fecha: fechaVal,
@@ -596,7 +597,8 @@ async function guardarMovimiento() {
             iva_importe: d.iva_importe || 0,
             total_linea: d.total_linea || d.total,
             total: d.total_linea || d.total, // El total tradicional
-            observaciones: obs || null
+            observaciones: obs || null,
+            organizacion_id: orgId
         }));
 
         const { error: eDetalle } = await db
@@ -652,7 +654,7 @@ async function ejecutarBusqueda() {
         const fechaHasta = G('filtroFechaHasta').value;
         const texto = G('filtroTexto').value.trim();
 
-        let query = db
+        let query = SessionManager.applyIsolation(db
             .from('movimientos_inventario')
             .select(`
                 numero,
@@ -662,7 +664,7 @@ async function ejecutarBusqueda() {
                 total_linea,
                 total,
                 tipo:tipos_movimiento(descripcion)
-            `);
+            `));
 
         if (fechaDesde) query = query.gte('fecha', fechaDesde);
         if (fechaHasta) query = query.lte('fecha', fechaHasta);
@@ -736,13 +738,13 @@ async function cargarMovimientoDesdeBusqueda(numero) {
     console.log(`[MOV] 🔍 Cargando #${numero} desde buscador...`);
 
     try {
-        const { data, error } = await db
+        const { data, error } = await SessionManager.applyIsolation(db
             .from('movimientos_inventario')
             .select(`
                 *,
                 tipo:tipos_movimiento ( clave, descripcion, afecta_inventario ),
                 articulo:articulos ( clave, descripcion )
-            `)
+            `))
             .eq('numero', numero);
 
         if (error) throw error;

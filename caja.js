@@ -99,34 +99,31 @@ function setupEventListeners() {
 }
 
 // Funciones para botones (también disponibles como onclick)
-function irACobros() {
+// Funciones para botones (globales para onclick)
+window.irACobros = function() {
     window.location.href = 'cobros.html';
 }
 
-function irARecibosCancelados() {
+window.irARecibosCancelados = function() {
     window.location.href = 'recibos_cancelados.html';
 }
 
-function irAConsultaBajas() {
+window.irAConsultaBajas = function() {
     window.location.href = 'consulta-bajas.html';
 }
 
-function generarCorte1() {
+window.generarCorte1 = function() {
     window.location.href = 'cortes.html?corte=1';
 }
 
-function generarCorte2() {
+window.generarCorte2 = function() {
     window.location.href = 'cortes.html?corte=2';
 }
 
-function generarCorte3() {
+window.generarCorte3 = function() {
     window.location.href = 'cortes.html?corte=3';
 }
 
-function irAHonorarios() {
-    window.location.href = 'pagos-maestros.html';
-}
-
-function terminarCaja() {
+window.terminarCaja = function() {
     window.location.href = 'index.html';
 }

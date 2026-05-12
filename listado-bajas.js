@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function cargarMotivos(db) {
     try {
-        const { data } = await db.from('motivos_baja').select('*');
+        const { data, error } = await SessionManager.applyIsolation(db.from('motivos_baja').select('clave, descripcion'));
         g_motivosCache = data || [];
     } catch (e) { console.error('Error motivos:', e); }
 }
@@ -63,8 +63,7 @@ async function cargarDatos(pagina = 1) {
         const term = document.getElementById('buscarInput')?.value.trim() || '';
 
         // Consultar directamente desde alumnos para incluir a los que no tienen grupo
-        let query = client.from('alumnos')
-            .select('*', { count: 'exact' })
+        let query = SessionManager.applyIsolation(client.from('alumnos').select('*', { count: 'exact' }))
             .eq('activo', false); // Solo alumnos inactivos (bajas)
 
         if (term) {

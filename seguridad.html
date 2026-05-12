@@ -6,89 +6,7 @@
     <title>Scala - Gestión de Seguridad</title>
     <link rel="stylesheet" href="theme.css">
     <link rel="stylesheet" href="seguridad.css">
-    <style>
-        :root {
-            --bg-deep: #0f172a;
-            --card-bg: rgba(30, 41, 59, 0.7);
-            --accent-primary: #818cf8;
-            --accent-success: #34d399;
-            --accent-danger: #fb7185;
-            --glass-border: rgba(255, 255, 255, 0.1);
-        }
 
-        body {
-            background: radial-gradient(circle at top right, #1e1b4b, #0f172a);
-            font-family: 'Outfit', sans-serif;
-            color: #f8fafc;
-            min-height: 100vh;
-            margin: 0;
-        }
-
-        .tabs { 
-            display: flex; 
-            gap: 15px; 
-            margin-bottom: 30px; 
-            background: rgba(0,0,0,0.2);
-            padding: 10px;
-            border-radius: 16px;
-            width: fit-content;
-        }
-
-        .tab { 
-            padding: 12px 24px; 
-            cursor: pointer; 
-            color: #94a3b8; 
-            border-radius: 12px; 
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            font-weight: 500;
-        }
-
-        .tab:hover { color: white; background: rgba(255,255,255,0.05); }
-        .tab.active { background: var(--accent-primary); color: white; box-shadow: 0 10px 20px -5px rgba(129, 140, 248, 0.4); }
-        
-        .tab-content { display: none; }
-        .tab-content.active { display: block; animation: slideUp 0.5s ease-out; }
-        
-        .security-card { 
-            background: var(--card-bg); 
-            backdrop-filter: blur(20px);
-            padding: 30px; 
-            border-radius: 24px; 
-            border: 1px solid var(--glass-border); 
-            margin-bottom: 25px; 
-            box-shadow: 0 20px 40px -15px rgba(0,0,0,0.3);
-        }
-
-        .matrix-table { width: 100%; border-collapse: separate; border-spacing: 0 8px; margin-top: 10px; }
-        .matrix-table th, .matrix-table td { padding: 16px; text-align: center; }
-        .matrix-table th { color: #94a3b8; font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
-        .matrix-table tbody tr { background: rgba(255,255,255,0.03); transition: transform 0.2s; }
-        .matrix-table tbody tr:hover { transform: scale(1.005); background: rgba(255,255,255,0.05); }
-        .matrix-table td:first-child { border-radius: 12px 0 0 12px; }
-        .matrix-table td:last-child { border-radius: 0 12px 12px 0; }
-        
-        .perm-select { 
-            background: #0f172a; 
-            color: white; 
-            border: 1px solid var(--glass-border); 
-            padding: 8px 12px; 
-            border-radius: 10px; 
-            cursor: pointer;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-        .perm-select:focus { border-color: var(--accent-primary); }
-
-        .badge-superadmin { background: #f59e0b; color: white; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; }
-        .badge-admin { background: #818cf8; color: white; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; }
-        .badge-jefe { background: #34d399; color: white; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; }
-        .badge-empleado { background: #94a3b8; color: white; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; }
-
-        .logo-preview { width: 100px; height: 100px; border: 2px dashed var(--glass-border); display: flex; align-items: center; justify-content: center; margin-bottom: 10px; overflow: hidden; border-radius: 12px; }
-        .logo-preview img { width: 100%; height: 100%; object-fit: contain; }
-
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    </style>
 </head>
 <body data-section="Seguridad">
     <div class="container">
@@ -141,32 +59,46 @@
 
             <!-- TAB: RESTRICCIONES -->
             <div id="tab-restricciones" class="tab-content">
-                <div class="security-card">
-                    <h3>Matriz de Restricciones (NMC)</h3>
-                    <p style="font-size: 0.85rem; color: #ccc; margin-bottom: 15px;">
-                        <strong>N</strong>: Sin Acceso | <strong>M</strong>: Modificación | <strong>C</strong>: Solo Consulta
-                    </p>
-                    <div style="margin-bottom: 15px;">
-                        <label>Seleccionar Usuario:</label>
-                        <select id="selectUsuarioRestriccion" class="premium-input" onchange="cargarRestriccionesUsuario()" style="width: 300px; display: inline-block; margin-left: 10px;">
-                            <option value="">-- Elija un usuario --</option>
-                        </select>
+                <div class="security-card" style="max-width: 1100px; margin: 0 auto;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: #334155; padding: 15px 25px; border-radius: 12px; color: white;">
+                        <h3 style="margin: 0; color: white;">Restricciones de Accesos</h3>
+                        <button class="premium-btn btn-danger" onclick="prepararRestricciones()" style="padding: 8px 20px;">TERMINAR</button>
                     </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr auto auto; gap: 15px; align-items: center; margin-bottom: 20px; background: rgba(0,0,0,0.05); padding: 15px; border-radius: 10px;">
+                        <div id="divSelectOrgRestriccion" style="display: none;">
+                            <label style="display: block; font-size: 0.75rem; color: #64748b; font-weight: bold;">Academia (Filtro):</label>
+                            <select id="selectOrgRestriccion" class="premium-input" onchange="actualizarSelectRestricciones()" style="height: 35px; font-size: 0.9rem;">
+                                <option value="">-- Todas las Academias --</option>
+                            </select>
+                        </div>
+                        <div id="divAcademiaStatic">
+                            <label style="display: block; font-size: 0.75rem; color: #64748b; font-weight: bold;">Academia:</label>
+                            <input type="text" id="viewAcademia" class="premium-input" readonly style="height: 35px; font-size: 0.9rem;">
+                        </div>
+                        <div>
+                            <label style="display: block; font-size: 0.75rem; color: #64748b; font-weight: bold;">Usuario:</label>
+                            <select id="selectUsuarioRestriccion" class="premium-input" onchange="cargarRestriccionesUsuario()" style="height: 35px; font-size: 0.9rem;">
+                                <option value="">-- Seleccione --</option>
+                            </select>
+                        </div>
+                        <div style="text-align: center;">
+                            <label style="display: block; font-size: 0.75rem; color: #64748b; font-weight: bold;">Rol:</label>
+                            <span id="userRolBadge" style="background: #475569; color: white; padding: 5px 15px; border-radius: 5px; font-size: 0.8rem; font-weight: bold;">---</span>
+                        </div>
+                        <div style="display: flex; gap: 5px;">
+                            <div style="background: #ef4444; color: white; padding: 5px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: bold;">N = Sin Acceso</div>
+                            <div style="background: #22c55e; color: white; padding: 5px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: bold;">M = Modificacion</div>
+                            <div style="background: #f59e0b; color: white; padding: 5px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: bold;">C = Solo Consulta</div>
+                        </div>
+                    </div>
+
                     <div id="containerRestricciones" style="display: none;">
-                        <table class="matrix-table">
-                            <thead>
-                                <tr>
-                                    <th>Sección</th>
-                                    <th>Permiso</th>
-                                    <th>Descripción</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tbodyRestricciones">
-                                <!-- Dinámico -->
-                            </tbody>
-                        </table>
-                        <div style="margin-top: 20px; text-align: right;">
-                            <button class="premium-btn btn-save" onclick="guardarRestricciones()">GUARDAR PERMISOS</button>
+                        <div id="gridRestricciones" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+                            <!-- Dinámico: Tarjetas por categoría -->
+                        </div>
+                        <div style="margin-top: 30px; text-align: center;">
+                            <button class="premium-btn btn-save" onclick="guardarRestricciones()" style="padding: 15px 60px; font-size: 1.1rem; border-radius: 12px;">GUARDAR RESTRICCIONES</button>
                         </div>
                     </div>
                 </div>
@@ -275,9 +207,10 @@
         </div>
     </div>
 
-    <script src="supabase-config.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>`n    <script src="supabase-config.js"></script>
     <script src="session-manager.js"></script>
     <script src="utils-inputs.js"></script>
     <script src="seguridad.js"></script>
 </body>
 </html>
+

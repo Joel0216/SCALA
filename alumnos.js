@@ -92,7 +92,7 @@ async function cargarGrupos() {
     if (!db) return;
 
     try {
-        var result = await db.from('grupos').select('id, clave, curso_id, cursos(curso)').order('clave');
+        var result = await SessionManager.applyIsolation(db.from('grupos').select('id, clave, curso_id, cursos(curso)')).order('clave');
         if (result.error) {
             console.error('Error cargando grupos:', result.error);
             return;
@@ -138,7 +138,7 @@ async function cargarInstrumentos() {
 
     try {
         // Quitamos el filtro de activo por ahora para asegurar que se vean todos
-        var result = await db.from('instrumentos').select('id, clave, descripcion').order('descripcion');
+        var result = await SessionManager.applyIsolation(db.from('instrumentos').select('id, clave, descripcion')).order('descripcion');
         if (result.error) return;
 
         select.innerHTML = '<option value="">-- Seleccione --</option>';
@@ -160,7 +160,7 @@ async function cargarMedios() {
     if (!select) return;
 
     try {
-        var result = await db.from('medios_contacto').select('id, clave, descripcion').eq('activo', true).order('clave');
+        var result = await SessionManager.applyIsolation(db.from('medios_contacto').select('id, clave, descripcion')).eq('activo', true).order('clave');
         if (result.error) return;
 
         select.innerHTML = '<option value="">-- Seleccione --</option>';
@@ -180,7 +180,7 @@ async function cargarSalones() {
     if (!db) return;
 
     try {
-        var result = await db.from('salones').select('*').order('numero');
+        var result = await SessionManager.applyIsolation(db.from('salones').select('*')).order('numero');
         if (result.error) {
             console.error('Error cargando salones:', result.error);
             // Usar datos de ejemplo si no hay tabla
@@ -210,7 +210,7 @@ async function cargarMotivos() {
     if (!db) return;
 
     try {
-        var result = await db.from('motivos_baja').select('*').order('clave');
+        var result = await SessionManager.applyIsolation(db.from('motivos_baja').select('*')).order('clave');
         if (result.error) {
             console.error('Error cargando motivos:', result.error);
             // Usar datos por defecto
@@ -477,8 +477,7 @@ async function cargarResultadosBusquedaAlumno() {
 
     try {
         // Obtener total de resultados
-        const countResult = await SessionManager.applyIsolation(db.from('alumnos'))
-            .select('*', { count: 'exact', head: true })
+        const countResult = await SessionManager.applyIsolation(db.from('alumnos').select('*', { count: 'exact', head: true }))
             .eq('activo', true)
             .or('nombre.ilike.%' + termino + '%,credencial::text.ilike.%' + termino + '%');
 
@@ -488,8 +487,7 @@ async function cargarResultadosBusquedaAlumno() {
         g_totalPaginasAlumnos = Math.ceil(g_totalResultadosAlumnos / limite);
 
         // Obtener datos paginados
-        var result = await SessionManager.applyIsolation(db.from('alumnos'))
-            .select('*')
+        var result = await SessionManager.applyIsolation(db.from('alumnos').select('*'))
             .eq('activo', true)
             .or('nombre.ilike.%' + termino + '%,credencial::text.ilike.%' + termino + '%')
             .order('nombre')
@@ -712,9 +710,7 @@ async function cargarHistorialExamenes(alumnoId) {
     tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">Cargando exámenes...</td></tr>';
 
     try {
-        const { data, error } = await db
-            .from('v_examenes_alumno')
-            .select('*')
+        const { data, error } = await SessionManager.applyIsolation(db.from('v_examenes_alumno').select('*'))
             .eq('alumno_id', alumnoId)
             .order('fecha', { ascending: false });
 
@@ -785,9 +781,7 @@ async function cargarUltimoPago(alumnoId) {
     try {
         // Buscar el recibo más reciente en recibos_detalle para este alumno
         // Unimos con la tabla recibos (cabecera) para obtener la fecha y total
-        const { data, error } = await db
-            .from('recibos_detalle')
-            .select(`
+        const { data, error } = await SessionManager.applyIsolation(db.from('recibos_detalle').select(`
                 recibo_id,
                 neto,
                 recibos (
@@ -795,7 +789,7 @@ async function cargarUltimoPago(alumnoId) {
                     total,
                     cancelado
                 )
-            `)
+            `))
             .eq('alumno_id', alumnoId)
             .eq('recibos.cancelado', false)
             .order('created_at', { ascending: false })
@@ -826,16 +820,14 @@ async function cargarGruposInscritos(alumnoId) {
     if (!tbody || !db) return;
 
     try {
-        const { data: inscripciones, error: errInsc } = await db
-            .from('alumno_grupos')
-            .select('*, grupos(*)')
+        const { data: inscripciones, error: errInsc } = await SessionManager.applyIsolation(db.from('alumno_grupos').select('id, alumno_id, grupo_id, curso_id, grupo_clave, curso_clave, estado, grupos(id, curso_id, grado, costo_mensual, salon_id, salon, hora_entrada, hora_salida)'))
             .eq('alumno_id', alumnoId)
             .in('estado', ['Activo', 'activo', 'Finalizado', 'finalizado']);
 
         if (errInsc) throw errInsc;
 
         // 2. Obtener cursos para mapear nombres y grados (Resiliencia con String IDs)
-        const { data: todosLosCursos } = await db.from('cursos').select('*');
+        const { data: todosLosCursos } = await SessionManager.applyIsolation(db.from('cursos').select('*'));
         const cursoMap = {};
         if (todosLosCursos) todosLosCursos.forEach(c => { cursoMap[String(c.id)] = c; });
 
@@ -844,9 +836,7 @@ async function cargarGruposInscritos(alumnoId) {
         window.g_cursoMap = cursoMap;
 
         // 3. Obtener SEGUIMIENTO de pagos
-        const { data: seguimiento } = await db
-            .from('v_seguimiento_pagos')
-            .select('*')
+        const { data: seguimiento } = await SessionManager.applyIsolation(db.from('v_seguimiento_pagos').select('*'))
             .eq('alumno_id', alumnoId);
 
         g_seguimientoCache = seguimiento || [];
@@ -862,9 +852,9 @@ async function cargarGruposInscritos(alumnoId) {
                 const cursoInfo = cursoMap[cursoIdKey] || {};
                 
                 // FALLBACK: Si no hay curso vinculado, usar datos del grupo
-                const nombreCurso = cursoInfo.curso || infoGrupo.nombre_curso || infoGrupo.curso || 'Sin curso vinculado';
+                const nombreCurso = cursoInfo.curso || (infoGrupo.cursos ? infoGrupo.cursos.curso : (infoGrupo.curso || 'Sin curso vinculado'));
                 const gradoAMostrar = cursoInfo.grado || infoGrupo.grado || g.grado || '1';
-                const costoBase = cursoInfo.costo || infoGrupo.costo_mensual || 0;
+                const costoBase = cursoInfo.costo || (infoGrupo.cursos ? infoGrupo.cursos.precio_mensual : (infoGrupo.costo_mensual || 0));
                 
                 // Mapeo de datos del grupo
                 const salon = infoGrupo.salon_id || infoGrupo.salon || '-';
@@ -983,7 +973,7 @@ async function cargarListaCompleta() {
     }
 
     try {
-        var result = await SessionManager.applyIsolation(db.from('alumnos')).select('*').eq('activo', true).order('nombre');
+        var result = await SessionManager.applyIsolation(db.from('alumnos').select('*')).eq('activo', true).order('nombre');
 
         if (result.error) {
             contenedor.innerHTML = '<p>Error: ' + result.error.message + '</p>';
@@ -1045,7 +1035,7 @@ async function guardarAlta() {
     }
 
     // Obtener siguiente credencial
-    var maxResult = await SessionManager.applyIsolation(db.from('alumnos')).select('credencial').order('credencial', { ascending: false }).limit(1);
+    var maxResult = await SessionManager.applyIsolation(db.from('alumnos').select('credencial')).order('credencial', { ascending: false }).limit(1);
     var nuevaCredencial = 3779;
     if (maxResult.data && maxResult.data.length > 0) {
         nuevaCredencial = maxResult.data[0].credencial + 1;
@@ -1215,7 +1205,7 @@ async function guardarEdicion() {
     };
 
     try {
-        var result = await db.from('alumnos').update(datos).eq('id', alumnoEditando.id);
+        var result = await SessionManager.applyIsolation(db.from('alumnos').update(datos)).eq('id', alumnoEditando.id);
 
         if (result.error) {
             await mostrarAlerta('Error al guardar: ' + result.error.message);
@@ -1245,7 +1235,7 @@ async function cargarGruposActivosParaBaja(alumnoId) {
     listContainer.innerHTML = 'Cargando grupos...';
 
     try {
-        const { data, error } = await db
+        const { data, error } = await SessionManager.applyIsolation(db
             .from('alumno_grupos')
             .select(`
                 *,
@@ -1257,7 +1247,7 @@ async function cargarGruposActivosParaBaja(alumnoId) {
                         grado
                     )
                 )
-            `)
+            `))
             .eq('alumno_id', alumnoId)
             .eq('estado', 'Activo');
 
@@ -1331,14 +1321,14 @@ async function procesarBajaMasiva() {
         const grupoClave = cb.getAttribute('data-clave');
 
         try {
-            const { error } = await db
+            const { error } = await SessionManager.applyIsolation(db
                 .from('alumno_grupos')
                 .update({
                     estado: 'Baja',
                     fecha_baja: new Date().toISOString().split('T')[0],
                     motivo_baja: motivo || null,
                     observaciones_baja: observaciones || null
-                })
+                }))
                 .eq('id', inscripcionId);
 
             if (error) throw error;
@@ -1356,21 +1346,21 @@ async function procesarBajaMasiva() {
     // Después de procesar todas las bajas, verificar si al alumno le quedan grupos ACTIVOS
     if (alumnoSeleccionado) {
         try {
-            const { data: activosRestantes } = await db
+            const { data: activosRestantes } = await SessionManager.applyIsolation(db
                 .from('alumno_grupos')
-                .select('id')
+                .select('id'))
                 .eq('alumno_id', alumnoSeleccionado.id)
                 .eq('estado', 'Activo');
 
             if (!activosRestantes || activosRestantes.length === 0) {
                 // Si ya no tiene grupos activos, marcar al alumno como inactivo globalmente
                 console.log('El alumno no tiene más grupos activos. Marcando como inactivo...');
-                await db.from('alumnos').update({
+                await SessionManager.applyIsolation(db.from('alumnos').update({
                     activo: promotes, // CORREGIDO: si se promueve queda activo, si no, inactivo
                     fecha_baja: promotes ? null : new Date().toISOString().split('T')[0],
                     motivo_baja_id: (motivo && motivo.length > 5) ? motivo : null,
                     grado: promotes && nuevoGrado ? nuevoGrado : alumnoSeleccionado.grado
-                }).eq('id', alumnoSeleccionado.id);
+                })).eq('id', alumnoSeleccionado.id);
 
                 // INSERTAR EN HISTÓRICO DE BAJAS
                 if (!promotes) {
@@ -1382,7 +1372,8 @@ async function procesarBajaMasiva() {
                         fecha_baja: new Date().toISOString().split('T')[0],
                         motivo_baja_id: (motivo && motivo.length > 10) ? motivo : null,
                         motivo_descripcion: observaciones,
-                        comentario: 'Baja automática desde sistema'
+                        comentario: 'Baja automática desde sistema',
+                        organizacion_id: SessionManager.getCurrentUser()?.organizacion_id
                     }]);
                 }
             }
@@ -1395,7 +1386,7 @@ async function procesarBajaMasiva() {
                     fecha_baja: null,
                     motivo_baja_id: null
                 };
-                await db.from('alumnos').update(updateAl).eq('id', alumnoSeleccionado.id);
+                await SessionManager.applyIsolation(db.from('alumnos').update(updateAl)).eq('id', alumnoSeleccionado.id);
                 console.log('Alumno promovido a grado:', nuevoGrado);
             }
         } catch (err) {
@@ -1435,7 +1426,7 @@ async function confirmarBaja() {
     await cargarGruposActivosParaBaja(alumnoSeleccionado.id);
 
     // Cargar motivos de baja
-    const { data: motivos, error: errM } = await db.from('motivos_baja').select('*');
+    const { data: motivos, error: errM } = await SessionManager.applyIsolation(db.from('motivos_baja').select('*'));
     const selectMotivo = document.getElementById('selectMotivoBaja');
     if (selectMotivo && motivos) {
         selectMotivo.innerHTML = '<option value="">-- Seleccione un motivo --</option>';
@@ -1483,9 +1474,9 @@ async function abrirCambioGrupo() {
     listContainer.innerHTML = 'Cargando...';
 
     try {
-        const { data, error } = await db
+        const { data, error } = await SessionManager.applyIsolation(db
             .from('alumno_grupos')
-            .select('id, grupo_clave, credencial_vinculada')
+            .select('id, grupo_clave, credencial_vinculada'))
             .eq('alumno_id', alumnoSeleccionado.id)
             .eq('estado', 'Activo');
 
@@ -1560,7 +1551,7 @@ async function guardarCambioGrupoDefinitivo() {
 
     try {
         // 1. Verificar cupo del destino
-        const { data: gDest, error: dErr } = await db.from('grupos').select('id, cupo, alumnos_inscritos').eq('clave', destinoClave).single();
+        const { data: gDest, error: dErr } = await SessionManager.applyIsolation(db.from('grupos').select('id, cupo, alumnos_inscritos')).eq('clave', destinoClave).single();
         if (dErr) throw dErr;
 
         if ((gDest.alumnos_inscritos || 0) >= (gDest.cupo || 0)) {
@@ -1569,10 +1560,10 @@ async function guardarCambioGrupoDefinitivo() {
         }
 
         // 2. Ejecutar cambio (Update record)
-        const { error: updErr } = await db.from('alumno_grupos').update({
+        const { error: updErr } = await SessionManager.applyIsolation(db.from('alumno_grupos').update({
             grupo_clave: destinoClave,
             updated_at: new Date().toISOString()
-        }).eq('id', origenInscripcionId);
+        })).eq('id', origenInscripcionId);
 
         if (updErr) throw updErr;
 
@@ -1645,9 +1636,9 @@ async function abrirReingreso() {
     listContainer.innerHTML = 'Cargando grupos anteriores...';
 
     try {
-        const { data, error } = await db
+        const { data, error } = await SessionManager.applyIsolation(db
             .from('alumno_grupos')
-            .select('id, grupo_clave, credencial_vinculada')
+            .select('id, grupo_clave, credencial_vinculada'))
             .eq('alumno_id', alumnoSeleccionado.id)
             .eq('estado', 'Baja');
 
@@ -1659,7 +1650,7 @@ async function abrirReingreso() {
             let html = '';
             for (const g of data) {
                 // VERIFICAR CUPO
-                const { data: gData } = await db.from('grupos').select('id, cupo, alumnos_inscritos').eq('clave', g.grupo_clave).single();
+            const { data: gData } = await SessionManager.applyIsolation(db.from('grupos').select('id, cupo, alumnos_inscritos')).eq('clave', g.grupo_clave).single();
                 let isFull = false;
                 if (gData && (gData.alumnos_inscritos || 0) >= (gData.cupo || 0)) {
                     isFull = true;
@@ -1736,19 +1727,19 @@ async function procesarReingresoMasivo() {
         const clave = cb.getAttribute('data-clave');
 
         try {
-            const { data: gData } = await db.from('grupos').select('id, cupo, alumnos_inscritos').eq('clave', clave).single();
+            const { data: gData } = await SessionManager.applyIsolation(db.from('grupos').select('id, cupo, alumnos_inscritos')).eq('clave', clave).single();
             if (gData && (gData.alumnos_inscritos || 0) >= (gData.cupo || 0)) {
                 cupoLleno.push(clave);
                 continue;
             }
 
-            const { error: updErr } = await db.from('alumno_grupos').update({
+            const { error: updErr } = await SessionManager.applyIsolation(db.from('alumno_grupos').update({
                 estado: 'Activo',
                 fecha_baja: null,
                 motivo_baja_id: null,
                 observaciones_reingreso: observaciones,
                 fecha_inscripcion: new Date().toISOString().split('T')[0]
-            }).eq('id', inscripcionId);
+            })).eq('id', inscripcionId);
 
             if (updErr) throw updErr;
 
@@ -1764,7 +1755,7 @@ async function procesarReingresoMasivo() {
     // CASO 2: Reingreso a un grupo completamente nuevo
     if (nuevoGrupoClave) {
         try {
-            const { data: gData } = await db.from('grupos').select('id, cupo, alumnos_inscritos').eq('clave', nuevoGrupoClave).single();
+            const { data: gData } = await SessionManager.applyIsolation(db.from('grupos').select('id, cupo, alumnos_inscritos')).eq('clave', nuevoGrupoClave).single();
             if (gData && (gData.alumnos_inscritos || 0) >= (gData.cupo || 0)) {
                 cupoLleno.push(nuevoGrupoClave);
             } else {
@@ -1775,7 +1766,8 @@ async function procesarReingresoMasivo() {
                     estado: 'Activo',
                     credencial_vinculada: alumnoSeleccionado.credencial,
                     fecha_inscripcion: new Date().toISOString().split('T')[0],
-                    observaciones_reingreso: 'REINGRESO NUEVO: ' + observaciones
+                    observaciones_reingreso: 'REINGRESO NUEVO: ' + observaciones,
+                    organizacion_id: SessionManager.getCurrentUser()?.organizacion_id
                 }]);
 
                 if (insErr) throw insErr;
@@ -1792,11 +1784,11 @@ async function procesarReingresoMasivo() {
 
     if (procesados > 0 && alumnoSeleccionado) {
         try {
-            await db.from('alumnos').update({
+            await SessionManager.applyIsolation(db.from('alumnos').update({
                 activo: true,
                 fecha_baja: null,
                 motivo_baja_id: null
-            }).eq('id', alumnoSeleccionado.id);
+            })).eq('id', alumnoSeleccionado.id);
             console.log('Alumno marcado como activo tras reingreso.');
         } catch (err) {
             console.error('Error al reactivar alumno:', err);
@@ -1909,7 +1901,7 @@ window.buscarGruposModal = async function () {
     tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">Buscando...</td></tr>';
 
     try {
-        let query = window.db.from('grupos').select('id, clave, cursos!inner(curso, grado), salon_id, cupo, alumnos_inscritos').eq('activo', true);
+        let query = SessionManager.applyIsolation(window.db.from('grupos').select('id, clave, cursos!inner(curso, grado), salon_id, cupo, alumnos_inscritos')).eq('activo', true);
         if (term) query = query.ilike('clave', `%${term}%`);
 
         // FILTRO: No mostrar grupos donde el alumno YA ESTÁ ACTIVO

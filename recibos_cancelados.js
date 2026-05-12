@@ -112,8 +112,8 @@ async function searchStudentsWithCancelled() {
 
     try {
         // Query unique students from recibos_detalle_cancelados
-        let query = client
-            .from('recibos_detalle_cancelados')
+        let query = SessionManager.applyIsolation(client
+            .from('recibos_detalle_cancelados'))
             .select(`
                 credencial,
                 recibos_cancelados!inner(cliente_nombre)
@@ -175,8 +175,8 @@ async function selectStudent(cred, nombre) {
 
     // Fetch all folios for this student
     try {
-        const { data, error } = await client
-            .from('recibos_detalle_cancelados')
+        const { data, error } = await SessionManager.applyIsolation(client
+            .from('recibos_detalle_cancelados'))
             .select('recibos_cancelados(numero, id)')
             .eq('credencial', cred);
 
@@ -219,8 +219,8 @@ async function loadFolioData(folio) {
 
     try {
         // 1. Fetch Header
-        const { data: header, error: hErr } = await client
-            .from('recibos_cancelados')
+        const { data: header, error: hErr } = await SessionManager.applyIsolation(client
+            .from('recibos_cancelados'))
             .select('*')
             .eq('numero', folio)
             .maybeSingle();
@@ -229,8 +229,8 @@ async function loadFolioData(folio) {
         currentFolio = header;
 
         // 2. Fetch Details
-        const { data: details, error: dErr } = await client
-            .from('recibos_detalle_cancelados')
+        const { data: details, error: dErr } = await SessionManager.applyIsolation(client
+            .from('recibos_detalle_cancelados'))
             .select('*')
             .eq('recibo_cancelado_id', header.id);
 

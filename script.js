@@ -32,9 +32,6 @@ async function exitSystem() {
             localStorage.removeItem('scala_session');
             window.location.href = 'login.html';
         }
-        
-        // En Electron window.close() suele ser suficiente
-        window.close();
     }
 }
 

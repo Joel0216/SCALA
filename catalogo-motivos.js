@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 // Cargar motivos existentes para validación de clave única
 async function cargarMotivosExistentes() {
     if (!db) return;
-    const { data, error } = await db.from('motivos_baja').select('clave');
+    const { data, error } = await SessionManager.applyIsolation(db.from('motivos_baja').select('clave'));
     if (!error && data) {
         motivosExistentes = data.map(m => m.clave);
     }
@@ -143,10 +143,11 @@ btnGuardar.addEventListener('click', async () => {
         const datos = {
             clave: clave,
             descripcion: descripcion,
-            activo: true
+            activo: true,
+            organizacion_id: SessionManager.getCurrentUser()?.organizacion_id
         };
 
-        const { data, error } = await db.from('motivos_baja').insert([datos]).select();
+        const { data, error } = await db.from('motivos_baja').insert([datos]);
         
         if (error) throw error;
 
@@ -202,7 +203,7 @@ window.confirmarBorrado = async function() {
     if (!db || !motivoSeleccionado) return;
 
     try {
-        const { error } = await db.from('motivos_baja').delete().eq('id', motivoSeleccionado.id);
+        const { error } = await SessionManager.applyIsolation(db.from('motivos_baja').delete()).eq('id', motivoSeleccionado.id);
         
         if (error) throw error;
 

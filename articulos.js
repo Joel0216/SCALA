@@ -108,7 +108,7 @@ function generarClaveUnica(base) {
 async function cargarGrupos() {
     if (!db) return;
     try {
-        const { data, error } = await db.from('grupos_articulos').select('grupo').order('grupo');
+        const { data, error } = await SessionManager.applyIsolation(db.from('grupos_articulos').select('grupo')).order('grupo');
         if (error) throw error;
 
         const selects = [document.getElementById('grupo'), document.getElementById('editGrupo')];
@@ -130,7 +130,7 @@ async function cargarGrupos() {
 async function cargarArticulosCache() {
     if (!db) return;
     try {
-        const { data, error } = await db.from('articulos').select('*').order('clave');
+        const { data, error } = await SessionManager.applyIsolation(db.from('articulos').select('*')).order('clave');
         if (error) throw error;
         articulosCache = data || [];
         console.log(`✓ ${articulosCache.length} artículos en cache`);
@@ -223,7 +223,8 @@ async function guardarNuevo() {
 
     try {
         const { error } = await db.from('articulos').insert([{
-            clave, descripcion, grupo, precio, iva, stock
+            clave, descripcion, grupo, precio, iva, stock,
+            organizacion_id: SessionManager.getCurrentUser()?.organizacion_id
         }]);
         if (error) throw error;
 
@@ -261,9 +262,9 @@ async function guardarEdicion() {
     const stock = parseInt(document.getElementById('editStock').value) || 0;
 
     try {
-        const { error } = await db.from('articulos').update({
+        const { error } = await SessionManager.applyIsolation(db.from('articulos').update({
             descripcion, grupo, precio, iva, stock
-        }).eq('id', id);
+        })).eq('id', id);
         if (error) throw error;
 
         alert('Cambios guardados');
@@ -290,7 +291,7 @@ function cancelarBorrado() {
 
 async function confirmarBorrado() {
     try {
-        const { error } = await db.from('articulos').delete().eq('id', articuloSeleccionado.id);
+        const { error } = await SessionManager.applyIsolation(db.from('articulos').delete()).eq('id', articuloSeleccionado.id);
         if (error) throw error;
         alert('Artículo eliminado');
         cancelarBorrado();
@@ -324,7 +325,7 @@ async function buscarArticulosModal(overrideTerm = null) {
     tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Buscando...</td></tr>';
 
     try {
-        let query = db.from('articulos').select('*');
+        let query = SessionManager.applyIsolation(db.from('articulos').select('*'));
         if (term) {
             query = query.or(`clave.ilike.%${term}%,descripcion.ilike.%${term}%`);
         }

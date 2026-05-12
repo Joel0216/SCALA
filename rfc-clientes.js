@@ -39,12 +39,13 @@
         }
 
         try {
-            const { error } = await supabase.from('rfc_clientes').upsert({ rfc, nombre, direccion, correo });
+            const org_id = SessionManager.getCurrentUser()?.organizacion_id;
+            const { error } = await SessionManager.applyIsolation(supabase.from('rfc_clientes')).upsert({ rfc, nombre, direccion, correo, organizacion_id: org_id });
             if (error) throw error;
 
             if (g_credencialesAsociadas.length > 0) {
-                const batch = g_credencialesAsociadas.map(c => ({ rfc, credencial: c.credencial }));
-                await supabase.from('rfc_credenciales').insert(batch);
+                const batch = g_credencialesAsociadas.map(c => ({ rfc, credencial: c.credencial, organizacion_id: org_id }));
+                await SessionManager.applyIsolation(supabase.from('rfc_credenciales')).insert(batch);
             }
             await mostrarAlerta('RFC registrado correctamente.');
             cancelarNuevo();
@@ -56,7 +57,7 @@
         const seguro = await mostrarConfirm(`¿Borrar RFC ${g_rfcActual.rfc}?`);
         if (!seguro) return;
         try {
-            await supabase.from('rfc_clientes').delete().eq('rfc', g_rfcActual.rfc);
+            await SessionManager.applyIsolation(supabase.from('rfc_clientes').delete()).eq('rfc', g_rfcActual.rfc);
             await mostrarAlerta('RFC eliminado');
             limpiarFormulario();
         } catch (e) { await mostrarAlerta('Error: ' + e.message); }
@@ -75,7 +76,7 @@
     async function buscarRFCs() {
         const term = document.getElementById('searchInput').value.trim().toUpperCase();
         try {
-            let { data, error } = await supabase.from('rfc_clientes').select('*').or(`rfc.ilike.%${term}%,nombre.ilike.%${term}%`).limit(50);
+            let { data, error } = await SessionManager.applyIsolation(supabase.from('rfc_clientes').select('*')).or(`rfc.ilike.%${term}%,nombre.ilike.%${term}%`).limit(50);
             if (error) throw error;
             const tbody = document.getElementById('bodyResultados');
             tbody.innerHTML = '';
@@ -102,7 +103,7 @@
         document.getElementById('correo').value = r.correo || '';
         deshabilitarCampos();
         document.getElementById('btnBorrar').disabled = false;
-        supabase.from('rfc_credenciales').select('credencial').eq('rfc', r.rfc).then(({data}) => {
+        SessionManager.applyIsolation(supabase.from('rfc_credenciales').select('credencial')).eq('rfc', r.rfc).then(({data}) => {
             g_credencialesAsociadas = data || [];
             renderCredencialesGrid(false);
         });
@@ -144,7 +145,7 @@
     async function buscarAlumnosLupa() {
         const term = document.getElementById('inputLupaAlumnos').value.trim();
         try {
-            let { data, error } = await supabase.from('alumnos').select('credencial, nombre').ilike('nombre', `%${term}%`).limit(20);
+            let { data, error } = await SessionManager.applyIsolation(supabase.from('alumnos').select('credencial, nombre')).ilike('nombre', `%${term}%`).limit(20);
             const tbody = document.getElementById('bodyLupaAlumnos');
             if(!tbody) return;
             tbody.innerHTML = '';

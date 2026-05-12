@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 // Cargar instrumentos existentes para validación de clave única
 async function cargarInstrumentosExistentes() {
     if (!db) return;
-    const { data, error } = await db.from('instrumentos').select('clave');
+    const { data, error } = await SessionManager.applyIsolation(db.from('instrumentos').select('clave'));
     if (!error && data) {
         instrumentosExistentes = data.map(i => i.clave);
     }
@@ -142,8 +142,9 @@ btnGuardar.addEventListener('click', async () => {
         const { data, error } = await db.from('instrumentos').insert([{
             clave: clave,
             descripcion: descripcion,
-            activo: true
-        }]).select();
+            activo: true,
+            organizacion_id: SessionManager.getCurrentUser()?.organizacion_id
+        }]);
 
         if (error) throw error;
 

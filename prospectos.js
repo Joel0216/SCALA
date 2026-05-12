@@ -53,9 +53,7 @@ async function generateProspectoId() {
     if (!supabase) return 1001;
 
     try {
-        const { data, error } = await supabase
-            .from('prospectos')
-            .select('id')
+        const { data, error } = await SessionManager.applyIsolation(supabase.from('prospectos').select('id'))
             .order('id', { ascending: false })
             .limit(1);
 
@@ -74,9 +72,7 @@ async function loadCursos() {
     if (!supabase) return;
 
     try {
-        const { data, error } = await supabase
-            .from('cursos')
-            .select('*')
+        const { data, error } = await SessionManager.applyIsolation(supabase.from('cursos').select('*'))
             .order('curso', { ascending: true });
 
         if (error) throw error;
@@ -177,8 +173,9 @@ async function saveProspecto() {
     };
 
     try {
-        const { error } = await supabase
-            .from('prospectos')
+        prospectoData.organizacion_id = SessionManager.getCurrentUser()?.organizacion_id;
+        const { error } = await SessionManager.applyIsolation(supabase
+            .from('prospectos'))
             .upsert([prospectoData]); // Usar upsert por si acaso ya existe (edición futura)
 
         if (error) throw error;
@@ -212,9 +209,7 @@ async function ejecutarFiltroProspectos() {
     const infoConteo = document.getElementById('infoConteoProspectos');
 
     try {
-        let query = supabase
-            .from('prospectos')
-            .select('*')
+        let query = SessionManager.applyIsolation(supabase.from('prospectos').select('*'))
             .order('fecha_atencion', { ascending: false })
             .limit(100);
 
@@ -312,8 +307,8 @@ async function deleteProspecto() {
     }
 
     try {
-        const { error } = await supabase
-            .from('prospectos')
+        const { error } = await SessionManager.applyIsolation(supabase
+            .from('prospectos'))
             .delete()
             .eq('id', id);
 

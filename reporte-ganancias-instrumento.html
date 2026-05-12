@@ -41,7 +41,9 @@
         <div id="reportContent">Seleccione un periodo y presione FILTRAR</div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-config.js"></script>
+    <script src="session-manager.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('mesSelect').value = new Date().getMonth() + 1;
@@ -130,3 +132,6 @@
     </script>
 </body>
 </html>
+
+
+

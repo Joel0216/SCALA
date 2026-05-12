@@ -83,19 +83,22 @@ async function cargarCatalogos() {
     const client = window.supabase || (typeof getSupabase === 'function' ? getSupabase() : null);
     if (!client) return;
 
-    let resC = { data: [] }, resM = { data: [] };
-    try { resC = await client.from('cursos').select().order('curso'); } catch (e) { console.warn('Cursos:', e); }
-    try { resM = await client.from('maestros').select().order('nombre'); } catch (e) { console.warn('Maestros:', e); }
+    try {
+        const resC = await SessionManager.applyIsolation(client.from('cursos').select('id, curso, grado')).order('curso');
+        const resM = await SessionManager.applyIsolation(client.from('maestros').select('id, nombre')).order('nombre');
 
-    if (resC.data) {
-        g_cursos = resC.data;
-        llenarSelect('curso', g_cursos, 'id', 'curso');
-        llenarSelect('editCurso', g_cursos, 'id', 'curso'); // Fill edit select
-    }
-    if (resM.data) {
-        g_maestros = resM.data;
-        llenarSelect('maestro', g_maestros, 'id', 'nombre');
-        llenarSelect('editMaestro', g_maestros, 'id', 'nombre'); // Fill edit select
+        if (resC.data) {
+            g_cursos = resC.data;
+            llenarSelect('curso', g_cursos, 'id', 'curso');
+            llenarSelect('editCurso', g_cursos, 'id', 'curso');
+        }
+        if (resM.data) {
+            g_maestros = resM.data;
+            llenarSelect('maestro', g_maestros, 'id', 'nombre');
+            llenarSelect('editMaestro', g_maestros, 'id', 'nombre');
+        }
+    } catch (e) {
+        console.warn('Error cargando catálogos:', e);
     }
 }
 
@@ -106,7 +109,7 @@ function llenarSelect(id, data, valKey, textKey) {
     data.forEach(item => {
         const opt = document.createElement('option');
         opt.value = item[valKey];
-        opt.textContent = (textKey === 'numero' ? 'Salón ' : '') + item[textKey];
+        opt.textContent = item[textKey];
         select.appendChild(opt);
     });
 }
@@ -114,15 +117,13 @@ function llenarSelect(id, data, valKey, textKey) {
 async function cargarGrupos() {
     const client = window.supabase || (typeof getSupabase === 'function' ? getSupabase() : null);
     if (!client) return;
-    const { data, error } = await client.from('grupos').select('*, maestros(nombre), cursos(curso, clave, grado)').order('clave', { ascending: true });
+    const { data, error } = await SessionManager.applyIsolation(client.from('grupos').select('*, maestros(nombre), cursos(curso, clave, grado)')).order('clave', { ascending: true });
     if (error) {
         console.error('Error cargando grupos:', error);
         return;
     }
     if (data) g_grupos = data;
 }
-
-// --- FUNCIONES GLOBALES ---
 
 window.mostrarGrupo = function (grupo) {
     if (!grupo) return;
@@ -131,34 +132,27 @@ window.mostrarGrupo = function (grupo) {
     const setV = (id, val) => { const el = document.getElementById(id); if (el) el.value = val || ''; };
 
     setV('clave', grupo.clave);
-    setV('curso', grupo.curso_id || grupo.cursoId);
+    setV('curso', grupo.curso_id);
     setV('dia', grupo.dia || 'LU');
-    setV('maestro', grupo.maestro_id || grupo.maestroId);
+    setV('maestro', grupo.maestro_id);
     setV('horaEntrada', grupo.hora_entrada);
     setV('horaSalida', grupo.hora_salida);
-    setV('salon', grupo.salon_id || grupo.salon);
+    setV('salon', grupo.salon_id);
     setV('cupo', grupo.cupo);
     setV('alumnos', grupo.alumnos_inscritos || 0);
     setV('inicio', grupo.fecha_inicio);
-    setV('leccion', grupo.leccion || 'Null');
+    setV('leccion', grupo.leccion);
     setV('fechaLeccion', grupo.fecha_leccion);
-    setV('grado', grupo.grado || 1);
     
     const asistBtn = document.getElementById('asistenciaBtn');
     if (asistBtn) asistBtn.disabled = false;
 
-    // Llenar los display de Curso y Maestro
-    const idCurso = grupo.curso_id || grupo.cursoId;
-    const curso = g_cursos.find(c => c.id == idCurso);
+    const curso = g_cursos.find(c => c.id == grupo.curso_id);
     setV('cursoDisplay', curso ? curso.curso : (grupo.cursos?.curso || ''));
 
-    const idMaestro = grupo.maestro_id || grupo.maestroId;
-    const maestro = g_maestros.find(m => m.id == idMaestro);
+    const maestro = g_maestros.find(m => m.id == grupo.maestro_id);
     setV('maestroDisplay', maestro ? maestro.nombre : (grupo.maestros?.nombre || ''));
 
-    console.log('Grupo cargado:', grupo.clave, '| ID:', grupo.id, '| tipo ID:', typeof grupo.id);
-
-    // Refrescar contador de inscritos en vivo
     refrescarContadorAlumnos(grupo.clave);
 };
 
@@ -167,22 +161,13 @@ async function refrescarContadorAlumnos(clave) {
     if (!client || !clave) return;
 
     try {
-        // CORRECCIÓN: Contar desde alumno_grupos con estado 'Activo'
-        const { count, error } = await client
-            .from('alumno_grupos')
-            .select('*', { count: 'exact', head: true })
+        const { count, error } = await SessionManager.applyIsolation(client.from('alumno_grupos').select('*', { count: 'exact', head: true }))
             .eq('grupo_clave', clave)
             .eq('estado', 'Activo');
 
         if (!error && count !== null) {
             const el = document.getElementById('alumnos');
             if (el) el.value = count;
-
-            // Sincronizar en tabla grupos si hay diferencia
-            if (g_grupoActual && g_grupoActual.clave === clave && g_grupoActual.alumnos_inscritos !== count) {
-                await client.from('grupos').update({ alumnos_inscritos: count }).eq('clave', clave);
-                g_grupoActual.alumnos_inscritos = count;
-            }
         }
     } catch (e) {
         console.warn('Error refrescando contador:', e);
@@ -190,12 +175,8 @@ async function refrescarContadorAlumnos(clave) {
 }
 
 window.abrirModalBusqueda = function () {
-    // Abrir el listado en ventana externa
     window.open('grupos-listado.html', 'ListadoGrupos', 'width=1150,height=750,resizable=yes');
 };
-
-window.cerrarModalBusqueda = function () { };
-window.cerrarModalResultados = function () { };
 
 window.buscarGrupos = async function () {
     const client = window.supabase || (typeof getSupabase === 'function' ? getSupabase() : null);
@@ -219,34 +200,19 @@ async function cargarResultadosBusqueda() {
     const limite = 100;
     const desde = (pagina - 1) * limite;
 
-    // Mostrar loader
     const body = document.getElementById('bodyResultados');
     body.innerHTML = '<tr><td colspan="7" style="text-align:center;">Buscando...</td></tr>';
     document.getElementById('modalResultados').style.display = 'block';
 
     try {
-        // Primero obtener el total de resultados
-        let countRes = await client.from('grupos')
-            .select('*', { count: 'exact', head: true })
+        let countRes = await SessionManager.applyIsolation(client.from('grupos').select('*', { count: 'exact', head: true }))
             .eq('activo', true)
             .or(`clave.ilike.%${termino}%,maestros.nombre.ilike.%${termino}%`);
-
-        if (countRes.error) {
-            // Fallback sin maestro
-            countRes = await client.from('grupos')
-                .select('*', { count: 'exact', head: true })
-                .eq('activo', true)
-                .ilike('clave', `%${termino}%`);
-        }
-
-        if (countRes.error) throw countRes.error;
 
         g_totalResultados = countRes.count || 0;
         g_totalPaginas = Math.ceil(g_totalResultados / limite);
 
-        // Ahora obtener los datos paginados
-        let res = await client.from('grupos')
-            .select('*, maestros!inner(nombre), cursos(curso)')
+        let res = await SessionManager.applyIsolation(client.from('grupos').select('*, maestros!inner(nombre), cursos(curso)'))
             .eq('activo', true)
             .or(`clave.ilike.%${termino}%,maestros.nombre.ilike.%${termino}%`)
             .range(desde, desde + limite - 1)
@@ -395,8 +361,8 @@ window.borrarGrupo = async function () {
     if (!client) return;
 
     try {
-        const { data: alumnosActivos, error } = await client
-            .from('alumno_grupos')
+        const { data: alumnosActivos, error } = await SessionManager.applyIsolation(client
+            .from('alumno_grupos'))
             .select('id, alumno_id, credencial_vinculada, alumnos(nombre)')
             .eq('grupo_clave', g_grupoActual.clave)
             .eq('estado', 'Activo');
@@ -583,6 +549,7 @@ window.guardarAlta = async function () {
     const hayConflicto = await validarTraslapeSalon(data.salon_id, data.dia, data.hora_entrada, data.hora_salida);
     if (hayConflicto) return alert('Error: El salón ya está ocupado en ese horario por otro grupo.');
 
+    data.organizacion_id = SessionManager.getCurrentUser()?.organizacion_id;
     const { error } = await client.from('grupos').insert([data]);
     if (!error) { alert('Grupo guardado exitosamente.'); location.reload(); }
     else { alert('Error: ' + error.message); }
@@ -608,7 +575,7 @@ window.guardarEdicion = async function () {
         costo_mensual: parseFloat(document.getElementById('editCostoMensual').value) || 0
     };
 
-    const { error } = await client.from('grupos').update(data).eq('id', g_grupoActual.id);
+    const { error } = await SessionManager.applyIsolation(client.from('grupos').update(data)).eq('id', g_grupoActual.id);
     if (!error) { alert('Grupo actualizado exitosamente.'); location.reload(); }
     else { alert('Error: ' + error.message); }
 };
@@ -635,8 +602,8 @@ window.desactivarGrupo = async function() {
 
     try {
         // 1. Obtener alumnos activos
-        const { data: inscritos, error: errI } = await client
-            .from('alumno_grupos')
+        const { data: inscritos, error: errI } = await SessionManager.applyIsolation(client
+            .from('alumno_grupos'))
             .select('id, alumno_id, alumnos(nombre, credencial)')
             .eq('grupo_clave', g_grupoActual.clave)
             .eq('estado', 'Activo');
@@ -646,7 +613,7 @@ window.desactivarGrupo = async function() {
         if (!inscritos || inscritos.length === 0) {
             const siDesactivar = await mostrarConfirm(`[Diagnóstico SCALA] El grupo ${g_grupoActual.clave} no tiene alumnos activos.\n\n¿Desea desactivarlo de todos modos?`);
             if (siDesactivar) {
-                await client.from('grupos').update({ activo: false }).eq('id', g_grupoActual.id);
+                await SessionManager.applyIsolation(client.from('grupos').update({ activo: false })).eq('id', g_grupoActual.id);
                 await mostrarAlerta('Grupo desactivado exitosamente.');
                 location.reload();
             }
@@ -654,8 +621,8 @@ window.desactivarGrupo = async function() {
         }
 
         // 2. Obtener Calificaciones (Se buscan todos los exámenes vinculados al grupo)
-        const { data: programaciones, error: errP } = await client
-            .from('programacion_examenes')
+        const { data: programaciones, error: errP } = await SessionManager.applyIsolation(client
+            .from('programacion_examenes'))
             .select('clave_examen, tipo_examen')
             .eq('grupo_id', g_grupoActual.id);
 
@@ -664,8 +631,8 @@ window.desactivarGrupo = async function() {
         let resultados = [];
         if (programaciones && programaciones.length > 0) {
             const claves = programaciones.map(p => p.clave_examen);
-            const { data: resData, error: errR } = await client
-                .from('resultados_examen')
+            const { data: resData, error: errR } = await SessionManager.applyIsolation(client
+                .from('resultados_examen'))
                 .select('alumno_id, calificacion, aprobo, clave_examen')
                 .in('clave_examen', claves);
             
@@ -848,7 +815,7 @@ window.ejecutarCierreCiclo = async function() {
                 }
 
                 // 1. Obtener grado actual
-                const { data: dAlum, error: errA } = await client.from('alumnos').select('grado').eq('id', alum.alumnoId).maybeSingle();
+                const { data: dAlum, error: errA } = await SessionManager.applyIsolation(client.from('alumnos').select('grado')).eq('id', alum.alumnoId).maybeSingle();
                 if (errA || !dAlum) {
                     console.warn(`No se pudo obtener el grado actual para ${alum.nombre}, se usará 1 por defecto.`);
                 }
@@ -857,18 +824,18 @@ window.ejecutarCierreCiclo = async function() {
                 const gradoBase = parseInt(dAlum?.grado) || 1;
                 const nuevoGrado = gradoBase < 6 ? gradoBase + 1 : 6;
                 
-                await client.from('alumnos').update({ 
+                await SessionManager.applyIsolation(client.from('alumnos').update({ 
                     grado: nuevoGrado,
                     grupo_clave: destino.clave 
-                }).eq('id', alum.alumnoId);
+                })).eq('id', alum.alumnoId);
 
                 // 2. Finalizar inscripción anterior
-                await client.from('alumno_grupos')
-                    .update({ estado: 'Finalizado' })
+                await SessionManager.applyIsolation(client.from('alumno_grupos')
+                    .update({ estado: 'Finalizado' }))
                     .eq('id', alum.inscripcionId);
 
                 // 3. Crear nueva inscripción (Buscando costo sugerido)
-                const { data: gDest } = await client.from('grupos').select('costo_mensual, curso_id, cursos(precio_mensual, costo)').eq('clave', destino.clave).maybeSingle();
+                const { data: gDest } = await SessionManager.applyIsolation(client.from('grupos').select('costo_mensual, curso_id, cursos(precio_mensual, costo)')).eq('clave', destino.clave).maybeSingle();
                 const costoSugerido = gDest ? (gDest.costo_mensual || (gDest.cursos ? (gDest.cursos.precio_mensual || gDest.cursos.costo) : 0)) : 0;
 
                 await client.from('alumno_grupos').insert({
@@ -877,7 +844,8 @@ window.ejecutarCierreCiclo = async function() {
                     grado: nuevoGrado,
                     estado: 'Activo',
                     costo_mensual: costoSugerido,
-                    fecha_inscripcion: new Date().toISOString().split('T')[0]
+                    fecha_inscripcion: new Date().toISOString().split('T')[0],
+                    organizacion_id: SessionManager.getCurrentUser()?.organizacion_id
                 });
 
                 promovidos++;
@@ -890,7 +858,7 @@ window.ejecutarCierreCiclo = async function() {
 
         // Si todos se fueron, desactivar el grupo
         if (repetidores === 0 && promovidos > 0) {
-            await client.from('grupos').update({ activo: false }).eq('id', g_grupoActual.id);
+            await SessionManager.applyIsolation(client.from('grupos').update({ activo: false })).eq('id', g_grupoActual.id);
             alert(`Ciclo cerrado. El grupo ${g_grupoActual.clave} se ha desactivado automáticamente porque no quedan alumnos.`);
         } else {
             alert(`Cierre parcial completado.\n${promovidos} alumnos promovidos.\n${repetidores} alumnos permanecen en este grupo.`);
@@ -956,35 +924,35 @@ window.confirmarBorrado = async function () {
 
         for (const t of window.g_transicionesBorrado) {
             if (t.accion === 'cambio') {
-                await client.from('alumno_grupos').update({
+                await SessionManager.applyIsolation(client.from('alumno_grupos').update({
                     grupo_clave: t.grupoDestino,
                     estado: 'Activo'
-                }).eq('id', t.inscripcionId);
+                })).eq('id', t.inscripcionId);
                 
-                await client.from('alumnos').update({
+                await SessionManager.applyIsolation(client.from('alumnos').update({
                     grupo_clave: t.grupoDestino 
-                }).eq('id', t.alumnoId);
+                })).eq('id', t.alumnoId);
             } else if (t.accion === 'baja') {
-                await client.from('alumno_grupos').delete().eq('id', t.inscripcionId);
+                await SessionManager.applyIsolation(client.from('alumno_grupos').delete()).eq('id', t.inscripcionId);
                 
-                await client.from('alumnos').update({
+                await SessionManager.applyIsolation(client.from('alumnos').update({
                     activo: false,
                     fecha_baja: fechaHoy,
                     motivo_baja: 'OTR'
-                }).eq('id', t.alumnoId);
+                })).eq('id', t.alumnoId);
             }
         }
     }
 
     // Borrar registros dependientes ANTES del grupo (orden importa por FK constraints)
     // 1. Asistencias del grupo
-    await client.from('asistencias').delete().eq('grupo_id', g_grupoActual.id);
+    await SessionManager.applyIsolation(client.from('asistencias').delete()).eq('grupo_id', g_grupoActual.id);
 
     // 2. Sesiones de clase del grupo (FK: sesiones_clase_grupo_id_fkey)
-    await client.from('sesiones_clase').delete().eq('grupo_id', g_grupoActual.id);
+    await SessionManager.applyIsolation(client.from('sesiones_clase').delete()).eq('grupo_id', g_grupoActual.id);
 
     // 3. Inscripciones restantes en alumno_grupos
-    await client.from('alumno_grupos').delete().eq('grupo_clave', g_grupoActual.clave);
+    await SessionManager.applyIsolation(client.from('alumno_grupos').delete()).eq('grupo_clave', g_grupoActual.clave);
 
     // 4. Borrado definitivo del grupo
     const { error } = await client.from('grupos').delete().eq('id', g_grupoActual.id);
@@ -1131,7 +1099,7 @@ window.buscarSalonesModal = async function () {
     tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">Buscando...</td></tr>';
 
     try {
-        let query = client.from('salones').select('*').eq('activo', true);
+        let query = SessionManager.applyIsolation(client.from('salones').select('*')).eq('activo', true);
         if (term) {
             if (!isNaN(parseInt(term))) {
                 query = query.or(`numero.eq.${term},ubicacion.ilike.%${term}%`);
@@ -1207,8 +1175,8 @@ window.abrirModalAsistencia = async function () {
 
     try {
         // 1. Obtener sesiones de clase
-        const { data: sesiones } = await client
-            .from('sesiones_clase')
+        const { data: sesiones } = await SessionManager.applyIsolation(client
+            .from('sesiones_clase'))
             .select('fecha')
             .eq('grupo_id', g_grupoActual.id)
             .order('fecha', { ascending: true });
@@ -1217,8 +1185,8 @@ window.abrirModalAsistencia = async function () {
         console.log(`[Asistencias] ${g_sesionesGrupo.length} sesiones encontradas para grupo ID: ${g_grupoActual.id}`);
 
         // 2. Obtener alumnos activos
-        const { data: rawAlumnos } = await client
-            .from('alumno_grupos')
+        const { data: rawAlumnos } = await SessionManager.applyIsolation(client
+            .from('alumno_grupos'))
             .select('alumno_id, alumnos(id, nombre)')
             .eq('grupo_clave', g_grupoActual.clave)
             .eq('estado', 'Activo');
@@ -1226,16 +1194,16 @@ window.abrirModalAsistencia = async function () {
         g_alumnosGrupo = (rawAlumnos || []).map(ra => ra.alumnos).filter(a => a != null);
 
         // 3. Obtener asistencias
-        const { data: asistencias } = await client
-            .from('asistencias')
+        const { data: asistencias } = await SessionManager.applyIsolation(client
+            .from('asistencias'))
             .select('*')
             .eq('grupo_id', g_grupoActual.id);
             
         g_asistenciasGrupo = asistencias || [];
 
         // 4. Obtener deudores del grupo
-        const { data: deudores } = await client
-            .from('v_colegiaturas_pendientes')
+        const { data: deudores } = await SessionManager.applyIsolation(client
+            .from('v_colegiaturas_pendientes'))
             .select('alumno_id')
             .eq('grupo', g_grupoActual.clave);
         g_deudoresGrupo = (deudores || []).map(d => String(d.alumno_id));
@@ -1520,7 +1488,7 @@ window.validarTraslapeSalon = async function (salonId, dia, hEntrada, hSalida, g
     if (!client || !salonId || !dia || !hEntrada || !hSalida) return false;
 
     try {
-        let query = client.from('grupos')
+        let query = SessionManager.applyIsolation(client.from('grupos'))
             .select('id, hora_entrada, hora_salida')
             .eq('salon_id', salonId)
             .eq('dia', dia)

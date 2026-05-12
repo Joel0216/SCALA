@@ -33,13 +33,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 async function cargarExamenes() {
     if (!supabase) return;
     try {
-        const { data: dataMaestros } = await supabase.from('maestros').select('id, nombre, clave');
+        const { data: dataMaestros } = await SessionManager.applyIsolation(supabase.from('maestros').select('id, nombre, clave'));
         const mapMaestros = {};
         if (dataMaestros) dataMaestros.forEach(m => mapMaestros[m.id] = { nombre: m.nombre, clave: m.clave });
 
-        const { data, error } = await supabase
-            .from('programacion_examenes')
-            .select('id, clave_examen, fecha, hora, salon_id, maestro_base_id, examinador1_id, examinador2_id, grupo_id, grupos(clave, cursos(curso))')
+        const { data, error } = await SessionManager.applyIsolation(supabase
+            .from('programacion_examenes').select('id, clave_examen, fecha, hora, salon_id, maestro_base_id, examinador1_id, examinador2_id, grupo_id, grupos(clave, cursos(curso))'))
             .order('clave_examen');
         if (error) throw error;
 
@@ -94,13 +93,12 @@ async function cargarAlumnosExamen(clave) {
     bodyAlumnos.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:12px;">Cargando...</td></tr>';
     try {
         // Intentar cargar resultados ya guardados
-        const { data: resultados, error: errRes } = await supabase
-            .from('resultados_examen')
-            .select(`
+        const { data: resultados, error: errRes } = await SessionManager.applyIsolation(supabase
+            .from('resultados_examen').select(`
                 id, clave_examen, alumno_id, presento, aprobo, calificacion, nota, hora_calificacion,
                 alumnos(credencial, nombre),
                 maestros_calificador:maestros!maestro_calificador_id(nombre, clave)
-            `)
+            `))
             .eq('clave_examen', clave)
             .order('alumno_id');
 
@@ -122,9 +120,8 @@ async function cargarAlumnosExamen(clave) {
             return;
         }
 
-        const { data: agData, error: errAg } = await supabase
-            .from('alumno_grupos')
-            .select('alumno_id')
+        const { data: agData, error: errAg } = await SessionManager.applyIsolation(supabase
+            .from('alumno_grupos').select('alumno_id'))
             .eq('grupo_clave', examen.grupoNombre)
             .eq('estado', 'Activo');
 
@@ -134,9 +131,8 @@ async function cargarAlumnosExamen(clave) {
         }
 
         const alumnoIds = agData.map(a => a.alumno_id);
-        const { data: alumnosDatos, error: errAl } = await supabase
-            .from('alumnos')
-            .select('id, credencial, nombre')
+        const { data: alumnosDatos, error: errAl } = await SessionManager.applyIsolation(supabase
+            .from('alumnos').select('id, credencial, nombre'))
             .in('id', alumnoIds)
             .eq('activo', true);
 
@@ -213,7 +209,7 @@ async function actualizarCalificacion(input) {
     const alumnoId = input.dataset.alumnoId;
 
     try {
-        const { error } = await supabase.from('resultados_examen').update({ calificacion: val }).eq('id', input.dataset.id);
+        const { error } = await SessionManager.applyIsolation(supabase.from('resultados_examen').update({ calificacion: val })).eq('id', input.dataset.id);
         if (error) throw error;
         
         // Si la calificación es aprobatoria (>= 60 o 6), sugerir marcar como aprobado?
@@ -230,12 +226,12 @@ async function actualizarAprobado(chk) {
     const alumnoId = chk.dataset.alumnoId;
 
     try {
-        const { error } = await supabase.from('resultados_examen').update({ aprobo: aprobado }).eq('id', chk.dataset.id);
+        const { error } = await SessionManager.applyIsolation(supabase.from('resultados_examen').update({ aprobo: aprobado })).eq('id', chk.dataset.id);
         if (error) throw error;
 
         if (aprobado) {
             // Verificar calificación mínima de 70 para promover
-            const { data: resEx } = await supabase.from('resultados_examen').select('calificacion').eq('id', chk.dataset.id).single();
+            const { data: resEx } = await SessionManager.applyIsolation(supabase.from('resultados_examen').select('calificacion')).eq('id', chk.dataset.id).single();
             if (resEx && resEx.calificacion >= 70) {
                 await promoverGrado(alumnoId);
             } else if (resEx) {
@@ -253,7 +249,7 @@ async function promoverGrado(alumnoId) {
 
     try {
         // 1. Obtener grado actual
-        const { data: alumno, error: errAl } = await supabase.from('alumnos').select('grado_actual, grupo_clave').eq('id', alumnoId).single();
+        const { data: alumno, error: errAl } = await SessionManager.applyIsolation(supabase.from('alumnos').select('grado_actual, grupo_clave')).eq('id', alumnoId).single();
         if (errAl) throw errAl;
 
         let gradoActual = parseInt(alumno.grado_actual) || 1;
@@ -261,16 +257,16 @@ async function promoverGrado(alumnoId) {
             let nuevoGrado = gradoActual + 1;
 
             // 2. Actualizar alumno globalmente
-            const { error: errUpd } = await supabase.from('alumnos').update({ 
+            const { error: errUpd } = await SessionManager.applyIsolation(supabase.from('alumnos').update({ 
                 grado_actual: nuevoGrado,
                 fecha_grado_actualizada: new Date().toISOString()
-            }).eq('id', alumnoId);
+            })).eq('id', alumnoId);
             if (errUpd) throw errUpd;
 
             // 3. Actualizar inscripción activa (alumno_grupos)
             if (alumno.grupo_clave) {
-                const { error: errInsc } = await supabase.from('alumno_grupos')
-                    .update({ grado: nuevoGrado })
+                const { error: errInsc } = await SessionManager.applyIsolation(supabase.from('alumno_grupos')
+                    .update({ grado: nuevoGrado }))
                     .eq('alumno_id', alumnoId)
                     .eq('grupo_clave', alumno.grupo_clave)
                     .eq('estado', 'Activo');
@@ -289,7 +285,7 @@ async function actualizarEstado(chk, campo) {
     try {
         const obj = {};
         obj[campo] = chk.checked;
-        const { error } = await supabase.from('resultados_examen').update(obj).eq('id', chk.dataset.id);
+        const { error } = await SessionManager.applyIsolation(supabase.from('resultados_examen').update(obj)).eq('id', chk.dataset.id);
         if (error) throw error;
     } catch (e) {
         console.error('Error actualizando:', e);

@@ -56,7 +56,8 @@ async function guardarNuevo() {
     try {
         const { error } = await client.from('grupos_articulos').insert([{
             grupo: nombre,
-            activo: true
+            activo: true,
+            organizacion_id: SessionManager.getCurrentUser()?.organizacion_id
         }]);
 
         if (error) throw error;
@@ -104,8 +105,7 @@ async function buscarGrupos(pagina = g_paginaActual) {
     try {
         const from = (g_paginaActual - 1) * g_rowsPorPagina;
         const to = from + g_rowsPorPagina - 1;
-
-        let query = client.from('grupos_articulos').select('*', { count: 'exact' });
+        let query = SessionManager.applyIsolation(client.from('grupos_articulos').select('*', { count: 'exact' }));
 
         if (termino) {
             query = query.ilike('grupo', `%${termino}%`);
@@ -207,7 +207,7 @@ async function borrarGrupo() {
     if (!client) return;
 
     try {
-        const { error } = await client.from('grupos_articulos').delete().eq('id', g_grupoActual.id);
+        const { error } = await SessionManager.applyIsolation(client.from('grupos_articulos').delete()).eq('id', g_grupoActual.id);
         if (error) throw error;
 
         await mostrarAlerta('Grupo eliminado exitosamente.');

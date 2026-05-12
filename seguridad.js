@@ -6,7 +6,18 @@ let db = null;
 let currentUser = null;
 let g_organizaciones = [];
 let g_usuarios = [];
-let g_secciones = ['Archivos', 'Caja', 'Reportes', 'Exámenes', 'Mantenimiento', 'Seguridad'];
+
+const G_CATEGORIAS_PERMISOS = {
+    'SEGURIDAD': ['Cambiar Password', 'Usuario Nuevo', 'Borrar Usuario', 'Restricciones'],
+    'MANTENIMIENTO': ['Procesos Especiales', 'Administracion Gral.'],
+    'CAJA': ['Cobros', 'Consultas y Bajas', 'Recibos Cancelados', 'Corte 1', 'Corte 2', 'Corte 3'],
+    'ARCHIVOS': ['Alumnos', 'Maestros', 'Cursos', 'Articulos', 'Movim. Inventario', 'Bajas', 'Factores de Pago', 'Grupos', 'Grupos de Articulos', "R.F.C.'s", 'Horarios'],
+    'EXAMENES': ['Programacion de Examenes', 'Relacion por Examenes', 'Reasignacion de Examenes'],
+    'OTROS CATALOGOS': ['Motivos (Conc. de Baja)', 'Instrumentos (Equip.)', 'Medios (Canales difusion)', 'Salones (Aulas e inst.)'],
+    'REPORTES': ['Impresion de Reportes']
+};
+
+let g_secciones = Object.values(G_CATEGORIAS_PERMISOS).flat();
 
 document.addEventListener('DOMContentLoaded', async () => {
     console.log('Inicializando seguridad SaaS...');
@@ -22,6 +33,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     setupUI();
     setupTabs();
     cargarDatosIniciales();
+    // Configuración para pestaña Restricciones
+    if (currentUser.rol === 'SuperAdmin') {
+        document.getElementById('divSelectOrgRestriccion').style.display = 'block';
+        document.getElementById('divAcademiaStatic').style.display = 'none';
+    } else {
+        document.getElementById('divSelectOrgRestriccion').style.display = 'none';
+        document.getElementById('divAcademiaStatic').style.display = 'block';
+        document.getElementById('viewAcademia').value = currentUser.org_nombre || 'Sede Principal';
+    }
 });
 
 function setupUI() {
@@ -72,9 +92,11 @@ async function cargarOrganizaciones() {
         g_organizaciones = data;
         const tbody = document.getElementById('tbodyOrganizaciones');
         const selectOrg = document.getElementById('u_org');
+        const selectOrgRest = document.getElementById('selectOrgRestriccion');
         
         tbody.innerHTML = '';
         selectOrg.innerHTML = '<option value="">-- Seleccione organización --</option>';
+        if (selectOrgRest) selectOrgRest.innerHTML = '<option value="">-- Todas las Academias --</option>';
 
         data.forEach(org => {
             const tr = document.createElement('tr');
@@ -91,6 +113,11 @@ async function cargarOrganizaciones() {
             opt.value = org.id;
             opt.textContent = org.nombre;
             selectOrg.appendChild(opt);
+
+            if (selectOrgRest) {
+                const optRest = opt.cloneNode(true);
+                selectOrgRest.appendChild(optRest);
+            }
         });
     } catch (e) {
         console.error('Error cargando organizaciones:', e);
@@ -138,20 +165,25 @@ async function crearOrganizacion() {
             logoUrl = urlData.publicUrl;
         }
 
-        // 2. Crear organización
-        const { error } = await db.from('organizaciones').insert([{
+        // 2. Crear organización (Usando select().single() para verificar creación exitosa)
+        const { data: newOrg, error } = await db.from('organizaciones').insert([{
             nombre: nombre,
             logo_url: logoUrl
-        }]);
+        }]).select().single();
 
-        if (error) throw error;
+        if (error) {
+            if (error.code === '42501') {
+                throw new Error('Error de permisos RLS: Asegúrese de tener permisos de SuperAdmin para crear organizaciones.');
+            }
+            throw error;
+        }
 
-        alert('Organización creada exitosamente');
+        alert('Organización "' + newOrg.nombre + '" creada exitosamente');
         cerrarModalOrg();
-        cargarOrganizaciones();
+        await cargarOrganizaciones();
     } catch (e) {
-        console.error('Error:', e);
-        alert('Error: ' + e.message);
+        console.error('Error detallado:', e);
+        alert('ERROR AL CREAR ORGANIZACIÓN: ' + (e.message || 'Error desconocido'));
     }
 }
 
@@ -178,7 +210,7 @@ async function eliminarOrganizacion(id, nombre) {
 
 async function cargarUsuarios() {
     try {
-        let query = db.from('usuarios').select('*, organizaciones(nombre)');
+        let query = SessionManager.applyIsolation(db.from('usuarios').select('*, organizaciones(nombre)'));
         
         // Si no es SuperAdmin, filtrar por su organización
         if (currentUser.rol !== 'SuperAdmin') {
@@ -248,12 +280,14 @@ async function guardarUsuario() {
     let orgId = currentUser.organizacion_id;
     if (currentUser.rol === 'SuperAdmin') {
         orgId = document.getElementById('u_org').value;
-        if (!orgId) return alert('Seleccione una organización');
+        if (!orgId) return alert('Por favor, seleccione una organización para este usuario.');
     }
 
-    if (!userid || !pass || !nombre) return alert('Faltan campos obligatorios');
+    if (!userid || !pass || !nombre) return alert('Faltan campos obligatorios (ID, Nombre y Contraseña)');
 
     try {
+        // En un sistema SaaS real, aquí usaríamos supabase.auth.signUp
+        // Por ahora, seguimos con la tabla 'usuarios' personalizada para mantener compatibilidad
         const { error } = await db.from('usuarios').insert([{
             user_id: userid,
             username: userid,
@@ -265,12 +299,17 @@ async function guardarUsuario() {
             activo: true
         }]);
 
-        if (error) throw error;
-        alert('Usuario creado correctamente');
+        if (error) {
+            if (error.code === '23505') throw new Error('El ID de usuario ya existe. Elija otro.');
+            throw error;
+        }
+
+        alert('Usuario "' + userid + '" creado correctamente');
         cerrarModalUsuario();
-        cargarUsuarios();
+        await cargarUsuarios();
     } catch (e) {
-        alert('Error: ' + e.message);
+        console.error('Error al guardar usuario:', e);
+        alert('ERROR AL CREAR USUARIO: ' + e.message);
     }
 }
 
@@ -281,7 +320,7 @@ async function eliminarUsuario(id, userid, rol) {
     if (!confirm(`¿Desea eliminar el acceso de "${userid}"?\n\nLos registros que haya realizado se conservarán para fines contables.`)) return;
 
     try {
-        const { error } = await db.from('usuarios').delete().eq('id', id);
+        const { error } = await SessionManager.applyIsolation(db.from('usuarios').delete()).eq('id', id);
         if (error) throw error;
         alert('Usuario eliminado');
         cargarUsuarios();
@@ -296,15 +335,25 @@ async function eliminarUsuario(id, userid, rol) {
 
 function actualizarSelectRestricciones() {
     const select = document.getElementById('selectUsuarioRestriccion');
+    const orgFiltro = document.getElementById('selectOrgRestriccion').value;
     select.innerHTML = '<option value="">-- Elija un usuario --</option>';
     
     g_usuarios.forEach(u => {
-        if (u.rol === 'SuperAdmin') return; // SuperAdmin no tiene restricciones
+        // 1. No permitir restringir al SuperAdmin
+        if (u.rol === 'SuperAdmin') return; 
         
-        // Solo mostrar usuarios de rango inferior o igual (si es Admin de la org)
+        // 2. Si no soy SuperAdmin, solo ver mi organización y solo ver empleados
+        if (currentUser.rol !== 'SuperAdmin') {
+            if (u.organizacion_id !== currentUser.organizacion_id) return;
+            if (u.rol === 'Admin' || u.rol === 'Jefe') return; // Admin no restringe a otros Admin/Jefe
+        } else {
+            // Si soy SuperAdmin y hay filtro de org, aplicarlo
+            if (orgFiltro && u.organizacion_id !== orgFiltro) return;
+        }
+        
         const opt = document.createElement('option');
         opt.value = u.id;
-        opt.textContent = `${u.nombre} (${u.rol})`;
+        opt.textContent = `${u.nombre} (${u.rol}) - ${u.organizaciones?.nombre || 'Sede'}`;
         select.appendChild(opt);
     });
 }
@@ -321,30 +370,43 @@ async function cargarRestriccionesUsuario() {
         return;
     }
 
-    try {
-        const { data: pActuales } = await db.from('permisos_seguridad').select('*').eq('usuario_id', userId);
-        
-        const tbody = document.getElementById('tbodyRestricciones');
-        tbody.innerHTML = '';
+    // Actualizar ROL en la vista
+    const user = g_usuarios.find(u => u.id === userId);
+    if (user && document.getElementById('userRolBadge')) {
+        document.getElementById('userRolBadge').textContent = user.rol;
+    }
 
-        g_secciones.forEach(sec => {
-            const perm = pActuales?.find(p => p.seccion === sec)?.permiso || 'M';
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td style="text-align: left; padding-left: 20px;"><strong>${sec}</strong></td>
-                <td>
-                    <select class="perm-select" data-section="${sec}">
-                        <option value="N" ${perm === 'N' ? 'selected' : ''}>N - Sin Acceso</option>
-                        <option value="M" ${perm === 'M' ? 'selected' : ''}>M - Modificación</option>
-                        <option value="C" ${perm === 'C' ? 'selected' : ''}>C - Solo Consulta</option>
-                    </select>
-                </td>
-                <td style="font-size: 0.8rem; color: #aaa;">
-                    ${sec === 'Seguridad' ? 'Configuración de usuarios y permisos' : `Acceso al módulo de ${sec}`}
-                </td>
-            `;
-            tbody.appendChild(tr);
-        });
+    try {
+        const { data: pActuales } = await SessionManager.applyIsolation(db.from('permisos_seguridad').select('*')).eq('usuario_id', userId);
+        
+        const container = document.getElementById('gridRestricciones');
+        container.innerHTML = '';
+
+        for (const [cat, items] of Object.entries(G_CATEGORIAS_PERMISOS)) {
+            const card = document.createElement('div');
+            card.className = 'perm-cat-card';
+            
+            let html = `<div class="perm-cat-header cat-${cat.toLowerCase().replace(' ', '-')}">${cat}</div>`;
+            html += `<div class="perm-cat-body">`;
+            
+            items.forEach(sec => {
+                const perm = pActuales?.find(p => p.seccion === sec)?.permiso || 'M';
+                html += `
+                    <div class="perm-item">
+                        <span class="perm-name">${sec}</span>
+                        <select class="perm-select-mini" data-section="${sec}">
+                            <option value="N" ${perm === 'N' ? 'selected' : ''}>N</option>
+                            <option value="M" ${perm === 'M' ? 'selected' : ''}>M</option>
+                            <option value="C" ${perm === 'C' ? 'selected' : ''}>C</option>
+                        </select>
+                    </div>
+                `;
+            });
+            
+            html += `</div>`;
+            card.innerHTML = html;
+            container.appendChild(card);
+        }
 
         document.getElementById('containerRestricciones').style.display = 'block';
     } catch (e) {
@@ -354,7 +416,7 @@ async function cargarRestriccionesUsuario() {
 
 async function guardarRestricciones() {
     const userId = document.getElementById('selectUsuarioRestriccion').value;
-    const selects = document.querySelectorAll('.perm-select');
+    const selects = document.querySelectorAll('.perm-select-mini');
     const batch = [];
 
     selects.forEach(sel => {
@@ -367,7 +429,7 @@ async function guardarRestricciones() {
 
     try {
         // Upsert masivo (requiere unique constraint en usuario_id, seccion)
-        const { error } = await db.from('permisos_seguridad').upsert(batch, { onConflict: 'usuario_id, seccion' });
+        const { error } = await SessionManager.applyIsolation(db.from('permisos_seguridad').upsert(batch, { onConflict: 'usuario_id, seccion' }));
         
         if (error) throw error;
         alert('Permisos actualizados correctamente');

@@ -163,8 +163,7 @@ async function initFromUrlParams() {
         }
 
         // 2. Buscar datos del alumno
-        const { data: student, error } = await SessionManager.applyIsolation(db.from('alumnos'))
-            .select('*')
+        const { data: student, error } = await SessionManager.applyIsolation(db.from('alumnos').select('*'))
             .eq('id', alumnoId)
             .maybeSingle();
 
@@ -430,7 +429,7 @@ function updateDateTime() {
 // --- RECEIPT LOGIC ---
 async function assignNextReceipt() {
     try {
-        const { data, error } = await SessionManager.applyIsolation(db.from('recibos')).select('numero').order('numero', { ascending: false }).limit(1);
+        const { data, error } = await SessionManager.applyIsolation(db.from('recibos').select('numero')).order('numero', { ascending: false }).limit(1);
         if (error) throw error;
 
         let lastNo = 0;
@@ -614,7 +613,7 @@ function displayLookupResults(results, headers, selectFn) {
 
 // --- SEARCH FUNCTIONS ---
 async function searchStudents(term, from = 0, to = 19) {
-    let query = db.from('alumnos')
+    let query = SessionManager.applyIsolation(db.from('alumnos').select('*'))
         .select('id, nombre, credencial, fecha_ingreso, nombre_padre, nombre_madre, beca, porcentaje_beca', { count: 'exact' })
         .eq('activo', true);
 
@@ -640,7 +639,7 @@ async function searchStudents(term, from = 0, to = 19) {
 }
 
 async function searchOperations(term, from = 0, to = 19) {
-    let query = db.from('articulos')
+    let query = SessionManager.applyIsolation(db.from('articulos').select('*'))
         .select('id, clave, descripcion, precio, iva', { count: 'exact' });
 
     if (term) {
@@ -671,7 +670,7 @@ async function searchOperations(term, from = 0, to = 19) {
 }
 
 async function searchRfcs(term, from = 0, to = 19) {
-    let query = db.from('rfc_clientes')
+    let query = SessionManager.applyIsolation(db.from('rfc_clientes').select('*'))
         .select('*', { count: 'exact' });
 
     if (term) {
@@ -701,14 +700,14 @@ async function selectStudent(student) {
     let rfcDataFull = null;
 
     try {
-        const { data: link, error: linkErr } = await db.from('rfc_credenciales')
+        const { data: link, error: linkErr } = await SessionManager.applyIsolation(db.from('rfc_credenciales'))
             .select('rfc')
             .eq('credencial', parseInt(student.credencial))
             .maybeSingle();
 
         if (link && !linkErr) {
             newStudentRfc = link.rfc;
-            const { data: rfcData, error: rfcErr } = await db.from('rfc_clientes')
+            const { data: rfcData, error: rfcErr } = await SessionManager.applyIsolation(db.from('rfc_clientes'))
                 .select('*')
                 .eq('rfc', link.rfc)
                 .maybeSingle();
@@ -1240,8 +1239,7 @@ async function saveAndPrint() {
         const gtInput = document.getElementById('grandTotal');
 
         // Buscar último número guardado para evitar duplicados
-        const { data: lastRec, error: lastRecErr } = await SessionManager.applyIsolation(db.from('recibos'))
-            .select('numero')
+        const { data: lastRec, error: lastRecErr } = await SessionManager.applyIsolation(db.from('recibos').select('numero'))
             .order('numero', { ascending: false })
             .limit(1)
             .maybeSingle();
@@ -1354,7 +1352,8 @@ async function saveAndPrint() {
                             monto: op.neto / 12, // Backward compatibility
                             grupo: currentStudent.grupo_clave || currentStudent.grupo,
                             curso: op.descripcion,
-                            fecha_pago: new Date().toISOString().split('T')[0]
+                            fecha_pago: new Date().toISOString().split('T')[0],
+                            organizacion_id: SessionManager.getCurrentUser()?.organizacion_id
                         });
                     }
                     const { error: colErr } = await db.from('colegiaturas').upsert(anualidadRecords, { onConflict: 'alumno_id,anio,mes' });
@@ -1381,7 +1380,7 @@ async function saveAndPrint() {
                 console.log(`✓ Procesando EXAMEN - Ref ${op.ref_id} para alumno ${op.alumno_id || (currentStudent ? currentStudent.id : 'desconocido')}`);
                 const targetAlumnoId = op.alumno_id || (currentStudent ? currentStudent.id : null);
                 if (targetAlumnoId) {
-                    const { error: exErr } = await db.from('examen_alumnos')
+                    const { error: exErr } = await SessionManager.applyIsolation(db.from('examen_alumnos'))
                         .update({ 
                             pagado: true, 
                             recibo_id: reciboId 
@@ -1397,10 +1396,10 @@ async function saveAndPrint() {
                 // --- LÓGICA DE INVENTARIO: DESCONTAR STOCK ---
                 console.log(`✓ Procesando ARTÍCULO - Descontando stock de ${op.articulo_id}`);
                 try {
-                    const { data: art, error: artErr } = await db.from('articulos').select('stock').eq('id', op.articulo_id).single();
+                    const { data: art, error: artErr } = await SessionManager.applyIsolation(db.from('articulos')).select('stock').eq('id', op.articulo_id).single();
                     if (!artErr && art && art.stock !== null) {
                         const nuevoStock = art.stock - (op.qty || 1);
-                        await db.from('articulos').update({ stock: nuevoStock }).eq('id', op.articulo_id);
+                        await SessionManager.applyIsolation(db.from('articulos')).update({ stock: nuevoStock }).eq('id', op.articulo_id);
                         console.log(`   Nuevo stock para ${op.articulo_id}: ${nuevoStock}`);
                     }
                 } catch (stockE) {

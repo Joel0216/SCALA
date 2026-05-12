@@ -51,7 +51,7 @@ async function cargarHorarios(pagina = g_paginaActual) {
         const to = from + g_rowsPorPagina - 1;
 
         // Armar consulta sobre grupos
-        let query = client.from('grupos')
+        let query = SessionManager.applyIsolation(client.from('grupos'))
             .select('*, maestros!inner(nombre), cursos!inner(curso)', { count: 'exact' })
             .eq('activo', true);
 
@@ -66,7 +66,7 @@ async function cargarHorarios(pagina = g_paginaActual) {
 
         if (error) {
             // Fallback si la relación de inner falla por llaves huérfanas
-            const res2 = await client.from('grupos')
+            const res2 = await SessionManager.applyIsolation(client.from('grupos'))
                 .select('*, maestros(nombre), cursos(curso)', { count: 'exact' })
                 .eq('activo', true)
                 .ilike('clave', `%${g_terminoBusqueda}%`)
@@ -209,7 +209,7 @@ window.buscarHorariosEmergente = async function () {
     tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Buscando...</td></tr>';
 
     try {
-        let { data, error } = await client.from('grupos')
+        let { data, error } = await SessionManager.applyIsolation(client.from('grupos'))
             .select('clave, dia, hora_entrada, maestros!inner(nombre), cursos!inner(curso)')
             .eq('activo', true)
             .or(`clave.ilike.%${term}%,maestros.nombre.ilike.%${term}%`)
@@ -218,7 +218,7 @@ window.buscarHorariosEmergente = async function () {
 
         if (error) {
             // Fallback iterativo 
-            const fallback = await client.from('grupos')
+            const fallback = await SessionManager.applyIsolation(client.from('grupos'))
                 .select('clave, dia, hora_entrada, maestros(nombre), cursos(curso)')
                 .eq('activo', true)
                 .ilike('clave', `%${term}%`)

@@ -16,7 +16,7 @@ const ReportEngine = {
 
     // Listado de Alumnos (Variante 1: Ordenado por nombre, 2: Por credencial, 3: Por curso)
     listado_alumnos: async (db, variante = 1) => {
-        let query = db.from('alumnos').select('credencial, nombre, grupo_clave, instrumento_clave, celular').eq('activo', true);
+        let query = SessionManager.applyIsolation(db.from('alumnos').select('credencial, nombre, grupo_clave, instrumento_clave, celular')).eq('activo', true);
         
         if (variante === 1) query = query.order('nombre', { ascending: true });
         else if (variante === 2) query = query.order('credencial', { ascending: true });
@@ -35,7 +35,7 @@ const ReportEngine = {
 
     // Alumnos Ingresos (Nuevos/Altas)
     alumnos_ingresos: async (db, inicio, fin) => {
-        const { data, error } = await db.from('alumnos')
+        const { data, error } = await SessionManager.applyIsolation(db.from('alumnos'))
             .select('credencial, nombre, fecha_ingreso, celular, grupo_clave')
             .gte('fecha_ingreso', inicio)
             .lte('fecha_ingreso', fin)
@@ -52,7 +52,7 @@ const ReportEngine = {
 
     // Alumnos por Instrumento
     alumnos_por_instrumento: async (db) => {
-        const { data, error } = await db.from('alumnos')
+        const { data, error } = await SessionManager.applyIsolation(db.from('alumnos'))
             .select('credencial, nombre, instrumento_clave, grupo_clave')
             .eq('activo', true)
             .order('instrumento_clave', { ascending: true })
@@ -69,11 +69,11 @@ const ReportEngine = {
     // Alumnos Baja
     alumnos_baja: async (db, inicio, fin) => {
         // Obtenemos los motivos para mapearlos en memoria, ya que en la tabla alumnos motivo_baja es un VARCHAR
-        const { data: motivos } = await db.from('motivos_baja').select('clave, descripcion');
+        const { data: motivos } = await SessionManager.applyIsolation(db.from('motivos_baja').select('clave, descripcion'));
         const mapaMotivos = {};
         if (motivos) motivos.forEach(m => mapaMotivos[m.clave] = m.descripcion);
 
-        const { data, error } = await db.from('alumnos')
+        const { data, error } = await SessionManager.applyIsolation(db.from('alumnos'))
             .select('credencial, nombre, fecha_baja, motivo_baja, grupo_clave')
             .eq('activo', false)
             .gte('fecha_baja', inicio)
@@ -97,7 +97,7 @@ const ReportEngine = {
     // Listas de Asistencia (Agrupado por grupo/salon)
     listas_asistencia: async (db) => {
         // Obtenemos los alumnos activos y los agrupamos por grupo
-        const { data, error } = await db.from('alumnos')
+        const { data, error } = await SessionManager.applyIsolation(db.from('alumnos'))
             .select('credencial, nombre, grupo_clave')
             .eq('activo', true)
             .order('grupo_clave', { ascending: true })
@@ -113,7 +113,7 @@ const ReportEngine = {
     // Programación de Exámenes
     programacion_examenes: async (db) => {
         const today = new Date().toISOString().split('T')[0];
-        const { data, error } = await db.from('programacion_examenes')
+        const { data, error } = await SessionManager.applyIsolation(db.from('programacion_examenes'))
             .select('*, tipos_examen(tipo)')
             .gte('fecha', today)
             .order('fecha', { ascending: true });
@@ -131,7 +131,7 @@ const ReportEngine = {
 
     // Alumnos para Nivel Superior
     alumnos_nivel_superior: async (db) => {
-        const { data, error } = await db.from('programacion_examenes')
+        const { data, error } = await SessionManager.applyIsolation(db.from('programacion_examenes'))
             .select('alumno_id, alumnos(nombre), calificacion, tipo_examen')
             .gte('calificacion', 60)
             .order('calificacion', { ascending: false });
@@ -150,8 +150,7 @@ const ReportEngine = {
     // ==========================================
 
     corte_caja_diario: async (db, fecha, variante = 3) => {
-        let query = db.from('recibos')
-            .select('numero, fecha, total, efectivo, tarjeta, operaciones(operacion)')
+        let query = SessionManager.applyIsolation(db.from('recibos').select('numero, fecha, total, efectivo, tarjeta, operaciones(operacion)'))
             .eq('fecha', fecha)
             .eq('cancelado', false);
         
@@ -180,7 +179,7 @@ const ReportEngine = {
 
     // Análisis de Ingresos
     analisis_ingresos: async (db, inicio, fin) => {
-        const { data, error } = await db.from('recibos')
+        const { data, error } = await SessionManager.applyIsolation(db.from('recibos'))
             .select('fecha, total')
             .gte('fecha', inicio)
             .lte('fecha', fin)
@@ -206,14 +205,14 @@ const ReportEngine = {
         const fechaCorte = new Date(mes_corte + '-01T00:00:00'); // YYYY-MM-01
         
         // 1. Obtener alumnos activos
-        const { data: alumnos, error: errA } = await db.from('alumnos')
+        const { data: alumnos, error: errA } = await SessionManager.applyIsolation(db.from('alumnos').select('id, nombre, instrumento_clave'))
             .select('id, credencial, nombre, fecha_ingreso, grupo_clave')
             .eq('activo', true)
             .not('fecha_ingreso', 'is', null);
         if (errA) throw errA;
         
         // 2. Obtener colegiaturas pagadas
-        const { data: pagos, error: errP } = await db.from('operaciones')
+        const { data: pagos, error: errP } = await SessionManager.applyIsolation(db.from('operaciones').select('*'))
             .select('recibo_id, operacion, recibos!inner(alumno_id, cancelado)')
             .ilike('operacion', '%Colegiatura%')
             .eq('recibos.cancelado', false);
@@ -260,7 +259,7 @@ const ReportEngine = {
 
     // Pagos Adelantados
     pagos_adelantados: async (db) => {
-        const { data: opData, error: errOp } = await db.from('operaciones')
+        const { data: opData, error: errOp } = await SessionManager.applyIsolation(db.from('operaciones').select('*'))
             .select('operacion, neto, recibos!inner(fecha, cancelado, alumnos(nombre))')
             .ilike('operacion', '%Adelantad%')
             .eq('recibos.cancelado', false);
@@ -281,7 +280,7 @@ const ReportEngine = {
     // Reporte Mensual de Maestros
     reporte_mensual_maestros: async (db) => {
         // En lugar de v_honorarios_maestros, calculamos desde grupos y factores
-        const { data, error } = await db.from('grupos')
+        const { data, error } = await SessionManager.applyIsolation(db.from('grupos').select('*'))
             .select('clave, alumnos_inscritos, maestros(nombre), cursos(curso)')
             .eq('activo', true);
             
@@ -297,7 +296,7 @@ const ReportEngine = {
 
     // Artículos Vendidos
     articulos_vendidos: async (db, inicio, fin) => {
-        const { data, error } = await db.from('operaciones')
+        const { data, error } = await SessionManager.applyIsolation(db.from('operaciones').select('*'))
             .select('operacion, cantidad, neto, recibos!inner(fecha, cancelado)')
             .gte('recibos.fecha', inicio)
             .lte('recibos.fecha', fin)
@@ -316,7 +315,7 @@ const ReportEngine = {
 
     // Stock Crítico (< 5 unidades)
     stock_critico: async (db) => {
-        const { data, error } = await db.from('articulos')
+        const { data, error } = await SessionManager.applyIsolation(db.from('articulos').select('*'))
             .select('clave, descripcion, stock, precio')
             .lt('stock', 5)
             .order('stock', { ascending: true });

@@ -135,9 +135,7 @@ async function cargarMaestros() {
     if (!db) return;
 
     try {
-        const { data, error } = await db
-            .from('maestros')
-            .select('*')
+        const { data, error } = await SessionManager.applyIsolation(db.from('maestros').select('id, clave, nombre, rfc, email, telefono, direccion_1, fecha_ingreso, grado, activo'))
             .order('nombre');
 
         if (error) {
@@ -366,6 +364,7 @@ async function guardarNuevoMaestro() {
     };
 
     try {
+        datos.organizacion_id = SessionManager.getCurrentUser()?.organizacion_id;
         const { data, error } = await db.from('maestros').insert([datos]).select();
 
         if (error) throw error;
@@ -459,7 +458,7 @@ async function guardarEdicion() {
     };
 
     try {
-        const { error } = await db.from('maestros').update(datos).eq('id', maestroSeleccionado.id);
+        const { error } = await SessionManager.applyIsolation(db.from('maestros').update(datos)).eq('id', maestroSeleccionado.id);
 
         if (error) throw error;
 
@@ -525,8 +524,7 @@ async function confirmarBorrado() {
     try {
         // Hard Delete as requested by user ("se borre en la base de datos")
         // This frees up the 'clave' so it can be reused.
-        const { error } = await db.from('maestros')
-            .delete()
+        const { error } = await SessionManager.applyIsolation(db.from('maestros').delete())
             .eq('id', maestroSeleccionado.id);
 
         if (error) throw error;
@@ -606,8 +604,7 @@ async function cargarResultadosBusquedaMaestro() {
 
     try {
         // Obtener total de resultados
-        const countResult = await db.from('maestros')
-            .select('*', { count: 'exact', head: true })
+        const countResult = await SessionManager.applyIsolation(db.from('maestros').select('*', { count: 'exact', head: true }))
             .ilike('nombre', `%${termino}%`);
 
         if (countResult.error) throw countResult.error;
@@ -616,8 +613,7 @@ async function cargarResultadosBusquedaMaestro() {
         g_totalPaginasMaestros = Math.ceil(g_totalResultadosMaestros / limite);
 
         // Obtener datos paginados
-        const result = await db.from('maestros')
-            .select('*')
+        const result = await SessionManager.applyIsolation(db.from('maestros').select('*'))
             .ilike('nombre', `%${termino}%`)
             .order('nombre')
             .range(desde, desde + limite - 1);
