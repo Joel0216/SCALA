@@ -153,10 +153,15 @@ function mostrarPrompt(mensaje, valorDefault = '') {
     return new Promise((resolve) => {
         const overlay = document.createElement('div');
         overlay.className = 'dialogo-overlay';
+        
+        // Detectar si es un prompt de contraseña
+        const isPassword = mensaje.toLowerCase().includes('contraseña') || mensaje.toLowerCase().includes('password');
+        const inputType = isPassword ? 'password' : 'text';
+        
         overlay.innerHTML = `
             <div class="dialogo-box">
                 <div class="dialogo-mensaje">${mensaje}</div>
-                <input type="text" class="dialogo-input" id="inputDialogo" value="${valorDefault}">
+                <input type="${inputType}" class="dialogo-input" id="inputDialogo" value="${valorDefault}" placeholder="${isPassword ? '••••••••' : ''}">
                 <div class="dialogo-botones">
                     <button class="dialogo-btn dialogo-btn-cancel" id="btnDialogoCancel">Cancelar</button>
                     <button class="dialogo-btn dialogo-btn-ok" id="btnDialogoOk">Aceptar</button>
@@ -170,7 +175,7 @@ function mostrarPrompt(mensaje, valorDefault = '') {
         const input = overlay.querySelector('.dialogo-input');
 
         input.focus();
-        input.select();
+        if (!isPassword) input.select();
 
         btnOk.onclick = () => {
             overlay.remove();

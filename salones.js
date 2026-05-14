@@ -123,9 +123,28 @@ function quitarInstrumento(index) {
 // ==============================
 // FLUJO CRUD PRINCIPAL
 // ==============================
-function nuevo() {
+async function nuevo() {
     limpiarFormulario();
     cambiarModoEdicion(true);
+    
+    // Sugerir siguiente número
+    const client = getClient();
+    if (client) {
+        try {
+            const { data, error } = await SessionManager.applyIsolation(client.from('salones').select('numero'))
+                .order('numero', { ascending: false })
+                .limit(1);
+            
+            if (!error && data && data.length > 0) {
+                document.getElementById('numero').value = parseInt(data[0].numero) + 1;
+            } else {
+                document.getElementById('numero').value = 1;
+            }
+        } catch (e) {
+            console.warn('No se pudo autocalcular el número de salón:', e);
+            document.getElementById('numero').value = '';
+        }
+    }
 }
 
 function editar() {
@@ -165,9 +184,9 @@ async function guardar() {
     try {
         if (!g_salonActual) {
             // NUEVO
-            const { data: verif } = await SessionManager.applyIsolation(client.from('salones').select('numero')).eq('numero', numero).single();
+            const { data: verif } = await SessionManager.applyIsolation(client.from('salones').select('numero')).eq('numero', numero).maybeSingle();
             if (verif) {
-                return await mostrarAlerta(`El salón número ${numero} ya existe.`);
+                return await mostrarAlerta(`El salón número ${numero} ya existe en su organización.`);
             }
 
             const { error: insertErr } = await client.from('salones').insert([{ 
@@ -294,8 +313,20 @@ window.cargarSalon = async function (numero) {
     if (!client) return;
 
     try {
-        const { data: salon, error: esalon } = await SessionManager.applyIsolation(client.from('salones').select('*')).eq('numero', numero).single();
+        // Usamos select().limit(1) en lugar de maybeSingle() para evitar el error de múltiples filas
+        // si el usuario tiene duplicados en la DB por errores previos.
+        const { data, error: esalon } = await SessionManager.applyIsolation(client.from('salones').select('*'))
+            .eq('numero', numero)
+            .limit(1);
+            
         if (esalon) throw esalon;
+
+        if (!data || data.length === 0) {
+            await mostrarAlerta('No se encontró el salón solicitado.');
+            return;
+        }
+
+        const salon = data[0];
 
         // Cargar instrumentos
         const { data: rels, error: erels } = await client

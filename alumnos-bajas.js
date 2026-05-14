@@ -227,8 +227,8 @@ async function cargarHistorialGruposBajas(alumnoId) {
 
     try {
         const { data, error } = await SessionManager.applyIsolation(db
-            .from('alumno_grupos'))
-            .select('*')
+            .from('alumno_grupos')
+            .select('*'))
             .eq('alumno_id', alumnoId)
             .eq('estado', 'Baja');
 
@@ -503,8 +503,7 @@ async function confirmarReingresoAvanzado() {
 
         if (!agId) {
             // Verificar si ya existe un registro para este alumno y grupo (evitar duplicado)
-            const { data: existAg } = await SessionManager.applyIsolation(db.from('alumno_grupos'))
-                .select('id')
+            const { data: existAg } = await SessionManager.applyIsolation(db.from('alumno_grupos').select('id'))
                 .eq('alumno_id', alumnoSeleccionado.id)
                 .eq('grupo_clave', nuevoGrupoClave)
                 .maybeSingle();
@@ -555,8 +554,8 @@ async function confirmarReingresoAvanzado() {
         }
 
         // 4. Actualizar contador del grupo
-        const { count } = await SessionManager.applyIsolation(db.from('alumno_grupos'))
-            .select('*', { count: 'exact', head: true })
+        const { count } = await SessionManager.applyIsolation(db.from('alumno_grupos')
+            .select('*', { count: 'exact', head: true }))
             .eq('grupo_clave', grupoFinal.grupo_clave)
             .eq('estado', 'Activo');
             

@@ -1,59 +1,68 @@
-// Inicializar Supabase
-let supabase = null;
-let prospectos = [];
-let currentIndex = 0;
+// =====================================================
+// MÓDULO DE PROSPECTOS - SCALA
+// =====================================================
 
-// Esperar a que se cargue la libreria de Supabase
+let db = null;
+let g_prospectosCache = [];
+let g_prospectoSeleccionado = null;
+
+// Variables para paginación en búsqueda
+let g_paginaActualProspectos = 1;
+let g_totalPaginasProspectos = 1;
+let g_totalResultadosProspectos = 0;
+let g_terminoBusquedaProspectos = '';
+
+// =====================================================
+// INICIALIZACIÓN
+// =====================================================
 document.addEventListener('DOMContentLoaded', async () => {
-    console.log('DOM cargado, inicializando prospectos...');
+    console.log('Inicializando módulo de prospectos...');
 
-    // Esperar a que Supabase esté listo
     try {
-        await new Promise(r => setTimeout(r, 500));
         if (typeof waitForSupabase === 'function') {
-            supabase = await waitForSupabase(10000);
+            db = await waitForSupabase(10000);
+        } else {
+            db = window.supabaseClient || window.supabase;
+        }
+
+        if (db) {
             console.log('✓ Supabase conectado');
+            await loadCursos();
+            await resetState(); // Iniciar en modo consulta
+        } else {
+            console.error('❌ Supabase NO disponible');
         }
     } catch (e) {
-        console.error('Error conectando a Supabase:', e);
+        console.error('Error durante la inicialización:', e);
     }
 
-    // Inicializar datos
-    if (supabase) await loadCursos();
-    const idProspectoInput = document.getElementById('idProspecto');
-    if (idProspectoInput && supabase) {
-        idProspectoInput.value = await generateProspectoId();
+    if (typeof habilitarInputs === 'function') {
+        habilitarInputs();
     }
-    const fechaAtencionInput = document.getElementById('fechaAtencion');
-    if (fechaAtencionInput) {
-        fechaAtencionInput.value = new Date().toISOString().split('T')[0];
-    }
-
-    // Configurar event listeners
-    setupEventListeners();
-
-    console.log('Inicialización de prospectos completa');
+    
+    // Reloj
+    setInterval(actualizarReloj, 1000);
+    actualizarReloj();
 });
 
-// Configurar todos los event listeners
-function setupEventListeners() {
-    // Los botones ya tienen onclick en el HTML, no es necesario addEventListener
-    // Esto evita que las funciones se ejecuten doble o haya conflictos
-}
-
-// Función terminar (disponible globalmente)
-async function terminarProspectos() {
-    if (await mostrarConfirm('¿Desea salir del módulo de Prospectos?')) {
-        window.location.href = 'archivos.html';
+function actualizarReloj() {
+    const el = document.getElementById('datetime');
+    if (el) {
+        const ahora = new Date();
+        el.textContent = ahora.toLocaleDateString() + ' ' + ahora.toLocaleTimeString();
     }
 }
 
-// Generar ID de prospecto
+// =====================================================
+// FUNCIONES DE CARGA DE DATOS
+// =====================================================
+
+// Generar ID de prospecto (Basado en el máximo existente + 1)
 async function generateProspectoId() {
-    if (!supabase) return 1001;
+    if (!db) return 1001;
 
     try {
-        const { data, error } = await SessionManager.applyIsolation(supabase.from('prospectos').select('id'))
+        const { data, error } = await SessionManager.applyIsolation(db.from('prospectos').select('id'))
             .order('id', { ascending: false })
             .limit(1);
 
@@ -67,12 +76,12 @@ async function generateProspectoId() {
     }
 }
 
-// Cargar cursos
+// Cargar lista de cursos para el select
 async function loadCursos() {
-    if (!supabase) return;
+    if (!db) return;
 
     try {
-        const { data, error } = await SessionManager.applyIsolation(supabase.from('cursos').select('*'))
+        const { data, error } = await SessionManager.applyIsolation(db.from('cursos').select('id, curso'))
             .order('curso', { ascending: true });
 
         if (error) throw error;
@@ -80,13 +89,13 @@ async function loadCursos() {
         const select = document.getElementById('curso');
         if (!select) return;
 
-        select.innerHTML = '<option value=""></option>';
+        select.innerHTML = '<option value="">-- Seleccione un curso --</option>';
 
         if (data && data.length > 0) {
-            data.forEach(curso => {
+            data.forEach(c => {
                 const option = document.createElement('option');
-                option.value = curso.id;
-                option.textContent = curso.curso;
+                option.value = c.id;
+                option.textContent = c.curso;
                 select.appendChild(option);
             });
         }
@@ -95,136 +104,223 @@ async function loadCursos() {
     }
 }
 
-// Nuevo prospecto - Preparar formulario para captura
+// =====================================================
+// ACCIONES DEL FORMULARIO
+// =====================================================
+
+async function resetState() {
+    const form = document.getElementById('prospectosForm');
+    if (form) form.reset();
+
+    // Toggle botones modo BÚSQUEDA / INICIO
+    document.getElementById('nuevoBtn').style.display = 'inline-block';
+    document.getElementById('guardarBtn').style.display = 'none';
+    document.getElementById('cancelarBtn').style.display = 'none';
+    document.getElementById('buscarBtn').style.display = 'inline-block';
+    document.getElementById('borrarBtn').style.display = 'none';
+    
+    // Deshabilitar inputs
+    toggleFormInputs(true);
+    
+    g_prospectoSeleccionado = null;
+}
+
+function toggleFormInputs(disabled) {
+    const form = document.getElementById('prospectosForm');
+    if (!form) return;
+    const inputs = form.querySelectorAll('input:not([readonly]), select, textarea');
+    inputs.forEach(input => {
+        input.disabled = disabled;
+    });
+}
+
 async function nuevoProspecto() {
     const form = document.getElementById('prospectosForm');
-    if (form) {
-        form.reset();
-    }
+    if (form) form.reset();
 
-    // Generar nuevo ID
+    // Habilitar inputs
+    toggleFormInputs(false);
+
+    // ID y Fecha
     const idProspectoInput = document.getElementById('idProspecto');
-    if (idProspectoInput) {
-        idProspectoInput.value = await generateProspectoId();
-    }
+    if (idProspectoInput) idProspectoInput.value = await generateProspectoId();
 
-    // Establecer fecha actual
     const fechaAtencionInput = document.getElementById('fechaAtencion');
-    if (fechaAtencionInput) {
-        fechaAtencionInput.value = new Date().toISOString().split('T')[0];
-    }
+    if (fechaAtencionInput) fechaAtencionInput.value = new Date().toISOString().split('T')[0];
 
-    // Togle botones
-    // Toggle botones: Ocultar Nuevo, Mostrar Guardar y Cancelar
+    // Toggle botones modo EDICIÓN
     document.getElementById('nuevoBtn').style.display = 'none';
     document.getElementById('guardarBtn').style.display = 'inline-block';
     document.getElementById('cancelarBtn').style.display = 'inline-block';
-    
-    // Mantener los demás visibles
-    document.getElementById('buscarBtn').style.display = 'inline-block';
-    document.getElementById('borrarBtn').style.display = 'inline-block';
+    document.getElementById('buscarBtn').style.display = 'none';
+    document.getElementById('borrarBtn').style.display = 'none';
 
-    // Focus en nombre
+    g_prospectoSeleccionado = null;
+    
     const nombreInput = document.getElementById('nombre');
-    if (nombreInput) {
-        nombreInput.focus();
+    if (nombreInput) nombreInput.focus();
+}
+
+function cancelarAccion() {
+    if (g_prospectoSeleccionado) {
+        cargarDatosProspecto(g_prospectoSeleccionado);
+    } else {
+        resetState();
     }
 }
 
-// Cancelar captura y refrescar
-function cancelarAccion() {
-    window.location.reload();
+async function terminarProspectos() {
+    if (await mostrarConfirm('¿Desea salir del módulo de Prospectos?')) {
+        window.location.href = 'archivos.html';
+    }
 }
 
-// Guardar prospecto
+// Guardar prospecto (Insert o Update)
 async function saveProspecto() {
-    if (!supabase) {
+    if (!db) {
         await mostrarAlerta('Error: Base de datos no conectada');
         return;
     }
     
-    const nombre = document.getElementById('nombre').value;
+    const nombre = document.getElementById('nombre').value.trim();
     if (!nombre) {
         await mostrarAlerta('Ingrese el nombre del prospecto');
         return;
     }
 
     const prospectoData = {
-        id: document.getElementById('idProspecto').value,
+        id: parseInt(document.getElementById('idProspecto').value),
         fecha_atencion: document.getElementById('fechaAtencion').value,
         nombre: nombre,
-        apellidos: document.getElementById('apellidos').value,
+        apellidos: document.getElementById('apellidos').value.trim(),
         edad: parseInt(document.getElementById('edad').value) || null,
-        telefono: document.getElementById('telefono').value,
-        direccion: document.getElementById('direccion').value,
-        ciudad: document.getElementById('ciudad').value,
-        codigo_postal: document.getElementById('codigoPostal').value,
+        telefono: document.getElementById('telefono').value.trim(),
+        direccion: document.getElementById('direccion').value.trim(),
+        ciudad: document.getElementById('ciudad').value.trim(),
+        codigo_postal: document.getElementById('codigoPostal').value.trim(),
         curso_id: document.getElementById('curso').value || null,
         medio_entero: document.getElementById('medioEntero').value,
-        recomienda: document.getElementById('recomienda').value,
+        recomienda: document.getElementById('recomienda').value.trim(),
         dia_preferente1: document.getElementById('diaPreferente1').value,
         hora_preferente1: document.getElementById('horaPreferente1').value,
         dia_preferente2: document.getElementById('diaPreferente2').value,
         hora_preferente2: document.getElementById('horaPreferente2').value,
         se_inscribio: document.getElementById('seInscribio').value,
         sigue_interesado: document.getElementById('sigueInteresado').value,
-        nota: document.getElementById('nota').value,
-        atendio: document.getElementById('atendio').value
+        nota: document.getElementById('nota').value.trim(),
+        atendio: document.getElementById('atendio').value.trim(),
+        organizacion_id: SessionManager.getCurrentUser()?.organizacion_id
     };
 
     try {
-        prospectoData.organizacion_id = SessionManager.getCurrentUser()?.organizacion_id;
-        const { error } = await SessionManager.applyIsolation(supabase
-            .from('prospectos'))
-            .upsert([prospectoData]); // Usar upsert por si acaso ya existe (edición futura)
+        // Usamos upsert para manejar tanto creación como edición
+        const { error } = await db.from('prospectos').upsert([prospectoData]);
 
         if (error) throw error;
 
-        await mostrarAlerta('Prospecto guardado correctamente');
+        await mostrarAlerta('✓ Prospecto guardado correctamente');
+        
+        // Si era nuevo, recargar todo. Si era edición, simplemente refrescar estado.
         window.location.reload();
     } catch (error) {
         console.error('Error guardando prospecto:', error);
-        await mostrarAlerta('Error al guardar el prospecto: ' + error.message);
+        await mostrarAlerta('❌ Error al guardar: ' + error.message);
     }
 }
 
-// Buscar prospecto (Abrir listado)
-async function buscarProspecto() {
-    if (!supabase) return;
+async function deleteProspecto() {
+    if (!db || !g_prospectoSeleccionado) return;
     
-    // Abrir el modal
-    document.getElementById('modalResultadosProspecto').style.display = 'flex';
-    document.getElementById('inputBuscarProspectoModal').focus();
-    
-    // Cargar todos los prospectos inicialmente (o los más recientes)
-    await ejecutarFiltroProspectos();
-}
-
-// Filtrar prospectos en tiempo real
-async function ejecutarFiltroProspectos() {
-    if (!supabase) return;
-
-    const termino = document.getElementById('inputBuscarProspectoModal').value.trim();
-    const tbody = document.getElementById('bodyResultadosProspecto');
-    const infoConteo = document.getElementById('infoConteoProspectos');
+    const id = g_prospectoSeleccionado.id;
+    if (!await mostrarConfirm(`¿Está seguro de eliminar al prospecto ID: ${id}?`)) {
+        return;
+    }
 
     try {
-        let query = SessionManager.applyIsolation(supabase.from('prospectos').select('*'))
-            .order('fecha_atencion', { ascending: false })
-            .limit(100);
-
-        if (termino) {
-            query = query.or(`nombre.ilike.%${termino}%,apellidos.ilike.%${termino}%,id.cast.text.ilike.%${termino}%`);
-        }
-
-        const { data, error } = await query;
+        const { error } = await db.from('prospectos').delete().eq('id', id);
 
         if (error) throw error;
 
+        await mostrarAlerta('✓ Prospecto eliminado correctamente');
+        await resetState();
+    } catch (error) {
+        console.error('Error eliminando prospecto:', error);
+        await mostrarAlerta('❌ Error al eliminar: ' + error.message);
+    }
+}
+
+// =====================================================
+// BÚSQUEDA Y RESULTADOS (ESTILO ALUMNOS)
+// =====================================================
+
+function buscarProspecto() {
+    document.getElementById('modalBusquedaProspecto').style.display = 'flex';
+    document.getElementById('inputBusquedaProspecto').value = '';
+    setTimeout(() => document.getElementById('inputBusquedaProspecto').focus(), 100);
+}
+
+function cerrarModalBusquedaProspecto() {
+    document.getElementById('modalBusquedaProspecto').style.display = 'none';
+}
+
+function cerrarModalResultadosProspecto() {
+    document.getElementById('modalResultadosProspecto').style.display = 'none';
+}
+
+async function ejecutarBusquedaProspecto() {
+    const termino = document.getElementById('inputBusquedaProspecto').value.trim().toUpperCase();
+
+    if (!termino) {
+        await mostrarAlerta('Ingrese un nombre, apellidos o ID para buscar');
+        return;
+    }
+
+    cerrarModalBusquedaProspecto();
+
+    g_terminoBusquedaProspectos = termino;
+    g_paginaActualProspectos = 1;
+
+    await cargarResultadosBusquedaProspecto();
+}
+
+async function cargarResultadosBusquedaProspecto() {
+    const termino = g_terminoBusquedaProspectos;
+    const pagina = g_paginaActualProspectos;
+    const limite = 50;
+    const desde = (pagina - 1) * limite;
+
+    const tbody = document.getElementById('bodyResultadosProspecto');
+    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 20px;">Buscando...</td></tr>';
+    document.getElementById('modalResultadosProspecto').style.display = 'flex';
+
+    if (!db) {
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:red;">Error: No hay conexión</td></tr>';
+        return;
+    }
+
+    try {
+        let query = SessionManager.applyIsolation(db.from('prospectos').select('*', { count: 'exact' }));
+        
+        // Búsqueda inteligente: si es número busca por ID, si no por nombre/apellidos
+        if (!isNaN(termino) && termino.length > 0 && !termino.includes(' ')) {
+            query = query.eq('id', parseInt(termino));
+        } else {
+            query = query.or(`nombre.ilike.%${termino}%,apellidos.ilike.%${termino}%`);
+        }
+
+        const { data, error, count } = await query
+            .order('fecha_atencion', { ascending: false })
+            .range(desde, desde + limite - 1);
+
+        if (error) throw error;
+
+        g_totalResultadosProspectos = count || 0;
+        g_totalPaginasProspectos = Math.ceil(g_totalResultadosProspectos / limite);
+
         tbody.innerHTML = '';
         if (!data || data.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 20px;">No se encontraron prospectos</td></tr>';
-            infoConteo.textContent = '0 registros encontrados';
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 20px;">No se encontraron prospectos</td></tr>';
+            actualizarPaginacionProspectos();
             return;
         }
 
@@ -237,29 +333,59 @@ async function ejecutarFiltroProspectos() {
             };
 
             const nombreCompleto = `${p.nombre || ''} ${p.apellidos || ''}`.trim();
-            const fecha = p.fecha_atencion || 'N/A';
-            const telefono = p.telefono || 'Sin teléfono';
+            const fecha = p.fecha_atencion || '—';
+            const telefono = p.telefono || '—';
 
             tr.innerHTML = `
-                <td style="text-align: center; font-weight: bold; color: #738fbd;">${p.id}</td>
+                <td style="text-align: center; font-weight: bold; color: var(--primary);">${p.id}</td>
                 <td style="font-weight: 500;">${nombreCompleto}</td>
                 <td>${telefono}</td>
-                <td style="text-align: center; color: #64748b;">${fecha}</td>
+                <td style="text-align: center; color: var(--text-muted);">${fecha}</td>
             `;
             tbody.appendChild(tr);
         });
 
-        infoConteo.textContent = `Mostrando ${data.length} prospectos`;
-
-    } catch (error) {
-        console.error('Error filtrando prospectos:', error);
-        tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: red;">Error al cargar datos</td></tr>';
+        actualizarPaginacionProspectos();
+    } catch (e) {
+        console.error('Error buscando prospectos:', e);
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:red; padding: 20px;">Error al cargar datos</td></tr>';
     }
 }
 
-// Cargar datos en el formulario
+function actualizarPaginacionProspectos() {
+    const cont = document.getElementById('paginacionControlesProspectos');
+    const info = document.getElementById('infoPaginaProspectos');
+
+    if (g_totalPaginasProspectos <= 1) {
+        cont.style.display = 'none';
+        return;
+    }
+
+    cont.style.display = 'flex';
+    info.textContent = `Página ${g_paginaActualProspectos} de ${g_totalPaginasProspectos}`;
+}
+
+function irPrimeraPaginaProspectos() {
+    if (g_paginaActualProspectos > 1) {
+        g_paginaActualProspectos = 1;
+        cargarResultadosBusquedaProspecto();
+    }
+}
+
+function irUltimaPaginaProspectos() {
+    if (g_paginaActualProspectos < g_totalPaginasProspectos) {
+        g_paginaActualProspectos = g_totalPaginasProspectos;
+        cargarResultadosBusquedaProspecto();
+    }
+}
+
+// =====================================================
+// CARGA DE DATOS EN FORMULARIO
+// =====================================================
+
 function cargarDatosProspecto(data) {
     if (!data) return;
+    g_prospectoSeleccionado = data;
 
     document.getElementById('idProspecto').value = data.id;
     document.getElementById('fechaAtencion').value = data.fecha_atencion || '';
@@ -282,42 +408,13 @@ function cargarDatosProspecto(data) {
     document.getElementById('nota').value = data.nota || '';
     document.getElementById('atendio').value = data.atendio || '';
 
-    // Si estaba en modo "Nuevo", restaurar botones
+    // Habilitar inputs para edición
+    toggleFormInputs(false);
+
+    // Estado de botones para edición
     document.getElementById('nuevoBtn').style.display = 'inline-block';
-    document.getElementById('guardarBtn').style.display = 'none';
-    document.getElementById('cancelarBtn').style.display = 'none';
-}
-
-function cerrarModalResultadosProspecto() {
-    document.getElementById('modalResultadosProspecto').style.display = 'none';
-}
-
-// Borrar prospecto
-async function deleteProspecto() {
-    if (!supabase) return;
-    
-    const id = document.getElementById('idProspecto').value;
-    if (!id) {
-        await mostrarAlerta('Seleccione un prospecto primero (busque uno)');
-        return;
-    }
-
-    if (!await mostrarConfirm(`¿Está seguro de eliminar al prospecto ID: ${id}?`)) {
-        return;
-    }
-
-    try {
-        const { error } = await SessionManager.applyIsolation(supabase
-            .from('prospectos'))
-            .delete()
-            .eq('id', id);
-
-        if (error) throw error;
-
-        await mostrarAlerta('Prospecto eliminado correctamente');
-        window.location.reload();
-    } catch (error) {
-        console.error('Error eliminando prospecto:', error);
-        await mostrarAlerta('Error al eliminar el prospecto: ' + error.message);
-    }
+    document.getElementById('guardarBtn').style.display = 'inline-block';
+    document.getElementById('cancelarBtn').style.display = 'inline-block';
+    document.getElementById('buscarBtn').style.display = 'inline-block';
+    document.getElementById('borrarBtn').style.display = 'inline-block';
 }

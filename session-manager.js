@@ -267,10 +267,33 @@ const SessionManager = {
      */
     applyIsolation: function(query) {
         const user = this.getCurrentUser();
-        if (!user) return query;
-        if (user.rol === 'SuperAdmin') return query;
+        if (!user || user.rol === 'SuperAdmin') return query;
         
-        return query.eq('organizacion_id', user.organizacion_id);
+        // Verificación de robustez
+        if (!query || typeof query.or !== 'function') {
+            console.warn('SessionManager: Objeto de consulta inválido.', query);
+            return query;
+        }
+
+        const orgId = user.organizacion_id;
+        const globalId = '00000000-0000-0000-0000-000000000000';
+
+        // Determinar si la tabla debe tener acceso global (Catálogos)
+        // Obtenemos el nombre de la tabla de la URL de la consulta (hack interno de supabase-js)
+        const url = query.url ? query.url.toString() : '';
+        const table = url.split('/').pop().split('?')[0];
+
+        const catalogTables = [
+            'tipos_movimiento', 'instrumentos', 'salones'
+        ];
+
+        if (catalogTables.includes(table)) {
+            // Catálogos: Ver propios + globales
+            return query.or(`organizacion_id.eq.${orgId},organizacion_id.eq.${globalId}`);
+        } else {
+            // Datos sensibles (Alumnos, Pagos, etc.): Ver SOLO los propios
+            return query.eq('organizacion_id', orgId);
+        }
     },
 
     /**

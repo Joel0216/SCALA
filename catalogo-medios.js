@@ -38,9 +38,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 // Cargar medios existentes para validación de clave única
 async function cargarMediosExistentes() {
     if (!db) return;
-    const { data, error } = await db.from('medios_contacto').select('clave');
-    if (!error && data) {
-        mediosExistentes = data.map(m => m.clave);
+    try {
+        const { data, error } = await SessionManager.applyIsolation(db.from('medios_contacto').select('clave'));
+        if (!error && data) {
+            mediosExistentes = data.map(m => m.clave);
+        }
+    } catch (e) {
+        console.error('Error cargando medios:', e);
     }
 }
 
@@ -143,14 +147,15 @@ btnGuardar.addEventListener('click', async () => {
         const datos = {
             clave: clave,
             descripcion: descripcion,
-            activo: true
+            activo: true,
+            organizacion_id: SessionManager.getCurrentUser()?.organizacion_id
         };
 
-        const { data, error } = await db.from('medios_contacto').insert([datos]).select();
+        const { error } = await db.from('medios_contacto').insert([datos]);
         
         if (error) throw error;
 
-        await mostrarAlerta('Medio guardado exitosamente.');
+        await mostrarAlerta('✓ Medio guardado exitosamente.');
         
         // Recargar referencias
         await cargarMediosExistentes();
@@ -160,9 +165,9 @@ btnGuardar.addEventListener('click', async () => {
 
     } catch (error) {
         if (error.code === '23505') {
-            await mostrarAlerta('Error: La clave generada ya existe. Intente con otra descripción.');
+            await mostrarAlerta('❌ Error: La clave ya existe. Intente con otra descripción.');
         } else {
-            await mostrarAlerta('Error al guardar: ' + error.message);
+            await mostrarAlerta('❌ Error al guardar: ' + error.message);
         }
     }
 });
@@ -207,7 +212,7 @@ window.confirmarBorrado = async function() {
         if (error) throw error;
 
         modalBorrar.style.display = 'none';
-        await mostrarAlerta('Medio eliminado permanentemente.');
+        await mostrarAlerta('✓ Medio eliminado permanentemente.');
 
         // Restablecer ventana
         btnCancelarNuevo.click();
@@ -215,7 +220,7 @@ window.confirmarBorrado = async function() {
 
     } catch (error) {
         modalBorrar.style.display = 'none';
-        await mostrarAlerta('Error al eliminar: ' + error.message);
+        await mostrarAlerta('❌ Error al eliminar: ' + error.message);
     }
 };
 

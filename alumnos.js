@@ -820,7 +820,7 @@ async function cargarGruposInscritos(alumnoId) {
     if (!tbody || !db) return;
 
     try {
-        const { data: inscripciones, error: errInsc } = await SessionManager.applyIsolation(db.from('alumno_grupos').select('id, alumno_id, grupo_id, curso_id, grupo_clave, curso_clave, estado, grupos!alumno_grupos_grupo_id_fkey(id, curso_id, grado, costo_mensual, salon_id, salon, hora_entrada, hora_salida)'))
+        const { data: inscripciones, error: errInsc } = await SessionManager.applyIsolation(db.from('alumno_grupos').select('id, alumno_id, grupo_id, curso_id, grupo_clave, curso_clave, estado, grupos!alumno_grupos_grupo_fkey(id, curso_id, grado, costo_mensual, salon_id, salon, hora_entrada, hora_salida)'))
             .eq('alumno_id', alumnoId)
             .in('estado', ['Activo', 'activo', 'Finalizado', 'finalizado']);
 
@@ -1239,7 +1239,7 @@ async function cargarGruposActivosParaBaja(alumnoId) {
             .from('alumno_grupos')
             .select(`
                 *,
-                grupos (
+                grupos!alumno_grupos_grupo_fkey (
                     *,
                     cursos (
                         curso,

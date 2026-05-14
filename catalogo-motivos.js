@@ -38,9 +38,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 // Cargar motivos existentes para validación de clave única
 async function cargarMotivosExistentes() {
     if (!db) return;
-    const { data, error } = await SessionManager.applyIsolation(db.from('motivos_baja').select('clave'));
-    if (!error && data) {
-        motivosExistentes = data.map(m => m.clave);
+    try {
+        const { data, error } = await SessionManager.applyIsolation(db.from('motivos_baja').select('clave'));
+        if (!error && data) {
+            motivosExistentes = data.map(m => m.clave);
+        }
+    } catch (e) {
+        console.error('Error cargando motivos:', e);
     }
 }
 
@@ -127,7 +131,7 @@ btnCancelarNuevo.addEventListener('click', () => {
 // Botón Guardar
 btnGuardar.addEventListener('click', async () => {
     if (!db) {
-        alert('Error: Base de datos no conectada');
+        await mostrarAlerta('Error: Base de datos no conectada');
         return;
     }
 
@@ -147,11 +151,11 @@ btnGuardar.addEventListener('click', async () => {
             organizacion_id: SessionManager.getCurrentUser()?.organizacion_id
         };
 
-        const { data, error } = await db.from('motivos_baja').insert([datos]);
+        const { error } = await db.from('motivos_baja').insert([datos]);
         
         if (error) throw error;
 
-        await mostrarAlerta('Motivo guardado exitosamente.');
+        await mostrarAlerta('✓ Motivo guardado exitosamente.');
         
         // Recargar referencias
         await cargarMotivosExistentes();
@@ -160,10 +164,13 @@ btnGuardar.addEventListener('click', async () => {
         btnCancelarNuevo.click();
 
     } catch (error) {
+        console.error('Error al guardar motivo:', error);
         if (error.code === '23505') {
-            alert('Error: La clave generada ya existe. Intente con otra descripción.');
+            await mostrarAlerta('❌ Error: La clave ya existe. Intente con otra descripción.');
+        } else if (error.code === '42703') {
+            await mostrarAlerta('❌ Error de Base de Datos: Falta la columna de organización. Por favor ejecute el script de actualización SQL.');
         } else {
-            alert('Error al guardar: ' + error.message);
+            await mostrarAlerta('❌ Error al guardar: ' + error.message);
         }
     }
 });
@@ -181,13 +188,13 @@ window.cargarDatosDesdeVentana = function(motivo) {
     claveInput.value = motivo.clave || '';
     descripcionInput.value = motivo.descripcion || '';
     
-    descripcionInput.disabled = true; // Solo lectura según requerimiento, no hay 'editar', solo 'borrar' o 'nuevo'
+    descripcionInput.disabled = true; 
     
     btnBorrar.disabled = false;
 };
 
 // Botón Borrar
-btnBorrar.addEventListener('click', () => {
+btnBorrar.addEventListener('click', async () => {
     if (!motivoSeleccionado) return;
     document.getElementById('mensajeBorrar').innerHTML = `¿Está seguro de que desea borrar el motivo <strong>${motivoSeleccionado.descripcion}</strong>?`;
     modalBorrar.style.display = 'block';
@@ -208,7 +215,7 @@ window.confirmarBorrado = async function() {
         if (error) throw error;
 
         modalBorrar.style.display = 'none';
-        await mostrarAlerta('Motivo eliminado permanentemente.');
+        await mostrarAlerta('✓ Motivo eliminado permanentemente.');
 
         // Restablecer ventana
         btnCancelarNuevo.click();
@@ -216,7 +223,7 @@ window.confirmarBorrado = async function() {
 
     } catch (error) {
         modalBorrar.style.display = 'none';
-        await mostrarAlerta('Error al eliminar: ' + error.message);
+        await mostrarAlerta('❌ Error al eliminar: ' + error.message);
     }
 };
 
