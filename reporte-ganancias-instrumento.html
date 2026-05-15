@@ -63,9 +63,9 @@
                 const fin = `${anio}-${mes.padStart(2, '0')}-31`; // Simplificado
 
                 // Obtener items de recibos en el periodo
-                const { data, error } = await client
+                const { data, error } = await SessionManager.applyIsolation(client
                     .from('recibo_items')
-                    .select('subtotal, iva, total, operaciones(nombre, instrumento), recibos!inner(fecha)')
+                    .select('subtotal, iva, total, operaciones(nombre, instrumento), recibos!inner(fecha)'))
                     .gte('recibos.fecha', ini)
                     .lte('recibos.fecha', fin);
 

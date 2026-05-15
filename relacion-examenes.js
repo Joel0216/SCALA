@@ -1,5 +1,5 @@
 // Relación de Exámenes - Conectado a Supabase
-let supabase = null;
+var supabase = null;
 let examenes = [];
 let registroActual = 0;
 
@@ -39,6 +39,7 @@ async function cargarExamenes() {
 
         const { data, error } = await SessionManager.applyIsolation(supabase
             .from('programacion_examenes').select('id, clave_examen, fecha, hora, salon_id, maestro_base_id, examinador1_id, examinador2_id, grupo_id, grupos(clave, cursos(curso))'))
+            .is('alumno_id', null)
             .order('clave_examen');
         if (error) throw error;
 
@@ -304,7 +305,7 @@ function actualizarFechaHora() {
     const segundos = String(ahora.getSeconds()).padStart(2, '0');
     const ampm = horas >= 12 ? 'p. m.' : 'a. m.';
     horas = horas % 12 || 12;
-    const el = document.getElementById('fechaHora');
+    const el = document.getElementById('datetime');
     if (el) el.textContent = `${dia}/${mes}/${anio} ${String(horas).padStart(2,'0')}:${minutos}:${segundos} ${ampm}`;
 }
 

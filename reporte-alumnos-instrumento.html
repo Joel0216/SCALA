@@ -37,10 +37,10 @@
 
             try {
                 // Obtener alumnos con sus grupos y cursos (para saber el instrumento)
-                const { data, error } = await client
+                const { data, error } = await SessionManager.applyIsolation(client
                     .from('alumnos')
-                    .select('nombre, status, grupos(clave, cursos(instrumento))')
-                    .eq('status', 'activo')
+                    .select('nombre, activo, grupo_clave'))
+                    .eq('activo', true)
                     .order('nombre');
 
                 if (error) throw error;

@@ -1,10 +1,11 @@
 // reportes.js - Módulo de Reportes Totalmente Restaurado
-let supabase = null;
+// No declaramos supabase aquí para evitar conflictos con supabase-config.js
 
 // Reportes que requieren selección de fecha
 const REQUIREN_FECHAS = [
     'alumnos_ingresos',
     'alumnos_baja',
+    'listas_asistencia',
     'corte_caja_efectivo',
     'corte_caja_tarjeta',
     'corte_caja_total',
@@ -14,32 +15,26 @@ const REQUIREN_FECHAS = [
 ];
 
 document.addEventListener('DOMContentLoaded', async () => {
-    if (!window.ReportEngine) {
-        const script = document.createElement('script');
-        script.src = 'reportes-engine.js';
-        document.head.appendChild(script);
-    }
-    
     console.log('DOM cargado, inicializando reportes...');
 
-    try {
-        await new Promise(r => setTimeout(r, 500));
-        if (typeof waitForSupabase === 'function') {
-            supabase = await waitForSupabase(10000);
-            console.log('✓ Supabase conectado');
+    // Esperar a que el cliente esté listo
+    if (typeof window.waitForSupabase === 'function') {
+        try {
+            await window.waitForSupabase(5000);
+            console.log('✓ Conexión con Supabase verificada');
+        } catch (e) {
+            console.warn('Advertencia: Timeout esperando Supabase, intentando continuar...');
         }
-    } catch (e) {
-        console.error('Error conectando a Supabase:', e);
     }
 
     updateDateTime();
     setInterval(updateDateTime, 1000);
 
-    // Event listener para habilitar/deshabilitar fechas visualmente
     const reporteSelect = document.getElementById('reporteSelect');
     if (reporteSelect) {
         reporteSelect.addEventListener('change', (e) => {
-            const requiere = REQUIREN_FECHAS.includes(e.target.value);
+            const reporteId = e.target.value;
+            const requiere = REQUIREN_FECHAS.includes(reporteId);
             const inputs = document.querySelectorAll('.filter-input');
             const labels = document.querySelectorAll('.filter-group label');
             
@@ -51,32 +46,36 @@ document.addEventListener('DOMContentLoaded', async () => {
                 label.style.opacity = requiere ? '1' : '0.5';
             });
             
-            // Si es deudores, indicar que inicio es mes_corte
-            if (e.target.value === 'deudores') {
-                labels[0].textContent = 'Mes Corte (YYYY-MM):';
-                inputs[0].type = 'month';
-                labels[1].style.opacity = '0.5';
-                inputs[1].disabled = true;
-                inputs[1].style.opacity = '0.5';
+            if (reporteId === 'deudores') {
+                if (labels[0]) labels[0].textContent = 'Mes Corte (YYYY-MM):';
+                if (inputs[0]) {
+                    inputs[0].type = 'month';
+                    inputs[0].disabled = false;
+                    inputs[0].style.opacity = '1';
+                }
+                if (labels[1]) labels[1].style.opacity = '0.5';
+                if (inputs[1]) {
+                    inputs[1].disabled = true;
+                    inputs[1].style.opacity = '0.5';
+                }
             } else {
-                labels[0].textContent = 'Fecha Inicio:';
-                inputs[0].type = 'date';
+                if (labels[0]) labels[0].textContent = 'Fecha Inicio:';
+                if (inputs[0]) inputs[0].type = 'date';
                 if (requiere) {
-                    labels[1].style.opacity = '1';
-                    inputs[1].disabled = false;
-                    inputs[1].style.opacity = '1';
+                    if (labels[1]) labels[1].style.opacity = '1';
+                    if (inputs[1]) {
+                        inputs[1].disabled = false;
+                        inputs[1].style.opacity = '1';
+                    }
                 }
             }
         });
         
-    // Trigger initial state
-    if (reporteSelect) {
         reporteSelect.dispatchEvent(new Event('change'));
     }
 
-    // Aplicar protección de seguridad
-    if (typeof SessionManager !== 'undefined') {
-        SessionManager.protectPage('Reportes');
+    if (typeof window.SessionManager !== 'undefined') {
+        window.SessionManager.protectPage('Reportes');
     }
 });
 
@@ -88,24 +87,23 @@ function updateDateTime() {
 }
 
 function obtenerRangoFechas() {
+    const fInicio = document.getElementById('fechaInicio');
+    const fFin = document.getElementById('fechaFin');
     return {
-        inicio: document.getElementById('fechaInicio').value,
-        fin: document.getElementById('fechaFin').value
+        inicio: fInicio ? fInicio.value : null,
+        fin: fFin ? fFin.value : null
     };
 }
 
-// Variable global temporal para guardar los datos generados para el CSV
-let lastReportData = null;
-let lastReportName = null;
-
 async function generarDatosReporte() {
-    if (!supabase) {
-        throw new Error('Base de datos no conectada');
+    const client = window.supabase;
+    if (!client) {
+        throw new Error('Base de datos no conectada. Por favor verifique su conexión.');
     }
 
     const select = document.getElementById('reporteSelect');
     if (!select || !select.value) {
-        throw new Error('Por favor seleccione un reporte');
+        throw new Error('Por favor seleccione un reporte de la lista.');
     }
 
     const reporteId = select.value;
@@ -120,46 +118,37 @@ async function generarDatosReporte() {
         }
     }
 
-    const db = supabase;
+    if (!window.ReportEngine) {
+        throw new Error('El motor de reportes no está cargado correctamente.');
+    }
+
     let datos = null;
-
     switch (reporteId) {
-        // 1. Alumnos y Matrícula
-        case 'listado_alumnos_1': datos = await ReportEngine.listado_alumnos(db, 1); break;
-        case 'listado_alumnos_2': datos = await ReportEngine.listado_alumnos(db, 2); break;
-        case 'listado_alumnos_3': datos = await ReportEngine.listado_alumnos(db, 3); break;
-        case 'alumnos_ingresos': datos = await ReportEngine.alumnos_ingresos(db, inicio, fin); break;
-        case 'alumnos_por_instrumento': datos = await ReportEngine.alumnos_por_instrumento(db); break;
-        case 'alumnos_baja': datos = await ReportEngine.alumnos_baja(db, inicio, fin); break;
-
-        // 2. Control Académico
-        case 'listas_asistencia': datos = await ReportEngine.listas_asistencia(db); break;
-        case 'programacion_examenes': datos = await ReportEngine.programacion_examenes(db); break;
-        case 'alumnos_nivel_superior': datos = await ReportEngine.alumnos_nivel_superior(db); break;
-
-        // 3. Cobranza y Finanzas
-        case 'corte_caja_efectivo': datos = await ReportEngine.corte_caja_diario(db, inicio, 1); break; // Usa inicio como fecha
-        case 'corte_caja_tarjeta': datos = await ReportEngine.corte_caja_diario(db, inicio, 2); break;
-        case 'corte_caja_total': datos = await ReportEngine.corte_caja_diario(db, inicio, 3); break;
-        case 'analisis_ingresos': datos = await ReportEngine.analisis_ingresos(db, inicio, fin); break;
-        case 'deudores': datos = await ReportEngine.deudores(db, inicio); break; // Usa inicio como mes_corte
-        case 'pagos_adelantados': datos = await ReportEngine.pagos_adelantados(db); break;
-
-        // 4. Maestros e Inventarios
-        case 'reporte_mensual_maestros': datos = await ReportEngine.reporte_mensual_maestros(db); break;
-        case 'articulos_vendidos': datos = await ReportEngine.articulos_vendidos(db, inicio, fin); break;
-        case 'stock_critico': datos = await ReportEngine.stock_critico(db); break;
-
-        default:
-            throw new Error('Reporte no implementado aún.');
+        case 'listado_alumnos_1': datos = await window.ReportEngine.listado_alumnos(client, 1); break;
+        case 'listado_alumnos_2': datos = await window.ReportEngine.listado_alumnos(client, 2); break;
+        case 'listado_alumnos_3': datos = await window.ReportEngine.listado_alumnos(client, 3); break;
+        case 'alumnos_ingresos': datos = await window.ReportEngine.alumnos_ingresos(client, inicio, fin); break;
+        case 'alumnos_por_instrumento': datos = await window.ReportEngine.alumnos_por_instrumento(client); break;
+        case 'alumnos_baja': datos = await window.ReportEngine.alumnos_baja(client, inicio, fin); break;
+        case 'listas_asistencia': datos = await window.ReportEngine.listas_asistencia(client, inicio, fin); break;
+        case 'programacion_examenes': datos = await window.ReportEngine.programacion_examenes(client); break;
+        case 'alumnos_nivel_superior': datos = await window.ReportEngine.alumnos_nivel_superior(client); break;
+        case 'corte_caja_efectivo': datos = await window.ReportEngine.corte_caja_diario(client, inicio, 1); break;
+        case 'corte_caja_tarjeta': datos = await window.ReportEngine.corte_caja_diario(client, inicio, 2); break;
+        case 'corte_caja_total': datos = await window.ReportEngine.corte_caja_diario(client, inicio, 3); break;
+        case 'analisis_ingresos': datos = await window.ReportEngine.analisis_ingresos(client, inicio, fin); break;
+        case 'deudores': datos = await window.ReportEngine.deudores(client, inicio); break;
+        case 'pagos_adelantados': datos = await window.ReportEngine.pagos_adelantados(client); break;
+        case 'reporte_mensual_maestros': datos = await window.ReportEngine.reporte_mensual_maestros(client); break;
+        case 'articulos_vendidos': datos = await window.ReportEngine.articulos_vendidos(client, inicio, fin); break;
+        case 'stock_critico': datos = await window.ReportEngine.stock_critico(client); break;
+        default: throw new Error('Reporte no implementado aún.');
     }
 
     if (!datos || datos.length === 0) {
-        throw new Error('No se encontraron registros en el periodo/criterio seleccionado.');
+        throw new Error('No se encontraron registros en el periodo o criterio seleccionado.');
     }
 
-    lastReportData = datos;
-    lastReportName = reporteNombre;
     return { datos, reporteNombre };
 }
 
@@ -175,18 +164,12 @@ async function imprimirReporte() {
 
 async function exportarCSV() {
     try {
-        // Generar siempre datos frescos por si cambiaron los filtros
         const { datos, reporteNombre } = await generarDatosReporte();
-        
         if (!datos || datos.length === 0) return;
 
         const keys = Object.keys(datos[0]);
-        let csvContent = "data:text/csv;charset=utf-8,\uFEFF"; // BOM para Excel
-        
-        // Headers
+        let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
         csvContent += keys.map(k => '"' + k.replace(/"/g, '""').toUpperCase() + '"').join(",") + "\r\n";
-        
-        // Data
         datos.forEach(row => {
             const rowStr = keys.map(k => {
                 let val = row[k];
@@ -204,18 +187,15 @@ async function exportarCSV() {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        
     } catch (error) {
         console.error('Error al exportar CSV:', error);
         alert(error.message);
     }
 }
 
-// --- VISUALIZACIÓN ---
-
 function mostrarReporte(titulo, datos) {
     const ventana = window.open('', '_blank', 'width=1100,height=800');
-    if (!ventana) return alert('Active las ventanas emergentes');
+    if (!ventana) return alert('Por favor, habilite las ventanas emergentes para ver el reporte.');
 
     const fechaGen = new Date().toLocaleString();
     const keys = Object.keys(datos[0]);
@@ -243,14 +223,17 @@ function mostrarReporte(titulo, datos) {
         <head>
             <title>${titulo}</title>
             <style>
-                body { font-family: sans-serif; padding: 20px; font-size: 10pt; }
-                .header { border-bottom: 2px solid #333; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; }
-                h1 { margin: 0; font-size: 16pt; }
-                h2 { margin: 5px 0 0 0; font-size: 14pt; color: #555; }
-                table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-                th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-                th { background: #eee; font-weight: bold; }
-                .footer { margin-top: 20px; font-size: 8pt; color: #666; text-align: center; }
+                body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 30px; font-size: 10pt; color: #333; }
+                .header { border-bottom: 2px solid #2c3e50; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; padding-bottom: 10px; }
+                h1 { margin: 0; font-size: 18pt; color: #2c3e50; }
+                h2 { margin: 5px 0 0 0; font-size: 14pt; color: #7f8c8d; }
+                table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                th, td { border: 1px solid #bdc3c7; padding: 10px; text-align: left; }
+                th { background: #f2f2f2; font-weight: bold; color: #2c3e50; text-transform: uppercase; font-size: 9pt; }
+                tr:nth-child(even) { background-color: #fafafa; }
+                .footer { margin-top: 30px; font-size: 8pt; color: #95a5a6; text-align: center; border-top: 1px solid #eee; padding-top: 10px; }
+                .btn-print { padding: 10px 20px; background: #2c3e50; color: white; border: none; border-radius: 4px; cursor: pointer; margin-bottom: 20px; font-weight: bold; transition: background 0.3s; }
+                .btn-print:hover { background: #34495e; }
                 @media print { .btn-print { display: none !important; } }
             </style>
         </head>
@@ -262,7 +245,7 @@ function mostrarReporte(titulo, datos) {
                 </div>
                 <div style="text-align:right; font-size: 0.9em; color: #666;">Fecha de impresión: ${fechaGen}</div>
             </div>
-            <button class="btn-print" onclick="window.print()" style="padding:10px 20px; background:#2c3e50; color:white; border:none; border-radius:4px; cursor:pointer; margin-bottom:15px; font-weight: bold;">🖨️ Imprimir / Guardar como PDF</button>
+            <button class="btn-print" onclick="window.print()">🖨️ Imprimir / Guardar como PDF</button>
             ${tableHtml}
             <div class="footer">Este documento es para uso administrativo interno de SCALA Academias de Música. Total de registros encontrados: ${datos.length}</div>
         </body>
@@ -270,3 +253,7 @@ function mostrarReporte(titulo, datos) {
     `);
     ventana.document.close();
 }
+
+// Exportar funciones al scope global explícitamente
+window.imprimirReporte = imprimirReporte;
+window.exportarCSV = exportarCSV;

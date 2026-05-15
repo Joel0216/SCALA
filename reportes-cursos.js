@@ -29,7 +29,7 @@ function mostrarFecha() {
 
 async function cargarCursosDB() {
     try {
-        const { data, error } = await db.from('cursos').select('*').order('curso');
+        const { data, error } = await SessionManager.applyIsolation(db.from('cursos').select('*')).order('curso');
         
         if (error) throw error;
         

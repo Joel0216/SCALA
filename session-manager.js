@@ -284,8 +284,15 @@ const SessionManager = {
         const orgId = user.organizacion_id;
         const globalId = '00000000-0000-0000-0000-000000000000';
 
+        // Construir filtros de forma robusta
+        let orFilter = '';
+        if (orgId) {
+            orFilter = `organizacion_id.eq.${orgId},organizacion_id.is.null`;
+        } else {
+            orFilter = `organizacion_id.is.null`;
+        }
+
         // Determinar si la tabla debe tener acceso global (Catálogos)
-        // Obtenemos el nombre de la tabla de la URL de la consulta (hack interno de supabase-js)
         const url = query.url ? query.url.toString() : '';
         const table = url.split('/').pop().split('?')[0];
 
@@ -295,11 +302,13 @@ const SessionManager = {
 
         if (catalogTables.includes(table)) {
             // Catálogos: Ver propios + globales + legacy (null)
-            return query.or(`organizacion_id.eq.${orgId},organizacion_id.eq.${globalId},organizacion_id.is.null`);
+            const catFilter = orgId 
+                ? `organizacion_id.eq.${orgId},organizacion_id.eq.${globalId},organizacion_id.is.null`
+                : `organizacion_id.eq.${globalId},organizacion_id.is.null`;
+            return query.or(catFilter);
         } else {
-            // Datos sensibles (Alumnos, Pagos, etc.): Ver propios + legacy (null)
-            // Agregamos .is.null para no perder datos que aún no tienen organización asignada
-            return query.or(`organizacion_id.eq.${orgId},organizacion_id.is.null`);
+            // Datos sensibles: Ver propios + legacy (null)
+            return query.or(orFilter);
         }
     },
 
