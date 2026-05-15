@@ -329,25 +329,35 @@ window.cargarSalon = async function (numero) {
         const salon = data[0];
 
         // Cargar instrumentos
+        let instrumentosAsignados = [];
         const { data: rels, error: erels } = await client
             .from('salon_instrumentos')
-            .select(`
-                instrumento_clave,
-                instrumentos!inner(descripcion)
-            `)
+            .select('instrumento_clave')
             .eq('salon_numero', numero);
 
         if (erels) throw erels;
+
+        if (rels && rels.length > 0) {
+            const claves = rels.map(r => r.instrumento_clave);
+            const { data: insts, error: Einst } = await client
+                .from('instrumentos')
+                .select('clave, descripcion')
+                .in('clave', claves);
+            
+            if (!Einst && insts) {
+                instrumentosAsignados = insts.map(i => ({
+                    clave: i.clave,
+                    descripcion: i.descripcion
+                }));
+            }
+        }
 
         g_salonActual = salon.numero;
         document.getElementById('numero').value = salon.numero;
         document.getElementById('ubicacion').value = salon.ubicacion || '';
         document.getElementById('cupo').value = salon.cupo || 0;
 
-        g_instrumentosAsignados = rels.map(r => ({
-            clave: r.instrumento_clave,
-            descripcion: r.instrumentos.descripcion
-        }));
+        g_instrumentosAsignados = instrumentosAsignados;
 
         cambiarModoEdicion(false); // Refresca UI a solo lectura
     } catch (e) {

@@ -632,7 +632,15 @@ function agregarGrupoAlCarrito(grupo) {
 }
 
 function mostrarAlumno(alumno) {
+    if (!alumno) return;
+    const effectiveId = alumno.id || alumno.fid;
+    console.log('--- Mostrando Alumno ---');
+    console.log('ID:', effectiveId);
+    console.log('Org ID del Alumno:', alumno.organizacion_id);
+    console.log('Org ID Sesión:', SessionManager.getCurrentUser()?.organizacion_id);
+    
     alumnoSeleccionado = alumno;
+    if (!alumnoSeleccionado.id) alumnoSeleccionado.id = effectiveId;
 
     setVal('credencial', alumno.credencial);
     setVal('digito', alumno.dig_ver || 0);
@@ -688,14 +696,14 @@ function mostrarAlumno(alumno) {
     setCheck('reingreso', alumno.reingreso);
 
     // Cargar Grupos Inscritos
-    cargarGruposInscritos(alumno.id);
+    cargarGruposInscritos(effectiveId);
 
     // Cargar Último Pago (campo de resumen)
-    cargarUltimoPago(alumno.id);
+    cargarUltimoPago(effectiveId);
 
     // Cargar Historial Completo de Pagos y Exámenes
-    cargarHistorialPagos(alumno.id);
-    cargarHistorialExamenes(alumno.id);
+    cargarHistorialPagos(effectiveId);
+    cargarHistorialExamenes(effectiveId);
 
     console.log('Alumno mostrado:', alumno.nombre);
 }
@@ -707,18 +715,18 @@ async function cargarHistorialExamenes(alumnoId) {
     const tbody = document.getElementById('bodyHistorialExamenes');
     if (!tbody || !db || !alumnoId) return;
 
-    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">Cargando exámenes...</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;">Cargando exámenes...</td></tr>';
 
     try {
-        const { data, error } = await SessionManager.applyIsolation(db.from('v_examenes_alumno').select('*'))
-            .eq('alumno_id', alumnoId)
-            .order('fecha', { ascending: false });
+        const query = db.from('v_examenes_alumno').select('*').eq('alumno_id', alumnoId).order('fecha', { ascending: false });
+        const { data, error } = await SessionManager.applyIsolation(query);
 
+        console.log('Exámenes encontrados:', data ? data.length : 0);
         if (error) throw error;
 
         tbody.innerHTML = '';
         if (!data || data.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:20px;">Sin registro de exámenes</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:20px;">Sin registro de exámenes</td></tr>';
             return;
         }
 
@@ -740,6 +748,7 @@ async function cargarHistorialExamenes(alumnoId) {
                 <td style="text-align:center;">${ex.hora}</td>
                 <td>${ex.maestro_nombre || '—'}</td>
                 <td style="text-align:center; font-weight:bold;">${ex.calificacion || '—'}</td>
+                <td style="text-align:center; font-weight:bold; color:var(--primary-color);">$${(ex.precio_unitario || 0).toFixed(2)}</td>
                 <td style="text-align:center;">
                     <div style="display:flex; align-items:center; justify-content:center;">
                         <span class="status-pill ${statusClass}">${ex.status}</span>
@@ -751,7 +760,7 @@ async function cargarHistorialExamenes(alumnoId) {
         });
     } catch (e) {
         console.error('Error cargando exámenes:', e);
-        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:red;">Error al cargar datos</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:red;">Error al cargar datos</td></tr>';
     }
 }
 
@@ -820,13 +829,54 @@ async function cargarGruposInscritos(alumnoId) {
     if (!tbody || !db) return;
 
     try {
-        const { data: inscripciones, error: errInsc } = await SessionManager.applyIsolation(db.from('alumno_grupos').select('id, alumno_id, grupo_id, curso_id, grupo_clave, curso_clave, estado, grupos!alumno_grupos_grupo_fkey(id, curso_id, grado, costo_mensual, salon_id, salon, hora_entrada, hora_salida)'))
-            .eq('alumno_id', alumnoId)
-            .in('estado', ['Activo', 'activo', 'Finalizado', 'finalizado']);
+        // 1. Obtener inscripciones
+        const query = db.from('alumno_grupos').select('*').eq('alumno_id', alumnoId);
+        const { data: rawInsc, error: errInsc } = await SessionManager.applyIsolation(query);
+
+        console.log(`Inscripciones encontradas para ${alumnoId}:`, rawInsc ? rawInsc.length : 0);
+        if (errInsc) console.error('Error en cargarGruposInscritos:', errInsc);
 
         if (errInsc) throw errInsc;
 
-        // 2. Obtener cursos para mapear nombres y grados (Resiliencia con String IDs)
+        // 2. Enriquecer con datos de grupos si hay inscripciones
+        let inscripciones = [];
+        if (rawInsc && rawInsc.length > 0) {
+            const idsGrupos = rawInsc.map(i => i.grupo_id).filter(Boolean);
+            const clavesGrupos = rawInsc.map(i => i.grupo_clave).filter(Boolean);
+            
+            console.log('Buscando detalles para grupos:', { idsGrupos, clavesGrupos });
+
+            let queryG = SessionManager.applyIsolation(db.from('grupos').select('*'));
+            if (idsGrupos.length > 0 && clavesGrupos.length > 0) {
+                queryG = queryG.or(`id.in.(${idsGrupos.join(',')}),clave.in.(${clavesGrupos.map(c => `"${c}"`).join(',')})`);
+            } else if (idsGrupos.length > 0) {
+                queryG = queryG.in('id', idsGrupos);
+            } else if (clavesGrupos.length > 0) {
+                queryG = queryG.in('clave', clavesGrupos);
+            }
+
+            const { data: infoGrupos, error: errG } = await queryG;
+
+            if (errG) console.error('Error al traer detalles de grupos:', errG);
+
+            if (infoGrupos) {
+                const idMap = {};
+                const claveMap = {};
+                infoGrupos.forEach(g => { 
+                    idMap[g.id] = g; 
+                    claveMap[g.clave] = g;
+                });
+                
+                inscripciones = rawInsc.map(i => ({
+                    ...i,
+                    grupos: idMap[i.id_grupo || i.grupo_id] || claveMap[i.grupo_clave] || null
+                }));
+            } else {
+                inscripciones = rawInsc.map(i => ({ ...i, grupos: null }));
+            }
+        }
+
+        // 3. Obtener cursos para mapear nombres y grados (Resiliencia con String IDs)
         const { data: todosLosCursos } = await SessionManager.applyIsolation(db.from('cursos').select('*'));
         const cursoMap = {};
         if (todosLosCursos) todosLosCursos.forEach(c => { cursoMap[String(c.id)] = c; });
@@ -885,7 +935,7 @@ async function cargarGruposInscritos(alumnoId) {
                 `;
 
                 // Estilo para grupos finalizados
-                const esFinalizado = g.estado.toLowerCase() === 'finalizado';
+                const esFinalizado = (g.estado || '').toLowerCase() === 'finalizado';
                 const opacity = esFinalizado ? 'opacity: 0.6;' : '';
                 const badgeEstado = esFinalizado ? '<br><span style="background:#6b7280; color:white; font-size:9px; padding:2px 6px; border-radius:10px;">FINALIZADO</span>' : '';
 
@@ -900,6 +950,7 @@ async function cargarGruposInscritos(alumnoId) {
                     <td style="padding: 10px; text-align: center;">${salon}</td>
                     <td style="padding: 10px; text-align: center;">${horario}</td>
                     <td style="padding: 10px; text-align: center; font-weight: bold; color: var(--primary-color);">${gradoAMostrar}</td>
+                    <td style="padding: 10px; text-align: right; font-weight: 600;">$${costoFinal.toFixed(2)}</td>
                     <td style="padding: 10px; text-align: center;">${calendarHtml}</td>
                 `;
                 tbody.appendChild(tr);
@@ -1074,7 +1125,7 @@ async function guardarAlta() {
         // Agregar ID de organización
         datos.organizacion_id = SessionManager.getCurrentUser()?.organizacion_id;
 
-        const { data: alumnoCreated, error: errorAlumno } = await db.from('alumnos').insert([datos]).select();
+        const { data: alumnoCreated, error: errorAlumno } = await SessionManager.applyIsolation(db.from('alumnos').insert([datos]).select());
         
         if (errorAlumno) {
             console.error('Error Supabase (Alumnos):', errorAlumno);
@@ -1100,7 +1151,7 @@ async function guardarAlta() {
                 estado: 'Activo'
             }));
 
-            const { error: errorGrupos } = await db.from('alumno_grupos').insert(inscripciones);
+            const { error: errorGrupos } = await SessionManager.applyIsolation(db.from('alumno_grupos').insert(inscripciones));
             
             if (errorGrupos) {
                 console.error('Error Supabase (Grupos):', errorGrupos);
@@ -1138,13 +1189,15 @@ async function cancelarAlta() {
 // EXPOSICIÓN DE FUNCIONES PARA VENTANAS AMIGAS
 // =====================================================
 window.cargarAlumnoDesdeVentana = async function (alumno) {
-    if (alumno && alumno.id) {
+    const effectiveId = alumno ? (alumno.id || alumno.fid) : null;
+    if (alumno && effectiveId) {
         console.log('Recibido alumno desde ventana:', alumno);
-        // Asignación explícita a la variable global
+        // Asegurar que el objeto tenga el ID correcto para funciones posteriores
+        if (!alumno.id) alumno.id = effectiveId;
         alumnoSeleccionado = alumno;
         
         // 1. Cargar grupos primero para que el grado sea el correcto
-        await cargarGruposInscritos(alumno.id);
+        await cargarGruposInscritos(effectiveId);
         
         // 2. Mostrar datos en la ficha
         mostrarAlumno(alumno);
@@ -1235,23 +1288,52 @@ async function cargarGruposActivosParaBaja(alumnoId) {
     listContainer.innerHTML = 'Cargando grupos...';
 
     try {
-        const { data, error } = await SessionManager.applyIsolation(db
+        // 1. Obtener inscripciones activas
+        const { data: rawInsc, error } = await SessionManager.applyIsolation(db
             .from('alumno_grupos')
-            .select(`
-                *,
-                grupos!alumno_grupos_grupo_fkey (
-                    *,
-                    cursos (
-                        curso,
-                        costo,
-                        grado
-                    )
-                )
-            `))
+            .select('*'))
             .eq('alumno_id', alumnoId)
-            .eq('estado', 'Activo');
+            .in('estado', ['Activo', 'activo', 'ACTIVO']);
 
         if (error) throw error;
+
+        // 2. Enriquecer con datos de grupos y cursos
+        let data = [];
+        if (rawInsc && rawInsc.length > 0) {
+            const idsGrupos = rawInsc.map(i => i.grupo_id).filter(Boolean);
+            const clavesGrupos = rawInsc.map(i => i.grupo_clave).filter(Boolean);
+
+            const { data: infoGrupos } = await SessionManager.applyIsolation(db.from('grupos').select('*'))
+                .or(`id.in.(${idsGrupos.join(',')}),clave.in.(${clavesGrupos.map(c => `"${c}"`).join(',')})`);
+
+            const { data: todosLosCursos } = await SessionManager.applyIsolation(db.from('cursos').select('*'));
+            
+            if (infoGrupos) {
+                const idMap = {};
+                const claveMap = {};
+                infoGrupos.forEach(g => { 
+                    idMap[g.id] = g; 
+                    claveMap[g.clave] = g;
+                });
+                
+                const cursoMap = {};
+                if (todosLosCursos) todosLosCursos.forEach(c => { cursoMap[String(c.id)] = c; });
+
+                data = rawInsc.map(i => {
+                    const g = idMap[i.grupo_id] || claveMap[i.grupo_clave] || {};
+                    const c = cursoMap[String(g.curso_id)] || {};
+                    return {
+                        ...i,
+                        grupos: {
+                            ...g,
+                            cursos: c
+                        }
+                    };
+                });
+            } else {
+                data = rawInsc.map(i => ({ ...i, grupos: null }));
+            }
+        }
 
         if (!data || data.length === 0) {
             listContainer.innerHTML = '<p style="color:red">El alumno no tiene grupos activos.</p>';
@@ -1364,7 +1446,7 @@ async function procesarBajaMasiva() {
 
                 // INSERTAR EN HISTÓRICO DE BAJAS
                 if (!promotes) {
-                    await db.from('alumnos_bajas').insert([{
+                    await SessionManager.applyIsolation(db.from('alumnos_bajas').insert([{
                         alumno_id: alumnoSeleccionado.id,
                         credencial: alumnoSeleccionado.credencial,
                         nombre: alumnoSeleccionado.nombre,
@@ -1374,7 +1456,7 @@ async function procesarBajaMasiva() {
                         motivo_descripcion: observaciones,
                         comentario: 'Baja automática desde sistema',
                         organizacion_id: SessionManager.getCurrentUser()?.organizacion_id
-                    }]);
+                    }]));
                 }
             }
 
@@ -1760,7 +1842,7 @@ async function procesarReingresoMasivo() {
                 cupoLleno.push(nuevoGrupoClave);
             } else {
                 // Crear nueva inscripción
-                const { error: insErr } = await db.from('alumno_grupos').insert([{
+                const { error: insErr } = await SessionManager.applyIsolation(db.from('alumno_grupos').insert([{
                     alumno_id: alumnoSeleccionado.id,
                     grupo_clave: nuevoGrupoClave,
                     estado: 'Activo',
@@ -1768,7 +1850,7 @@ async function procesarReingresoMasivo() {
                     fecha_inscripcion: new Date().toISOString().split('T')[0],
                     observaciones_reingreso: 'REINGRESO NUEVO: ' + observaciones,
                     organizacion_id: SessionManager.getCurrentUser()?.organizacion_id
-                }]);
+                }]));
 
                 if (insErr) throw insErr;
 
@@ -2070,9 +2152,7 @@ async function cargarHistorialPagos(alumnoId) {
 
     try {
         // 1. Obtener pagos realizados
-        const { data: pagos, error: pagosErr } = await db
-            .from('recibos_detalle')
-            .select(`
+        const queryP = db.from('recibos_detalle').select(`
                 monto,
                 descuento,
                 operacion,
@@ -2083,18 +2163,19 @@ async function cargarHistorialPagos(alumnoId) {
                     fecha,
                     cancelado
                 )
-            `)
-            .eq('alumno_id', alumnoId)
-            .eq('recibos.cancelado', false)
-            .order('created_at', { ascending: false });
+            `).eq('alumno_id', alumnoId).eq('recibos.cancelado', false).order('created_at', { ascending: false });
+            
+        const { data: pagos, error: pagosErr } = await SessionManager.applyIsolation(queryP);
+
+        console.log('Pagos realizados encontrados:', pagos ? pagos.length : 0);
 
         if (pagosErr) throw pagosErr;
 
         // 2. Obtener deudas pendientes
-        const { data: deudas, error: deudasErr } = await db
-            .from('v_colegiaturas_pendientes')
-            .select('*')
-            .eq('alumno_id', alumnoId);
+        const queryD = db.from('v_colegiaturas_pendientes').select('*').eq('alumno_id', alumnoId);
+        const { data: deudas, error: deudasErr } = await SessionManager.applyIsolation(queryD);
+        
+        console.log('Deudas pendientes encontradas:', deudas ? deudas.length : 0);
 
         if (deudasErr) console.error('Error cargando deudas:', deudasErr);
 
@@ -2102,20 +2183,40 @@ async function cargarHistorialPagos(alumnoId) {
         
         // --- RENDERIZAR DEUDAS PRIMERO (O ARRIBA) ---
         if (deudas && deudas.length > 0) {
+            // Obtener beca del alumno para cálculos de fallback
+            const pctBeca = alumnoSeleccionado ? (alumnoSeleccionado.porcentaje_beca || 0) : 0;
+
             deudas.forEach(deuda => {
+                let montoFinal = parseFloat(deuda.monto_a_pagar || 0);
+                let montoBase = parseFloat(deuda.precio_mensual || 0);
+
+                // Si la vista devuelve 0, intentar recuperación desde inscripciones activas
+                if (montoFinal <= 0 && window.g_inscripcionesActivas) {
+                    const insc = window.g_inscripcionesActivas.find(i => i.grupo_clave === deuda.grupo);
+                    if (insc) {
+                        const infoG = insc.grupos || {};
+                        const cursoI = (window.g_cursoMap && infoG.curso_id) ? window.g_cursoMap[String(infoG.curso_id)] : null;
+                        const cBase = cursoI ? cursoI.costo : (infoG.costo_mensual || 0);
+                        if (cBase > 0) {
+                            montoBase = cBase;
+                            montoFinal = cBase * (1 - pctBeca / 100);
+                        }
+                    }
+                }
+
                 const tr = document.createElement('tr');
                 tr.style.backgroundColor = 'rgba(255, 0, 0, 0.05)';
                 
                 // Botón para pagar deuda (incluso si ya no está en el grupo)
                 const btnPagarDeuda = `<button class="premium-btn btn-primary" style="padding:2px 10px; font-size:10px; border-radius:15px; margin-top:5px;" 
-                                        onclick="window.irAPagar('${alumnoId}', '${deuda.monto_a_pagar}', 'Colegiatura ${deuda.mes}/${deuda.anio}', '${deuda.mes}', '${deuda.anio}')">PAGAR</button>`;
+                                        onclick="window.irAPagar('${alumnoId}', '${montoFinal}', 'Colegiatura ${deuda.mes}/${deuda.anio}', '${deuda.mes}', '${deuda.anio}')">PAGAR</button>`;
 
                 tr.innerHTML = `
                     <td style="text-align:center; font-weight:bold; color:red;">PENDIENTE</td>
                     <td style="text-align:center; color:red;">-</td>
-                    <td style="text-align:right;">$${(deuda.precio_mensual || 0).toFixed(2)}</td>
-                    <td style="text-align:right;">$${(deuda.precio_mensual || 0).toFixed(2)}</td>
-                    <td style="text-align:right; font-weight:bold; color:red;">$${(deuda.monto_a_pagar || 0).toFixed(2)}</td>
+                    <td style="text-align:right;">$${montoBase.toFixed(2)}</td>
+                    <td style="text-align:right;">$${(montoBase - montoFinal).toFixed(2)}</td>
+                    <td style="text-align:right; font-weight:bold; color:red;">$${montoFinal.toFixed(2)}</td>
                     <td style="text-align:center;">${deuda.grupo || ''}</td>
                     <td style="font-size: 0.8rem; color:red; font-weight:bold;">
                         DEUDA: COLEGIATURA ${deuda.mes}/${deuda.anio}
@@ -2244,6 +2345,22 @@ window.abrirDetallePagos = function(grupoClave, nombreCurso) {
     });
     
     segGrupo.forEach(s => {
+        let montoFinal = parseFloat(s.monto_calculado || 0);
+        
+        // RECALCULAR SI ES 0 (Resiliencia ante fallos de vista en DB)
+        if (montoFinal <= 0 && window.g_inscripcionesActivas) {
+            const insc = window.g_inscripcionesActivas.find(i => i.grupo_clave === grupoClave);
+            if (insc) {
+                const infoG = insc.grupos || {};
+                const cursoI = (window.g_cursoMap && infoG.curso_id) ? window.g_cursoMap[String(infoG.curso_id)] : null;
+                const cBase = cursoI ? cursoI.costo : (infoG.costo_mensual || 0);
+                if (cBase > 0) {
+                    const pctBeca = alumnoSeleccionado ? (alumnoSeleccionado.porcentaje_beca || 0) : 0;
+                    montoFinal = cBase * (1 - pctBeca / 100);
+                }
+            }
+        }
+
         const tr = document.createElement('tr');
         
         let estatusHtml = '';
@@ -2255,7 +2372,7 @@ window.abrirDetallePagos = function(grupoClave, nombreCurso) {
             estatusHtml = '<span class="badge badge-danger" style="background:#ef4444; color:white; padding:4px 8px; border-radius:4px;">DEUDA</span>';
             accionHtml = `<div style="display: flex; gap: 8px; justify-content: center;">
                             <button class="premium-btn btn-primary" style="padding:5px 12px; font-size:11px; border-radius:15px;" 
-                                onclick="cerrarModalDetallePagos(); window.irAPagar('${alumnoSeleccionado.id}', '${s.monto_calculado}', 'Colegiatura ${s.mes}/${s.anio}', '${s.mes}', '${s.anio}')">PAGAR</button>
+                                onclick="cerrarModalDetallePagos(); window.irAPagar('${alumnoSeleccionado.id}', '${montoFinal}', 'Colegiatura ${s.mes}/${s.anio}', '${s.mes}', '${s.anio}')">PAGAR</button>
                             <button class="premium-btn" style="background: #e91e63; color: white; border: none; padding: 5px 12px; font-size: 11px; border-radius: 15px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.2);" 
                                 onclick="procesarVacaciones('${alumnoSeleccionado.id}', ${s.mes}, ${s.anio}, '${grupoClave}', '${nombreCurso}')">VACACIONES</button>
                           </div>`;
@@ -2273,7 +2390,7 @@ window.abrirDetallePagos = function(grupoClave, nombreCurso) {
             <td style="text-align:center;">${s.mes}/${s.anio}</td>
             <td style="text-align:center; font-size:0.85rem;">${fInicio} - ${fFin}</td>
             <td style="text-align:center;">${estatusHtml}</td>
-            <td style="text-align:right;">$${parseFloat(s.monto_calculado || 0).toFixed(2)}</td>
+            <td style="text-align:right;">$${montoFinal.toFixed(2)}</td>
             <td style="text-align:center;">${accionHtml}</td>
         `;
         tbody.appendChild(tr);

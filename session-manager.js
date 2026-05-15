@@ -189,7 +189,8 @@ const SessionManager = {
                 const protectedActions = [
                     'TERMINAR', 'SALIR', 'VOLVER', 'REGRESAR', 'CANCELAR', 'CERRAR', 
                     'BUSCAR', 'FILTRAR', 'IMPRIMIR', 'REPORTE', 'LISTA', 'DETALLE', 'VER', 
-                    'CONSULTAR', 'SIGUIENTE', 'ANTERIOR', 'PRIMERO', 'ULTIMO', 'LUPA', '🔍'
+                    'CONSULTAR', 'SIGUIENTE', 'ANTERIOR', 'PRIMERO', 'ULTIMO', 'LUPA', '🔍',
+                    'COBROS', 'CAJA', 'CORTE', 'CONSULTA'
                 ];
 
                 // Lista de palabras clave para ACCIONES PROHIBIDAS (Escribir/Modificar/Borrar)
@@ -269,9 +270,14 @@ const SessionManager = {
         const user = this.getCurrentUser();
         if (!user || user.rol === 'SuperAdmin') return query;
         
-        // Verificación de robustez
-        if (!query || typeof query.or !== 'function') {
-            console.warn('SessionManager: Objeto de consulta inválido.', query);
+        // Verificación de robustez: debe ser un objeto de Supabase que permita filtros
+        if (!query || (typeof query.or !== 'function' && typeof query.select !== 'function')) {
+            console.warn('SessionManager: Objeto de consulta inválido o muy temprano para filtrar.', query);
+            return query;
+        }
+
+        // Si es un QueryBuilder (sin select/delete/etc), no podemos aplicar .or aún
+        if (typeof query.or !== 'function') {
             return query;
         }
 
@@ -288,11 +294,12 @@ const SessionManager = {
         ];
 
         if (catalogTables.includes(table)) {
-            // Catálogos: Ver propios + globales
-            return query.or(`organizacion_id.eq.${orgId},organizacion_id.eq.${globalId}`);
+            // Catálogos: Ver propios + globales + legacy (null)
+            return query.or(`organizacion_id.eq.${orgId},organizacion_id.eq.${globalId},organizacion_id.is.null`);
         } else {
-            // Datos sensibles (Alumnos, Pagos, etc.): Ver SOLO los propios
-            return query.eq('organizacion_id', orgId);
+            // Datos sensibles (Alumnos, Pagos, etc.): Ver propios + legacy (null)
+            // Agregamos .is.null para no perder datos que aún no tienen organización asignada
+            return query.or(`organizacion_id.eq.${orgId},organizacion_id.is.null`);
         }
     },
 

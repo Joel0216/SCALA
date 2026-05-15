@@ -150,7 +150,7 @@ function poblarDropdownCursoSiguiente() {
 
 
 function limpiarFormulario() {
-    ['curso', 'costo', 'clave'].forEach(id => {
+    ['curso', 'costo', 'clave', 'grado'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.value = '';
     });
@@ -169,7 +169,7 @@ function deshabilitarCampos() {
 }
 
 function habilitarCamposFormulario() {
-    ['curso', 'costo', 'clave'].forEach(id => {
+    ['curso', 'costo', 'clave', 'grado'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.disabled = false;
     });
@@ -229,6 +229,7 @@ async function guardarNuevoCurso() {
     const curso = document.getElementById('curso').value.trim();
     const costo = document.getElementById('costo').value.trim();
     const clave = document.getElementById('clave').value.trim();
+    const grado = document.getElementById('grado').value.trim();
     const errores = [];
     if (!curso) errores.push('- Curso');
     if (!costo) errores.push('- Costo');
@@ -242,6 +243,7 @@ async function guardarNuevoCurso() {
         costo: parseFloat(costo) || 0,
         clave: clave.toUpperCase(),
         iva: 0.16,
+        grado: grado,
         organizacion_id: SessionManager.getCurrentUser()?.organizacion_id
     };
     try {
@@ -372,7 +374,15 @@ async function confirmarBorrado() {
         await mostrarAlerta('Error: No hay curso seleccionado');
         return;
     }
+
     try {
+        // Verificar si el curso está en uso por algún grupo
+        const { data: enUso, error: errUso } = await db.from('grupos').select('id').eq('curso_id', cursoSeleccionado.id).limit(1);
+        if (enUso && enUso.length > 0) {
+            await mostrarAlerta('No se puede eliminar este curso porque está siendo utilizado por uno o más grupos. Elimine o reasigne los grupos primero.');
+            return;
+        }
+
         const { error } = await SessionManager.applyIsolation(db.from('cursos').delete()).eq('id', cursoSeleccionado.id);
         if (error) throw error;
         await mostrarAlerta('Curso eliminado correctamente');

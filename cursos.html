@@ -44,12 +44,13 @@
                     <div class="premium-grid grid-cols-2">
                         <div class="premium-input-group">
                             <label class="premium-label">Costo <span class="required">*</span></label>
-                            <input type="text" id="costo" class="premium-input" disabled placeholder="$0.00"
+                            <input type="number" id="costo" class="premium-input" disabled placeholder="$0.00" min="0" step="0.01"
                                 oninput="this.value=this.value.replace(/[^0-9.]/g,'').replace(/(\..*)\./g,'$1')">
                         </div>
                         <div class="premium-input-group">
                             <label class="premium-label">Grado</label>
-                            <input type="text" id="grado" class="premium-input" disabled placeholder="Grado">
+                            <input type="number" id="grado" class="premium-input" disabled placeholder="Grado" min="0"
+                                oninput="this.value=this.value.replace(/[^0-9]/g,'')">
                         </div>
                     </div>
                 </div>
@@ -94,13 +95,14 @@
                 <div class="premium-grid grid-cols-2">
                     <div class="premium-input-group">
                         <label class="premium-label">Costo Mensual:</label>
-                        <input type="text" id="editCosto" class="premium-input" placeholder="$0.00"
+                        <input type="number" id="editCosto" class="premium-input" placeholder="$0.00" min="0" step="0.01"
                             style="font-weight: 600; color: var(--primary);"
                             oninput="this.value=this.value.replace(/[^0-9.]/g,'').replace(/(\..*)\./g,'$1')">
                     </div>
                     <div class="premium-input-group">
                         <label class="premium-label">Grado Escolar:</label>
-                        <input type="text" id="editGrado" class="premium-input" placeholder="Ej: 1, 2, 3...">
+                        <input type="number" id="editGrado" class="premium-input" placeholder="Ej: 1, 2, 3..." min="0"
+                            oninput="this.value=this.value.replace(/[^0-9]/g,'')">
                     </div>
                 </div>
             </div>

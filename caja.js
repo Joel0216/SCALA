@@ -1,3 +1,12 @@
+// Funciones para botones (globales para onclick) - Definir al inicio para evitar ReferenceError
+window.irACobros = function() { window.location.href = 'cobros.html'; }
+window.irARecibosCancelados = function() { window.location.href = 'recibos_cancelados.html'; }
+window.irAConsultaBajas = function() { window.location.href = 'consulta-bajas.html'; }
+window.generarCorte1 = function() { window.location.href = 'cortes.html?corte=1'; }
+window.generarCorte2 = function() { window.location.href = 'cortes.html?corte=2'; }
+window.generarCorte3 = function() { window.location.href = 'cortes.html?corte=3'; }
+window.terminarCaja = function() { window.location.href = 'index.html'; }
+
 // Inicializar Supabase
 let supabase = null;
 
@@ -104,32 +113,4 @@ function setupEventListeners() {
     }
 }
 
-// Funciones para botones (también disponibles como onclick)
-// Funciones para botones (globales para onclick)
-window.irACobros = function() {
-    window.location.href = 'cobros.html';
-}
-
-window.irARecibosCancelados = function() {
-    window.location.href = 'recibos_cancelados.html';
-}
-
-window.irAConsultaBajas = function() {
-    window.location.href = 'consulta-bajas.html';
-}
-
-window.generarCorte1 = function() {
-    window.location.href = 'cortes.html?corte=1';
-}
-
-window.generarCorte2 = function() {
-    window.location.href = 'cortes.html?corte=2';
-}
-
-window.generarCorte3 = function() {
-    window.location.href = 'cortes.html?corte=3';
-}
-
-window.terminarCaja = function() {
-    window.location.href = 'index.html';
-}
+// Fin de caja.js

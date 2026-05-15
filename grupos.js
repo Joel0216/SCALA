@@ -532,12 +532,12 @@ window.guardarAlta = async function () {
         cupo: parseInt(document.getElementById('altaCupo').value) || 10,
         grado: parseInt(document.getElementById('altaGrado').value) || 1,
         activo: true,
-        costo_mensual: parseFloat(document.getElementById('altaCostoMensual').value) || 0
+        costo_mensual: 0
     };
 
     // Obtener precio del catálogo de cursos
     const cursoObj = g_cursos.find(c => String(c.id) === String(data.curso_id));
-    if (cursoObj && data.costo_mensual === 0) {
+    if (cursoObj) {
         data.costo_mensual = cursoObj.precio_mensual || cursoObj.costo || 0;
     }
 

@@ -5,7 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scala - Menu de Procesos de Cobros</title>
-    <link rel="stylesheet" href="caja.css?v=2">
+    <link rel="stylesheet" href="caja.css">
+    <script>
+        // Funciones de navegación inmediatas para evitar "is not defined"
+        window.irACobros = function() { window.location.href = 'cobros.html'; }
+        window.irARecibosCancelados = function() { window.location.href = 'recibos_cancelados.html'; }
+        window.irAConsultaBajas = function() { window.location.href = 'consulta-bajas.html'; }
+        window.generarCorte1 = function() { window.location.href = 'cortes.html?corte=1'; }
+        window.generarCorte2 = function() { window.location.href = 'cortes.html?corte=2'; }
+        window.generarCorte3 = function() { window.location.href = 'cortes.html?corte=3'; }
+        window.terminarCaja = function() { window.location.href = 'index.html'; }
+    </script>
 </head>
 
 <body data-section="Caja">
@@ -66,7 +76,7 @@
     <script src="supabase-config.js"></script>
     <script src="session-manager.js"></script>
     <script src="utils-inputs.js"></script>
-    <script src="caja.js?v=3"></script>
+    <script src="caja.js"></script>
 </body>
 
 </html>

@@ -1886,7 +1886,8 @@ async function doSearchTransaction() {
         const from = (searchCurrentPage - 1) * searchRowsPerPage;
         const to = from + searchRowsPerPage - 1;
 
-        let query = db.from('recibos').select('*', { count: 'exact' });
+        const queryRaw = db.from('recibos').select('*', { count: 'exact' });
+        let query = SessionManager.applyIsolation(queryRaw);
 
         if (input) {
             // Basic search in folio or cliente (nombre_factura)
@@ -1950,11 +1951,13 @@ async function cancelTransaction(id) {
     if (!await mostrarConfirm('¿Cancelar recibo? Esta acción moverá el registro al historial de cancelados y regresará el stock a inventario.')) return;
 
     try {
+        const orgId = SessionManager.getCurrentUser()?.organizacion_id;
+
         // 1. Obtener datos del recibo y sus detalles
-        const { data: receipt, error: rErr } = await db.from('recibos').select('*').eq('id', id).single();
+        const { data: receipt, error: rErr } = await SessionManager.applyIsolation(db.from('recibos').select('*')).eq('id', id).single();
         if (rErr) throw rErr;
 
-        const { data: details, error: dErr } = await db.from('recibos_detalle').select('*').eq('recibo_id', id);
+        const { data: details, error: dErr } = await SessionManager.applyIsolation(db.from('recibos_detalle').select('*')).eq('recibo_id', id);
         if (dErr) throw dErr;
 
         // 2. Mover a tablas de cancelados con METADATOS COMPLETOS
@@ -1980,8 +1983,9 @@ async function cancelTransaction(id) {
             tarjeta_banco: receipt.tarjeta_banco || '',
             tarjeta_numero: receipt.tarjeta_numero || '',
             comprobante_url: receipt.comprobante_url,
-            motivo_cancelacion: 'Cancelación manual por el usuario'
-        }, { onConflict: 'numero' }).select().single();
+            motivo_cancelacion: 'Cancelación manual por el usuario',
+            organizacion_id: orgId
+        }).select().single();
 
         if (hErr) throw hErr;
 
@@ -1993,7 +1997,8 @@ async function cancelTransaction(id) {
             cantidad: d.cantidad,
             monto_unitario: d.monto,
             neto: d.neto,
-            descuento_porcentaje: d.porcentaje_beca || 0
+            descuento_porcentaje: d.porcentaje_beca || 0,
+            organizacion_id: orgId
         }));
 
         if (detailsToInsert.length > 0) {
@@ -2004,15 +2009,15 @@ async function cancelTransaction(id) {
         // 3. Restaurar stock de cada artículo
         for (const item of (details || [])) {
             if (item.articulo_id) {
-                const { data: art } = await db.from('articulos').select('stock').eq('id', item.articulo_id).single();
+                const { data: art } = await SessionManager.applyIsolation(db.from('articulos').select('stock')).eq('id', item.articulo_id).single();
                 if (art) {
-                    await db.from('articulos').update({ stock: art.stock + item.cantidad }).eq('id', item.articulo_id);
+                    await SessionManager.applyIsolation(db.from('articulos').update({ stock: art.stock + item.cantidad })).eq('id', item.articulo_id);
                 }
             }
         }
 
         // 4. Eliminar el recibo original (cascade borrará los detalles activos)
-        const { error: delErr } = await db.from('recibos').delete().eq('id', id);
+        const { error: delErr } = await SessionManager.applyIsolation(db.from('recibos').delete()).eq('id', id);
         if (delErr) throw delErr;
 
         alert('Recibo cancelado y stock restaurado exitosamente');
@@ -2040,7 +2045,8 @@ async function searchCancelledReceipts() {
         const from = (cancelledCurrentPage - 1) * cancelledRowsPerPage;
         const to = from + cancelledRowsPerPage - 1;
 
-        let query = db.from('recibos_detalle_cancelados').select('*, recibos_cancelados(*)', { count: 'exact' });
+        const queryBase = db.from('recibos_detalle_cancelados').select('*, recibos_cancelados(*)', { count: 'exact' });
+        let query = SessionManager.applyIsolation(queryBase);
 
         if (term) {
             query = query.ilike('credencial', `%${term}%`);
