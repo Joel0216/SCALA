@@ -296,18 +296,16 @@ const SessionManager = {
         const url = query.url ? query.url.toString() : '';
         const table = url.split('/').pop().split('?')[0];
 
-        const catalogTables = [
-            'tipos_movimiento', 'instrumentos', 'salones'
+        // Tablas compartidas globalmente por todas las organizaciones
+        const globalTables = [
+            'tipos_movimiento', 'instrumentos', 'motivos_baja', 'medios_contacto'
         ];
 
-        if (catalogTables.includes(table)) {
-            // Catálogos: Ver propios + globales + legacy (null)
-            const catFilter = orgId 
-                ? `organizacion_id.eq.${orgId},organizacion_id.eq.${globalId},organizacion_id.is.null`
-                : `organizacion_id.eq.${globalId},organizacion_id.is.null`;
-            return query.or(catFilter);
+        if (globalTables.includes(table)) {
+            // Sin aislamiento de organización: Todos pueden ver todo
+            return query;
         } else {
-            // Datos sensibles: Ver propios + legacy (null)
+            // Datos propios de la organización (incluyendo salones, alumnos, etc.)
             return query.or(orFilter);
         }
     },

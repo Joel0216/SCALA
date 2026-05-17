@@ -51,6 +51,29 @@ document.addEventListener('DOMContentLoaded', async function () {
         console.error('Error durante la inicialización:', err);
     }
 
+    // Formatear porcentaje al enfocar y desenfocar
+    const pctInput = document.getElementById('porcentaje');
+    if (pctInput) {
+        pctInput.addEventListener('focus', function() {
+            let val = this.value.replace('%', '').trim();
+            if (parseFloat(val) === 0) {
+                this.value = '';
+            } else {
+                this.value = val;
+            }
+        });
+        pctInput.addEventListener('blur', function() {
+            let val = parseFloat(this.value) || 0;
+            this.value = val.toFixed(2) + '%';
+            
+            // Sincronizar checkbox al desenfocar
+            const becaCheck = document.getElementById('beca');
+            if (becaCheck) {
+                becaCheck.checked = val > 0;
+            }
+        });
+    }
+
     if (typeof habilitarInputs === 'function') {
         habilitarInputs();
     }
@@ -393,21 +416,34 @@ function validarPorcentaje(input) {
         valor = partes[0] + '.' + partes[1].substring(0, 2);
     }
 
-    var num = parseFloat(valor);
+    var num = parseFloat(valor) || 0;
     if (num > 100) {
         valor = '100';
+        num = 100;
     }
 
     input.value = valor;
+
+    // Activar/desactivar automáticamente el checkbox si escriben un número
+    var beca = document.getElementById('beca');
+    if (beca) {
+        beca.checked = num > 0;
+    }
 }
 
 function togglePorcentaje() {
     var beca = document.getElementById('beca');
     var porcentaje = document.getElementById('porcentaje');
     if (beca && porcentaje) {
-        porcentaje.disabled = !beca.checked;
         if (!beca.checked) {
             porcentaje.value = '0.00%';
+        } else {
+            // Si lo marcan, limpiar el 0 para escribir más cómodo y darle foco
+            var num = parseFloat(porcentaje.value) || 0;
+            if (num === 0) {
+                porcentaje.value = '';
+            }
+            porcentaje.focus();
         }
     }
 }
@@ -721,47 +757,191 @@ async function cargarHistorialExamenes(alumnoId) {
         const query = db.from('v_examenes_alumno').select('*').eq('alumno_id', alumnoId).order('fecha', { ascending: false });
         const { data, error } = await SessionManager.applyIsolation(query);
 
-        console.log('Exámenes encontrados:', data ? data.length : 0);
-        if (error) throw error;
+        console.log('Exámenes encontrados en vista:', data ? data.length : 0);
+        if (error) console.warn('Error en vista v_examenes_alumno:', error.message);
 
-        tbody.innerHTML = '';
-        if (!data || data.length === 0) {
+        // Si la vista devolvió registros, los usamos directamente
+        if (data && data.length > 0) {
+            renderizarFilasExamen(data, tbody, alumnoId);
+            return;
+        }
+
+        // --- FALLBACK ROBUSTO EN MEMORIA ---
+        console.log('Aplicando fallback de consulta directa en memoria para exámenes...');
+        
+        // 1. Obtener de resultados_examen (columnas 100% existentes)
+        const { data: resultados, error: errRes } = await SessionManager.applyIsolation(
+            db.from('resultados_examen')
+                .select('id, clave_examen, alumno_id, presento, aprobo, calificacion, nota')
+                .eq('alumno_id', alumnoId)
+        );
+
+        if (errRes) throw errRes;
+
+        if (!resultados || resultados.length === 0) {
             tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:20px;">Sin registro de exámenes</td></tr>';
             return;
         }
 
-        data.forEach(ex => {
-            const tr = document.createElement('tr');
-            const statusClass = ex.status === 'PAGADO' ? 'status-green' : (ex.status === 'CALIFICADO' ? 'status-blue' : 'status-red');
+        // 2. Obtener estatus de pago de examen_alumnos de manera segura
+        const pagosMap = {};
+        try {
+            const { data: pagos, error: errPagos } = await SessionManager.applyIsolation(
+                db.from('examen_alumnos')
+                    .select('examen_id, pagado, recibo_id')
+                    .eq('alumno_id', alumnoId)
+            );
+            if (!errPagos && pagos) {
+                pagos.forEach(p => {
+                    if (p.examen_id) {
+                        pagosMap[p.examen_id] = p;
+                    }
+                });
+            }
+        } catch (ePay) {
+            console.warn('Error al obtener pagos de examen_alumnos:', ePay.message);
+        }
+
+        // 2b. Reconciliar a través de recibos_detalle por si no existía el registro en examen_alumnos
+        try {
+            const { data: recDetalles, error: errDet } = await SessionManager.applyIsolation(
+                db.from('recibos_detalle')
+                    .select('id, operacion, recibo_id, recibos!inner(cancelado)')
+                    .eq('alumno_id', alumnoId)
+                    .eq('recibos.cancelado', false)
+            );
+            if (!errDet && recDetalles) {
+                recDetalles.forEach(d => {
+                    const opText = (d.operacion || '').toUpperCase();
+                    if (opText.includes('EXAMEN ')) {
+                        const match = opText.match(/EXAMEN\s+([A-Z0-9\-\s_]+)/i);
+                        if (match && match[1]) {
+                            const clave = match[1].trim();
+                            pagosMap['clave_' + clave] = { pagado: true, recibo_id: d.recibo_id };
+                        }
+                    }
+                });
+            }
+        } catch (eDet) {
+            console.warn('Error al obtener detalles de recibo para reconciliación de examen:', eDet.message);
+        }
+
+        // 3. Obtener programaciones de examen usando clave_examen
+        const claves = [...new Set(resultados.map(r => r.clave_examen).filter(Boolean))];
+        
+        let programaciones = [];
+        if (claves.length > 0) {
+            const progQuery = db.from('programacion_examenes')
+                .select('id, clave_examen, fecha, hora, monto, maestro_base_id')
+                .in('clave_examen', claves);
+            const { data: progData } = await SessionManager.applyIsolation(progQuery);
+            programaciones = progData || [];
+        }
+        
+        // Mapear programaciones por clave_examen
+        const progMapByClave = {};
+        programaciones.forEach(p => {
+            progMapByClave[p.clave_examen] = p;
+        });
+
+        // 4. Mapear nombres de maestros
+        const maestroIds = [...new Set(programaciones.map(p => p.maestro_base_id).filter(Boolean))];
+        const maestrosMap = {};
+        if (maestroIds.length > 0) {
+            const { data: maestros } = await db.from('maestros').select('id, nombre').in('id', maestroIds);
+            if (maestros) {
+                maestros.forEach(m => {
+                    maestrosMap[m.id] = m.nombre;
+                });
+            }
+        }
+
+        // 5. Obtener credencial del alumno
+        const { data: alumno } = await db.from('alumnos').select('credencial').eq('id', alumnoId).maybeSingle();
+        const studentCred = alumno?.credencial || '';
+
+        // 6. Mapear los datos al formato que espera la UI
+        const mappedData = resultados.map(r => {
+            // Unir por clave_examen
+            const ex = progMapByClave[r.clave_examen] || {};
             
-            // Botón de pago si está pendiente
-            let btnPagar = '';
-            if (ex.status === 'PENDIENTE DE PAGO') {
-                const precio = ex.precio_unitario || 0;
-                btnPagar = `<button class="premium-btn btn-primary" style="padding: 2px 8px; font-size: 11px; margin-left: 10px;" onclick="irAPagarExamen('${alumnoId}', '${ex.clave_examen}', ${precio}, '${ex.examen_id}')">PAGAR</button>`;
+            // Obtener info de pago del mapa seguro usando el id de la programación de examen
+            const pagoInfo = ex.id ? pagosMap[ex.id] : null;
+            let esPagado = pagoInfo ? (pagoInfo.pagado || !!pagoInfo.recibo_id) : false;
+
+            // Reconciliación por clave_examen si no coincide por ID de programación
+            if (!esPagado && r.clave_examen && pagosMap['clave_' + r.clave_examen]) {
+                esPagado = true;
             }
 
-            tr.innerHTML = `
-                <td style="text-align:center;">${ex.credencial}</td>
-                <td style="text-align:center;">${ex.clave_examen}</td>
-                <td style="text-align:center;">${formatearFecha(ex.fecha)}</td>
-                <td style="text-align:center;">${ex.hora}</td>
-                <td>${ex.maestro_nombre || '—'}</td>
-                <td style="text-align:center; font-weight:bold;">${ex.calificacion || '—'}</td>
-                <td style="text-align:center; font-weight:bold; color:var(--primary-color);">$${(ex.precio_unitario || 0).toFixed(2)}</td>
-                <td style="text-align:center;">
-                    <div style="display:flex; align-items:center; justify-content:center;">
-                        <span class="status-pill ${statusClass}">${ex.status}</span>
-                        ${btnPagar}
-                    </div>
-                </td>
-            `;
-            tbody.appendChild(tr);
+            // Determinar status
+            let status = 'PENDIENTE DE PAGO';
+            if (esPagado) {
+                if (r.calificacion !== null) {
+                    status = 'CALIFICADO';
+                } else if (r.presento === false) {
+                    status = 'NO PRESENTÓ';
+                } else {
+                    status = 'PAGADO';
+                }
+            } else {
+                status = 'PENDIENTE DE PAGO';
+            }
+
+            return {
+                credencial: studentCred,
+                clave_examen: r.clave_examen,
+                fecha: ex.fecha || '',
+                hora: ex.hora || '—',
+                maestro_nombre: ex.maestro_base_id ? (maestrosMap[ex.maestro_base_id] || '—') : '—',
+                calificacion: r.calificacion,
+                precio_unitario: ex.monto || 0,
+                status: status,
+                examen_id: ex.id || ''
+            };
         });
+
+        // Ordenar por fecha descendente
+        mappedData.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+
+        renderizarFilasExamen(mappedData, tbody, alumnoId);
+
     } catch (e) {
         console.error('Error cargando exámenes:', e);
         tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:red;">Error al cargar datos</td></tr>';
     }
+}
+
+function renderizarFilasExamen(data, tbody, alumnoId) {
+    tbody.innerHTML = '';
+    data.forEach(ex => {
+        const tr = document.createElement('tr');
+        const statusClass = ex.status === 'PAGADO' ? 'status-green' : (ex.status === 'CALIFICADO' ? 'status-blue' : 'status-red');
+        
+        // Botón de pago si está pendiente
+        let btnPagar = '';
+        if (ex.status === 'PENDIENTE DE PAGO') {
+            const precio = ex.precio_unitario || 0;
+            btnPagar = `<button class="premium-btn btn-primary" style="padding: 2px 8px; font-size: 11px; margin-left: 10px;" onclick="irAPagarExamen('${alumnoId}', '${ex.clave_examen}', ${precio}, '${ex.examen_id}')">PAGAR</button>`;
+        }
+
+        tr.innerHTML = `
+            <td style="text-align:center;">${ex.credencial}</td>
+            <td style="text-align:center;">${ex.clave_examen}</td>
+            <td style="text-align:center;">${formatearFecha(ex.fecha)}</td>
+            <td style="text-align:center;">${ex.hora}</td>
+            <td>${ex.maestro_nombre || '—'}</td>
+            <td style="text-align:center; font-weight:bold;">${ex.calificacion || '—'}</td>
+            <td style="text-align:center; font-weight:bold; color:var(--primary-color);">$${(ex.precio_unitario || 0).toFixed(2)}</td>
+            <td style="text-align:center;">
+                <div style="display:flex; align-items:center; justify-content:center;">
+                    <span class="status-pill ${statusClass}">${ex.status}</span>
+                    ${btnPagar}
+                </div>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
 }
 
 /**
@@ -1114,7 +1294,7 @@ async function guardarAlta() {
         reingreso: document.getElementById('reingreso') ? document.getElementById('reingreso').checked : false,
         instrumento_clave: getVal('instrumento_clave'),
         medio_clave: getVal('medio'),
-        beca: document.getElementById('beca') ? document.getElementById('beca').checked : false,
+        beca: (parseFloat(getVal('porcentaje').replace('%', '')) || 0) > 0 ? true : (document.getElementById('beca') ? document.getElementById('beca').checked : false),
         porcentaje_beca: parseFloat(getVal('porcentaje').replace('%', '')) || 0,
         grado: g_gruposPendientesAlta.length > 0 ? g_gruposPendientesAlta[0].grado : 1,
         activo: true
@@ -1253,7 +1433,7 @@ async function guardarEdicion() {
         reingreso: document.getElementById('reingreso') ? document.getElementById('reingreso').checked : false,
         instrumento_clave: getVal('instrumento_clave'),
         medio_clave: getVal('medio'),
-        beca: document.getElementById('beca') ? document.getElementById('beca').checked : false,
+        beca: (parseFloat(getVal('porcentaje').replace('%', '')) || 0) > 0 ? true : (document.getElementById('beca') ? document.getElementById('beca').checked : false),
         porcentaje_beca: parseFloat(getVal('porcentaje').replace('%', '')) || 0,
     };
 

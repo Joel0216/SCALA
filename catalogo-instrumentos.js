@@ -143,7 +143,7 @@ btnGuardar.addEventListener('click', async () => {
             clave: clave,
             descripcion: descripcion,
             activo: true,
-            organizacion_id: SessionManager.getCurrentUser()?.organizacion_id
+            organizacion_id: null
         }]);
 
         if (error) throw error;

@@ -304,13 +304,28 @@ async function guardarExamen() {
                     .or('estado.eq.Activo,estado.eq.activo');
 
                 if (alumnosGrupo && alumnosGrupo.length > 0) {
-                    const insertData = alumnosGrupo.map(a => ({
-                        clave_examen: clave,
-                        alumno_id: a.alumno_id,
-                        organizacion_id: SessionManager.getCurrentUser()?.organizacion_id
-                    }));
-                    const { error: errorRes } = await supabase.from('resultados_examen').insert(insertData);
-                    if (errorRes) console.error('Error vinculando alumnos:', errorRes);
+                    const studentIds = alumnosGrupo.map(a => a.alumno_id).filter(Boolean);
+                    
+                    // 1. Consultar cuáles alumnos ya tienen un registro en resultados_examen para esta clave
+                    const { data: existingRecords } = await supabase.from('resultados_examen')
+                        .select('alumno_id')
+                        .eq('clave_examen', clave)
+                        .in('alumno_id', studentIds);
+
+                    const existingSet = new Set(existingRecords?.map(r => r.alumno_id) || []);
+
+                    // 2. Filtrar para insertar únicamente a los que no tienen registro previo
+                    const nuevosAlumnos = alumnosGrupo.filter(a => a.alumno_id && !existingSet.has(a.alumno_id));
+
+                    if (nuevosAlumnos.length > 0) {
+                        const insertData = nuevosAlumnos.map(a => ({
+                            clave_examen: clave,
+                            alumno_id: a.alumno_id,
+                            organizacion_id: SessionManager.getCurrentUser()?.organizacion_id
+                        }));
+                        const { error: errorRes } = await supabase.from('resultados_examen').insert(insertData);
+                        if (errorRes) console.error('Error vinculando alumnos:', errorRes);
+                    }
                 }
             }
             alert(`✅ Examen guardado.\n🔑 Clave de acceso: ${examenData.clave_acceso}`);

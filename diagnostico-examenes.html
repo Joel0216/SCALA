@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Diagnóstico de Datos de Exámenes - SCALA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --card-dark: #1e293b;
+            --accent-primary: #ec4899;
+            --accent-secondary: #8b5cf6;
+            --text-light: #f8fafc;
+            --text-gray: #94a3b8;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: var(--accent-primary);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background-color: var(--card-dark);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: var(--accent-secondary);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 8px;
+        }
+
+        pre {
+            background-color: #020617;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            color: #38bdf8;
+            font-size: 0.875rem;
+            max-height: 350px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        th {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--accent-primary);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto;
+            transition: opacity 0.2s;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .alert-info {
+            background-color: rgba(14, 165, 233, 0.1);
+            border: 1px solid #0ea5e9;
+            color: #38bdf8;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .alert-warning {
+            background-color: rgba(245, 158, 11, 0.1);
+            border: 1px solid #f59e0b;
+            color: #fbbf24;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🔬 Diagnóstico del Sistema de Exámenes</h1>
+    
+    <div class="alert-info">
+        Este módulo lee de forma segura la base de datos remota para encontrar por qué no aparecen las calificaciones de los alumnos en su ficha.
+    </div>
+
+    <button class="btn" onclick="iniciarDiagnostico()">EJECUTAR DIAGNÓSTICO</button>
+
+    <div class="card" id="cardResultados">
+        <div class="card-title">Resumen de Análisis</div>
+        <div id="analisisResumen">Haga clic en el botón superior para iniciar el análisis en tiempo real.</div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">1. Tabla resultados_examen directamente</div>
+        <pre id="outputResultados">Esperando ejecución...</pre>
+    </div>
+
+    <div class="card">
+        <div class="card-title">2. Vista v_examenes_alumno (lo que usa alumnos.js)</div>
+        <pre id="outputVista">Esperando ejecución...</pre>
+    </div>
+
+    <div class="card">
+        <div class="card-title">3. Tabla programacion_examenes</div>
+        <pre id="outputProgramacion">Esperando ejecución...</pre>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="session-manager.js"></script>
+<script>
+    async function iniciarDiagnostico() {
+        const outRes = document.getElementById('outputResultados');
+        const outVis = document.getElementById('outputVista');
+        const outProg = document.getElementById('outputProgramacion');
+        const resDiv = document.getElementById('analisisResumen');
+
+        outRes.textContent = "Consultando...";
+        outVis.textContent = "Consultando...";
+        outProg.textContent = "Consultando...";
+        resDiv.innerHTML = "Analizando base de datos...";
+
+        try {
+            const db = typeof window.waitForSupabase === 'function' 
+                ? await window.waitForSupabase() 
+                : (window.supabase || window.supabaseClient);
+
+            if (!db) {
+                throw new Error("No se pudo establecer conexión con Supabase. Verifique supabase-config.js");
+            }
+
+            const user = SessionManager.getCurrentUser();
+            const orgId = user?.organizacion_id;
+            resDiv.innerHTML += `<br><b>Organización activa en sesión:</b> ${orgId || 'Ninguna (SuperAdmin)'}`;
+
+            // 1.resultados_examen
+            const { data: resEx, error: errEx } = await db.from('resultados_examen').select('*').limit(20);
+            if (errEx) {
+                outRes.textContent = "Error: " + JSON.stringify(errEx, null, 2);
+            } else {
+                outRes.textContent = JSON.stringify(resEx, null, 2);
+            }
+
+            // 2. v_examenes_alumno
+            const { data: vEx, error: errV } = await db.from('v_examenes_alumno').select('*').limit(20);
+            if (errV) {
+                outVis.textContent = "Error: " + JSON.stringify(errV, null, 2);
+            } else {
+                outVis.textContent = JSON.stringify(vEx, null, 2);
+            }
+
+            // 3. programacion_examenes
+            const { data: progEx, error: errProg } = await db.from('programacion_examenes').select('*').limit(20);
+            if (errProg) {
+                outProg.textContent = "Error: " + JSON.stringify(errProg, null, 2);
+            } else {
+                outProg.textContent = JSON.stringify(progEx, null, 2);
+            }
+
+            // --- Análisis Inteligente ---
+            let diagnosticoHTML = "<h4>Análisis de integridad:</h4>";
+            
+            if (errV) {
+                diagnosticoHTML += `<div class="alert-warning">⚠️ La vista <code>v_examenes_alumno</code> está fallando o no existe en Supabase. Error: ${errV.message}</div>`;
+            } else if (!vEx || vEx.length === 0) {
+                diagnosticoHTML += `<div class="alert-warning">⚠️ La vista <code>v_examenes_alumno</code> está vacía.</div>`;
+            } else {
+                diagnosticoHTML += `✓ La vista <code>v_examenes_alumno</code> contiene registros (${vEx.length} en muestra).<br>`;
+            }
+
+            if (!errEx && resEx && resEx.length > 0) {
+                diagnosticoHTML += `✓ La tabla <code>resultados_examen</code> contiene calificaciones y alumnos (${resEx.length} en muestra).<br>`;
+                
+                // Buscar si hay calificación
+                const calificados = resEx.filter(r => r.calificacion !== null);
+                diagnosticoHTML += `• Registros calificados en <code>resultados_examen</code>: ${calificados.length}<br>`;
+            } else {
+                diagnosticoHTML += `<div class="alert-warning">⚠️ La tabla <code>resultados_examen</code> está vacía o falló.</div>`;
+            }
+
+            // Detectar causa de discrepancia
+            if (resEx && resEx.length > 0 && (!vEx || vEx.length === 0)) {
+                diagnosticoHTML += `<br><div class="alert-warning">💡 <b>Causa probable:</b> Hay calificaciones en <code>resultados_examen</code> pero no aparecen en la vista de alumnos. Esto ocurre comúnmente si la vista <code>v_examenes_alumno</code> hace un JOIN estricto que no encuentra coincidencia.</div>`;
+            } else if (resEx && resEx.length > 0 && vEx && vEx.length > 0) {
+                diagnosticoHTML += `<br><div class="alert-info">💡 <b>Causa probable:</b> Ambos tienen datos. Si al alumno en específico no le sale, puede ser un filtro de organización o un ID de alumno diferente entre <code>resultados_examen</code> y <code>alumnos</code>.</div>`;
+            }
+
+            resDiv.innerHTML = diagnosticoHTML;
+
+        } catch (e) {
+            resDiv.innerHTML = `<span style="color:red;">Error en diagnóstico: ${e.message}</span>`;
+            outRes.textContent = e.stack;
+        }
+    }
+</script>
+</body>
+</html>

@@ -148,7 +148,7 @@ btnGuardar.addEventListener('click', async () => {
             clave: clave,
             descripcion: descripcion,
             activo: true,
-            organizacion_id: SessionManager.getCurrentUser()?.organizacion_id
+            organizacion_id: null
         };
 
         const { error } = await db.from('medios_contacto').insert([datos]);

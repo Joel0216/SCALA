@@ -1380,15 +1380,36 @@ async function saveAndPrint() {
                 console.log(`✓ Procesando EXAMEN - Ref ${op.ref_id} para alumno ${op.alumno_id || (currentStudent ? currentStudent.id : 'desconocido')}`);
                 const targetAlumnoId = op.alumno_id || (currentStudent ? currentStudent.id : null);
                 if (targetAlumnoId) {
-                    const { error: exErr } = await SessionManager.applyIsolation(db.from('examen_alumnos'))
-                        .update({ 
-                            pagado: true, 
-                            recibo_id: reciboId 
-                        })
+                    // Verificar si ya existe el registro en examen_alumnos
+                    const { data: existing, error: findErr } = await SessionManager.applyIsolation(db.from('examen_alumnos').select('*'))
                         .eq('examen_id', op.ref_id)
-                        .eq('alumno_id', targetAlumnoId);
-                    if (exErr) console.error('Error actualizando estatus de examen en examen_alumnos:', exErr);
-                    else console.log('✓ Estatus de examen actualizado correctamente');
+                        .eq('alumno_id', targetAlumnoId)
+                        .maybeSingle();
+
+                    if (!findErr && existing) {
+                        // Existe: Actualizamos
+                        const { error: exErr } = await SessionManager.applyIsolation(db.from('examen_alumnos'))
+                            .update({ 
+                                pagado: true, 
+                                recibo_id: reciboId 
+                            })
+                            .eq('examen_id', op.ref_id)
+                            .eq('alumno_id', targetAlumnoId);
+                        if (exErr) console.error('Error actualizando estatus de examen en examen_alumnos:', exErr);
+                        else console.log('✓ Estatus de examen en examen_alumnos actualizado correctamente (UPDATE)');
+                    } else {
+                        // No existe: Insertamos un nuevo registro
+                        const { error: exErr } = await db.from('examen_alumnos')
+                            .insert([{
+                                examen_id: op.ref_id,
+                                alumno_id: targetAlumnoId,
+                                pagado: true,
+                                recibo_id: reciboId,
+                                organizacion_id: SessionManager.getCurrentUser()?.organizacion_id
+                            }]);
+                        if (exErr) console.error('Error insertando estatus de examen en examen_alumnos:', exErr);
+                        else console.log('✓ Estatus de examen en examen_alumnos registrado correctamente (INSERT)');
+                    }
                 } else {
                     console.warn('⚠ No se pudo actualizar el estatus del examen: alumno_id no definido');
                 }
