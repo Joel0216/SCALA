@@ -5,6 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scala - Menu de Reportes</title>
     <link rel="stylesheet" href="reportes.css">
+    <style>
+        /* Selector de Organización — solo visible para SuperAdmin via JS */
+        #orgSelectorContainer {
+            display: none; /* oculto por defecto, JS lo muestra si SuperAdmin */
+            background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+            border-radius: 6px;
+            padding: 10px 14px;
+            margin-bottom: 12px;
+            color: #fff;
+            gap: 12px;
+            align-items: center;
+        }
+        #orgSelectorContainer label {
+            font-weight: 700;
+            font-size: 0.85em;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        #orgSelector {
+            flex: 1;
+            padding: 6px 10px;
+            border-radius: 4px;
+            border: 2px solid #7986cb;
+            background: #1a237e;
+            color: #fff;
+            font-size: 0.9em;
+            cursor: pointer;
+        }
+        #orgSelector option {
+            background: #283593;
+            color: #fff;
+        }
+        #orgSelectorContainer .badge-superadmin {
+            background: #ff6f00;
+            color: #fff;
+            border-radius: 3px;
+            padding: 2px 7px;
+            font-size: 0.75em;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        #orgLoadingMsg {
+            font-size: 0.8em;
+            color: #90caf9;
+            margin-left: 8px;
+        }
+    </style>
 </head>
 <body data-section="Reportes">
     <div class="container">
@@ -21,7 +70,21 @@
 
         <main>
             <div class="content-area">
-                <div class="filters-container" style="display: flex; gap: 15px; margin-bottom: 20px; background: #e0f2f1; padding: 10px; border-radius: 4px; border: 1px solid #b2dfdb;">
+
+                <!-- SELECTOR DE ORGANIZACIÓN (solo SuperAdmin) -->
+                <div id="orgSelectorContainer">
+                    <label for="orgSelector">
+                        Organizacion:
+                        <span class="badge-superadmin">SUPERADMIN</span>
+                    </label>
+                    <select id="orgSelector">
+                        <option value="ALL">Todas las Organizaciones</option>
+                    </select>
+                    <span id="orgLoadingMsg">Cargando...</span>
+                </div>
+
+                <!-- FILTROS DE FECHA -->
+                <div class="filters-container" style="display: flex; gap: 15px; margin-bottom: 12px; background: #e0f2f1; padding: 10px; border-radius: 4px; border: 1px solid #b2dfdb;">
                     <div class="filter-group">
                         <label for="fechaInicio" style="font-weight: bold; font-size: 0.9em; display: block;">Fecha Inicio:</label>
                         <input type="date" id="fechaInicio" class="filter-input">
@@ -33,11 +96,12 @@
                 </div>
 
                 <div class="selection-label" style="font-weight: bold; color: #dc3545; margin-bottom: 10px;">
-                    ⚠️ SELECCIONE UN RANGO DE FECHAS PARA GENERAR CUALQUIER REPORTE
+                    SELECCIONE UN RANGO DE FECHAS PARA GENERAR CUALQUIER REPORTE
                 </div>
+
                 <select id="reporteSelect" size="20" class="reporte-list" style="height: 480px; width: 100%; border-radius: 8px; border: 1.5px solid #b2dfdb; padding: 10px; font-family: 'Poppins', sans-serif; font-size: 0.95em;">
                     <option value="">-- Seleccione un reporte --</option>
-                    
+
                     <optgroup label="1. Alumnos y Matrícula">
                         <option value="listado_alumnos_1">Listado de Alumnos (Orden por Nombre)</option>
                         <option value="listado_alumnos_2">Listado de Alumnos (Orden por Credencial)</option>
@@ -65,16 +129,17 @@
                     <optgroup label="4. Maestros e Inventarios">
                         <option value="reporte_mensual_maestros">Reporte Mensual de Maestros</option>
                         <option value="articulos_vendidos">Artículos Vendidos</option>
-                        <option value="stock_critico">Stock Crítico (< 5 unidades)</option>
+                        <option value="stock_critico">Stock Crítico (&lt; 5 unidades)</option>
                     </optgroup>
                 </select>
+
                 <div style="font-size: 0.8em; color: #666; margin-top: 5px; text-align: center;">
                     Seleccione un reporte. Las fechas se habilitarán si el reporte lo requiere.
                 </div>
 
                 <div class="button-container">
                     <button class="action-btn" onclick="imprimirReporte()">
-                        Imprime / Exportar PDF
+                        Imprimir / Exportar PDF
                     </button>
                     <button class="action-btn" onclick="exportarCSV()" style="background-color: #27ae60;">
                         Exportar CSV
@@ -95,4 +160,3 @@
     <script src="reportes.js"></script>
 </body>
 </html>
-
