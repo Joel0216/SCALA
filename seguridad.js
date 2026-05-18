@@ -152,7 +152,10 @@ async function crearOrganizacion() {
     const nombre = document.getElementById('o_nombre').value.trim();
     const logoFile = document.getElementById('o_logoFile').files[0];
 
-    if (!nombre) return alert('El nombre es obligatorio');
+    if (!nombre) {
+        await mostrarAlerta('El nombre es obligatorio');
+        return;
+    }
 
     try {
         let logoUrl = null;
@@ -183,12 +186,12 @@ async function crearOrganizacion() {
             throw error;
         }
 
-        alert('Organización "' + newOrg.nombre + '" creada exitosamente');
+        await mostrarAlerta('Organización "' + newOrg.nombre + '" creada exitosamente');
         cerrarModalOrg();
         await cargarOrganizaciones();
     } catch (e) {
         console.error('Error detallado:', e);
-        alert('ERROR AL CREAR ORGANIZACIÓN: ' + (e.message || 'Error desconocido'));
+        await mostrarAlerta('ERROR AL CREAR ORGANIZACIÓN: ' + (e.message || 'Error desconocido'));
     }
 }
 
@@ -377,9 +380,10 @@ async function cargarUsuarios() {
     try {
         let query = SessionManager.applyIsolation(db.from('usuarios').select('*, organizaciones(nombre)'));
         
-        // Si no es SuperAdmin, filtrar por su organización
+        // Si no es SuperAdmin, filtrar por su organización y ocultar al SuperAdmin
         if (currentUser.rol !== 'SuperAdmin') {
-            query = query.eq('organizacion_id', currentUser.organizacion_id);
+            query = query.eq('organizacion_id', currentUser.organizacion_id)
+                         .neq('rol', 'SuperAdmin');
         }
 
         const { data, error } = await query.order('rol');
@@ -391,13 +395,43 @@ async function cargarUsuarios() {
 
         data.forEach(u => {
             const tr = document.createElement('tr');
+            const esMismoUsuario = u.id === currentUser.id;
+            const esSuperAdmin = u.rol === 'SuperAdmin';
+            const soySuperAdmin = currentUser.rol === 'SuperAdmin';
+            
+            let btns = '';
+            
+            // Lógica para el botón CLAVE (cambiar contraseña)
+            // 1. Un SuperAdmin puede cambiar la contraseña de todos (incluyendo la suya propia)
+            // 2. Un usuario común no-SuperAdmin puede cambiar claves de otros no-SuperAdmin de su org, y la suya propia.
+            if (soySuperAdmin || !esSuperAdmin) {
+                btns += `<button class="premium-btn btn-save" style="padding: 5px 10px; margin-right: 5px;" onclick="cambiarPasswordUsuario('${u.id}', '${u.user_id}')">CLAVE</button>`;
+            }
+            
+            // Lógica para el botón BORRAR
+            // 1. Nadie puede borrarse a sí mismo.
+            // 2. SuperAdmin puede borrar a cualquier otro usuario.
+            // 3. Un usuario común no-SuperAdmin puede borrar a otros usuarios no-SuperAdmin de su organización.
+            if (!esMismoUsuario) {
+                if (soySuperAdmin || !esSuperAdmin) {
+                    btns += `<button class="premium-btn btn-danger" style="padding: 5px 10px;" onclick="eliminarUsuario('${u.id}', '${u.user_id}', '${u.rol}')">BORRAR</button>`;
+                }
+            } else {
+                btns += `<span style="color:#64748b; font-size:0.85rem; font-style:italic; margin-left: 5px;">Tu Usuario</span>`;
+            }
+            
+            // Doble capa de seguridad visual: si de alguna manera se lista un SuperAdmin a alguien que no lo es
+            if (esSuperAdmin && !soySuperAdmin) {
+                btns = `<span style="color:#ef4444; font-size:0.85rem; font-weight:bold; font-style:italic;">Protegido (SuperAdmin)</span>`;
+            }
+
             tr.innerHTML = `
                 <td><strong>${u.user_id}</strong></td>
                 <td>${u.nombre}</td>
                 <td><span class="badge-${u.rol.toLowerCase()}">${u.rol}</span></td>
                 <td>${u.organizaciones?.nombre || 'Sede Principal'}</td>
                 <td>
-                    <button class="premium-btn btn-danger" style="padding: 5px 10px;" onclick="eliminarUsuario('${u.id}', '${u.user_id}', '${u.rol}')">BORRAR</button>
+                    ${btns}
                 </td>
             `;
             tbody.appendChild(tr);
@@ -445,10 +479,16 @@ async function guardarUsuario() {
     let orgId = currentUser.organizacion_id;
     if (currentUser.rol === 'SuperAdmin') {
         orgId = document.getElementById('u_org').value;
-        if (!orgId) return alert('Por favor, seleccione una organización para este usuario.');
+        if (!orgId) {
+            await mostrarAlerta('Por favor, seleccione una organización para este usuario.');
+            return;
+        }
     }
 
-    if (!userid || !pass || !nombre) return alert('Faltan campos obligatorios (ID, Nombre y Contraseña)');
+    if (!userid || !pass || !nombre) {
+        await mostrarAlerta('Faltan campos obligatorios (ID, Nombre y Contraseña)');
+        return;
+    }
 
     try {
         // En un sistema SaaS real, aquí usaríamos supabase.auth.signUp
@@ -469,28 +509,72 @@ async function guardarUsuario() {
             throw error;
         }
 
-        alert('Usuario "' + userid + '" creado correctamente');
+        await mostrarAlerta('Usuario "' + userid + '" creado correctamente');
         cerrarModalUsuario();
         await cargarUsuarios();
     } catch (e) {
         console.error('Error al guardar usuario:', e);
-        alert('ERROR AL CREAR USUARIO: ' + e.message);
+        await mostrarAlerta('ERROR AL CREAR USUARIO: ' + e.message);
     }
 }
 
 async function eliminarUsuario(id, userid, rol) {
-    if (rol === 'SuperAdmin') return alert('No se puede eliminar al SuperAdmin');
-    if (id === currentUser.id) return alert('No puedes eliminarte a ti mismo');
+    // Doble verificación de jerarquía
+    if (rol === 'SuperAdmin' && currentUser.rol !== 'SuperAdmin') {
+        await mostrarAlerta('No tienes rango suficiente para eliminar a un SuperAdmin');
+        return;
+    }
+    if (id === currentUser.id) {
+        await mostrarAlerta('No puedes eliminarte a ti mismo');
+        return;
+    }
 
-    if (!confirm(`¿Desea eliminar el acceso de "${userid}"?\n\nLos registros que haya realizado se conservarán para fines contables.`)) return;
+    const confirmado = await mostrarConfirm(
+        `¿Desea eliminar el acceso de "${userid}"?\n\nLos registros que haya realizado se conservarán para fines contables.`
+    );
+    if (!confirmado) return;
 
     try {
         const { error } = await SessionManager.applyIsolation(db.from('usuarios').delete()).eq('id', id);
         if (error) throw error;
-        alert('Usuario eliminado');
+        await mostrarAlerta('Usuario eliminado exitosamente.');
         cargarUsuarios();
     } catch (e) {
-        alert('Error: ' + e.message);
+        await mostrarAlerta('Error: ' + e.message);
+    }
+}
+
+async function cambiarPasswordUsuario(id, userid) {
+    // Doble verificación de jerarquía
+    const userAEditar = g_usuarios.find(u => u.id === id);
+    if (userAEditar && userAEditar.rol === 'SuperAdmin' && currentUser.rol !== 'SuperAdmin') {
+        await mostrarAlerta('❌ No puedes cambiar la contraseña de un SuperAdmin.');
+        return;
+    }
+
+    const nuevaPassword = await mostrarPrompt(
+        `🔑 CAMBIAR CONTRASEÑA\n\nIngrese la nueva contraseña para el usuario "${userid}":`
+    );
+
+    if (nuevaPassword === null) return; // Cancelado
+
+    const passTrimmed = nuevaPassword.trim();
+    if (!passTrimmed) {
+        await mostrarAlerta('❌ La contraseña no puede estar vacía.');
+        return;
+    }
+
+    try {
+        const { error } = await SessionManager.applyIsolation(
+            db.from('usuarios').update({ password: passTrimmed })
+        ).eq('id', id);
+
+        if (error) throw error;
+
+        await mostrarAlerta(`✓ Contraseña del usuario "${userid}" actualizada exitosamente.`);
+    } catch (e) {
+        console.error('Error al cambiar contraseña:', e);
+        await mostrarAlerta('❌ Error al cambiar la contraseña: ' + e.message);
     }
 }
 
@@ -601,8 +685,8 @@ async function guardarRestricciones() {
         const { error } = await db.from('permisos_seguridad').upsert(batch, { onConflict: 'usuario_id, seccion' });
         
         if (error) throw error;
-        alert('Permisos actualizados correctamente');
+        await mostrarAlerta('Permisos actualizados correctamente');
     } catch (e) {
-        alert('Error guardando permisos: ' + e.message);
+        await mostrarAlerta('Error guardando permisos: ' + e.message);
     }
 }
