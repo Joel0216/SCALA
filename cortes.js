@@ -117,12 +117,17 @@ function syncFiltersUI() {
 }
 
 async function fetchReceiptsByRange(startDate, endDate) {
-    const q = SessionManager.applyIsolation(db
-        .from('recibos'))
+    const orgId = SessionManager.getEffectiveOrgId();
+    let q = db
+        .from('recibos')
         .select('*')
         .gte('fecha', startDate)
         .lte('fecha', endDate)
         .order('numero', { ascending: true });
+
+    if (orgId) {
+        q = q.eq('organizacion_id', orgId);
+    }
 
     const { data, error } = await q;
     if (error) throw error;
@@ -131,11 +136,16 @@ async function fetchReceiptsByRange(startDate, endDate) {
 
 async function fetchDetailsByReceiptIds(ids) {
     if (!ids.length) return [];
-    const { data, error } = await SessionManager.applyIsolation(db
-        .from('recibos_detalle'))
+    const orgId = SessionManager.getEffectiveOrgId();
+    let q = db
+        .from('recibos_detalle')
         .select('*')
         .in('recibo_id', ids)
         .order('created_at', { ascending: true });
+    if (orgId) {
+        q = q.eq('organizacion_id', orgId);
+    }
+    const { data, error } = await q;
     if (error) throw error;
     return data || [];
 }
@@ -377,7 +387,12 @@ async function generar() {
 
 async function fetchDatesWithOperations() {
     try {
-        const { data, error } = await SessionManager.applyIsolation(db.from('recibos')).select('fecha');
+        const orgId = SessionManager.getEffectiveOrgId();
+        let q = db.from('recibos').select('fecha');
+        if (orgId) {
+            q = q.eq('organizacion_id', orgId);
+        }
+        const { data, error } = await q;
         if (error) throw error;
         datesWithOperations = new Set(data.map(r => r.fecha));
     } catch (e) {
@@ -432,6 +447,50 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (typeof waitForSupabase === 'function') db = await waitForSupabase(10000);
         else db = window.supabaseClient || window.supabase || null;
         if (!db) throw new Error('Supabase no disponible');
+        
+        // Logica para SuperAdmin Selector de Organizaciones
+        const user = SessionManager.getCurrentUser();
+        if (user && user.rol === 'SuperAdmin') {
+            const container = document.getElementById('superAdminSelectorContainer');
+            const select = document.getElementById('superAdminOrgSelect');
+            if (container && select) {
+                container.style.display = ''; // mostrar como flex/block en la grilla
+                
+                // Fetch organizaciones
+                try {
+                    const { data: orgs, error } = await db.from('organizaciones').select('id, nombre').order('nombre');
+                    if (!error && orgs) {
+                        orgs.forEach(o => {
+                            const opt = document.createElement('option');
+                            opt.value = o.id;
+                            opt.textContent = o.nombre;
+                            select.appendChild(opt);
+                        });
+                        
+                        // Restore previous selection if any
+                        const saved = sessionStorage.getItem('superadmin_org_id');
+                        if (saved) {
+                            select.value = saved;
+                        }
+                    }
+                } catch (e) {
+                    console.error('Error loading orgs:', e);
+                }
+                
+                select.addEventListener('change', async (e) => {
+                    const val = e.target.value;
+                    if (val) {
+                        sessionStorage.setItem('superadmin_org_id', val);
+                    } else {
+                        sessionStorage.removeItem('superadmin_org_id');
+                    }
+                    
+                    // Recargar datos
+                    await initCalendars();
+                    await generar();
+                });
+            }
+        }
         
         await initCalendars();
         

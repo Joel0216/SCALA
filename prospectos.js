@@ -11,6 +11,8 @@ let g_paginaActualProspectos = 1;
 let g_totalPaginasProspectos = 1;
 let g_totalResultadosProspectos = 0;
 let g_terminoBusquedaProspectos = '';
+let g_debounceTimerProspectos = null;
+const G_LIMITE_PROSPECTOS = 50;
 
 // =====================================================
 // INICIALIZACIÓN
@@ -76,13 +78,25 @@ async function generateProspectoId() {
     }
 }
 
-// Cargar lista de cursos para el select
+// Cargar lista de cursos para el select (solo de la organización actual)
 async function loadCursos() {
     if (!db) return;
 
     try {
-        const { data, error } = await SessionManager.applyIsolation(db.from('cursos').select('id, curso'))
-            .order('curso', { ascending: true });
+        const currentUser = SessionManager.getCurrentUser();
+        const orgId = currentUser?.organizacion_id;
+        const isSuperAdmin = currentUser?.rol === 'SuperAdmin';
+
+        let query;
+        if (!isSuperAdmin && orgId) {
+            // Filtro estricto: solo cursos de esta organización
+            query = db.from('cursos').select('id, curso').eq('organizacion_id', orgId);
+        } else {
+            // SuperAdmin: ver todos
+            query = SessionManager.applyIsolation(db.from('cursos').select('id, curso'));
+        }
+
+        const { data, error } = await query.order('curso', { ascending: true });
 
         if (error) throw error;
 
@@ -163,8 +177,10 @@ async function nuevoProspecto() {
 
 function cancelarAccion() {
     if (g_prospectoSeleccionado) {
+        // Recargar los datos originales y mantener modo edición
         cargarDatosProspecto(g_prospectoSeleccionado);
     } else {
+        // Si no hay prospecto seleccionado, volver al estado inicial
         resetState();
     }
 }
@@ -181,24 +197,56 @@ async function saveProspecto() {
         await mostrarAlerta('Error: Base de datos no conectada');
         return;
     }
-    
+
+    // =====================================================
+    // VALIDACIÓN DE CAMPOS OBLIGATORIOS
+    // =====================================================
     const nombre = document.getElementById('nombre').value.trim();
+    const apellidos = document.getElementById('apellidos').value.trim();
+    const telefono = document.getElementById('telefono').value.trim();
+    const fechaAtencion = document.getElementById('fechaAtencion').value;
+    const cursoId = document.getElementById('curso').value;
+
+    // --- Información del Prospecto (sección 1) ---
     if (!nombre) {
-        await mostrarAlerta('Ingrese el nombre del prospecto');
+        await mostrarAlerta('⚠️ Campo obligatorio (Información del Prospecto):\nIngrese el NOMBRE del prospecto.');
+        document.getElementById('nombre').focus();
+        return;
+    }
+    if (!apellidos) {
+        await mostrarAlerta('⚠️ Campo obligatorio (Información del Prospecto):\nIngrese los APELLIDOS del prospecto.');
+        document.getElementById('apellidos').focus();
+        return;
+    }
+    if (!telefono) {
+        await mostrarAlerta('⚠️ Campo obligatorio (Información del Prospecto):\nIngrese el TELÉFONO del prospecto.');
+        document.getElementById('telefono').focus();
+        return;
+    }
+    if (!fechaAtencion) {
+        await mostrarAlerta('⚠️ Campo obligatorio (Información del Prospecto):\nIngrese la FECHA DE ATENCIÓN.');
+        document.getElementById('fechaAtencion').focus();
         return;
     }
 
+    // --- Interés y Captación (sección 2) ---
+    if (!cursoId) {
+        await mostrarAlerta('⚠️ Campo obligatorio (Interés y Captación):\nSeleccione el CURSO DE INTERÉS del prospecto.');
+        document.getElementById('curso').focus();
+        return;
+    }
+
+    const idProspecto = parseInt(document.getElementById('idProspecto').value);
     const prospectoData = {
-        id: parseInt(document.getElementById('idProspecto').value),
-        fecha_atencion: document.getElementById('fechaAtencion').value,
+        fecha_atencion: fechaAtencion,
         nombre: nombre,
-        apellidos: document.getElementById('apellidos').value.trim(),
+        apellidos: apellidos,
         edad: parseInt(document.getElementById('edad').value) || null,
-        telefono: document.getElementById('telefono').value.trim(),
+        telefono: telefono,
         direccion: document.getElementById('direccion').value.trim(),
         ciudad: document.getElementById('ciudad').value.trim(),
         codigo_postal: document.getElementById('codigoPostal').value.trim(),
-        curso_id: document.getElementById('curso').value || null,
+        curso_id: cursoId,
         medio_entero: document.getElementById('medioEntero').value,
         recomienda: document.getElementById('recomienda').value.trim(),
         dia_preferente1: document.getElementById('diaPreferente1').value,
@@ -213,18 +261,37 @@ async function saveProspecto() {
     };
 
     try {
-        // Usamos upsert para manejar tanto creación como edición
-        const { error } = await db.from('prospectos').upsert([prospectoData]);
+        let savedData;
 
-        if (error) throw error;
+        if (g_prospectoSeleccionado) {
+            // EDICIÓN: actualizar registro existente
+            const { data, error } = await db.from('prospectos')
+                .update(prospectoData)
+                .eq('id', g_prospectoSeleccionado.id)
+                .select()
+                .single();
+            if (error) throw error;
+            savedData = data;
+            await mostrarAlerta(`✓ Prospecto "${nombre} ${apellidos}" actualizado correctamente.`);
+        } else {
+            // NUEVO: insertar con el ID generado
+            const { data, error } = await db.from('prospectos')
+                .insert([{ id: idProspecto, ...prospectoData }])
+                .select()
+                .single();
+            if (error) throw error;
+            savedData = data;
+            await mostrarAlerta(`✓ Prospecto "${nombre} ${apellidos}" registrado con ID ${idProspecto}.`);
+        }
 
-        await mostrarAlerta('✓ Prospecto guardado correctamente');
-        
-        // Si era nuevo, recargar todo. Si era edición, simplemente refrescar estado.
-        window.location.reload();
-    } catch (error) {
-        console.error('Error guardando prospecto:', error);
-        await mostrarAlerta('❌ Error al guardar: ' + error.message);
+        // Después de guardar, cargar los datos guardados en el form (sin recargar la página)
+        if (savedData) {
+            cargarDatosProspecto(savedData);
+        }
+
+    } catch (err) {
+        console.error('Error guardando prospecto:', err);
+        await mostrarAlerta('❌ Error al guardar: ' + err.message);
     }
 }
 
@@ -250,76 +317,107 @@ async function deleteProspecto() {
 }
 
 // =====================================================
-// BÚSQUEDA Y RESULTADOS (ESTILO ALUMNOS)
+// BÚSQUEDA Y RESULTADOS (ESTILO ARTÍCULOS - TIEMPO REAL)
 // =====================================================
 
+/**
+ * Abre el modal unificado de búsqueda de prospectos.
+ * Carga todos los registros inmediatamente y permite filtrar en tiempo real.
+ */
 function buscarProspecto() {
-    document.getElementById('modalBusquedaProspecto').style.display = 'flex';
-    document.getElementById('inputBusquedaProspecto').value = '';
-    setTimeout(() => document.getElementById('inputBusquedaProspecto').focus(), 100);
+    const modal = document.getElementById('modalBusquedaProspecto');
+    if (!modal) return;
+    modal.style.display = 'flex';
+
+    const input = document.getElementById('inputBusquedaProspecto');
+    if (input) {
+        input.value = '';
+        // Búsqueda en tiempo real (como Artículos)
+        input.oninput = function() {
+            clearTimeout(g_debounceTimerProspectos);
+            g_debounceTimerProspectos = setTimeout(() => {
+                g_terminoBusquedaProspectos = this.value.trim().toUpperCase();
+                g_paginaActualProspectos = 1;
+                cargarResultadosBusquedaProspecto();
+            }, 300);
+        };
+        input.onkeydown = function(e) {
+            if (e.key === 'Enter') {
+                clearTimeout(g_debounceTimerProspectos);
+                g_terminoBusquedaProspectos = this.value.trim().toUpperCase();
+                g_paginaActualProspectos = 1;
+                cargarResultadosBusquedaProspecto();
+            }
+        };
+        setTimeout(() => input.focus(), 100);
+    }
+
+    // Mostrar todos los prospectos al abrir (sin término de búsqueda)
+    g_terminoBusquedaProspectos = '';
+    g_paginaActualProspectos = 1;
+    cargarResultadosBusquedaProspecto();
 }
 
 function cerrarModalBusquedaProspecto() {
-    document.getElementById('modalBusquedaProspecto').style.display = 'none';
+    const modal = document.getElementById('modalBusquedaProspecto');
+    if (modal) modal.style.display = 'none';
 }
 
+// Alias para compatibilidad con botón cerrar dentro del modal
 function cerrarModalResultadosProspecto() {
-    document.getElementById('modalResultadosProspecto').style.display = 'none';
-}
-
-async function ejecutarBusquedaProspecto() {
-    const termino = document.getElementById('inputBusquedaProspecto').value.trim().toUpperCase();
-
-    if (!termino) {
-        await mostrarAlerta('Ingrese un nombre, apellidos o ID para buscar');
-        return;
-    }
-
     cerrarModalBusquedaProspecto();
-
-    g_terminoBusquedaProspectos = termino;
-    g_paginaActualProspectos = 1;
-
-    await cargarResultadosBusquedaProspecto();
 }
 
 async function cargarResultadosBusquedaProspecto() {
     const termino = g_terminoBusquedaProspectos;
     const pagina = g_paginaActualProspectos;
-    const limite = 50;
-    const desde = (pagina - 1) * limite;
+    const desde = (pagina - 1) * G_LIMITE_PROSPECTOS;
 
     const tbody = document.getElementById('bodyResultadosProspecto');
+    if (!tbody) return;
     tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 20px;">Buscando...</td></tr>';
-    document.getElementById('modalResultadosProspecto').style.display = 'flex';
+
+    // Actualizar contador de resultados
+    const contadorEl = document.getElementById('contadorResultadosProspectos');
 
     if (!db) {
-        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:red;">Error: No hay conexión</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:red;">Error: No hay conexión a la base de datos</td></tr>';
         return;
     }
 
     try {
         let query = SessionManager.applyIsolation(db.from('prospectos').select('*', { count: 'exact' }));
-        
-        // Búsqueda inteligente: si es número busca por ID, si no por nombre/apellidos
-        if (!isNaN(termino) && termino.length > 0 && !termino.includes(' ')) {
-            query = query.eq('id', parseInt(termino));
-        } else {
-            query = query.or(`nombre.ilike.%${termino}%,apellidos.ilike.%${termino}%`);
+
+        if (termino) {
+            // Búsqueda inteligente: si es número busca por ID, si no por nombre/apellidos
+            if (!isNaN(termino) && termino.length > 0 && !termino.includes(' ')) {
+                query = query.eq('id', parseInt(termino));
+            } else {
+                query = query.or(`nombre.ilike.%${termino}%,apellidos.ilike.%${termino}%,telefono.ilike.%${termino}%`);
+            }
         }
 
         const { data, error, count } = await query
             .order('fecha_atencion', { ascending: false })
-            .range(desde, desde + limite - 1);
+            .range(desde, desde + G_LIMITE_PROSPECTOS - 1);
 
         if (error) throw error;
 
         g_totalResultadosProspectos = count || 0;
-        g_totalPaginasProspectos = Math.ceil(g_totalResultadosProspectos / limite);
+        g_totalPaginasProspectos = Math.max(1, Math.ceil(g_totalResultadosProspectos / G_LIMITE_PROSPECTOS));
+
+        // Actualizar contador
+        if (contadorEl) {
+            contadorEl.textContent = termino
+                ? `${g_totalResultadosProspectos} resultado(s) para "${termino}"`
+                : `${g_totalResultadosProspectos} prospectos registrados`;
+        }
 
         tbody.innerHTML = '';
         if (!data || data.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 20px;">No se encontraron prospectos</td></tr>';
+            tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding: 20px; color:#9ca3af;">
+                ${termino ? '🔍 No se encontraron prospectos con ese criterio' : 'Sin prospectos registrados'}
+            </td></tr>`;
             actualizarPaginacionProspectos();
             return;
         }
@@ -329,18 +427,23 @@ async function cargarResultadosBusquedaProspecto() {
             tr.style.cursor = 'pointer';
             tr.onclick = () => {
                 cargarDatosProspecto(p);
-                cerrarModalResultadosProspecto();
+                cerrarModalBusquedaProspecto();
             };
+            tr.onmouseover = function() { this.style.backgroundColor = '#000080'; this.style.color = 'white'; };
+            tr.onmouseout = function() { this.style.backgroundColor = ''; this.style.color = ''; };
 
             const nombreCompleto = `${p.nombre || ''} ${p.apellidos || ''}`.trim();
-            const fecha = p.fecha_atencion || '—';
+            const fecha = p.fecha_atencion ? new Date(p.fecha_atencion + 'T00:00:00').toLocaleDateString('es-MX') : '—';
             const telefono = p.telefono || '—';
+            const inscrBadge = p.se_inscribio === 'Si'
+                ? '<span style="background:#10b981;color:white;font-size:9px;padding:2px 6px;border-radius:10px;">INSCRITO</span>'
+                : '';
 
             tr.innerHTML = `
-                <td style="text-align: center; font-weight: bold; color: var(--primary);">${p.id}</td>
-                <td style="font-weight: 500;">${nombreCompleto}</td>
-                <td>${telefono}</td>
-                <td style="text-align: center; color: var(--text-muted);">${fecha}</td>
+                <td style="text-align:center; font-weight:bold; color:#1e40af; padding:8px 6px;">${p.id}</td>
+                <td style="font-weight:500; padding:8px 6px;">${nombreCompleto} ${inscrBadge}</td>
+                <td style="padding:8px 6px;">${telefono}</td>
+                <td style="text-align:center; color:#6b7280; padding:8px 6px; font-size:0.85rem;">${fecha}</td>
             `;
             tbody.appendChild(tr);
         });
@@ -348,7 +451,7 @@ async function cargarResultadosBusquedaProspecto() {
         actualizarPaginacionProspectos();
     } catch (e) {
         console.error('Error buscando prospectos:', e);
-        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:red; padding: 20px;">Error al cargar datos</td></tr>';
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:red; padding: 20px;">Error al cargar datos: ${e.message}</td></tr>`;
     }
 }
 
@@ -356,18 +459,40 @@ function actualizarPaginacionProspectos() {
     const cont = document.getElementById('paginacionControlesProspectos');
     const info = document.getElementById('infoPaginaProspectos');
 
+    if (!cont) return;
+
     if (g_totalPaginasProspectos <= 1) {
         cont.style.display = 'none';
         return;
     }
 
     cont.style.display = 'flex';
-    info.textContent = `Página ${g_paginaActualProspectos} de ${g_totalPaginasProspectos}`;
+    if (info) info.textContent = `Página ${g_paginaActualProspectos} de ${g_totalPaginasProspectos}`;
+
+    // Actualizar estado de botones si existen
+    const btnPrev = document.getElementById('btnAnteriorProspectos');
+    const btnNext = document.getElementById('btnSiguienteProspectos');
+    if (btnPrev) btnPrev.disabled = g_paginaActualProspectos === 1;
+    if (btnNext) btnNext.disabled = g_paginaActualProspectos === g_totalPaginasProspectos;
 }
 
 function irPrimeraPaginaProspectos() {
     if (g_paginaActualProspectos > 1) {
         g_paginaActualProspectos = 1;
+        cargarResultadosBusquedaProspecto();
+    }
+}
+
+function irAnteriorPaginaProspectos() {
+    if (g_paginaActualProspectos > 1) {
+        g_paginaActualProspectos--;
+        cargarResultadosBusquedaProspecto();
+    }
+}
+
+function irSiguientePaginaProspectos() {
+    if (g_paginaActualProspectos < g_totalPaginasProspectos) {
+        g_paginaActualProspectos++;
         cargarResultadosBusquedaProspecto();
     }
 }
@@ -396,7 +521,20 @@ function cargarDatosProspecto(data) {
     document.getElementById('direccion').value = data.direccion || '';
     document.getElementById('ciudad').value = data.ciudad || 'Mérida';
     document.getElementById('codigoPostal').value = data.codigo_postal || '';
-    document.getElementById('curso').value = data.curso_id || '';
+
+    // Asignar curso: si el select ya tiene opciones, asignar directo; sino esperar carga
+    const cursoSelect = document.getElementById('curso');
+    if (cursoSelect) {
+        if (cursoSelect.options.length > 1) {
+            cursoSelect.value = data.curso_id || '';
+        } else {
+            // Esperar a que carguen los cursos y luego asignar
+            loadCursos().then(() => {
+                cursoSelect.value = data.curso_id || '';
+            });
+        }
+    }
+
     document.getElementById('medioEntero').value = data.medio_entero || 'RECOMENDACION';
     document.getElementById('recomienda').value = data.recomienda || '';
     document.getElementById('diaPreferente1').value = data.dia_preferente1 || '';
@@ -408,13 +546,13 @@ function cargarDatosProspecto(data) {
     document.getElementById('nota').value = data.nota || '';
     document.getElementById('atendio').value = data.atendio || '';
 
-    // Habilitar inputs para edición
-    toggleFormInputs(false);
+    // Deshabilitar inputs para que sea solo lectura al buscar
+    toggleFormInputs(true);
 
-    // Estado de botones para edición
+    // Estado de botones: modo BÚSQUEDA (solo ver, no editar directamente)
     document.getElementById('nuevoBtn').style.display = 'inline-block';
-    document.getElementById('guardarBtn').style.display = 'inline-block';
-    document.getElementById('cancelarBtn').style.display = 'inline-block';
+    document.getElementById('guardarBtn').style.display = 'none';
+    document.getElementById('cancelarBtn').style.display = 'none';
     document.getElementById('buscarBtn').style.display = 'inline-block';
     document.getElementById('borrarBtn').style.display = 'inline-block';
 }

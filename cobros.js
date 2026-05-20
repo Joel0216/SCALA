@@ -85,6 +85,41 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (db) {
             console.log('✓ Supabase conectado');
+            
+            // ── Selector de Organización SuperAdmin ─────────────────────
+            const user = SessionManager.getCurrentUser();
+            if (user && user.rol === 'SuperAdmin') {
+                const container = document.getElementById('superAdminSelectorContainer');
+                const select = document.getElementById('superAdminOrgSelect');
+                if (container && select) {
+                    container.style.display = 'flex';
+                    try {
+                        const { data: orgs } = await db.from('organizaciones').select('id, nombre').order('nombre');
+                        if (orgs) {
+                            orgs.forEach(o => {
+                                const opt = document.createElement('option');
+                                opt.value = o.id;
+                                opt.textContent = o.nombre;
+                                select.appendChild(opt);
+                            });
+                        }
+                        // Restaurar selección previa
+                        const saved = sessionStorage.getItem('superadmin_org_id');
+                        if (saved) select.value = saved;
+                    } catch(e) { console.warn('Error cargando orgs en cobros:', e); }
+                    
+                    select.addEventListener('change', (e) => {
+                        const val = e.target.value;
+                        if (val && val !== 'all') {
+                            sessionStorage.setItem('superadmin_org_id', val);
+                        } else {
+                            sessionStorage.removeItem('superadmin_org_id');
+                        }
+                    });
+                }
+            }
+            // ────────────────────────────────────────────────────────────
+
             await initModule();
 
             // Check for URL parameters (Debt/Student redirect)
@@ -2066,8 +2101,11 @@ async function searchCancelledReceipts() {
         const from = (cancelledCurrentPage - 1) * cancelledRowsPerPage;
         const to = from + cancelledRowsPerPage - 1;
 
-        const queryBase = db.from('recibos_detalle_cancelados').select('*, recibos_cancelados(*)', { count: 'exact' });
-        let query = SessionManager.applyIsolation(queryBase);
+        const orgId = SessionManager.getEffectiveOrgId();
+        let query = db.from('recibos_detalle_cancelados').select('*, recibos_cancelados(*)', { count: 'exact' });
+        if (orgId) {
+            query = query.eq('organizacion_id', orgId);
+        }
 
         if (term) {
             query = query.ilike('credencial', `%${term}%`);

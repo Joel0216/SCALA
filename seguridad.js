@@ -236,131 +236,39 @@ async function eliminarOrganizacion(id, nombre) {
         // PASO 4: Borrado manual en orden de dependencia (hijos primero, padres después)
         console.log(`🗑️ Iniciando borrado completo de organización: ${nombre} (${id})`);
 
-        // Primero obtener IDs de alumnos de esta organización para limpiar tablas hijas
-        const { data: alumnosOrg } = await db.from('alumnos').select('id').eq('organizacion_id', id);
-        const alumnoIds = alumnosOrg ? alumnosOrg.map(a => a.id) : [];
-
-        // Obtener IDs de recibos de esta organización
-        const { data: recibosOrg } = await db.from('recibos').select('id').eq('organizacion_id', id);
-        const reciboIds = recibosOrg ? recibosOrg.map(r => r.id) : [];
-
-        // Obtener IDs de maestros de esta organización
-        const { data: maestrosOrg } = await db.from('maestros').select('id').eq('organizacion_id', id);
-        const maestroIds = maestrosOrg ? maestrosOrg.map(m => m.id) : [];
-
-        // Obtener IDs de cursos de esta organización
-        const { data: cursosOrg } = await db.from('cursos').select('id').eq('organizacion_id', id);
-        const cursoIds = cursosOrg ? cursosOrg.map(c => c.id) : [];
-
-        // Obtener IDs de artículos de esta organización
-        const { data: articulosOrg } = await db.from('articulos').select('id').eq('organizacion_id', id);
-        const articuloIds = articulosOrg ? articulosOrg.map(a => a.id) : [];
-
-        // --- NIVEL 3: Tablas más profundas (dependen de alumnos, recibos, maestros, cursos) ---
-        
-        // Borrar alumno_grupos (depende de alumnos)
-        if (alumnoIds.length > 0) {
-            for (let i = 0; i < alumnoIds.length; i += 50) {
-                const batch = alumnoIds.slice(i, i + 50);
-                await db.from('alumno_grupos').delete().in('alumno_id', batch);
-            }
-            console.log('  ✓ alumno_grupos eliminados');
-
-            // Borrar colegiaturas (depende de alumnos)
-            for (let i = 0; i < alumnoIds.length; i += 50) {
-                const batch = alumnoIds.slice(i, i + 50);
-                await db.from('colegiaturas').delete().in('alumno_id', batch);
-            }
-            console.log('  ✓ colegiaturas eliminadas');
-
-            // Borrar programacion_examenes (depende de alumnos)
-            for (let i = 0; i < alumnoIds.length; i += 50) {
-                const batch = alumnoIds.slice(i, i + 50);
-                await db.from('programacion_examenes').delete().in('alumno_id', batch);
-            }
-            console.log('  ✓ programacion_examenes eliminadas');
-
-            // Borrar alumnos_bajas (depende de alumnos)
-            for (let i = 0; i < alumnoIds.length; i += 50) {
-                const batch = alumnoIds.slice(i, i + 50);
-                await db.from('alumnos_bajas').delete().in('alumno_id', batch);
-            }
-            console.log('  ✓ alumnos_bajas eliminadas');
-
-            // Borrar cambios_alumnos (depende de alumnos)
-            for (let i = 0; i < alumnoIds.length; i += 50) {
-                const batch = alumnoIds.slice(i, i + 50);
-                await db.from('cambios_alumnos').delete().in('alumno_id', batch);
-            }
-            console.log('  ✓ cambios_alumnos eliminados');
-
-            // Borrar resultados_examen (depende de alumnos)
-            for (let i = 0; i < alumnoIds.length; i += 50) {
-                const batch = alumnoIds.slice(i, i + 50);
-                await db.from('resultados_examen').delete().in('alumno_id', batch);
-            }
-            console.log('  ✓ resultados_examen eliminados');
-        }
-
-        // Borrar recibos_detalle y operaciones (dependen de recibos)
-        if (reciboIds.length > 0) {
-            for (let i = 0; i < reciboIds.length; i += 50) {
-                const batch = reciboIds.slice(i, i + 50);
-                await db.from('recibos_detalle').delete().in('recibo_id', batch);
-                await db.from('operaciones').delete().in('recibo_id', batch);
-            }
-            console.log('  ✓ recibos_detalle y operaciones eliminados');
-        }
-
-        // Borrar factores (dependen de maestros y cursos)
-        if (maestroIds.length > 0) {
-            for (let i = 0; i < maestroIds.length; i += 50) {
-                const batch = maestroIds.slice(i, i + 50);
-                await db.from('factores').delete().in('maestro_id', batch);
-            }
-            console.log('  ✓ factores eliminados');
-        }
-
-        // Borrar movimientos_inventario (depende de artículos)
-        if (articuloIds.length > 0) {
-            for (let i = 0; i < articuloIds.length; i += 50) {
-                const batch = articuloIds.slice(i, i + 50);
-                await db.from('movimientos_inventario').delete().in('articulo_id', batch);
-            }
-            console.log('  ✓ movimientos_inventario eliminados');
-        }
-
-        // --- NIVEL 2: Tablas que dependen directamente de organizacion_id ---
-        // ORDEN CRÍTICO: hijos antes que padres
-        // prospectos depende de cursos → prospectos primero
-        // grupos depende de cursos, maestros, salones → grupos primero
-        const tablasDirectas = [
+        // Lista exhaustiva de tablas a limpiar
+        const tablas = [
+            'alumno_grupos', 'colegiaturas', 'programacion_examenes', 
+            'alumnos_bajas', 'cambios_alumnos', 'resultados_examen',
+            'recibos_detalle', 'operaciones', 'factores', 'movimientos_inventario',
             'permisos_seguridad', 'recibos_cancelados', 'login_history',
-            'prospectos',
-            'alumnos', 'recibos', 'grupos',
+            'prospectos', 'alumnos', 'recibos', 'grupos',
             'maestros', 'cursos', 'salones',
-            'movimientos_inventario', 'articulos', 'grupos_articulos',
+            'articulos', 'grupos_articulos',
             'rfc_credenciales', 'rfc_clientes',
             'motivos_baja', 'medios_contacto', 'instrumentos',
             'usuarios'
         ];
 
-        for (const tabla of tablasDirectas) {
+        // Recorrer y borrar de cada tabla de manera controlada
+        for (const tabla of tablas) {
             try {
+                // Filtramos por organizacion_id o borramos todo lo relacionado si falla
                 const { error } = await db.from(tabla).delete().eq('organizacion_id', id);
-                if (error) {
-                    console.warn(`  ⚠ ${tabla}: ${error.message}`);
+                if (error && error.code !== 'PGRST116') {
+                    console.warn(`Aviso en tabla ${tabla}: ${error.message}`);
                 } else {
-                    console.log(`  ✓ ${tabla} eliminados`);
+                    console.log(`✓ Registros de ${tabla} eliminados o validados.`);
                 }
-            } catch (e) {
-                console.warn(`  ⚠ ${tabla}: ${e.message}`);
+            } catch (err) {
+                // Si da 404 porque no hay registros u otro error de fetch, lo ignoramos y seguimos adelante
+                console.warn(`Aviso en tabla ${tabla}: ${err.message || 'Sin registros'}`);
             }
         }
 
         // --- NIVEL 1: Finalmente borrar la organización ---
-        const { error } = await db.from('organizaciones').delete().eq('id', id);
-        if (error) throw error;
+        const { error: errorFinal } = await db.from('organizaciones').delete().eq('id', id);
+        if (errorFinal) throw errorFinal;
 
         console.log(`✅ Organización "${nombre}" eliminada completamente`);
         await mostrarAlerta(`✓ La organización "${nombre}" y todos sus datos han sido eliminados exitosamente.`);

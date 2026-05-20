@@ -165,7 +165,11 @@ window.terminar = function terminar() {
     window.location.href = 'otros-catalogos.html';
 };
 
+let g_guardandoSalon = false;
+
 async function guardar() {
+    if (g_guardandoSalon) return;
+    
     const numeroStr = document.getElementById('numero').value.trim();
     const ubicacion = document.getElementById('ubicacion').value.trim().toUpperCase();
     const cupoStr = document.getElementById('cupo').value.trim();
@@ -180,6 +184,13 @@ async function guardar() {
 
     const client = getClient();
     if (!client) return;
+    
+    g_guardandoSalon = true;
+    const btnGuardar = document.getElementById('btnGuardar'); // Asumiendo que hay un botón de guardar
+    if (btnGuardar) {
+        btnGuardar.disabled = true;
+        btnGuardar.innerText = "Guardando...";
+    }
 
     try {
         if (!g_salonActual) {
@@ -197,24 +208,53 @@ async function guardar() {
             }]);
             if (insertErr) throw insertErr;
         } else {
-            // EDICIÓN
-            const { error: updateErr } = await client.from('salones').update({ ubicacion, cupo }).eq('numero', g_salonActual);
+            // EDICIÓN (aplicar aislamiento para evitar editar salones de otra org)
+            const { error: updateErr } = await SessionManager.applyIsolation(
+                client.from('salones').update({ ubicacion, cupo })
+            ).eq('numero', g_salonActual);
             if (updateErr) throw updateErr;
         }
 
+        const orgId = SessionManager.getCurrentUser()?.organizacion_id;
+
         // GUARDAR RELACIONES DE INSTRUMENTOS
         // 1. Borrar todas las relaciones actuales de este salón
-        const { error: delRelErr } = await client.from('salon_instrumentos').delete().eq('salon_numero', numero);
-        if (delRelErr) throw delRelErr;
+        //    La tabla salon_instrumentos usa salon_numero como FK
+        const { error: delRelErr } = await client
+            .from('salon_instrumentos')
+            .delete()
+            .eq('salon_numero', numero);
+
+        // Ignorar error de "no rows to delete" (código PGRST116 = no rows)
+        if (delRelErr && delRelErr.code !== 'PGRST116') {
+            console.error('Error borrando instrumentos del salón:', delRelErr);
+            // Continuar de todas formas para intentar el insert
+        }
 
         // 2. Insertar las nuevas relaciones
+        //    INCLUIR organizacion_id para cumplir con la política RLS de la tabla
         if (g_instrumentosAsignados.length > 0) {
             const rels = g_instrumentosAsignados.map(inst => ({
                 salon_numero: numero,
-                instrumento_clave: inst.clave
+                instrumento_clave: inst.clave,
+                organizacion_id: orgId   // Requerido por RLS de salon_instrumentos
             }));
+
             const { error: insRelErr } = await client.from('salon_instrumentos').insert(rels);
-            if (insRelErr) throw insRelErr;
+            if (insRelErr) {
+                // Si RLS falla con organizacion_id, intentar sin él (tabla puede no tenerla)
+                if (insRelErr.message?.includes('organizacion_id') || insRelErr.code === '42703') {
+                    console.warn('Columna organizacion_id no existe en salon_instrumentos, reintentando...');
+                    const relsBasic = g_instrumentosAsignados.map(inst => ({
+                        salon_numero: numero,
+                        instrumento_clave: inst.clave
+                    }));
+                    const { error: insRelErr2 } = await client.from('salon_instrumentos').insert(relsBasic);
+                    if (insRelErr2) throw new Error('Error asignando instrumentos: ' + insRelErr2.message);
+                } else {
+                    throw new Error('Error asignando instrumentos: ' + insRelErr.message);
+                }
+            }
         }
 
         await mostrarAlerta(`Salón ${numero} guardado correctamente.`);
@@ -222,6 +262,13 @@ async function guardar() {
     } catch (e) {
         console.error(e);
         await mostrarAlerta(`Error al guardar: ${e.message}`);
+    } finally {
+        g_guardandoSalon = false;
+        const btnGuardar = document.getElementById('btnGuardar');
+        if (btnGuardar) {
+            btnGuardar.disabled = false;
+            btnGuardar.innerText = "GUARDAR";
+        }
     }
 }
 
@@ -360,6 +407,19 @@ window.cargarSalon = async function (numero) {
         g_instrumentosAsignados = instrumentosAsignados;
 
         cambiarModoEdicion(false); // Refresca UI a solo lectura
+        
+        // Aislamiento: Bloquear edición si es de otra organización (vista SuperAdmin)
+        const currentUser = typeof SessionManager !== 'undefined' ? SessionManager.getCurrentUser() : null;
+        if (currentUser && salon.organizacion_id && salon.organizacion_id !== currentUser.organizacion_id) {
+            document.getElementById('btnEditar').disabled = true;
+            document.getElementById('btnBorrar').disabled = true;
+            document.getElementById('btnEditar').title = "Solo lectura: Pertenece a otra organización";
+            document.getElementById('btnBorrar').title = "Solo lectura: Pertenece a otra organización";
+        } else {
+            document.getElementById('btnEditar').title = "";
+            document.getElementById('btnBorrar').title = "";
+        }
+
     } catch (e) {
         console.error(e);
         mostrarAlerta(`Error al cargar el salón: ${e.message}`);

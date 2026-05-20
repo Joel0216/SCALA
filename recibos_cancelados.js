@@ -23,8 +23,48 @@ initDatetime();
 // Try to get DB early
 getDb();
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     setupEventListeners();
+
+    // ── Selector de Organización SuperAdmin ─────────────────────
+    const dbInst = await getDb();
+    if (dbInst) {
+        const user = SessionManager.getCurrentUser();
+        if (user && user.rol === 'SuperAdmin') {
+            const container = document.getElementById('superAdminSelectorContainer');
+            const select = document.getElementById('superAdminOrgSelect');
+            if (container && select) {
+                container.style.display = 'flex';
+                try {
+                    const { data: orgs } = await dbInst.from('organizaciones').select('id, nombre').order('nombre');
+                    if (orgs) {
+                        orgs.forEach(o => {
+                            const opt = document.createElement('option');
+                            opt.value = o.id;
+                            opt.textContent = o.nombre;
+                            select.appendChild(opt);
+                        });
+                    }
+                    const saved = sessionStorage.getItem('superadmin_org_id');
+                    if (saved) select.value = saved;
+                } catch(e) { console.warn('Error cargando orgs:', e); }
+                
+                select.addEventListener('change', (e) => {
+                    const val = e.target.value;
+                    if (val && val !== 'all') {
+                        sessionStorage.setItem('superadmin_org_id', val);
+                    } else {
+                        sessionStorage.removeItem('superadmin_org_id');
+                    }
+                    // Limpiar formulario y relanzar búsqueda con nueva org
+                    document.getElementById('cancelledCredInput').value = '';
+                    document.getElementById('cancelledFolioSelect').innerHTML = '<option value="">-- Seleccionar --</option>';
+                    document.getElementById('cancelledItemsBody').innerHTML = '';
+                });
+            }
+        }
+    }
+    // ────────────────────────────────────────────────────────────
 });
 
 function initDatetime() {
@@ -111,13 +151,21 @@ async function searchStudentsWithCancelled() {
     }
 
     try {
+        // Obtener el org_id efectivo (funciona para SuperAdmin con org seleccionada y para usuarios normales)
+        const orgId = SessionManager.getEffectiveOrgId();
+
         // Query unique students from recibos_detalle_cancelados
-        let query = SessionManager.applyIsolation(client
-            .from('recibos_detalle_cancelados'))
+        let query = client
+            .from('recibos_detalle_cancelados')
             .select(`
                 credencial,
-                recibos_cancelados!inner(cliente_nombre)
+                recibos_cancelados!inner(cliente_nombre, organizacion_id)
             `);
+
+        // Aplicar filtro de organización directamente si tenemos orgId
+        if (orgId) {
+            query = query.eq('recibos_cancelados.organizacion_id', orgId);
+        }
 
         if (term) {
             query = query.or(`credencial.ilike.%${term}%,recibos_cancelados.cliente_nombre.ilike.%${term}%`);
@@ -175,10 +223,16 @@ async function selectStudent(cred, nombre) {
 
     // Fetch all folios for this student
     try {
-        const { data, error } = await SessionManager.applyIsolation(client
-            .from('recibos_detalle_cancelados'))
-            .select('recibos_cancelados(numero, id)')
+        const orgId = SessionManager.getEffectiveOrgId();
+        let folioQuery = client
+            .from('recibos_detalle_cancelados')
+            .select('recibos_cancelados(numero, id, organizacion_id)')
             .eq('credencial', cred);
+        
+        if (orgId) {
+            folioQuery = folioQuery.eq('recibos_cancelados.organizacion_id', orgId);
+        }
+        const { data, error } = await folioQuery;
 
         if (error) throw error;
 
@@ -219,20 +273,28 @@ async function loadFolioData(folio) {
 
     try {
         // 1. Fetch Header
-        const { data: header, error: hErr } = await SessionManager.applyIsolation(client
-            .from('recibos_cancelados'))
+        const orgId = SessionManager.getEffectiveOrgId();
+        let headerQuery = client
+            .from('recibos_cancelados')
             .select('*')
-            .eq('numero', folio)
-            .maybeSingle();
+            .eq('numero', folio);
+        if (orgId) {
+            headerQuery = headerQuery.eq('organizacion_id', orgId);
+        }
+        const { data: header, error: hErr } = await headerQuery.maybeSingle();
 
         if (hErr) throw hErr;
         currentFolio = header;
 
         // 2. Fetch Details
-        const { data: details, error: dErr } = await SessionManager.applyIsolation(client
-            .from('recibos_detalle_cancelados'))
+        let detailsQuery = client
+            .from('recibos_detalle_cancelados')
             .select('*')
             .eq('recibo_cancelado_id', header.id);
+        if (orgId) {
+            detailsQuery = detailsQuery.eq('organizacion_id', orgId);
+        }
+        const { data: details, error: dErr } = await detailsQuery;
 
         if (dErr) throw dErr;
 

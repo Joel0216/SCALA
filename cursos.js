@@ -60,8 +60,21 @@ document.addEventListener('DOMContentLoaded', async () => {
 async function cargarCursos() {
     if (!db) return;
     try {
-        // Eliminar límite - traer TODOS los cursos (117+)
-        const { data, error } = await SessionManager.applyIsolation(db.from('cursos').select('*')).order('curso').range(0, 1000);
+        // Obtener la organización del usuario actual
+        const currentUser = SessionManager.getCurrentUser();
+        const orgId = currentUser?.organizacion_id;
+        const isSuperAdmin = currentUser?.rol === 'SuperAdmin';
+
+        let query;
+        if (!isSuperAdmin && orgId) {
+            // Filtro estricto: solo los cursos de esta organización (excluye null)
+            query = db.from('cursos').select('*').eq('organizacion_id', orgId);
+        } else {
+            // SuperAdmin o sin org: usar applyIsolation normal
+            query = SessionManager.applyIsolation(db.from('cursos').select('*'));
+        }
+
+        const { data, error } = await query.order('curso').range(0, 1000);
         if (error) {
             console.error('Error cargando cursos:', error);
         } else {

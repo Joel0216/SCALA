@@ -39,10 +39,70 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (typeof SessionManager !== 'undefined') {
         const section = document.body.getAttribute('data-section') || 'Caja';
         SessionManager.protectPage(section);
+        
+        // Logica para SuperAdmin Selector de Organizaciones
+        const user = SessionManager.getCurrentUser();
+        if (user && user.rol === 'SuperAdmin') {
+            const container = document.getElementById('superAdminSelectorContainer');
+            const select = document.getElementById('superAdminOrgSelect');
+            if (container && select) {
+                container.style.display = 'block';
+                
+                // Fetch organizaciones
+                try {
+                    const { data: orgs, error } = await supabase.from('organizaciones').select('id, nombre').order('nombre');
+                    if (!error && orgs) {
+                        orgs.forEach(o => {
+                            const opt = document.createElement('option');
+                            opt.value = o.id;
+                            opt.textContent = o.nombre;
+                            select.appendChild(opt);
+                        });
+                        
+                        // Restore previous selection if any
+                        const saved = sessionStorage.getItem('superadmin_org_id');
+                        if (saved && saved !== 'all') {
+                            select.value = saved;
+                        }
+                    }
+                } catch (e) {
+                    console.error('Error loading orgs:', e);
+                }
+                
+                select.addEventListener('change', (e) => {
+                    const val = e.target.value;
+                    if (val) {
+                        sessionStorage.setItem('superadmin_org_id', val);
+                    } else {
+                        sessionStorage.removeItem('superadmin_org_id');
+                    }
+                });
+            }
+        }
     }
 
     console.log('Inicialización de caja completa');
 });
+
+// Interceptor global para los botones
+document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.menu-btn');
+    if (btn && btn.hasAttribute('onclick')) {
+        const user = SessionManager.getCurrentUser();
+        if (user && user.rol === 'SuperAdmin') {
+            const selectedOrg = sessionStorage.getItem('superadmin_org_id');
+            if (!selectedOrg || selectedOrg === 'all') {
+                e.preventDefault();
+                e.stopPropagation();
+                if (typeof mostrarAlerta !== 'undefined') {
+                    mostrarAlerta('SuperAdmin: Debe seleccionar una Organización en la parte superior antes de entrar a un módulo.');
+                } else {
+                    alert('SuperAdmin: Debe seleccionar una Organización en la parte superior antes de entrar a un módulo.');
+                }
+            }
+        }
+    }
+}, true); // Use capture phase to intercept before inline onclick
 
 // Actualizar fecha y hora
 function updateDateTime() {

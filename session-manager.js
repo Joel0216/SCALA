@@ -16,6 +16,18 @@ const SessionManager = {
             return null;
         }
     },
+    /**
+     * Obtiene el organizacion_id efectivo de la sesión actual
+     */
+    getEffectiveOrgId: function() {
+        const user = this.getCurrentUser();
+        if (!user) return null;
+        if (user.rol === 'SuperAdmin') {
+            const selectedOrg = sessionStorage.getItem('superadmin_org_id');
+            return (selectedOrg && selectedOrg !== 'all') ? selectedOrg : null;
+        }
+        return user.organizacion_id;
+    },
 
     /**
      * Verifica si el usuario tiene una sesión activa
@@ -261,15 +273,24 @@ const SessionManager = {
 
     /**
      * Aplica el filtro de organizacion_id a una consulta de Supabase
-    /**
-     * Aplica el filtro de organizacion_id a una consulta de Supabase
-     * @param {object} query - Objeto de consulta de Supabase
-     * @returns {object} - Consulta filtrada
      */
     applyIsolation: function(query) {
         const user = this.getCurrentUser();
-        if (!user || user.rol === 'SuperAdmin') return query;
+        if (!user) return query;
         
+        let orgId = user.organizacion_id;
+        let isSuperAdmin = user.rol === 'SuperAdmin';
+        
+        if (isSuperAdmin) {
+            // Si el SuperAdmin ha seleccionado una organización específica para esta sesión
+            const selectedOrg = sessionStorage.getItem('superadmin_org_id');
+            if (selectedOrg && selectedOrg !== 'all') {
+                orgId = selectedOrg;
+            } else {
+                return query; // Sin aislamiento para SuperAdmin normal (ve todo)
+            }
+        }
+
         // Verificación de robustez: debe ser un objeto de Supabase que permita filtros
         if (!query || (typeof query.or !== 'function' && typeof query.select !== 'function')) {
             console.warn('SessionManager: Objeto de consulta inválido o muy temprano para filtrar.', query);
@@ -281,7 +302,6 @@ const SessionManager = {
             return query;
         }
 
-        const orgId = user.organizacion_id;
         const globalId = '00000000-0000-0000-0000-000000000000';
 
         // Construir filtros de forma robusta

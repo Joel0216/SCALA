@@ -1488,8 +1488,8 @@ window.validarTraslapeSalon = async function (salonId, dia, hEntrada, hSalida, g
     if (!client || !salonId || !dia || !hEntrada || !hSalida) return false;
 
     try {
-        let query = SessionManager.applyIsolation(client.from('grupos'))
-            .select('id, hora_entrada, hora_salida')
+        // IMPORTANTE: applyIsolation debe aplicarse DESPUÉS de .select() para que .or() esté disponible
+        let query = SessionManager.applyIsolation(client.from('grupos').select('id, hora_entrada, hora_salida'))
             .eq('salon_id', salonId)
             .eq('dia', dia)
             .eq('activo', true);
@@ -1498,6 +1498,8 @@ window.validarTraslapeSalon = async function (salonId, dia, hEntrada, hSalida, g
 
         const { data, error } = await query;
         if (error) throw error;
+
+        if (!data || data.length === 0) return false;
 
         // Verificar traslape de tiempos
         const overlapping = data.some(g => {

@@ -1071,11 +1071,27 @@ async function cargarGruposInscritos(alumnoId) {
 
         g_seguimientoCache = seguimiento || [];
 
+        // CORRECCIÓN: Revisar la tabla colegiaturas para asegurar que los "vacaciones" se marquen como ANULADO
+        // Si v_seguimiento_pagos los pone como 'pagado' pero eran vacaciones
+        const { data: colVacaciones } = await SessionManager.applyIsolation(db.from('colegiaturas').select('mes,anio,grupo').eq('alumno_id', alumnoId).eq('anulado', true));
+        if (colVacaciones && colVacaciones.length > 0) {
+            colVacaciones.forEach(cv => {
+                const sItem = g_seguimientoCache.find(s => parseInt(s.mes) === parseInt(cv.mes) && parseInt(s.anio) === parseInt(cv.anio) && s.grupo_clave === cv.grupo);
+                if (sItem) {
+                    sItem.estatus = 'vacaciones';
+                }
+            });
+        }
+
         tbody.innerHTML = '';
 
         if (!inscripciones || inscripciones.length === 0) {
             tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 10px;">Sin grupos activos</td></tr>';
         } else {
+            const hoy = new Date();
+            const limiteFuturo = new Date();
+            limiteFuturo.setDate(hoy.getDate() + 7);
+
             inscripciones.forEach(g => {
                 const infoGrupo = g.grupos || {};
                 const cursoIdKey = String(infoGrupo.curso_id || '');
@@ -1097,7 +1113,17 @@ async function cargarGruposInscritos(alumnoId) {
                 // Estatus de pago para este grupo específico
                 const segGrupo = g_seguimientoCache.filter(s => s.grupo_clave === g.grupo_clave);
                 
-                const tieneDeuda = segGrupo.some(s => s.estatus === 'deuda');
+                // LÓGICA DE DEUDOR CORREGIDA:
+                // Es deudor si tiene 'deuda' explícita OR si tiene un pago 'futuro'/'pendiente' que ya entró en los 7 días de visibilidad y no ha sido pagado.
+                const tieneDeuda = segGrupo.some(s => {
+                    if (s.estatus === 'deuda') return true;
+                    if (s.estatus !== 'pagado' && s.estatus !== 'vacaciones') {
+                        const fInicio = new Date(s.inicio_ciclo);
+                        return fInicio <= limiteFuturo; // Está dentro de la ventana de pago visible
+                    }
+                    return false;
+                });
+
                 const iconColor = tieneDeuda ? '#ef4444' : '#10b981';
                 const iconAnimation = tieneDeuda ? 'animation: pulse 2s infinite;' : '';
 
@@ -1164,7 +1190,8 @@ function setCheck(id, valor) {
 
 function formatearFecha(fecha) {
     if (!fecha) return '';
-    var d = new Date(fecha);
+    // Usar 'T00:00:00' para evitar desfase de zona horaria al parsear solo la fecha
+    var d = new Date(fecha.toString().includes('T') ? fecha : fecha + 'T00:00:00');
     var dia = String(d.getDate()).padStart(2, '0');
     var mes = String(d.getMonth() + 1).padStart(2, '0');
     var anio = d.getFullYear();
@@ -2515,10 +2542,10 @@ window.abrirDetallePagos = function(grupoClave, nombreCurso) {
     const limiteFuturo = new Date();
     limiteFuturo.setDate(hoy.getDate() + 7);
 
-    // Filtrar: Mostrar si está pagado, es deuda, o si es futuro pero inicia en menos de 7 días
+    // Filtrar: Mostrar si está pagado, es deuda, vacaciones, o si inicia en menos de 7 días
     const segGrupo = g_seguimientoCache.filter(s => {
         if (s.grupo_clave !== grupoClave) return false;
-        if (s.estatus === 'pagado' || s.estatus === 'deuda') return true;
+        if (s.estatus === 'pagado' || s.estatus === 'deuda' || s.estatus === 'vacaciones') return true;
         
         const fechaInicio = new Date(s.inicio_ciclo);
         return fechaInicio <= limiteFuturo;
@@ -2557,9 +2584,17 @@ window.abrirDetallePagos = function(grupoClave, nombreCurso) {
                                 onclick="procesarVacaciones('${alumnoSeleccionado.id}', ${s.mes}, ${s.anio}, '${grupoClave}', '${nombreCurso}')">VACACIONES</button>
                           </div>`;
         } else if (s.estatus === 'vacaciones') {
-            estatusHtml = '<span class="badge badge-warning" style="background:#f59e0b; color:white; padding:4px 8px; border-radius:4px;">VACACIONES</span>';
+            estatusHtml = '<span class="badge badge-secondary" style="background:#6b7280; color:white; padding:4px 8px; border-radius:4px;">ANULADO</span>';
+            accionHtml = '<span style="color:#6b7280; font-size:11px; font-weight:bold; display:flex; align-items:center; justify-content:center; gap:4px;">🏖️ Vacaciones</span>';
         } else {
-            estatusHtml = '<span class="badge badge-secondary" style="background:#9ca3af; color:white; padding:4px 8px; border-radius:4px;">FUTURO</span>';
+            // FUTURO o PENDIENTE (Aún no vencido)
+            estatusHtml = '<span class="badge badge-secondary" style="background:#3b82f6; color:white; padding:4px 8px; border-radius:4px;">PENDIENTE</span>';
+            accionHtml = `<div style="display: flex; gap: 8px; justify-content: center;">
+                            <button class="premium-btn btn-primary" style="padding:5px 12px; font-size:11px; border-radius:15px;" 
+                                onclick="cerrarModalDetallePagos(); window.irAPagar('${alumnoSeleccionado.id}', '${montoFinal}', 'Colegiatura ${s.mes}/${s.anio}', '${s.mes}', '${s.anio}')">PAGAR</button>
+                            <button class="premium-btn" style="background: #e91e63; color: white; border: none; padding: 5px 12px; font-size: 11px; border-radius: 15px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.2);" 
+                                onclick="procesarVacaciones('${alumnoSeleccionado.id}', ${s.mes}, ${s.anio}, '${grupoClave}', '${nombreCurso}')">VACACIONES</button>
+                          </div>`;
         }
         
         // Formatear rango de fechas
@@ -2589,33 +2624,82 @@ window.cerrarModalDetallePagos = function() {
 };
 
 window.procesarVacaciones = async function(alumnoId, mes, anio, grupoClave, nombreCurso) {
-    const confirma = await mostrarConfirm(`¿Desea anular la colegiatura de ${mes}/${anio} por concepto de VACACIONES?`);
+    const confirma = await mostrarConfirm(`¿Desea anular la colegiatura de ${mes}/${anio} (${grupoClave}) por concepto de VACACIONES?\n\nEsto marcará el mes como ANULADO y no se requerirá pago.`);
     if (!confirma) return;
 
+    const orgId = SessionManager.getCurrentUser()?.organizacion_id;
+    const hoy = new Date().toISOString().split('T')[0];
+
+    // Registro base siempre compatible (sin columnas opcionales)
+    const registroBase = {
+        alumno_id: alumnoId,
+        mes: parseInt(mes),
+        anio: parseInt(anio),
+        monto: 0,
+        pagado: true,
+        grupo: grupoClave,
+        organizacion_id: orgId
+    };
+
     try {
-        const { error } = await db.from('colegiaturas').upsert({
-            alumno_id: alumnoId,
-            mes: mes,
-            anio: anio,
-            monto: 0,
-            pagado: true,
-            anulado: true
-        }, { onConflict: 'alumno_id, anio, mes' });
+        // Intento 1: Con campo 'anulado' si existe en la tabla
+        let upsertErr = null;
+        const { error: err1 } = await db.from('colegiaturas').upsert(
+            { ...registroBase, anulado: true },
+            { onConflict: 'alumno_id,anio,mes' }
+        );
+        upsertErr = err1;
 
-        if (error) throw error;
-
-        await mostrarAlerta('Mes marcado como VACACIONES (Anulado).');
-        
-        // RECARGAR DATOS DEL SERVIDOR (Vital para que el estatus cambie)
-        if (typeof window.cargarGruposInscritos === 'function') {
-            await window.cargarGruposInscritos(alumnoId);
+        // Si falló por columna 'anulado' inexistente, reintentar sin ella
+        if (upsertErr && (upsertErr.message?.includes('anulado') || upsertErr.code === '42703')) {
+            console.warn('Columna anulado no existe, reintentando...');
+            const { error: err2 } = await db.from('colegiaturas').upsert(
+                registroBase,
+                { onConflict: 'alumno_id,anio,mes' }
+            );
+            upsertErr = err2;
         }
 
-        // Recargar el detalle
-        abrirDetallePagos(grupoClave, nombreCurso);
-        
+        if (upsertErr) throw upsertErr;
+
+        // =====================================================
+        // ACTUALIZAR EL CACHE DIRECTAMENTE para que el modal
+        // muestre ANULADO/Vacaciones sin depender de la vista DB
+        // =====================================================
+        if (g_seguimientoCache && Array.isArray(g_seguimientoCache)) {
+            const idx = g_seguimientoCache.findIndex(s =>
+                s.grupo_clave === grupoClave &&
+                parseInt(s.mes) === parseInt(mes) &&
+                parseInt(s.anio) === parseInt(anio)
+            );
+            if (idx >= 0) {
+                // Actualizar el estatus en el cache existente
+                g_seguimientoCache[idx].estatus = 'vacaciones';
+                g_seguimientoCache[idx].monto_calculado = 0;
+                g_seguimientoCache[idx].pagado = true;
+            } else {
+                // Si no existe en cache, agregar la entrada
+                g_seguimientoCache.push({
+                    grupo_clave: grupoClave,
+                    mes: parseInt(mes),
+                    anio: parseInt(anio),
+                    estatus: 'vacaciones',
+                    monto_calculado: 0,
+                    pagado: true,
+                    inicio_ciclo: null,
+                    fin_ciclo: null
+                });
+            }
+        }
+
+        await mostrarAlerta('✓ Mes marcado como ANULADO por Vacaciones.');
+
+        // Cerrar y reabrir el modal con los datos actualizados del cache
+        cerrarModalDetallePagos();
+        setTimeout(() => abrirDetallePagos(grupoClave, nombreCurso), 200);
+
     } catch (e) {
         console.error('Error al procesar vacaciones:', e);
-        mostrarAlerta('Error: ' + e.message);
+        await mostrarAlerta('Error al procesar vacaciones: ' + e.message);
     }
 };

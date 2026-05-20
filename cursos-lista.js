@@ -53,7 +53,20 @@ async function cargarDatos(pagina = 1) {
         const to = from + g_rowsPorPagina - 1;
 
         const term = document.getElementById('buscarInput')?.value.trim() || '';
+        
+        // Obtener la organización del usuario actual
+        const currentUser = SessionManager.getCurrentUser();
+        const orgId = currentUser?.organizacion_id;
+        const isSuperAdmin = currentUser?.rol === 'SuperAdmin';
+
         let query = SessionManager.applyIsolation(client.from('cursos').select('*', { count: 'exact' }));
+
+        // Si el usuario tiene org y NO es SuperAdmin, filtrar ESTRICTAMENTE por su org
+        // (excluir registros con organizacion_id NULL que pertenecerían a datos legados)
+        if (!isSuperAdmin && orgId) {
+            query = client.from('cursos').select('*', { count: 'exact' })
+                .eq('organizacion_id', orgId);
+        }
 
         if (term) {
             query = query.or(`clave.ilike.%${term}%,curso.ilike.%${term}%,grado.ilike.%${term}%`);
